@@ -12,8 +12,9 @@
 > 身為邊緣人的我，有個空間，時不時會堆放雜物在這。
 
 ![](https://i.imgur.com/Gmo45eh.jpg)
-****
-:full_moon_with_face: 重要日程:full_moon_with_face: 
+
+
+:boom: 重要日程 :boom: 
 
 * 109/10/24 (四)  DSC 開會
 * 109/10/28 (一)  台灣科技大學 研究所 推甄放榜
