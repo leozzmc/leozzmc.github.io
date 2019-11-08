@@ -16,15 +16,25 @@
 
 ## 重要日程
 
-* 109/10/24 (四)  DSC 開會
-* 109/10/28 (一)  台灣科技大學 研究所 推甄放榜
-* 109/10/30 (三)  TSCH 開會 10:00 P.M.
-* 109/10/31 (四)  Tor Sharing 活動
-* 109/11/06 (三)  
-   *  資料庫導論  期中考
-   *  Excel  期中考
-   *  TSCH 開會
+* 109/11/11 ~ 11/22 開放棄修
 * 109/11/30 (六)  TDOH-Conf 演講
+
+****
+## 日記
+
+#### 10月
+* 參加白晝之夜
+* TSCH 演講
+* 創建 Github.io
+*  ITHome 鐵人賽完賽
+* 推甄研究所
+* 重灌電腦
+* 沖繩之旅決定!
+
+#### 技術記術
+* Openssl 下載：[文章](https://hackmd.io/@Kevinneck/r1PlhdMjH)
+* node.js 下載：[相關文章](https://github.com/nodejs-tw/nodejs-wiki-book/blob/master/zh-tw/node_install.rst)
+
 
 
 
