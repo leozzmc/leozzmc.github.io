@@ -104,5 +104,5 @@ theme: butterfly
 deploy:
   type: git
   repo: git@github.com:leozzmc/leozzmc.github.io.git
-  branch: master 
+  branch: deploy
   message: "deployment"
