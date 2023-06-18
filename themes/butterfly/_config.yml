@@ -3,7 +3,7 @@
 # --------------------------------------
 
 nav:
-  logo: https://i.imgur.com/DwWMDSv.png 
+  logo: https://i.imgur.com/P19VCm0.png 
   display_title: true
   fixed: false # fixed navigation bar
 
@@ -17,12 +17,12 @@ menu:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
   # Link: /link/ || fas fa-link
-  About: /about/ || fas fa-heart
+  # About: /about/ || fas fa-heart
 
 # Code Blocks (代碼相關)
 # --------------------------------------
 
-highlight_theme: light #  darker / pale night / light / ocean / mac / mac light / false
+highlight_theme: mac #  darker / pale night / light / ocean / mac / mac light / false
 highlight_copy: true # copy button
 highlight_lang: true # show the code language
 highlight_shrink: false # true: shrink the code blocks / false: expand the code blocks | none: expand code blocks and hide the button
@@ -34,7 +34,8 @@ code_word_wrap: false
 #   icon: link || the description || color
 social:
   fab fa-github: https://github.com/leozzmc || Github || '#24292e'
-  fas fa-envelope: mailto:zzmczzmczzmc870125@gmail.com || Email || '#4a7dbe'
+  fas fa-envelope: mailto:zzmczzmczzmc870125@gmail.com || Email || '#e0ad5a'
+  fa-brands fa-linkedin: https://www.linkedin.com/in/kevin-liu087 || LinkedIn || '#0373fc'
 
 # Image (圖片設置)
 # --------------------------------------
@@ -44,8 +45,8 @@ favicon: /img/favicon.png
 
 # Avatar (頭像)
 avatar:
-  img: https://i.imgur.com/McAYfHD.png
-  effect: true
+  img: https://i.imgur.com/tZP7WQj.png
+  effect: false
 
 # Disable all banner image
 disable_top_img: false
@@ -695,9 +696,9 @@ canvas_nest:
 
 # Mouse click effects: fireworks (鼠標點擊效果: 煙火特效)
 fireworks:
-  enable: true
+  enable: false
   zIndex: 9999 # -1 or 9999
-  mobile: true
+  mobile: false
 
 # Mouse click effects: Heart symbol (鼠標點擊效果: 愛心)
 click_heart:
@@ -706,11 +707,13 @@ click_heart:
 
 # Mouse click effects: words (鼠標點擊效果: 文字)
 ClickShowText:
-  enable: false
+  enable: true
   text:
-    # - I
-    # - LOVE
-    # - YOU
+     - 👍
+     - 👾
+     - 💊
+     - 🧪
+     - 👁️
   fontSize: 15px
   random: false
   mobile: false
@@ -748,7 +751,7 @@ hr_icon:
 
 # the subtitle on homepage (主頁subtitle)
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect (打字效果)
   effect: true
   # Customize typed.js (配置typed.js)
@@ -763,6 +766,8 @@ subtitle:
   source: false
   # 如果關閉打字效果，subtitle 只會顯示 sub 的第一行文字
   sub:
+    - 蹲的越低
+    - 腳就越酸 
 
 # Loading Animation (加載動畫)
 preloader:
