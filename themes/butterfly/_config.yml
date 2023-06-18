@@ -692,9 +692,9 @@ canvas_fluttering_ribbon:
 canvas_nest:
   enable: true
   color: '100,100,255' #color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
-  opacity: 0.7 # the opacity of line (0~1), default: 0.5.
+  opacity: 0.8 # the opacity of line (0~1), default: 0.5.
   zIndex: -1 # z-index property of the background, default: -1.
-  count: 99 # the number of lines, default: 99.
+  count: 600 # the number of lines, default: 99.
   mobile: true
 
 # Mouse click effects: fireworks (鼠標點擊效果: 煙火特效)
