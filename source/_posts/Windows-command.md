@@ -5,8 +5,9 @@ toc: true
 tags: ['Windows','PowerShell']
 categories: [指令/工具用法整理]
 date: 2022-12-01T17:47:26+08:00
+top_img: https://i.imgur.com/rtjtBNB.jpg
+aside: true
 ---
-![Powershell Image](https://i.imgur.com/rtjtBNB.jpg)
 
 ## 蒐集本機資訊
 - 網路設定資訊

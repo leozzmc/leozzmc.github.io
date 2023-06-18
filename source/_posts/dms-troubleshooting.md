@@ -5,8 +5,9 @@ toc: true
 tags: ['Linux','Network','Web']
 categories: ['學習筆記','Troubleshooting']
 date: 2021-11-13T18:12:17+08:00
+top_img: https://i.imgur.com/b3n6aNl.jpg
+aside: true
 ---
-![](https://i.imgur.com/b3n6aNl.jpg)
 
 ## Network Debug
 - 若你SSH不到Server，你會怎麼做?

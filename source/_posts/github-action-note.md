@@ -5,6 +5,7 @@ toc: true
 tags: ['CI/CD','GitHub']
 categories: ['學習筆記']
 date: 2022-11-10T13:27:45+08:00
+aside: true
 ---
 
 ![](https://i.imgur.com/zn0lCzN.png)
