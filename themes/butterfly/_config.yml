@@ -115,6 +115,7 @@ post_meta:
     categories: true # true or false 文章頁是否顯示分類
     tags: true # true or false 文章頁是否顯示標籤
     label: true # true or false 顯示描述性文字
+    min2read: true
 
 # Display the article introduction on homepage
 # 1: description
@@ -122,16 +123,16 @@ post_meta:
 # 3: auto_excerpt (default)
 # false: do not show the article introduction
 index_post_content:
-  method: 3
-  length: 500 # if you set method to 2 or 3, the length need to config
+  method: 2
+  length: 400 # if you set method to 2 or 3, the length need to config
 
 # anchor
 anchor:
   button:
-    enable: false
+    enable: true
     always_show: false
     icon: # the unicode value of Font Awesome icon, such as '\3423'
-  auto_update: false # when you scroll in post, the URL will update according to header id.
+  auto_update: true # when you scroll in post, the URL will update according to header id.
 
 # figcaption (圖片描述文字)
 photofigcaption: false
@@ -663,7 +664,7 @@ enter_transitions: true
 # Typewriter Effect (打字效果)
 # https://github.com/disjukr/activate-power-mode
 activate_power_mode:
-  enable: false
+  enable: true
   colorful: true # open particle animation (冒光特效)
   shake: true #  open shake (抖動特效)
   mobile: false
@@ -689,12 +690,12 @@ canvas_fluttering_ribbon:
 # canvas_nest
 # https://github.com/hustcc/canvas-nest.js
 canvas_nest:
-  enable: false
+  enable: true
   color: '0,0,255' #color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
   opacity: 0.7 # the opacity of line (0~1), default: 0.5.
   zIndex: -1 # z-index property of the background, default: -1.
   count: 99 # the number of lines, default: 99.
-  mobile: false
+  mobile: true
 
 # Mouse click effects: fireworks (鼠標點擊效果: 煙火特效)
 fireworks:
@@ -728,7 +729,7 @@ display_mode: light
 beautify:
   enable: true
   field: post # site/post
-  title-prefix-icon: '\f0c1'
+  title-prefix-icon: '\f1b3'
   title-prefix-icon-color: '#F47466'
 
 # Global font settings
@@ -784,10 +785,10 @@ preloader:
 # wordcount (字數統計)
 # see https://butterfly.js.org/posts/ceeb73f/#字數統計
 wordcount:
-  enable: false
-  post_wordcount: true
-  min2read: true
-  total_wordcount: true
+  enable: true
+  post_wordcount: false
+  min2read: false
+  total_wordcount: false
 
 # Lightbox (圖片大圖查看模式)
 # --------------------------------------
