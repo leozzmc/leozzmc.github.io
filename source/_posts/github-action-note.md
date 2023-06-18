@@ -1,5 +1,5 @@
 ---
-title: 📑Githuab Action 學習筆記
+title: 📑Github Action 學習筆記
 description: 學習 GitHub Actions CI/CD 平台的使用以及其yaml檔撰寫的採坑紀錄
 toc: true
 tags: ['CI/CD','GitHub']

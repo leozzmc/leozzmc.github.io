@@ -237,7 +237,7 @@ int main(void)
           [in] int protocol
       );
       ```
-     - 他會回傳一個 **SOCKET**
+    - 他會回傳一個 **SOCKET**
 - **bind**
     - 綁定Socket到本地地址和port，接收三個參數:socket 描述子、位址以及位址長度
     - ```c=
