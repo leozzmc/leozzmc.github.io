@@ -13,6 +13,7 @@ menu:
   歸檔: /archives/ || fas fa-archive
   標籤: /tags/ || fas fa-tags
   分類: /categories/ || fas fa-folder-open
+  鏈結: /link/ || fas fa-link
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
@@ -694,7 +695,7 @@ canvas_nest:
   color: '34,34,34' #color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
   opacity: 0.8 # the opacity of line (0~1), default: 0.5.
   zIndex: -1 # z-index property of the background, default: -1.
-  count: 200 # the number of lines, default: 99.
+  count: 350 # the number of lines, default: 99.
   mobile: true
 
 # Mouse click effects: fireworks (鼠標點擊效果: 煙火特效)
