@@ -36,6 +36,7 @@ social:
   fab fa-github: https://github.com/leozzmc || Github || '#24292e'
   fas fa-envelope: mailto:zzmczzmczzmc870125@gmail.com || Email || '#e0ad5a'
   fa-brands fa-linkedin: https://www.linkedin.com/in/kevin-liu087 || LinkedIn || '#0373fc'
+  fa-brands fa-youtube: https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg || Youtube || "#dc1e1e"
 
 # Image (圖片設置)
 # --------------------------------------
@@ -565,7 +566,7 @@ baidu_analytics:
 
 # Google Analytics
 # https://analytics.google.com/analytics/web/
-google_analytics:
+google_analytics: G-T4SFRRLLZ0
 
 # Cloudflare Analytics
 # https://www.cloudflare.com/zh-tw/web-analytics/
