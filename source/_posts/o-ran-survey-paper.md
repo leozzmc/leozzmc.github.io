@@ -20,6 +20,7 @@ aside: true
 # Abstract
 5G很多好處，Software-defined cellular networks 也帶來很多變化，目前也許多5G開源專案，本篇會介紹非常多當前的開源5G專案以及其內部細節，並介紹其框架跟相應的硬體環境與Testbeds。
 
+
 # Introduction
 
 5G應用多元 - VR、遠程手術、高解析串流影像、私有(private)蜂窩網路，而傳統行動網路架構則相對不靈活、不彈性，無法滿足實現5G應用所具備的條件，現行行動網路的黑箱做法帶來許多限制，像是軟硬體隨插即用(plug and play)，但卻缺乏了重新設定的能力，並且無法控制大量可用資源，使其難以使網路操作達到即時流量控制這件事，並難以進行資源管理，效能也沒有最佳化，難以實現**Connectivity-as-a-Service (CAAS)** 技術，例如專用蜂窩網路(private cellular network)。
