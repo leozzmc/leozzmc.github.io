@@ -1,5 +1,5 @@
 ---
-title: "Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead"
+title: "🗂️論文賞析:O-RAN 以及虛擬化 5G 網路"
 description: O-RAN 論文導讀
 toc: true
 tags: ['O-RAN','5G']
@@ -10,6 +10,7 @@ aside: true
 
 {% note primary no-icon%}
 這是篇survey paper
+Title: "Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead"
 College: Institute for the Wireless Internet of Things, Northeastern University
 Authors: Leonardo Bonati,Michele Polese,Salvatore D’Oro,Stefano Basagni,Tommaso Melodia
 Citation: 24
@@ -22,24 +23,16 @@ Software-defined cellular networks 也帶來很多變化
 目前也許多5G開源專案，本篇會介紹非常多當前的開源5G專案以及其內部細節
 並介紹其框架跟相應的硬體環境與Testbeds
 
-# 1.Introduction
+# Introduction
 
 5G應用多元 - VR、遠程手術、高解析串流影像、私有(private)蜂窩網路，而傳統行動網路架構則相對不靈活、不彈性，無法滿足實現5G應用所具備的條件，現行行動網路的黑箱做法帶來許多限制，像是軟硬體隨插即用(plug and play)，但卻缺乏了重新設定的能力，並且無法控制大量可用資源，使其難以使網路操作達到即時流量控制這件事，並難以進行資源管理，效能也沒有最佳化，難以實現**Connectivity-as-a-Service (CAAS)** 技術，例如專用蜂窩網路(private cellular network)。
 
-業界與學界皆認為5G應該改變這種Plug and play的作法，應該要採用可程式化、開放、資源共享、邊緣化的網路解決方案，例如 SDN、網路虛擬化、MEC(Multi-access Edge Computing)，這些方案使得動態網路控制與敏捷管理成為可能。
+業界與學界皆認為5G應該改變這種Plug and play的作法，應該要採用可程式化、開放、資源共享、邊緣化的網路解決方案，例如 SDN、網路虛擬化、MEC(Multi-access Edge Computing)，這些方案使得動態網路控制與敏捷管理成為可能。同樣的，**網路切片(Netwrok Slicing)** 與  **C-RAN(Cloud RAN)** 也證實了 共享基礎架構(infrastrucutre sharing) 不僅能夠使資源利用最大化也能帶來新市場機會。傳統封閉的的電信網路一般人難以接觸到，現今由GNU Radio Libraries 定義的軟體範例被納入**OpenAirInterface(OAI)** 和**srsLTE** 之中，並可在商用SDR設備上快速部屬。軟體框架上像是O-RAN，運行在white-box 伺服器上，可供重新設定與優化網路和收發器功能。
 
-同樣的，**網路切片(Netwrok Slicing)** 與  **C-RAN(Cloud RAN)** 也證實了，共享基礎架構(infrastrucutre sharing) 不僅能夠使資源利用最大化也能帶來新市場機會
+# Architectural enablers of 5G cellular networks
+## Architecture
 
-傳統封閉的的電信網路，難以接觸到，現今由GNU Radio Libraries 定義的軟體範例被納入**OpenAirInterface(OAI)** 和**srsLTE** 之中，並可在商用SDR設備上快速部屬。
-
-軟體框架上像是O-RAN，運行在white-box 伺服器上，可供重新設定與優化網路和收發器功能。
-
-# 2.Architectural enablers of 5G cellular networks
-## 2.1 Architecture
-
-行動網路已改變整體架構，從以往黑箱硬體配有專用軟韌體的架構變成基於運行在SDR或其他硬體的開元軟體，但這其實從4G時代就一直討論到現在。5G從spec上就極有敏捷部署的彈性在，在早期階段也在弄軟體化的服務，這種  **flexibility-by-design** 讓5G一開始就比較屌
-
-此章節介紹從4G到5G的網路架構、RAN、核網、部屬範例、SDN、NFV、網路切片、MEC、智能(Intelligent)網路
+行動網路已改變整體架構，從以往黑箱硬體配有專用軟韌體的架構變成基於運行在SDR或其他硬體的開元軟體，但這其實從4G時代就一直討論到現在。5G從spec上就極有敏捷部署的彈性在，在早期階段也在弄軟體化的服務，這種  **flexibility-by-design** 讓5G一開始就比較屌。此章節介紹從4G到5G的網路架構、RAN、核網、部屬範例、SDN、NFV、網路切片、MEC、智能(Intelligent)網路
 ![](https://i.imgur.com/5fc7spi.png)
 
 這張圖來看，4G部屬與5G似乎沒有差別，但其實在Core Network內部組成與設定卻差很多，
@@ -62,8 +55,8 @@ Software-defined cellular networks 也帶來很多變化
 NR中最創新的事就是將3GPP Stack 中的較高層(PDCP、SDAP、RRC)於較低層(RLC、MAC、PHY)分成兩個不同的logical units，也就是 CU(Control unit)與DU(Distributed Unit)，並可部屬在不同地方。而physical layer中的較低層可以與DU分開，獨立成一個RU(Radio Unit)；CU、DU、RU彼此可以藉由定義好的界面以不同的data rate跟latency來相互溝通。
 
 這種架構出現在3GPP中，並使vRAN成(virtualized RAN)為可能:
-attenna 元件 $\longrightarrow$ RU
-baseband、signal processing 單元 $\longrightarrow$ CU、DU
+`attenna 元件` $\longrightarrow$ `RU`
+`baseband、signal processing 單元` $\longrightarrow$ `CU、DU`
 以上皆可跑在通用或多廠商的平台或硬體元件上，若不同不同RAN components之間的介面是開放的，則部署上按照 O-RAN model走。
 
 ### The 5G Core
@@ -71,17 +64,19 @@ service-based approach 控制與用戶平面核心功能被拆分成多個網路
 - **UPF(User Plane Function)**: User到網路之間的gateway，作為移動性的錨(anchor)以及**QoS分類器**
 - **CPF(Control Plane Function)**:4G時的MME，大多被分配進了**AMF(Access and Mobility Management Function)**；**SMF(Session Management Function)** 負責分配IP地址到UE，並編排(orchestrates)用戶平面服務(例如:哪個UPF是UE該使用的)
 
-## 2.2 Enabling technologies for softwarized 5G cellular networks
+## Enabling technologies for softwarized 5G cellular networks
 5R整合不同功能組件、架構將會十分龐大，要管理將會是難題。5G網路參考了雲端計算生態圈中廣泛而完整的流程與架構，將虛擬化、軟體化整合在一起，使服務與辜能從原有硬體中抽離出來。
 
-### Softwarization and software-defined networking
+### `Softwarization and software-defined networking`
 為了整合不同廠商硬體元件之間的功能與設定參數，5G系統仰賴**軟體化(Softwarization)**
-1. SDN 2. Openflow protocol
-* SDN:
-    將網路控制從data plane中解耦出來，將routing與controlling程序從原有的基於硬體的轉發操作中分離出來。5G中則是將RAN、邊緣硬體元件從它們的網路和服務功能中分離出來。
+1. SDN 
+2. Openflow protocol
+
+> SDN: 將網路控制從data plane中解耦出來，將routing與controlling程序從原有的基於硬體的轉發操作中分離出來。5G中則是將RAN、邊緣硬體元件從它們的網路和服務功能中分離出來。
+
 RAN架構中只有RU維持基本transmit receive功能，其餘控制與處理則以藉由開放介面與API來用軟體操控。
 
-### Network function virtualization(NFV)
+### `Network function virtualization(NFV)`
 每項網路功能藉由VNF(Virtual Network Function)以軟體實踐，並執行在VM上(建立在通用硬體上)，NFV其中一項優點是每個VNF都提供原子級別的功能，**因此多個VNFs可以結合在一起** 創造出更複雜、特定的網路功能。
 
 ![](https://i.imgur.com/H0J0R7K.png)
@@ -92,8 +87,8 @@ RAN架構中只有RU維持基本transmit receive功能，其餘控制與處理�
 >　open source network virtualization project:  **Open Platform for NFV (OPNFV)**
 >　提供測試工具、驗證程式來加速企業和服務商網路轉換成NFV
 
-## 2.3 RAN and Core Network slicing
-Network Slicing是一種multi-tenancy虛擬化技術，其中網路功能從硬體和軟體中提取出來，並作為切片來提供給所謂的**tenant** (租戶，房客)。物理基礎架構(基站、光纖、)會在多個租戶之間共享，一個租戶可能會收到一個或多個切片。 每個切片會分配特定的物理資源，並基於該物理資源上建立獨立的虛擬網路的[**實例化(instantiate)**](https://www.ibm.com/docs/zh-tw/spss-modeler/SaaS?topic=node-what-is-instantiation)，雖然租戶對自己的切片具有資源控制權，但卻無法與其他切片互動，這又被稱為**slice isolation/orthogonality**
+## RAN and Core Network slicing
+Network Slicing是一種multi-tenancy虛擬化技術，其中網路功能從硬體和軟體中提取出來，並作為切片來提供給所謂的 `tenant` (租戶，房客)。物理基礎架構(基站、光纖、)會在多個租戶之間共享，一個租戶可能會收到一個或多個切片。 每個切片會分配特定的物理資源，並基於該物理資源上建立獨立的虛擬網路的[**實例化(instantiate)**](https://www.ibm.com/docs/zh-tw/spss-modeler/SaaS?topic=node-what-is-instantiation)，雖然租戶對自己的切片具有資源控制權，但卻無法與其他切片互動，這又被稱為**slice isolation/orthogonality**
 
 每個切片涵蓋RAN與Core的部分的特定網路功能，租戶可在選定基站上透過RAN切片實例化提供 CaaS (for private cellular networking) 給行動用戶。也可分配RAN切片給特定的服務、用戶、應用上 Ex. 分配切片給資源需求高的應用(AR/VR)
 ![](https://i.imgur.com/EguDz3w.png)
@@ -103,7 +98,7 @@ Network Slicing是一種multi-tenancy虛擬化技術，其中網路功能從硬�
 ### 網路切片優點:
 1. 每個切片都可以保留來處理具有不同安全要求的特定流量類別，並分配不同數量的資源，從而實現基礎設施級別的**服務差異化(Service differentiation)**
 2. 切片由軟體控制，可實現對網路切片的即時、根據需求的實例化、重新設定與撤銷以適應時間變化的流量需求並符合**SLAs(Service Level Aggrements)**
-3. 未充分利用資源以網路切片形式可出租給**MVNO(Mobile Virtual Network Operators)**，來實現資源的最大利用程度，並給予infra提供者新的營利商機
+3. 未充分利用資源以網路切片形式可出租給 `MVNO(Mobile Virtual Network Operators)`，來實現資源的最大利用程度，並給予infra提供者新的營利商機
 
 網路切片需要被動態編排、實例化、撤銷，並符合SLAs，並對於故障或中斷有強大的容忍性。
 
@@ -113,7 +108,7 @@ OSS可透過對網路切片的閉路控制與管理來，作為保證履行服�
 **BSSs(Business Support Systems)**
 BSS 將需要控制這個多樣化的環境並為每個切片實施動態計費和定價機制
 
-## 2.4 Multi-access edge computing
+## Multi-access edge computing
 5G高效能的訊號處理、傳輸機制、資料傳輸率仍無法滿足其吞吐量和對低延遲的要求，像是處理VR/AR等這種即時性高的應用，而**MEC**能解決這問題。
 
 MEC將架構的基本組件移到更靠近使用者的位置，通過建立在邊緣計算、內容緩存、NFV 和 SDN 的基礎上，MEC為 5G 應用的延遲和吞吐量需求提供了有效的解決方案。
@@ -121,25 +116,25 @@ MEC將架構的基本組件移到更靠近使用者的位置，通過建立在�
 1. 由於內容與資料在邊緣被處理，因此資料僅需偶而傳輸至CN，進而使傳輸延遲時間降低，也使CN負擔降低。
 2. 支持本地化服務供應，提供蜂窩網路專網，用於健康、環境監測、邊緣IOT運算...etc
 
-## 2.5 Intelligence in the network
+## Intelligence in the network
 `ML/AI`
 資料驅動、自動化的5G網路變成可能，可用不同的use case去訓練並最佳化RAN
 用例範圍從預測流量需求以擴展 CN 資源 到減少超可靠和低延遲通信 (URLLC) 中的延遲
 
 而實現這種方案的框架即為O-RAN，透過與gNB,eNB互動的RIC來監控資料、學習與執行閉路驅動。
 
-# 3.The radio access network
+# The radio access network
 > 這章描述用於部屬4G/5G的開源函式庫和框架，細節都可以在專案官網找到，故不贅述
 
-### 3.1 OpenAirInterface
+### OpenAirInterface
 https://openairinterface.org/
-### 3.2 srsLTE
+### srsLTE
 https://www.srslte.com/
-### 3.3 Radysis open source RAN contributions
+### Radysis open source RAN contributions
 https://www.radisys.com/solutions/openran
-# 4. Core Network
+# Core Network
 此章節闡述針對4、5G的主流開源方案 i.e. EPC, 5G Core
-## 4.1 Evolved Packet Core (EPC)
+## Evolved Packet Core (EPC)
 4G EPC的實現已在 2.1節討論過，通常包含
 
 ```[]
@@ -189,7 +184,7 @@ i.e. GRPS Tunneling Protocol User Plane(GTP-U)、GRPS Tunneling Protocol Control
 各開源專案對於EPC各介面實作情況
 ![](https://i.imgur.com/671qK43.png)
 
-## 4.2 5G Core
+## 5G Core
 ![](https://i.imgur.com/pZoXlQI.png)
 
 目前實踐5G核網的開源專案是**Free5GC**，是基於NextEPC(現在的Open5GS)去實作的，
@@ -209,7 +204,7 @@ i.e. GRPS Tunneling Protocol User Plane(GTP-U)、GRPS Tunneling Protocol Control
 - **N10/N11**: 分別連接SMF到UDM與AMF，負責處理訂閱及會話管理請求
 - **N12/N13**: 分別連接AUSF到AMF與UDM，它們啟用認證服務
 
-# 5. RAN and core frameworks
+# RAN and core frameworks
 
 這章描述了多個運用在RAN與核網的**開放框架**
 雖然第三、四章所講的軟體可以執行特定功能，但以下段落所介紹的框架更通用且範圍更廣，並與RAN、CN用於管理、控制與協調
@@ -217,7 +212,7 @@ i.e. GRPS Tunneling Protocol User Plane(GTP-U)、GRPS Tunneling Protocol Control
 *開放框架與架構整理*
 ![](https://i.imgur.com/qE16Kyt.png)
 
-## 5.1 O-RAN
+## O-RAN
 由O-RAN聯盟所提倡的針對vRAN的開放標準定義，並有兩大目標。
 第一個是藉由部屬在edge的智慧控制器來整合ML,AI技術
 第二個是對於開放與敏捷的定義，由RAN的不同元件之間定義明確的介面來實現，
@@ -304,12 +299,12 @@ CUs,DUs在edge
 > 目前最新發行版為[F-Release](https://wiki.o-ran-sc.org/display/REL/F+Release)
 
 而 **SD-RAN** 專案也正在領導、開發一項開發工作，目標是實現與O-RAN RIC介面整合的開源規、符合3GPP的RAN。
-## 5.2 Open Networking Foundation frameworks
+## Open Networking Foundation frameworks
 由多家電信營運商組成的聯盟，這些運營商提供用於部屬其網路開源程式以及框架
 包含: OMEC、SD-RAN、ONOS
 Components Projects 為了特定目的框架與軟體，而Exemplar包含了許多的 Components Projects。
 
-## 5.3 Other frameworks and projects
+## Other frameworks and projects
 除了O-RAN與ONF方案，許多開源社群也釋出了針對連通性、切片和核心的框架與專案
 
 ### 5G-EmPOWER
@@ -337,7 +332,7 @@ Components Projects 為了特定目的框架與軟體，而Exemplar包含了許�
 - Akraino REC
 - NVIDIA Aerial
 
-## 6. Open virtualization and management frameworks
+## Open virtualization and management frameworks
 除了RAN與CN軟體，虛擬化與管理框架也扮演重要的角色。
 >ETSI定義了一個NFV MANO框架(Management and Orchestration)應有的共同特徵，主要是為了編排(Orchestrating)網路功能(NF)
 
@@ -355,7 +350,7 @@ Components Projects 為了特定目的框架與軟體，而Exemplar包含了許�
 這些框架有著Northbound、Southbound API來與其它蜂窩網路組件互動
 本章將會討論虛擬化技術、VIMs，討論受歡迎的 MANO框架像是ONAP、OSM、Open Baton
 
-## 6.1 Virtualization techniques
+## Virtualization techniques
 NFV將部署在網路中的服務與其運行的硬體基礎設施分離，而應用程式都被包進與硬體分隔虛擬機中，NFV消除了對每個NF對特定硬體的需求，實現網路的可擴增性
 
 ![](https://i.imgur.com/QBfrv68.png)
@@ -408,7 +403,7 @@ VIMs的範例有: **OpenStack**、**Kubernetes**
     - Istio mesh service: 實作流量管理、策略執行、和遙測收集(telemetry collection)等任務
     - NSM:NSM透過Kubernetes API以支援進階使用案例並促進採用新的cloud native方案，並且它也能夠允許網路管理員執行無縫執行任務，像是請求網路介面、添加無線電服務等等
 
-## 6.2 The Open Network Automation Platform 
+## The Open Network Automation Platform 
 主要是由Linux Foundation開發的一套NFV框架，有許多支援的營運商。
 OAN被部屬在多個商業蜂窩網路之中，其廠商像是Ericsson,Nokia,Huawai,ZTE這些公司，他們提供ONAP支援並整合進他們的產品。
 
@@ -449,7 +444,7 @@ ONAP架構的主要components:
 
 The Frankfurt release (June 2020)與O-RAN整合
 
-## 6.3 Open Source NFV Management and Orchestration
+## Open Source NFV Management and Orchestration
 Open Source NFV Management and Orchestration(OSM)是由一堆網路營運商開發的一個MANO框架。
 與ONAP相似，也被開發及部屬在蜂窩網路之中。
 
@@ -463,15 +458,15 @@ Open Source NFV Management and Orchestration(OSM)是由一堆網路營運商開�
     ，來完成的(可看上圖)，透過自動化框架向不同建模組件公開northbound interface
     
 與ONAP一樣，OSM southbound norhtbound APIs可公開給外部服務，像是其他編排器和OSS/BSS等
-# 7. Software-defined radio support for open source radio units 
+# Software-defined radio support for open source radio units 
 SDR設備
 USRP、BladeRF、LimeSDR、Iris
-# 8. Testbeds
+# Testbeds
 介紹開源應用、框架、硬體元件用來實例化及軟體化5G網路的測試平台
 
 ![](https://i.imgur.com/QvOZnqY.png)
 
-# 9. Softwarized 5G: Limitations and road ahead
+# Softwarized 5G: Limitations and road ahead
 - Keep pace with the standards
 - Latency and scalability issues.
 - Limited contributions for RAN open source software
