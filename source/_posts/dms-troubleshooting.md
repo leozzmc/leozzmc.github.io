@@ -1,12 +1,18 @@
 ---
-title: 📑 DMS_Troubleshooting 筆記
+title: "\U0001F4D1 DMS_Troubleshooting 筆記"
 description: 2021年在面試AWS時做的筆記，主要是整理各種Troubleshooting知識以及原理
 toc: true
-tags: ['Linux','Network','Web']
-categories: ['學習筆記','Troubleshooting']
-date: 2021-11-13T18:12:17+08:00
-top_img: https://i.imgur.com/b3n6aNl.jpg
+tags:
+  - Linux
+  - Network
+  - Web
+categories:
+  - 學習筆記
+  - Troubleshooting
+top_img: 'https://i.imgur.com/b3n6aNl.jpg'
 aside: true
+abbrlink: 5728fae1
+date: 2021-11-13 10:12:17
 ---
 
 ## Network Debug

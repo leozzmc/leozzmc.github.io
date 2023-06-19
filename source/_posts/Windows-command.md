@@ -1,12 +1,16 @@
 ---
-title: 💻 Windows 常見指令
+title: "\U0001F4BB Windows 常見指令"
 description: 整理Windows命令列(cmd or powershell)常見指令
 toc: true
-tags: ['Windows','PowerShell']
-categories: [指令/工具用法整理]
-date: 2022-12-01T17:47:26+08:00
-top_img: https://i.imgur.com/rtjtBNB.jpg
+tags:
+  - Windows
+  - PowerShell
+categories:
+  - 指令/工具用法整理
+top_img: 'https://i.imgur.com/rtjtBNB.jpg'
 aside: true
+abbrlink: 5b6eeeb3
+date: 2022-12-01 09:47:26
 ---
 
 ## 蒐集本機資訊

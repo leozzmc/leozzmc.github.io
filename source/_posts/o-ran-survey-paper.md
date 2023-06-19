@@ -1,11 +1,15 @@
 ---
-title: "🗂️論文賞析:O-RAN 以及虛擬化 5G 網路"
+title: "\U0001F5C2️論文賞析:O-RAN 以及虛擬化 5G 網路"
 description: O-RAN 論文導讀
 toc: true
-tags: ['O-RAN','5G']
-categories: ['論文導讀']
-date: 2021-08-11T09:17:57+08:00
+tags:
+  - O-RAN
+  - 5G
+categories:
+  - 論文導讀
 aside: true
+abbrlink: a1cfeb54
+date: 2021-08-11 01:17:57
 ---
 
 {% note primary no-icon%}

@@ -2,11 +2,14 @@
 title: 實習筆記-滲透測試課程
 description: 實習時的滲透測試課程也稍微紀錄一下
 toc: true
-tags: ['Penetration Testing']
-categories: ['學習筆記']
-date: 2022-01-10T11:07:06+08:00
-top_img: https://i.imgur.com/zuXQ4RA.jpg
+tags:
+  - Penetration Testing
+categories:
+  - 學習筆記
+top_img: 'https://i.imgur.com/zuXQ4RA.jpg'
 aside: true
+abbrlink: 8ec27a58
+date: 2022-01-10 03:07:06
 ---
 
 課程內容:

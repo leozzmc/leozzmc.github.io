@@ -1,11 +1,16 @@
 ---
 title: 2019通訊系畢業專題
-description:  紀錄2019年度製作系上畢業專題的過程
+description: 紀錄2019年度製作系上畢業專題的過程
 toc: true
-tags: ['Arduino','IOT','NodeMCU']
-categories: [實作紀錄]
-date: 2019-07-05T22:50:33+08:00
+tags:
+  - Arduino
+  - IOT
+  - NodeMCU
+categories:
+  - 實作紀錄
 aside: true
+abbrlink: 4b76a41f
+date: 2019-07-05 14:50:33
 ---
 
 ![](https://i.imgur.com/O3Xs5VC.jpg)

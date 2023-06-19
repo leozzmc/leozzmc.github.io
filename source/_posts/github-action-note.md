@@ -1,11 +1,15 @@
 ---
-title: 📑Github Action 學習筆記
+title: "\U0001F4D1Github Action 學習筆記"
 description: 學習 GitHub Actions CI/CD 平台的使用以及其yaml檔撰寫的採坑紀錄
 toc: true
-tags: ['CI/CD','GitHub']
-categories: ['學習筆記']
-date: 2022-11-10T13:27:45+08:00
+tags:
+  - CI/CD
+  - GitHub
+categories:
+  - 學習筆記
 aside: true
+abbrlink: 24be9e02
+date: 2022-11-10 05:27:45
 ---
 
 ![](https://i.imgur.com/zn0lCzN.png)

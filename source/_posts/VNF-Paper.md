@@ -1,12 +1,16 @@
 ---
-title: "VNF Deployment and Flow Scheduling in Geo-distributed Data Centers"
+title: VNF Deployment and Flow Scheduling in Geo-distributed Data Centers
 description: 論文導讀_了解在不同地理位置資料中心之間的VNF的部署以及網路流量問題
 toc: true
-tags: ['VNF','Network']
-categories: ['論文導讀']
-date: 2021-06-25T16:51:54+08:00
-top_img: https://i.imgur.com/YfR1XMZ.jpg
+tags:
+  - VNF
+  - Network
+categories:
+  - 論文導讀
+top_img: 'https://i.imgur.com/YfR1XMZ.jpg'
 aside: true
+abbrlink: 85fe9be3
+date: 2021-06-25 08:51:54
 ---
 
 

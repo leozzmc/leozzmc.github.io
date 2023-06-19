@@ -1,11 +1,14 @@
 ---
-title: 🧪透過 Winsock 依序堆疊出一個HTTP Server
+title: "\U0001F9EA透過 Winsock 依序堆疊出一個HTTP Server"
 description: 實做看看在Windows環境下透過Winsocks來建立網路層的Socket並且去進行應用層的協定解析
 toc: true
-tags: ['網路程式']
-categories: [學習筆記]
-date: 2023-01-23T09:46:35+08:00
+tags:
+  - 網路程式
+categories:
+  - 學習筆記
 aside: true
+abbrlink: 34f1f1b8
+date: 2023-01-23 01:46:35
 ---
 
 ![](https://i.imgur.com/dcWHOfV.png)

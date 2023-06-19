@@ -1,13 +1,20 @@
 ---
-title: "Security policies definition and enforcement utilizing policy control function framework in 5G"
+title: >-
+  Security policies definition and enforcement utilizing policy control function
+  framework in 5G
 description: 論文導讀_如何透過5G的PCF網路功能框架來實現安全策略定義和執行
 toc: true
-tags: ['5G','Security Policy','3GPP']
-categories: ['論文導讀']
-date: 2021-09-01T13:02:34+08:00
-featuredVideo:
-top_img: https://i.imgur.com/FXfawHh.jpg
+tags:
+  - 5G
+  - Security Policy
+  - 3GPP
+categories:
+  - 論文導讀
+top_img: 'https://i.imgur.com/FXfawHh.jpg'
 aside: true
+abbrlink: de3933f9
+date: 2021-09-01 05:02:34
+featuredVideo:
 ---
 
 <style>

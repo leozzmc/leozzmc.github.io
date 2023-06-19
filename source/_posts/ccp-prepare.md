@@ -1,11 +1,15 @@
 ---
-title: 🔋 AWS Certified Cloud Practitioner 證照準備筆記
+title: "\U0001F50B AWS Certified Cloud Practitioner 證照準備筆記"
 description: 考取AWS Certified Cloud Practitioner 證照前所做的筆記
 toc: true
-tags: ['AWS', 'Certificate']
-categories: [學習筆記]
-date: 2022-10-03T09:59:08+08:00
+tags:
+  - AWS
+  - Certificate
+categories:
+  - 學習筆記
 aside: true
+abbrlink: e8acb5ee
+date: 2022-10-03 01:59:08
 ---
 
 ![](https://i.imgur.com/x1Sq6so.png)
