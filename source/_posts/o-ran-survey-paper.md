@@ -10,18 +10,15 @@ aside: true
 
 {% note primary no-icon%}
 這是篇survey paper
-Title: "Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead"
-College: Institute for the Wireless Internet of Things, Northeastern University
-Authors: Leonardo Bonati,Michele Polese,Salvatore D’Oro,Stefano Basagni,Tommaso Melodia
-Citation: 24
+**Title**: "Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead"
+**College**: Institute for the Wireless Internet of Things, Northeastern University
+**Authors**: Leonardo Bonati,Michele Polese,Salvatore D’Oro,Stefano Basagni,Tommaso Melodia
+**Citation**: 24
 {% endnote %}
 
 
 # Abstract
-5G很多好處
-Software-defined cellular networks 也帶來很多變化
-目前也許多5G開源專案，本篇會介紹非常多當前的開源5G專案以及其內部細節
-並介紹其框架跟相應的硬體環境與Testbeds
+5G很多好處，Software-defined cellular networks 也帶來很多變化，目前也許多5G開源專案，本篇會介紹非常多當前的開源5G專案以及其內部細節，並介紹其框架跟相應的硬體環境與Testbeds。
 
 # Introduction
 
