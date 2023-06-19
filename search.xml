@@ -208,6 +208,33 @@
     
     
     <entry>
+      <title>🧪筆記-5G開源資源整理</title>
+      <link href="/posts/dd26b396.html"/>
+      <url>/posts/dd26b396.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="架構"><a href="#架構" class="headerlink" title="架構:"></a>架構:</h2><p><img src="https://i.imgur.com/XyqAjzZ.png"></p><p><img src="https://i.imgur.com/3DQV6fW.png"></p><h2 id="開源專案"><a href="#開源專案" class="headerlink" title="開源專案"></a>開源專案</h2><ul><li>Open5GS - Open5GS contains a series of software components and network functions that implement the 4G&#x2F; 5G NSA and 5G SA core functions.<br><a href="https://github.com/open5gs/open5gs">https://github.com/open5gs/open5gs</a></li><li>open5gs + oai config :<a href="https://github.com/s5uishida/open5gs_epc_oai_sample_config">https://github.com/s5uishida/open5gs_epc_oai_sample_config</a><br>open5gs 有實作4G EPC 與 5G 5GC，因此以組網方案來說，option3、option7、option4可能都是可行的 </li><li>dockerlized Open5GS<br><a href="https://github.com/herlesupreeth/docker_open5gs">https://github.com/herlesupreeth/docker_open5gs</a></li><li>Softwarization of 5G System<br><a href="https://github.com/LABORA-INF-UFG/NetSoft2020-Tutorial4">https://github.com/LABORA-INF-UFG/NetSoft2020-Tutorial4</a></li><li>free5GC - Open Source 5G core network<br><a href="https://github.com/free5gc/free5gc/wiki">https://github.com/free5gc/free5gc/wiki</a></li><li>C-RAN 介紹<br><a href="https://www.ufispace.com/company/blog/what-is-cran-the-evolution-from-dran-to-cran">https://www.ufispace.com/company/blog/what-is-cran-the-evolution-from-dran-to-cran</a></li><li>UERANSIM  - is the open-source state-of-the-art 5G UE and RAN (gNodeB)<br><a href="https://github.com/aligungr/UERANSIM">https://github.com/aligungr/UERANSIM</a><br>好像有實作檔案，但是好像是用來測核網的，而且也還沒有符合O-RAN架構</li><li>Awesome 5G - 列出各種5G開源專案<br><a href="https://github.com/calee0219/awesome-5g">https://github.com/calee0219/awesome-5g</a></li><li>free5GRAN - 開源5G RAN架構 (以SA作為組網架構)<br><a href="https://github.com/free5G/free5GRAN">https://github.com/free5G/free5GRAN</a></li><li>O-RAN OSC<br><a href="https://github.com/o-ran-sc?language=c">https://github.com/o-ran-sc?language=c</a></li><li>OAI -Open Air Interface 5G<br><a href="https://gitlab.eurecom.fr/oai/openairinterface5g/-/wikis/home">https://gitlab.eurecom.fr/oai/openairinterface5g/-/wikis/home</a></li><li>OAI 5G NSA 搭建教學: <a href="https://blog.csdn.net/BUPTOctopus/article/details/107717942">https://blog.csdn.net/BUPTOctopus/article/details/107717942</a></li></ul><h2 id="O-RAN-Components"><a href="#O-RAN-Components" class="headerlink" title="O-RAN Components"></a>O-RAN Components</h2><p>OSC 釋出各component 下載<br><a href="https://wiki.o-ran-sc.org/pages/viewpage.action?pageId=20876303">https://wiki.o-ran-sc.org/pages/viewpage.action?pageId=20876303</a></p><p>O-RAM Developer Wiki - 裡面有部屬教學<br><a href="https://wiki.o-ran-sc.org/display/ORAN/Project+Developer+Wiki">https://wiki.o-ran-sc.org/display/ORAN/Project+Developer+Wiki</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 資源整理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 5G </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>🗂️論文賞析:O-RAN 以及虛擬化 5G 網路</title>
       <link href="/posts/a1cfeb54.html"/>
       <url>/posts/a1cfeb54.html</url>
@@ -235,6 +262,60 @@
     
     
     <entry>
+      <title>🧪筆記- 5G 核心網路-移動性管理(Mobile Management)</title>
+      <link href="/posts/a05f1769.html"/>
+      <url>/posts/a05f1769.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="用戶標誌與位置標誌"><a href="#用戶標誌與位置標誌" class="headerlink" title="用戶標誌與位置標誌"></a>用戶標誌與位置標誌</h2><p>用戶標誌分為永久標誌與非永久標誌兩種:</p><ul><li><p><strong>永久標誌</strong><br>  一旦用戶綁定便不會修改，具備一定程度的隱私性</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. SUPI</span><br><span class="line">2. 通用公共訂閱標誌(GPSI)</span><br><span class="line">3. 永久設備標誌(PEI)</span><br></pre></td></tr></table></figure></li><li><p><strong>非永久標誌</strong><br>  用於臨時標示用戶，3GPP會不定期更標示符號</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 5G 全球臨時統一標示符(5G-GUTI)</span><br><span class="line">2. SUCI</span><br></pre></td></tr></table></figure><p>位置標誌包含<strong>小區位置跟蹤標誌(TAI)<strong>、</strong>跟蹤區編碼(TAC)</strong></p></li></ul><h3 id="SUPI"><a href="#SUPI" class="headerlink" title="SUPI"></a>SUPI</h3><p>SUPI為永久標誌，5G系統中每個簽約的用戶都會被分配到一個5G SUPI，用於<strong>在3GPP系統中</strong>標示該簽約用戶<br>SUPI標誌存於<strong>UDM&#x2F;UDR(一種NF)</strong> 之中，功能類似4G的IMSI。<br>SUPI可包含IMSI訊息或是用於私有網路的特定網路標誌(network-specific identifier)</p><p>IMSI格式:</p><table><thead><tr><th>封包</th><th>MCC</th><th>MNC</th><th>MSIN</th></tr></thead><tbody><tr><td>長度</td><td>3bit</td><td>2~3bit</td><td>&lt;&#x3D;10bit</td></tr><tr><td></td><td>PLMN</td><td>PLMN</td><td></td></tr></tbody></table><ul><li>In 漫遊場景: SUPI需要攜帶所歸屬網路的地址資訊:MNC、MCC</li><li>若與 EPC Network互通: SUPI總是基於IMSI</li></ul><h3 id="通用公共訂閱標誌-GPSI"><a href="#通用公共訂閱標誌-GPSI" class="headerlink" title="通用公共訂閱標誌 (GPSI)"></a>通用公共訂閱標誌 (GPSI)</h3><p>GPSI為永久標誌，<strong>用於在非3GPP網路之中來標示一個3GPP的簽約</strong><br>GPSI與3GPP的對應關係會儲存在簽約資料中；GPSI在系統內部與外部都可作為公共標誌。<br>GPSI可以是<strong>MSISDN</strong>或其他外部標誌</p><h3 id="永久設備標誌-PEI"><a href="#永久設備標誌-PEI" class="headerlink" title="永久設備標誌(PEI)"></a>永久設備標誌(PEI)</h3><p>PEI為永久標誌，<strong>針對存取5G網路的3GPP UE的標誌</strong><br>不同類型的UE和不同使用場景，PEI可能會有不同格式<br>UE可在發送PEI的同時，攜帶對應 該PEI所使用格式的指令訊息<br>若UE支援至少一種3GPP存取技術，則UE的PEI系需使用IMEI或IMEISV格式</p><h3 id="5G-全球臨時統一標示符-5G-GUTI"><a href="#5G-全球臨時統一標示符-5G-GUTI" class="headerlink" title="5G 全球臨時統一標示符(5G-GUTI)"></a>5G 全球臨時統一標示符(5G-GUTI)</h3><p>5G-GUTI是一個非永久標誌，由AMF為UE臨時分配(於<strong>註冊流程</strong>時分配)的，用於標示該UE<br>使用不同存取方式(3GPP,non-3GPP)，使用相同的5G-GUTI</p><ul><li><p>5G-GUTI的結構:</p>   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;5G-GUTI&gt;:=&lt;GUAMI&gt;&lt;5G-TMSI&gt; (:= 為 &quot; 定義為 &quot; 的符號)</span><br><span class="line">&lt;GUAMI&gt;:用於標示一個或多個AMF</span><br><span class="line">&lt;5G-TMSI&gt;:用於識別唯一的UE</span><br></pre></td></tr></table></figure></li><li><p>GUAMI的結構:</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;GUAMI&gt;:= &lt;MCC&gt;&lt;MNC&gt;&lt;AMF Region ID&gt;&lt;AMF Set ID&gt;&lt;AMF Pointer&gt;</span><br><span class="line"></span><br><span class="line">&lt;AMF Region ID&gt;: 用於標示區域</span><br><span class="line">&lt;AMF Set ID&gt;: 在AMF區域中唯一標示一組AMF</span><br><span class="line">&lt;AMF Pointer&gt;: 在AMF組中唯一標示一個AMF </span><br></pre></td></tr></table></figure></li><li><p>5G-S-TMSI是GUTI的縮短形式，用於無線signalling(尋呼或業務請求流程)提升傳輸效率</p></li><li><p>5G-S-IMSI-結構:</p>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;5G-S-TMSI&gt;:= &lt;AMF Set ID&gt;&lt;AMF Pointer&gt;&lt;5G-TMSI&gt;</span><br></pre></td></tr></table></figure></li><li><p>5G-TMSI的10位最低有效位元被NG-RAN用來決定UE的呼叫時機</p><ul><li>所以該10位最低有效位元應平均分布，使不同UE的尋呼時機均勻分布</li></ul></li></ul><table><thead><tr><th>MCC</th><th>MNC</th><th>AMF Region ID</th><th>AMF Set ID</th><th>AMF Pointer</th><th>5G-TMSI</th></tr></thead><tbody><tr><td>12bit</td><td>8&#x2F;12bit</td><td>16bit</td><td>4bit</td><td>4bit</td><td>32bit</td></tr><tr><td>PLMN</td><td>PLMN</td><td>AMF ID</td><td>AMF ID</td><td>AMF ID</td><td></td></tr><tr><td>GUAMI</td><td>GUAMI</td><td>GUAMI</td><td>GUAMI</td><td>GUAMI</td><td></td></tr><tr><td></td><td></td><td></td><td>5G-S-TMSI</td><td>5G-S-TMSI</td><td>5G-S-TMSI</td></tr><tr><td><strong>5G-GUTI</strong></td><td><strong>5G-GUTI</strong></td><td><strong>5G-GUTI</strong></td><td><strong>5G-GUTI</strong></td><td><strong>5G-GUTI</strong></td><td><strong>5G-GUTI</strong></td></tr></tbody></table><h3 id="SUCI"><a href="#SUCI" class="headerlink" title="SUCI"></a>SUCI</h3><p>SUCI是非永久性標誌，基於 SUPI(Subscription Permanent Identifier) 加密形式構成用於保護隱私的標誌<br>由於每個簽約用戶的SUPI是永久且唯一的，直接傳輸會有隱私風險</p><p>UE(USIM或ME)可以根據<strong>ECIES</strong>,甚至是<strong>Null-Scheme</strong>生成SUCI<br>當AMF收到SUCI後，觸發授權(Authentication)流程，之後在UDM&#x2F;SIDF中使用解密演算法(SIDF)將收到的SUCI解碼成SUPI，以利完成後續授權工作</p><h3 id="TAI-amp-TAC"><a href="#TAI-amp-TAC" class="headerlink" title="TAI&amp;TAC"></a>TAI&amp;TAC</h3><p>皆為位置性標誌<br>TAI: 跟蹤區標誌<br>TAC: 跟蹤區編碼</p><ul><li>格式:<table><thead><tr><th>MCC</th><th>MNC</th><th>TAC</th></tr></thead><tbody><tr><td>12bit</td><td>8&#x2F;12bit</td><td>20bit</td></tr><tr><td>PLMN ID</td><td>PLMN ID</td><td>TAC</td></tr><tr><td><strong>TAI</strong></td><td><strong>TAI</strong></td><td><strong>TAI</strong></td></tr></tbody></table></li></ul><h2 id="安全架構與流程"><a href="#安全架構與流程" class="headerlink" title="安全架構與流程"></a>安全架構與流程</h2><p>UE在RAN或在不同網路間移動時，需要與網路進行相互認證，確保雙方是可信賴的<br>UE與網路之間的相互認證需要<strong>5G安全架構</strong>的支援<br>5G安全架構應包含:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 緩解和降低攻擊</span><br><span class="line">- 支援驗證和授權機制</span><br><span class="line">- 支持密鑰相關功能</span><br></pre></td></tr></table></figure><p><img src="https://i.imgur.com/mY2DamY.png"></p><h2 id="安全架構特點"><a href="#安全架構特點" class="headerlink" title="安全架構特點"></a>安全架構特點</h2><ul><li>與存取方式(3GPP、non3GPP)無關的安全架構，使用統一的驗證方法與密鑰架構</li><li>增強安全(4G → IMSI → 不安全 | 5G → SUCI&#x2F;SUPI → 安全)</li><li>差異化認證: 5G支援USIM,憑證,帳密等多種認證方式</li><li>服務化架構和開放介面安全</li></ul><p>安全架構所涉及的NF，包含: ARPF,AUSF,SEAF,SIDF</p><ul><li>ARPF:<ul><li>與UDM一起部屬</li><li>負責儲存根密鑰 $Ki$ 和相關的簽約資料</li><li>計算5G授權向量</li></ul></li><li>AUSF:<ul><li>提供<strong>EAP認證伺服器</strong>的功能，進行EAP認證以推導出<strong>錨點密鑰</strong></li></ul></li><li>SEAF:<ul><li>與AMF一起部屬</li><li>負責根據錨點密鑰來推導出下層的NAS與AS密鑰，5G AKA 完成授權結果比較功能</li></ul></li><li>SIDF:<ul><li>與UDM一起部屬</li><li>負責將SUCI解碼成SUPI</li></ul></li></ul><h2 id="安全流程"><a href="#安全流程" class="headerlink" title="安全流程"></a>安全流程</h2><p><img src="https://i.imgur.com/GuQNm2p.png"></p><ul><li>由UE發起Request，發送SUCI或5G-GUTI訊息給SEAF</li><li>SEAF將SUCI或SUPI(若5G-GUTI有效)發送給來源網路(歸屬地網路)的AUSF</li><li>AUSF進行認證完後，將訊息發送給來源網路的 UDM</li><li>UDM收到SUCI，將其解碼為SUPI，並通過用戶資料，選擇相應的認證演算法，透過後續流程完成身分認證</li></ul><p>目前5G支援的認證演算法: <strong>EAP-AKA’</strong> 和 <strong>5G AKA</strong> -3GPP TS 33.501</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://cat.chriz.hk/2019/12/5g-security-architecture.html">https://cat.chriz.hk/2019/12/5g-security-architecture.html</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 學習筆記 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 5G </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>🧪筆記- 5G 網路功能介面與協定堆疊</title>
+      <link href="/posts/3d68fc76.html"/>
+      <url>/posts/3d68fc76.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="N2介面-控制介面與協定堆疊"><a href="#N2介面-控制介面與協定堆疊" class="headerlink" title="N2介面(控制介面與協定堆疊)"></a>N2介面(控制介面與協定堆疊)</h2><p>$5G Access,Network \stackrel{N2}{\longleftrightarrow} 5GC(AMF)$</p><ul><li><strong>管理流程:</strong> 不與特定UE相關，像是設定或重置N2介面</li><li><strong>與單一UE相關的流程:</strong> NAS傳輸流程、UE上下文管理、PDU session資源相關流程、切換管理..etc</li><li>採用 <strong>NG-AP協定</strong> (不論是哪種Access Network: 3GPP RAN 或 N3IWF non-3GPP )，屬於一種應用層協定</li><li>AMF對於一個UE有唯一的N2 終結點</li><li>由於SMF與AMF是解耦的，所以NG-AP支援AMF在5G RAN與5GC之間傳遞<strong>N2 SM訊息</strong></li></ul><p><img src="https://i.imgur.com/TP3cmJb.png"></p><ul><li>SCTP保證Acces Network與5GC之間的傳輸</li></ul><h2 id="UE與5GC之間的控制面介面與協定堆疊"><a href="#UE與5GC之間的控制面介面與協定堆疊" class="headerlink" title="UE與5GC之間的控制面介面與協定堆疊"></a>UE與5GC之間的控制面介面與協定堆疊</h2><p>針對每種UE使用的連接方式(3GPP、non-3GPP)，UE皆會有一個 <strong>N1 NAS連接</strong>，且會有唯一的N1終結點為位於AMF。</p><blockquote><p><strong>非接入層(NAS, Non-access stratum)</strong><br>原先存在於 3G&#x2F;UMTS中的協定層，是用戶設備與核網之間的功能層<br>具備以下功能:</p><blockquote><p>移動性管理<br>呼叫控制<br>會話管理<br>身分管理<br><a href="https://hackmd.io/M4SyLAOpRam7lZVLuujOHw">NAS 參考資料</a></p></blockquote></blockquote><p>N1 NAS可用於:</p><ul><li><strong>UE註冊管理</strong></li><li><strong>連接管理</strong></li><li><strong>會話管理</strong></li></ul><p>N1介面之中的NAS協議分成: NAS-MM、NAS-SM</p><h2 id="NAS-MM"><a href="#NAS-MM" class="headerlink" title="NAS-MM"></a>NAS-MM</h2><p>用於UE與AMF以外的NF進行互動</p><ul><li>會話管理消息</li><li>UE 策略</li><li>位置服務</li></ul><p><em>NAS傳輸會話管理訊息、短訊、UE策略、位置服務等協議流程</em><br><img src="https://i.imgur.com/iPUTyxa.gif"></p><h3 id="特點"><a href="#特點" class="headerlink" title="特點"></a>特點</h3><p>處理UE與AMF之間的NAS流程，包含:</p><ul><li>處理UE的註冊管理(RM)和連接管理(CM): 在UE與AMF之間提供安全的訊息連結 、存取控制</li><li>適用於其他類型的NAS訊息(NAS-SM、SMS等)，可與RM&#x2F;CM NAS 訊息同時傳輸</li><li>針對不同存取方式(3GPP, non-3GPP)也都採用相同的NAS協定</li><li>UE針對不同種存取方式都會有一個N1 NAS連接</li></ul><p><img src="https://i.imgur.com/sdjzoKJ.gif"></p><h2 id="NAS-SM"><a href="#NAS-SM" class="headerlink" title="NAS-SM"></a>NAS-SM</h2><p>支援處理UE與SMF之間的<strong>會話管理</strong></p><ul><li>PDU會話用戶面的建立、修改、釋放</li><li>SM訊息的建立、處理都是在NAS-SM之中完成的（內容不會被AMF解析）</li><li>NAS-MM層會負責UE-AMF之間SM訊息的收發，並提供安全保護(<strong>保護訊息的完整性</strong>)</li></ul><p><img src="https://i.imgur.com/qLGM1Hk.gif"></p><h2 id="5GC-NF之間的控制面介面與協定堆疊"><a href="#5GC-NF之間的控制面介面與協定堆疊" class="headerlink" title="5GC NF之間的控制面介面與協定堆疊"></a>5GC NF之間的控制面介面與協定堆疊</h2><p>5G 核網中的NF，<strong>NF Service Producer</strong> 會透過服務化界面為 <strong>NF Service Consumer</strong> 提供服務</p><p>5G核網中將以下控制介面定義為服務化界面:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- Nsmf</span><br><span class="line">- Nudm</span><br><span class="line">- Nnrf</span><br><span class="line">- Nnssf</span><br><span class="line">- Nausf</span><br><span class="line">- Nnef</span><br><span class="line">- Nsmsf</span><br><span class="line">- Nudr</span><br><span class="line">- Npcf</span><br><span class="line">- N5g-eir</span><br><span class="line">- Nlmf</span><br></pre></td></tr></table></figure><p>這些服務化介面以<strong>HTTP 2.0</strong>與<strong>JSON</strong>作為應用層協定；3GPP所有網路功能都必須支持<strong>TLS</strong><br>若PLMN沒有提供其他網路安全方案，則TLS就必須被使用<br>而未來可能會以 <strong><a href="https://zh.wikipedia.org/wiki/QUIC">QUIC&#x2F;UDP</a></strong> 作為優化的方案</p><p><img src="https://i.imgur.com/QWxhGJN.png"></p><h2 id="N4介面與協定堆疊"><a href="#N4介面與協定堆疊" class="headerlink" title="N4介面與協定堆疊"></a>N4介面與協定堆疊</h2><p>$SMF\stackrel{N4}{\longleftrightarrow}UPF$</p><p>N4介於SMF與UPF之間，具備控制面與用戶面功能<br>N4定義了以下流程:</p><p><em>控制面流程</em></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- N4會話管理:</span><br><span class="line">用於SMF建立、更新、刪除UPF上的N4會話上下文(Session Context)</span><br><span class="line">- N4報告流程:</span><br><span class="line">用於UPF向SMF事件(EX.流量使用情況)</span><br><span class="line">- N4節點級別流程:</span><br><span class="line">SMF、UPF之間N4節點的建立、更新、連結、釋放；UPF會向SMF報告N4節點級別的事件</span><br><span class="line">- SMF暫停計費流程:</span><br></pre></td></tr></table></figure><p><em>用戶面流程</em><br>在SMF、UPF之間轉發流量:<br>當用戶處於<strong>CM-IDLE</strong>狀態時，UPF可轉發downlink 資料給SMF，SMF再決定呼叫策略</p><table><thead><tr><th>PFCP</th><th>$\longleftrightarrow$</th><th>PFCP</th></tr></thead><tbody><tr><td>UDF</td><td>$\longleftrightarrow$</td><td>UPF</td></tr><tr><td>IP</td><td>$\longleftrightarrow$</td><td>IP</td></tr><tr><td>L2</td><td>$\longleftrightarrow$</td><td>L2</td></tr><tr><td>L1</td><td>$\longleftrightarrow$</td><td>L1</td></tr><tr><td>Control Plane $\longleftrightarrow$ User Plane</td><td></td><td></td></tr></tbody></table><h2 id="用戶面介面與其協定堆疊"><a href="#用戶面介面與其協定堆疊" class="headerlink" title="用戶面介面與其協定堆疊"></a>用戶面介面與其協定堆疊</h2><p>$Access,Network\stackrel{N3}{\longleftrightarrow}UPF$<br>$UPF \stackrel{N9}{\longleftrightarrow}UPF$<br>N3與N9介面分別在5G RAN 與 UPF之間 以及UPF與UPF之間傳遞數據</p><p><img src="https://i.imgur.com/p8GoGVl.gif"></p><ul><li><strong><a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E8%AE%AE%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83">PDU(Protcol Data Unit) 層</a></strong>: 負責在UE與Data Network之間的PDU Session傳遞PDU</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 學習筆記 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 5G </tag>
+            
+            <tag> Network </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>VNF Deployment and Flow Scheduling in Geo-distributed Data Centers</title>
       <link href="/posts/85fe9be3.html"/>
       <url>/posts/85fe9be3.html</url>
@@ -251,9 +332,9 @@
       
         <tags>
             
-            <tag> VNF </tag>
-            
             <tag> Network </tag>
+            
+            <tag> VNF </tag>
             
         </tags>
       
