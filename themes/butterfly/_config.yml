@@ -47,20 +47,20 @@ favicon: /img/favicon.png
 
 # Avatar (頭像)
 avatar:
-  img: https://i.imgur.com/tZP7WQj.png
+  img: /img/1661144706717.jpg
   effect: false
 
 # Disable all banner image
 disable_top_img: false
 
 # The banner image of home page
-index_img: https://i.imgur.com/xM7Pl8v.png
+index_img: /img/PXL_20230528_010606799.jpg
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: https://i.imgur.com/xM7Pl8v.png
+default_top_img: /img/PXL_20230528_010606799.jpg
 
 # The banner image of archive page
-archive_img: https://i.imgur.com/xM7Pl8v.png
+archive_img: /img/PXL_20230528_010606799.jpg
 
 # If the banner of tag page not setting, it will show the top_img
 # note: tag page, not tags page (子標籤頁面的 top_img)
