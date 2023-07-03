@@ -17,7 +17,7 @@ Q: 一旦malloc被呼叫後，系統是如何做到記憶體分配的？而且�
 隨著這個問題我們可以深入挖掘它的原理
 
 ## 如何進行記憶體分配
-作業系統中的記憶體分配功能主要是靠記憶體分配器（Memory Alligator) 來實現，在早期glibc預設的記憶體分配器是 `dlmalloc`
+作業系統中的記憶體分配功能主要是靠記憶體分配器(Memory Allocator) 來實現，在早期glibc預設的記憶體分配器是 `dlmalloc`
 
 但`dlmalloc` 有個問題，一旦有多個Thread呼叫Malloc，只能有一個Thread可以進入Critical Section。而改進這個問題的就是從`dlmalloc`中fork出來的`ptmalloc2`，一旦多個Thread呼叫malloc，則會立即分配記憶體給個別Thread。
 
