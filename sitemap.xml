@@ -215,6 +215,27 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/tags/VNF/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/AWS/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/Certificate/</loc>
+    <lastmod>2023-07-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/tags/Windows/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -223,27 +244,6 @@
   
   <url>
     <loc>https://leozzmc.github.io/tags/PowerShell/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/VNF/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
-    <lastmod>2023-07-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -264,14 +264,14 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/tags/AWS/</loc>
+    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/tags/Certificate/</loc>
+    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -329,7 +329,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/</loc>
+    <loc>https://leozzmc.github.io/categories/%E8%B3%87%E6%BA%90%E6%95%B4%E7%90%86/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -343,7 +343,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/categories/%E8%B3%87%E6%BA%90%E6%95%B4%E7%90%86/</loc>
+    <loc>https://leozzmc.github.io/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/</loc>
     <lastmod>2023-07-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
