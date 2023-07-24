@@ -15,12 +15,18 @@ description:
 
 一樣是解 case 碰到的問題，但我也沒真的在 Lambda 設定過重試 (Retry)，這次就秉持著實驗精神來在自己的環境實驗看看。
 
+Lambda 當中的錯誤重試通常是用於當**非同步調用(Asynchronous Invocations)** 失敗後重新發送調用請求的行為。針對非同步調用，Lambda 會將事件置放在 Queue 當中，並傳回成功回應，其中不包含其他資訊。單獨的程序會從 Queue 讀取事件，並將事件傳送到您的函數
+
+![Imgur](https://i.imgur.com/wn1vCQu.png)
+
+> 圖片用 ZenUML 建立的
+> https://app.zenuml.com/
+> https://mermaid.js.org/syntax/zenuml.html
 
 ## 建立 Lambda
 
 這邊建立 Lambda部分很簡單，就建立一個名叫 **TestInvocations** 的 function，使用的 Runtime 是 `NodeJS.14.x`
 
-![Imgur](https://i.imgur.com/SeXKrS9.jpg)
 
 ## 修改 Lambda Handler 程式
 
