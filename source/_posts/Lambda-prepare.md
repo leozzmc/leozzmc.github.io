@@ -11,7 +11,7 @@ aside: true
 abbrlink: '30Days_AWS_Serverless_challenge'
 date: 2023-09-03 14:21:38
 description:
-cover:
+cover: /img/aws.jpg
 ---
 
 ## 前言
