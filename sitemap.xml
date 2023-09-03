@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://leozzmc.github.io/posts/30Days_AWS_Serverless_challenge.html</loc>
+    
+    <lastmod>2023-09-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/posts/5db1b7e9.html</loc>
     
     <lastmod>2023-08-06</lastmod>
@@ -281,6 +290,13 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/tags/%E7%B6%B2%E8%B7%AF%E7%A8%8B%E5%BC%8F/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/tags/Reverse/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -316,6 +332,20 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/tags/VNF/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/AWS/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/tags/Windows/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -330,70 +360,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/tags/AWS/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/Connect/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/%E7%B6%B2%E8%B7%AF%E7%A8%8B%E5%BC%8F/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/VNF/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://leozzmc.github.io/tags/Certificate/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/O-RAN/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/Security-Policy/</loc>
-    <lastmod>2023-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/3GPP/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -414,7 +381,49 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/tags/O-RAN/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/tags/Penetration-Testing/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/Connect/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/Security-Policy/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/3GPP/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -444,14 +453,21 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/</loc>
+    <loc>https://leozzmc.github.io/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/</loc>
+    <loc>https://leozzmc.github.io/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/30-Day-Challenge/</loc>
+    <lastmod>2023-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/</loc>
     <lastmod>2023-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

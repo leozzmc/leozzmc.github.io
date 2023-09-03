@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>【Day0】30天AWS無伺服器挑戰</title>
+      <link href="/posts/30Days_AWS_Serverless_challenge.html"/>
+      <url>/posts/30Days_AWS_Serverless_challenge.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這次 30天挑戰選擇在 AWS 的平台上摸熟服務，算是一種自我挑戰吧<br>選擇 serverless 這個方向主要是由於工作的關係，會需要熟悉以下服務：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- Amazon Lambda</span><br><span class="line">- Amazon API Gateway</span><br><span class="line">- Amazon Simple Notification Service</span><br><span class="line">- Amazon Pinpoint</span><br><span class="line">- Amazon Connect (Contact Center)</span><br><span class="line">- Amazon IoT Core</span><br><span class="line">... etc</span><br></pre></td></tr></table></figure><p>想要藉由這次的機會，好好搞懂各項服務的運作機制，並且每次都做一個 Lab 來進行實驗。 想要以動手做來完成這30天的挑戰。</p><h2 id="章節安排"><a href="#章節安排" class="headerlink" title="章節安排"></a>章節安排</h2><p>我的重心會放在 <strong>Lambda</strong>, <strong>API Gateway</strong> 以及 <strong>SNS</strong> 身上，如果時間以及比賽狀況良好，那就會再帶到其他服務。</p><ul><li>Amazon Lambda <code>10 Days</code></li><li>Amazon API Gateway <code>8 Days</code></li><li>Amazon Simple Notification Service <code>5 Days</code></li><li>Amazon Pinpoint <code>2 Days</code></li><li>Amazon Connect (Contact Center) <code>2 Days</code></li><li>Amazon IoT Core  <code>2 Days</code></li><li>結語 <code>1 Days</code></li></ul><p>所以以上的時間只是暫時性的配置，隨時可彈性調整。</p><p>但一樣會建置 Lambda 與不同服務的搭配場景，像是透過 API gateway 去觸發 Lambda 或者是 EventBridge 結合 Lambda 的使用，以及該怎麼樣設定 Event Source Mapping 等等操作。</p><p>在個別文章結構安排，目前規劃會是切成兩塊，前半段先介紹原理&#x2F;性質後半段開始帶實作。但這邊也是可能可以彈性按需調整。</p><p>另外，AWS 非常重視官方文件的價值，所以我會在每一篇都列出所引用的官方文件章節，一切實踐都是可以朔源到官方文件以及官方規格上。</p><p>以下也列出 AWS Serveless 相關服務連結:</p><blockquote><p><a href="https://aws.amazon.com/tw/serverless/">https://aws.amazon.com/tw/serverless/</a></p></blockquote><p>那就先預祝自己這次挑戰順利!</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 實作紀錄 </category>
+          
+          <category> 30 Day Challenge </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Lambda </tag>
+            
+            <tag> AWS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>帶你從零開始整合 Lambda Function 到 Amazon Connect</title>
       <link href="/posts/5db1b7e9.html"/>
       <url>/posts/5db1b7e9.html</url>
