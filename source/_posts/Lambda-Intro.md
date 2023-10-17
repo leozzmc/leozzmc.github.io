@@ -4,6 +4,7 @@ toc: true
 tags:
   - AWS
   - Lambda
+aside: true
 categories: 實作紀錄
 cover: /img/PEPE1.jpg
 abbrlink: c79cef2b
