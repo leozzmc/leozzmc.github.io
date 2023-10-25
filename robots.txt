@@ -1,2 +1,8 @@
 User-agent: *
-Allow: *
+Allow: /
+Allow: /posts/
+
+Disallow: /img/
+Disallow: /css/
+Disallow: /js/
+Disallow: /tags/
