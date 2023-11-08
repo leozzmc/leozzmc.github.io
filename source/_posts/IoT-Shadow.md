@@ -1,5 +1,5 @@
 ---
-title: "Hands-On: Experiment of AWS IoT Device Shadow"
+title: "Hands-On Practice: AWS IoT Device Shadow"
 toc: true
 tags:
   - AWS
@@ -8,9 +8,9 @@ tags:
   - MQTT
 aside: true
 categories: 實作紀錄
-abbrlink: 8cd55815
+abbrlink: aws-iot-device-shadow
 date: 2023-11-08 16:30:18
-cover:
+cover: /img/pepe_shadow.jpg
 ---
 
 # Intro - What is AWS IoT Device Shadow?

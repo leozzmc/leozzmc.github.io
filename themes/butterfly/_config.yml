@@ -241,7 +241,7 @@ aside:
       link: https://github.com/leozzmc
   card_announcement:
     enable: true
-    content: 我是Kevin，這裡是我的垃圾場
+    content: 🛫🛬
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
@@ -503,8 +503,8 @@ giscus:
   repo_id:
   category_id:
   theme:
-    light: light
     dark: dark
+    light: light
   option:
 
 # Remark42
@@ -727,7 +727,7 @@ ClickShowText:
 
 # Default display mode (網站默認的顯示模式)
 # light (default) / dark
-display_mode: light
+display_mode: dark
 
 # Beautify (美化頁面顯示)
 beautify:
