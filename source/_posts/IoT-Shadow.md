@@ -1,5 +1,5 @@
 ---
-title: IoT Device Shadow
+title: "Hands-On: Experiment of AWS IoT Device Shadow"
 toc: true
 tags:
   - AWS
@@ -60,19 +60,38 @@ So how can we update the state of a shadow?  The answer is clear,
 |$aws/things/`thingName`/shadow|Unnamed (classic) shadow|
 |$aws/things/`thingName`/shadow/name/shadowName|Named shadow|
 
-|Topic|Client operations allowed|Description|
-|-----|--------------------------|----------|
-|`ShadowTopicPrefix`/delete|Publish/Subscribe||
-|`ShadowTopicPrefix`/delete/accepted|Subscribe||
-|`ShadowTopicPrefix`/delete/rejected|Subscribe||
-|`ShadowTopicPrefix`/get|Publish/Subscribe||
-|`ShadowTopicPrefix`/get/accepted|Publish/Subscribe||
-|`ShadowTopicPrefix`/get/rejected|Subscribe||
-|`ShadowTopicPrefix`/update|Publish/Subscribe||
-|`ShadowTopicPrefix`/update/accepted|Subscribe||
-|`ShadowTopicPrefix`/update/rejected|Subscribe||
-|`ShadowTopicPrefix`/update/delta|Subscribe||
-|`ShadowTopicPrefix`/update/documents|Subscribe||
+|Topic|Client operations allowed|
+|-----|--------------------------|
+|`ShadowTopicPrefix`/delete|Publish/Subscribe|
+|`ShadowTopicPrefix`/delete/accepted|Subscribe|
+|`ShadowTopicPrefix`/delete/rejected|Subscribe|
+|`ShadowTopicPrefix`/get|Publish/Subscribe|
+|`ShadowTopicPrefix`/get/accepted|Publish/Subscribe|
+|`ShadowTopicPrefix`/get/rejected|Subscribe|
+|`ShadowTopicPrefix`/update|Publish/Subscribe|
+|`ShadowTopicPrefix`/update/accepted|Subscribe|
+|`ShadowTopicPrefix`/update/rejected|Subscribe|
+|`ShadowTopicPrefix`/update/delta|Subscribe|
+|`ShadowTopicPrefix`/update/documents|Subscribe|
+
+> For detail explanation about these shadow topics, see the documentation - https://docs.aws.amazon.com/zh_tw/iot/latest/developerguide/device-shadow-mqtt.html
+
+
+# The state changes of Device Shadow
+
+![Imgur](https://i.imgur.com/l071JEc.png)
+
+Take this picture for example, the update flow is:
+
+
+1. The MQTT client publishes a `$aws/things/myLightBulb/shadow/update` message to the server. The message carries the desired state `{"state": {"desired":{"color":"green"}}}`
+2. IoT Server responds with `$aws/things/myLightBulb/shadow/accepted`, indicating that the update message has been received. At the same time, it publishes `$aws/things/myLightBulb/shadow/delta` to notify the device to update, and then publishes `$aws/things/myLightBulb/shadow/update/document` as update record
+3. After receiving the message, the Device performs the corresponding update operation and publishes a message `$aws/things/myLightBulb/shadow/update` `{"state"{"report":{"color":"green"}}}` to the IoT Server after completion. Notification updated
+4. After receiving the post-update message, IoT Server responds with `$aws/things/myLightBulb/shadow/accepted` to indicate that the update message has been received. Publish another `$aws/things/myLightBulb/shadow/update/document` as an update record
+
+
+
+
 
 # Expermient for IoT Shadow
 
@@ -216,6 +235,146 @@ python3 shadow.py --ca_file ~/certs/Amazon-root-CA-1.pem --cert ~/certs/device.p
 Back to the script, after you execute the `shadow.py`, you will see the prompt in your terminal
 
 ![Imgur](https://i.imgur.com/necUKaZ.png)
+
+You will need to enter the desired value. So I enter "yellow".
+
+![Imgur](https://i.imgur.com/CQOkk83.png)
+
+Then you can observe that the state changed to "yellow". This results may also observe from the AWS IoT Console
+
+> Go to Things, and select your thing object, on the bottem of the target thing page, you can navigate to the **Device Shadow** tab, then select the **Classic Shadow**, then you can see the Device Shadow State below
+ 
+![Imgur](https://i.imgur.com/KTfooA1.png)
+
+![Imgur](https://i.imgur.com/Xcu4BKk.png)
+
+For testing, I enter "green" as the input of `shadow.py`.
+
+And the state change show in both terminal and IoT Console
+
+![Imgur](https://i.imgur.com/AEEMMCa.png)
+
+![Imgur](https://i.imgur.com/BWi4UZh.png)
+
+## Test the Shadow Document
+
+Now you can try to edit the Shadow Document directly.
+
+For example, I change the desired state from red to green.
+
+Then you will notice that the change will reflect to the **Delta report**.
+
+![Imgur](https://i.imgur.com/9l40PXT.png)
+
+
+## Test with AWS IoT Test MQTT Client
+
+First, it is necessary to subscribe to the shadow topic in the MQTT client, for receiving the state change events.
+
+![Imgur](https://i.imgur.com/Zq4x4i8.png)
+
+The client can subscribe to the topic
+
+```
+$aws/things/ESP32/shadow/update/#
+```
+The wildcard symbol **"#"** indicates that it wants to subscribe all topic under the `update/` prefix.
+
+And you can re-run the program with new color value. You can find the MQTT client will receive the state change events.
+
+At first, the color was "red".
+> The message published to $aws/things/ESP32/shadow/update/document topic
+
+Then it changed to "green".
+>  The message published to $aws/things/ESP32/shadow/update/accepted topic
+> Noted that any unsuccessful messages were received on the topic $aws/things/ESP32/shadow/update/rejected 
+
+![Imgur](https://i.imgur.com/brQ3knq.png)
+
+## Edit the shadow document again
+
+I change the desired stat value "blue" to "black".
+
+![Imgur](https://i.imgur.com/DVKi6Xb.png)
+
+The first received event will be on the delta topic, it means that there are differences between desired state and reported state.
+
+At the same time, the message will published to the topic $aws/things/ESP32/shadow/update/accepted for notifying the device to update the state
+
+![Imgur](https://i.imgur.com/7fewMie.png)
+
+And also published to the shadow document topic for recording.
+
+![Imgur](https://i.imgur.com/FYULN43.png)
+
+```
+{
+  "previous": {
+    "state": {
+      "desired": {
+        "color": "blue"
+      },
+      "reported": {
+        "color": "blue"
+      }
+    },
+    "metadata": {
+      "desired": {
+        "color": {
+          "timestamp": 1699430576
+        }
+      },
+      "reported": {
+        "color": {
+          "timestamp": 1699430576
+        }
+      }
+    },
+    "version": 20
+  },
+  "current": {
+    "state": {
+      "desired": {
+        "color": "black"
+      },
+      "reported": {
+        "color": "blue"
+      }
+    },
+    "metadata": {
+      "desired": {
+        "color": {
+          "timestamp": 1699431256
+        }
+      },
+      "reported": {
+        "color": {
+          "timestamp": 1699431256
+        }
+      }
+    },
+    "version": 21
+  },
+  "timestamp": 1699431256
+}
+```
+
+But the reported state is not "Black".
+
+you can see the event published to the accepted topic.
+
+![Imgur](https://i.imgur.com/pzVidVy.png)
+
+
+Meanwhile, the message published to the document topic
+
+![Imgur](https://i.imgur.com/ZKmF0vG.png)
+
+
+## Conclusions
+
+You will found the state change from **(Desired: "Blue", Reported: "Blue")** to **(Desired: "Black", Reported: "Blue")** and the final state is **(Desired: "Black", Reported: "Black")**.
+
 
 
 ## References
