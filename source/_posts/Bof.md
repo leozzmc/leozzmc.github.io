@@ -9,7 +9,7 @@ tags:
   - exploit
 aside: true
 categories: 實作紀錄
-abbrlink: 18a42610
+abbrlink: Buffer_Overflow_Test
 date: 2020-03-11 21:09:15
 description:
 cover: /img/BOF.png
