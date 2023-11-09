@@ -10,7 +10,7 @@ aside: true
 categories: 實作紀錄
 abbrlink: 889a40ef
 date: 2023-11-09 15:14:35
-cover:
+cover: /img/OIG.jpeg
 ---
 
 ## 簡介
