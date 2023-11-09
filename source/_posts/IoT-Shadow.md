@@ -307,7 +307,7 @@ And also published to the shadow document topic for recording.
 
 ![Imgur](https://i.imgur.com/FYULN43.png)
 
-```
+```json
 {
   "previous": {
     "state": {
