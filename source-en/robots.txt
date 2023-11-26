@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /posts/
+
+Disallow: /img/
+Disallow: /css/
+Disallow: /js/
+Disallow: /tags/
+
+Sitemap: https://leozzmc.github.io/sitemap.xml

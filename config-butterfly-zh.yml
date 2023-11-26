@@ -9,15 +9,15 @@ nav:
 
 # Menu 目錄
 menu:
-  # 首頁: / || fas fa-home
-  # 找文章||fas fa-list:
-  #     歸檔: /archives/ || fas fa-archive
-  #     標籤: /tags/ || fas fa-tags
-  #     分類: /categories/ || fas fa-folder-open
-  # 鏈結: /link/ || fas fa-link
-  # 語言:||fas fa-language:
-  #   English: /en/ || fas fa-e
-  #   中文: / || fa-c
+  首頁: / || fas fa-home
+  找文章||fas fa-list:
+      歸檔: /archives/ || fas fa-archive
+      標籤: /tags/ || fas fa-tags
+      分類: /categories/ || fas fa-folder-open
+  鏈結: /link/ || fas fa-link
+  語言:||fas fa-language:
+    English: /en/ || fas fa-e
+    中文: / || fa-c
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
