@@ -472,6 +472,13 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/tags/Connect/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/tags/Certificate/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -493,7 +500,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/tags/Connect/</loc>
+    <loc>https://leozzmc.github.io/tags/Web/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -514,7 +521,14 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/tags/Web/</loc>
+    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
+    <lastmod>2023-11-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -564,20 +578,6 @@
   
   <url>
     <loc>https://leozzmc.github.io/tags/Penetration-Testing/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/CI-CD/</loc>
-    <lastmod>2023-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/tags/GitHub/</loc>
     <lastmod>2023-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
