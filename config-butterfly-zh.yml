@@ -305,17 +305,17 @@ newest_comments:
 
 # Conversion between Traditional and Simplified Chinese (簡繁轉換)
 translate:
-  enable: false
+  enable: true
   # The text of a button
-  default: 繁
+  default: EN
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
-  defaultEncoding: 2
+  defaultEncoding: 3
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
-  msgToTraditionalChinese: '繁'
-  # The text of the button when the language is Traditional Chinese
-  msgToSimplifiedChinese: '簡'
+  #msgToTraditionalChinese: '繁'
+  # # The text of the button when the language is Traditional Chinese
+  #msgToEnglish: 'EN'
 
 # Read Mode (閲讀模式)
 readmode: true
@@ -925,6 +925,7 @@ inject:
     - <link rel="stylesheet" href="/css/style.css">
   bottom:
     - <script data-pjax src="/self/btf.js"></script> 
+    - <script data-pjax src="/self/tw_en.js"></script>
     # - <script src="xxxx"></script>
 
 # CDN

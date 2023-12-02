@@ -7,7 +7,7 @@ tags:
   - Endpoints
   - Gateway
 aside: true
-categories: 實作紀錄
+categories: Hands-On Practices
 abbrlink: e7e295f6
 date: 2023-10-23 12:32:05
 cover: /img/pepe4.jpeg

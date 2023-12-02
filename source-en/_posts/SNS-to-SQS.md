@@ -7,7 +7,7 @@ tags:
   - SQS
   - Publish-Subscribe-Model
 aside: true
-categories: 實作紀錄
+categories: Hands-On Practices
 abbrlink: efc78ef4
 date: 2023-10-24 10:18:53
 cover: /img/pepe5.jpeg

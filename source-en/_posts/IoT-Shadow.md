@@ -7,7 +7,7 @@ tags:
   - IoT Shadow
   - MQTT
 aside: true
-categories: 實作紀錄
+categories: Hands-On Practices
 abbrlink: aws-iot-device-shadow
 date: 2023-11-08 16:30:18
 cover: /img/pepe_shadow.jpg
