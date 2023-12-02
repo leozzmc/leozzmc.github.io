@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hands-On Practice: Amazon SNS Fan out to Amazon SQS | Kevin Liu's Blog || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="IntroductionAmazon SNS offen works well with Amazon SQS, by subscribing SQS to SNS, the SNS service can push messages to SQS. This may eliminating the need to periodically check or “poll” for updates.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hands-On Practice: Amazon SNS Fan out to Amazon SQS">
+<meta property="og:url" content="https://leozzmc.github.io/en/posts/efc78ef4.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s Blog || Technical || Travel">
+<meta property="og:description" content="IntroductionAmazon SNS offen works well with Amazon SQS, by subscribing SQS to SNS, the SNS service can push messages to SQS. This may eliminating the need to periodically check or “poll” for updates.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://leozzmc.github.io/en/img/pepe5.jpeg">
+<meta property="article:published_time" content="2023-10-24T02:18:53.000Z">
+<meta property="article:modified_time" content="2023-11-26T15:07:26.597Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="SNS">
+<meta property="article:tag" content="SQS">
+<meta property="article:tag" content="Publish-Subscribe-Model">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/en/img/pepe5.jpeg"><link rel="shortcut icon" href="/en/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/en/posts/efc78ef4.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/en/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hands-On Practice: Amazon SNS Fan out to Amazon SQS',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-26 23:07:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/en/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/en/img/2.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">18</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/en/img/pepe5.jpeg')"><nav id="nav"><span id="blog-info"><a href="/en/" title="Kevin Liu's Blog || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's Blog || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hands-On Practice: Amazon SNS Fan out to Amazon SQS</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-10-24T02:18:53.000Z" title="Created 2023-10-24 10:18:53">2023-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-11-26T15:07:26.597Z" title="Updated 2023-11-26 23:07:26">2023-11-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/Hands-On-Practices/">Hands-On Practices</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hands-On Practice: Amazon SNS Fan out to Amazon SQS"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Amazon SNS offen works well with Amazon SQS, by subscribing SQS to SNS, the SNS service can push messages to SQS. <strong>This may eliminating the need to periodically check or “poll” for updates.</strong></p>
+<h3 id="What-is-Amazon-SQS"><a href="#What-is-Amazon-SQS" class="headerlink" title="What is Amazon SQS?"></a>What is Amazon SQS?</h3><p>By official definition</p>
+<blockquote>
+<p>Amazon SQS is a message queue service used by distributed applications to exchange messages through a polling model, and can be used to decouple sending and receiving components—without requiring each component to be concurrently available. </p>
+</blockquote>
+<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><blockquote>
+<p>The <strong>Fanout</strong> scenario is when a message published to an SNS topic is replicated and pushed to multiple endpoints, such as Kinesis Data Firehose delivery streams, Amazon SQS queues, HTTP(S) endpoints, and Lambda functions. This allows for parallel asynchronous processing.<br>For example, you can develop an application that publishes a message to an SNS topic whenever an order is placed for a product. Then, SQS queues that are subscribed to the SNS topic receive identical notifications for the new order. An Amazon Elastic Compute Cloud (Amazon EC2) server instance attached to one of the SQS queues can handle the processing or fulfillment of the order. And you can attach another Amazon EC2 server instance to a data warehouse for analysis of all orders received.[1]</p>
+</blockquote>
+<h2 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h2><p>Here we will go through each step of fan out to Amazon SQS.</p>
+<p>The initial step is to remember both SNS arn and SQS arn.</p>
+<h3 id="Create-SQS-Queue"><a href="#Create-SQS-Queue" class="headerlink" title="Create SQS Queue"></a>Create SQS Queue</h3><p>First, you’ll need to create a standard queue in SQS console</p>
+<p><img src="https://i.imgur.com/RRffWm5.png" alt="Imgur"></p>
+<p>After creating the standard queue, it will shows the arn.</p>
+<p>Make sure noted this arn, you’ll need to provide this arn when creating the subscriptions</p>
+<h3 id="Create-SNS-Topic"><a href="#Create-SNS-Topic" class="headerlink" title="Create SNS Topic"></a>Create SNS Topic</h3><p>Second, you need to create a SNS topic in the SNS console..</p>
+<p><img src="https://i.imgur.com/ygA6g1P.png" alt="Imgur"></p>
+<p>And again, you’ll need to note the topic arn.</p>
+<h3 id="Provide-Permission-to-SNS-to-send-messages-to-SQS"><a href="#Provide-Permission-to-SNS-to-send-messages-to-SQS" class="headerlink" title="Provide Permission to SNS to send messages to SQS"></a>Provide Permission to SNS to send messages to SQS</h3><p>By default, SNS will not have permission to send messages to SQS, so you need to provide permission to SNS for sending messages.</p>
+<ul>
+<li>Go to SQS Console</li>
+<li>Press “Edit” in the top corner</li>
+<li>Scroll down to the “Access Policy”</li>
+</ul>
+<p><img src="https://i.imgur.com/keRSRlR.png" alt="Imgur"></p>
+<ul>
+<li>Append new statement in the Access Policy</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Effect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Allow&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Principal&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;Service&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sns.amazonaws.com&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;sqs:DeleteMessage&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;sqs:ReceiveMessage&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;sqs:SendMessage&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Resource&quot;</span><span class="punctuation">:</span> <span class="string">&quot;arn:aws:sqs:us-east-1:xxxxxxxxxxxx:QueueforSNS&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Condition&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ArnEquals&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;aws:SourceArn&quot;</span><span class="punctuation">:</span> <span class="string">&quot;arn:aws:sns:us-east-1:xxxxxxxxxxxx:StandardTopicforSQS&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/UWjKND7.png" alt="Imgur"></p>
+<h3 id="Subscribe-SQS-queue-to-SNS-topic"><a href="#Subscribe-SQS-queue-to-SNS-topic" class="headerlink" title="Subscribe SQS queue to SNS topic"></a>Subscribe SQS queue to SNS topic</h3><p>Now you’ll need to subscribe the SQS queue to the SNS topic.</p>
+<ul>
+<li>Go to SNS console</li>
+<li>Scroll down and choose “Create Subscription”</li>
+</ul>
+<p><img src="https://i.imgur.com/qTEPbQb.png" alt="Imgur"></p>
+<ul>
+<li>Choose your topic arn</li>
+<li>Set the protocal to SQS</li>
+<li>Choose the SQS arn</li>
+</ul>
+<p><img src="https://i.imgur.com/voJqHuB.png" alt="Imgur"></p>
+<p>Once complete, you will notice that the subscripe confirmation also completes. If you create a SQS type subscription by using console, you don’t need confirm the subscription manually.</p>
+<p><img src="https://i.imgur.com/Jr4Brob.png" alt="Imgur"></p>
+<blockquote>
+<p><strong>But if you create a cross-account subscription, you will receive the confirmation url in the SQS queue, and you will need to click the confirmation URL. [3]</strong></p>
+</blockquote>
+<h3 id="Provide-Permission-to-User-for-topic-x2F-queue-operations"><a href="#Provide-Permission-to-User-for-topic-x2F-queue-operations" class="headerlink" title="Provide Permission to User for topic&#x2F;queue operations"></a>Provide Permission to User for topic&#x2F;queue operations</h3><p>You can add permissions to an IAM User to publish SNS messages to a topic.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;Statement&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;Effect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Allow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sns:Publish&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Resource&quot;</span><span class="punctuation">:</span> <span class="string">&quot;arn:aws:sns:us-east-2:XXXXXXXXXXXX:MyTopic&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>And you also need to provide permissions to SQS queue to recieve and delete messages</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;Statement&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;Effect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Allow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;sqs:ReceiveMessage&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;sqs:DeleteMessage&quot;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Resource&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;arn:aws:sqs:us-east-2:XXXXXXXXXXXX:MyQueue1&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;arn:aws:sqs:us-east-2:XXXXXXXXXXXX:MyQueue2&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>However,if you want to perform cross-account operations, you will need to provide permissions to the other account.</p>
+<p>For example, if you want to let acount: 111122223333 to publish messages to SNS topic in your account, here is an example policy.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;Statement&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;Effect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Allow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Principal&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;AWS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111122223333&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sns:Publish&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Resource&quot;</span><span class="punctuation">:</span> <span class="string">&quot;arn:aws:sns:us-east-2:XXXXXXXXXXXXX:MyTopic&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>if you want to let acount: 111122223333 to perform receive abd delete messages to queue in your account, here is an example policy.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;Statement&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;Effect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Allow&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Principal&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;AWS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111122223333&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;sqs:DeleteMessage&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;sqs:ReceiveMessage&quot;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;Resource&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;arn:aws:sqs:us-east-2:XXXXXXXXXXXX:MyQueue&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Test-subscription"><a href="#Test-subscription" class="headerlink" title="Test subscription"></a>Test subscription</h3><p>Now we can test the message delivery to the queue.</p>
+<ul>
+<li>Go to the SNS console</li>
+<li>Press “Push Message” in the top right corner </li>
+<li>Enter the message subject and meesage body</li>
+</ul>
+<p><img src="https://i.imgur.com/iu7VJVX.png" alt="Imgur"><br><img src="https://i.imgur.com/ppgfOf0.png" alt="Imgur"></p>
+<ul>
+<li>Go to the SQS console</li>
+<li>Press “Send and Receive Message” in the top right corner</li>
+<li>Scroll down , and press the “Poll for all messages”</li>
+<li>And you’ll find the messages are in polling progress.</li>
+</ul>
+<p><img src="https://i.imgur.com/aYWXVIE.png" alt="Imgur"></p>
+<ul>
+<li>Then the test meesages showed in the console</li>
+</ul>
+<p><img src="https://i.imgur.com/Vj3cCc9.png" alt="Imgur"></p>
+<h2 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h2><p>We successfully fan out the message from the Amazon SNS to the Amazon SQS. </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html#SNSFanoutScenario">https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html#SNSFanoutScenario</a><br>[2] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/sns/latest/dg/sns-sqs-as-subscriber.html">https://docs.aws.amazon.com/zh_tw/sns/latest/dg/sns-sqs-as-subscriber.html</a><br>[3]<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/sns/latest/dg/sns-send-message-to-sqs-cross-account.html">https://docs.aws.amazon.com/zh_tw/sns/latest/dg/sns-send-message-to-sqs-cross-account.html</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en/posts/efc78ef4.html">https://leozzmc.github.io/en/posts/efc78ef4.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/en/tags/AWS/">AWS</a><a class="post-meta__tags" href="/en/tags/SNS/">SNS</a><a class="post-meta__tags" href="/en/tags/SQS/">SQS</a><a class="post-meta__tags" href="/en/tags/Publish-Subscribe-Model/">Publish-Subscribe-Model</a></div><div class="post_share"><div class="social-share" data-image="/en/img/pepe5.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/en/posts/e7e295f6.html" title="Hands-On Practice: S3 Gateway Endpoints"><img class="cover" src="/en/img/pepe4.jpeg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Hands-On Practice: S3 Gateway Endpoints</div></div></a></div><div class="next-post pull-right"><a href="/en/posts/aws-iot-device-shadow.html" title="Hands-On Practice: AWS IoT Device Shadow"><img class="cover" src="/en/img/pepe_shadow.jpg" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Hands-On Practice: AWS IoT Device Shadow</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/en/img/2.png" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">18</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-Amazon-SQS"><span class="toc-number">1.1.</span> <span class="toc-text">What is Amazon SQS?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scenario"><span class="toc-number">2.</span> <span class="toc-text">Scenario</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Steps"><span class="toc-number">3.</span> <span class="toc-text">Steps</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-SQS-Queue"><span class="toc-number">3.1.</span> <span class="toc-text">Create SQS Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-SNS-Topic"><span class="toc-number">3.2.</span> <span class="toc-text">Create SNS Topic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Provide-Permission-to-SNS-to-send-messages-to-SQS"><span class="toc-number">3.3.</span> <span class="toc-text">Provide Permission to SNS to send messages to SQS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Subscribe-SQS-queue-to-SNS-topic"><span class="toc-number">3.4.</span> <span class="toc-text">Subscribe SQS queue to SNS topic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Provide-Permission-to-User-for-topic-x2F-queue-operations"><span class="toc-number">3.5.</span> <span class="toc-text">Provide Permission to User for topic&#x2F;queue operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test-subscription"><span class="toc-number">3.6.</span> <span class="toc-text">Test subscription</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusions"><span class="toc-number">4.</span> <span class="toc-text">Conclusions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/889a40ef.html" title="Fleet Provisioning - Provisioning Devices to AWS IoT in Advance"><img src="/en/img/OIG.jpeg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Fleet Provisioning - Provisioning Devices to AWS IoT in Advance"/></a><div class="content"><a class="title" href="/en/posts/889a40ef.html" title="Fleet Provisioning - Provisioning Devices to AWS IoT in Advance">Fleet Provisioning - Provisioning Devices to AWS IoT in Advance</a><time datetime="2023-11-09T07:14:35.000Z" title="Created 2023-11-09 15:14:35">2023-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/aws-iot-device-shadow.html" title="Hands-On Practice: AWS IoT Device Shadow"><img src="/en/img/pepe_shadow.jpg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Hands-On Practice: AWS IoT Device Shadow"/></a><div class="content"><a class="title" href="/en/posts/aws-iot-device-shadow.html" title="Hands-On Practice: AWS IoT Device Shadow">Hands-On Practice: AWS IoT Device Shadow</a><time datetime="2023-11-08T08:30:18.000Z" title="Created 2023-11-08 16:30:18">2023-11-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/efc78ef4.html" title="Hands-On Practice: Amazon SNS Fan out to Amazon SQS"><img src="/en/img/pepe5.jpeg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Hands-On Practice: Amazon SNS Fan out to Amazon SQS"/></a><div class="content"><a class="title" href="/en/posts/efc78ef4.html" title="Hands-On Practice: Amazon SNS Fan out to Amazon SQS">Hands-On Practice: Amazon SNS Fan out to Amazon SQS</a><time datetime="2023-10-24T02:18:53.000Z" title="Created 2023-10-24 10:18:53">2023-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/e7e295f6.html" title="Hands-On Practice: S3 Gateway Endpoints"><img src="/en/img/pepe4.jpeg" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Hands-On Practice: S3 Gateway Endpoints"/></a><div class="content"><a class="title" href="/en/posts/e7e295f6.html" title="Hands-On Practice: S3 Gateway Endpoints">Hands-On Practice: S3 Gateway Endpoints</a><time datetime="2023-10-23T04:32:05.000Z" title="Created 2023-10-23 12:32:05">2023-10-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/Buffer_Overflow_Test.html" title="Buffer Overflow Vulnerability Experiment"><img src="/en/img/BOF.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Buffer Overflow Vulnerability Experiment"/></a><div class="content"><a class="title" href="/en/posts/Buffer_Overflow_Test.html" title="Buffer Overflow Vulnerability Experiment">Buffer Overflow Vulnerability Experiment</a><time datetime="2020-03-11T13:09:15.000Z" title="Created 2020-03-11 21:09:15">2020-03-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2023 By Kevin Liu</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js"></script><script src="/en/js/main.js"></script><script src="/en/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/en/self/btf.js"></script><script data-pjax src="/en/self/tw_en.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js"></script></div></div></body></html>
