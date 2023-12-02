@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>FreeRTOS_Note</title>
+      <link href="/en/posts/8d39dbf8.html"/>
+      <url>/en/posts/8d39dbf8.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="AWS-FreeRTOS"><a href="#AWS-FreeRTOS" class="headerlink" title="AWS FreeRTOS"></a>AWS FreeRTOS</h1><blockquote><p>FreeRTOS includes libraries for connectivity, security, and over-the-air (OTA) updates. FreeRTOS also includes demo applications that show FreeRTOS features on qualified boards.</p></blockquote><blockquote><p>FreeRTOS is an open-source project. You can download the source code, contribute changes or enhancements, or report issues on the GitHub site at <a href="https://github.com/FreeRTOS/FreeRTOS">https://github.com/FreeRTOS/FreeRTOS</a>.</p></blockquote><h1 id="FreeRTOS-Architecture"><a href="#FreeRTOS-Architecture" class="headerlink" title="FreeRTOS - Architecture"></a>FreeRTOS - Architecture</h1><p>FreeRTOS contains two types of repositories</p><ul><li><strong>single library repositories</strong><ul><li>Each single library repository contains the source code for one library without any build projects or examples.</li></ul></li><li><strong>package repositories</strong><ul><li>Package repositories contain multiple libraries, and can contain <strong>preconfigured projects</strong> that demonstrate the library’s use.</li></ul></li></ul><p><img src="https://hackmd.io/_uploads/BkBxj9lEp.png" alt="image"></p><p><img src="https://hackmd.io/_uploads/HyRa3clN6.png" alt="image"></p><h1 id="FreeRTOS-Kernel-concepts"><a href="#FreeRTOS-Kernel-concepts" class="headerlink" title="FreeRTOS Kernel concepts"></a>FreeRTOS Kernel concepts</h1><p>The FreeRTOS kernel is a real-time operating system that supports numerous architectures.</p><p>Basic components including:</p><ul><li>A multitasking scheduler.</li><li>Multiple memory allocation options (including the ability to create completely statically-allocated systems). </li><li>Intertask coordination primitives, including task notifications, message queues, multiple types of semaphore, and stream and message buffers.</li><li>upport for symmetric multiprocessing (SMP) on multi-core microcontrollers.</li></ul><h2 id="No-malloc-but-pvPortMalloc"><a href="#No-malloc-but-pvPortMalloc" class="headerlink" title="No malloc() but pvPortMalloc"></a>No <code>malloc()</code> but <code>pvPortMalloc</code></h2><p>When RTOS objects are created dynamically, using the standard C library <code>malloc()</code> and <code>free()</code> functions is not always appropriate for a number of reasons:</p><ul><li>They might not be available on embedded systems.</li><li>They take up valuable code space.</li><li>They are not typically thread-safe.</li><li>They are not deterministic.</li><li>For these reasons, FreeRTOS keeps the memory allocation API in its portable layer.</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] What is FreeRTOS? - <a href="https://docs.aws.amazon.com/freertos/latest/userguide/what-is-freertos.html">https://docs.aws.amazon.com/freertos/latest/userguide/what-is-freertos.html</a><br>[2] What is FreeRTOS? - FreeRTOS architecture - <a href="https://docs.aws.amazon.com/freertos/latest/userguide/what-is-freertos.html#freertos-architecture">https://docs.aws.amazon.com/freertos/latest/userguide/what-is-freertos.html#freertos-architecture</a><br>[3] FreeRTOS kernel fundamentals - <a href="https://docs.aws.amazon.com/freertos/latest/userguide/dev-guide-freertos-kernel.html">https://docs.aws.amazon.com/freertos/latest/userguide/dev-guide-freertos-kernel.html</a><br>[4] Architecute Image Ref - <a href="https://blog.naver.com/kim1417/221540814246">https://blog.naver.com/kim1417/221540814246</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Study Notes </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> FreeRTOS </tag>
+            
+            <tag> AWS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Fleet Provisioning - Provisioning Devices to AWS IoT in Advance</title>
       <link href="/en/posts/889a40ef.html"/>
       <url>/en/posts/889a40ef.html</url>

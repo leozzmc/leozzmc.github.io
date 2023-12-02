@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://leozzmc.github.io/en/posts/8d39dbf8.html</loc>
+    
+    <lastmod>2023-12-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/en/tags/index.html</loc>
     
     <lastmod>2023-12-02</lastmod>
@@ -118,6 +127,13 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/en/tags/FreeRTOS/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/en/tags/AWS/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -212,6 +228,13 @@
   
   <url>
     <loc>https://leozzmc.github.io/en/categories/Hands-On-Practices/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/en/categories/Study-Notes/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
