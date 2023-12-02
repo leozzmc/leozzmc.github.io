@@ -11,15 +11,6 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/en/tags/index.html</loc>
-    
-    <lastmod>2023-12-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://leozzmc.github.io/en/link/index.html</loc>
     
     <lastmod>2023-12-02</lastmod>
@@ -29,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/en/posts/Buffer_Overflow_Test.html</loc>
+    <loc>https://leozzmc.github.io/en/tags/index.html</loc>
     
     <lastmod>2023-12-02</lastmod>
     
@@ -38,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/en/posts/e7e295f6.html</loc>
+    <loc>https://leozzmc.github.io/en/posts/Buffer_Overflow_Test.html</loc>
     
     <lastmod>2023-12-02</lastmod>
     
@@ -57,6 +48,15 @@
   
   <url>
     <loc>https://leozzmc.github.io/en/posts/efc78ef4.html</loc>
+    
+    <lastmod>2023-12-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/en/posts/e7e295f6.html</loc>
     
     <lastmod>2023-12-02</lastmod>
     
@@ -127,35 +127,7 @@
   </url>
   
   <url>
-    <loc>https://leozzmc.github.io/en/tags/FreeRTOS/</loc>
-    <lastmod>2023-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://leozzmc.github.io/en/tags/AWS/</loc>
-    <lastmod>2023-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/en/tags/S3/</loc>
-    <lastmod>2023-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/en/tags/Endpoints/</loc>
-    <lastmod>2023-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://leozzmc.github.io/en/tags/Gateway/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -183,6 +155,13 @@
   </url>
   
   <url>
+    <loc>https://leozzmc.github.io/en/tags/FreeRTOS/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://leozzmc.github.io/en/tags/SNS/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -198,6 +177,27 @@
   
   <url>
     <loc>https://leozzmc.github.io/en/tags/Publish-Subscribe-Model/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/en/tags/S3/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/en/tags/Endpoints/</loc>
+    <lastmod>2023-12-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://leozzmc.github.io/en/tags/Gateway/</loc>
     <lastmod>2023-12-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
