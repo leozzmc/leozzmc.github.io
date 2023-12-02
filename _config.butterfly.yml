@@ -313,9 +313,9 @@ translate:
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
-  # msgToTraditionalChinese: '繁'
+  #msgToTraditionalChinese: '繁'
   # The text of the button when the language is Traditional Chinese
-  # msgToSimplifiedChinese: '簡'
+  #msgToEnglish: 'EN'
 
 # Read Mode (閲讀模式)
 readmode: true
