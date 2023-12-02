@@ -9,7 +9,7 @@ categories: Study Notes
 abbrlink: 8d39dbf8
 date: 2023-12-02 15:50:49
 description:
-cover:
+cover: /img/freertos/pepe.jpg
 ---
 
 # AWS FreeRTOS
