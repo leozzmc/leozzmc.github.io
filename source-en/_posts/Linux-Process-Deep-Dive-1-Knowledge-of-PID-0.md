@@ -28,7 +28,7 @@ cover: /img/PID0.jpeg
 - Using `bpftrace` for tracking the kernel function **hrtimer_wakeup**
 - **hrtimer_wakeup** mean to:
     - Waking up processes
-    - Move them into runnable process (==Maybe changing state to Running==)
+    - Move them into runnable process
 
 *hrtimer_wakeup source code*
 
@@ -61,7 +61,7 @@ sudo bpftrace -e 'kfunc:hrtimer_wakeup {printf("%s:%d\n",curtask->comm,curtask->
 
 It shows there are only 1 instance of swapper: `swapper/0` with PID0.
 
-If you open a new VM with 3~4 vCPU, then you execute the command again, You will find that there are 3~4 swapper instances with PID0, so there may have `swapper/0`, `swapper/1`, `swapper/2` appears.
+If you open a new VM with 3 to 4 vCPU, then you execute the command again, You will find that there are 3 or4 swapper instances with PID0, so there may have `swapper/0`, `swapper/1`, `swapper/2` appears.
 
 ## PPID
 
