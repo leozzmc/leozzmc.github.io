@@ -7,6 +7,7 @@ tags:
   - OTA
   - Firmware
 categories: 學習筆記
+aside: true
 abbrlink: 752506ab
 date: 2023-12-14 07:01:50
 cover: /img/PID0.jpeg
