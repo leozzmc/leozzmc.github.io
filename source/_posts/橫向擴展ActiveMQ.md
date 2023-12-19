@@ -8,6 +8,10 @@ tags:
 toc: true
 aside: true
 abbrlink: b509904
+description:
+categories: 
+  - 實作紀錄
+  - 學習筆記
 date: 2023-12-19 04:04:20
 cover:
 ---
@@ -26,8 +30,21 @@ Scaling意味著擴展，Vertical Scaling著重於單一實體的運算能力增
 
 而若要水平擴展，通常代表架構會接收到更多消息，所以會需要根據流量/訊息量來去擴展並且分擔單一實例的負擔。
 
-## ActiveMQ Proxy Network
+## ActiveMQ 代理網路（Network of brokers）
 
+這是一個 ActiveMQ 的原生功能，代理網路包含了多個連接在一起的 Brokers，代理程式之間可共享所代管 client 端以及目標資訊，代理程式之間可以透過網路來路由資訊。
+
+代理程式可以是：
+
+- Single Instance Broker (節點失敗會無法使用，除非重新啟動)
+- Active/Standby Brokers (網路中有待命模式的 broker，可以共用儲存空間，若Active 節點失敗，則由 Standby 接管)
+
+一般來說，若有 Horizontal Scaling的需求，會使用代理網路
+
+> [+] Amazon MQ 代理程式網路 - https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/network-of-brokers.html
+
+
+下面會逐步帶建構的步驟
 
 ## Steps
 
