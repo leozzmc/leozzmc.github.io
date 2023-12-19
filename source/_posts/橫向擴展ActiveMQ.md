@@ -13,7 +13,7 @@ categories:
   - 實作紀錄
   - 學習筆記
 date: 2023-12-19 04:04:20
-cover:
+cover: /img/ActiveMQ/ActiveMQ_Cover.jpeg
 ---
 
 ## Amazon MQ
