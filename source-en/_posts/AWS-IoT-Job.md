@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial: Step by Step by Step to create a AWS IoT Job '
+title: 'Executing Remote Operations with AWS IoT Jobs: A Hands-On Tutorial'
 toc: true
 tags:
   - AWS
@@ -7,7 +7,7 @@ tags:
   - SDK
 aside: true
 categories: Hands-On Practices
-abbrlink: d04f9445
+abbrlink: aws_iot_jobs
 date: 2024-01-20 15:04:16
 cover: /img/aws_iot_job.png
 ---
