@@ -4,6 +4,97 @@
   
     
     <entry>
+      <title>橫向擴展ActiveMQ</title>
+      <link href="/posts/b509904.html"/>
+      <url>/posts/b509904.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="Amazon-MQ"><a href="#Amazon-MQ" class="headerlink" title="Amazon MQ"></a>Amazon MQ</h2><p>Amzon MQ 上有託管 Active MQ 這個訊息佇列的服務，近期有碰到問題是問說，<strong>要怎麼樣在 Amazon MQ 上做 Horizontal Scaling</strong>，</p><p>首先簡單解釋一下 Vertical Scaling 跟 Horizontal Scaling 的差異。</p><p>Scaling意味著擴展，Vertical Scaling著重於單一實體的運算能力增強，所以Vertical Scaling可能會是更好的 CPU&#x2F;GPU,更大的記憶體容量等等，</p><p>以 AWS 服務來說，可能會是更換實例，MQ的話就會是從 <code>t3.Micro</code> 換成 <code>m5.large</code></p><blockquote><p>[+] 執行個體類型 - <a href="https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/broker-instance-types.html">https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/broker-instance-types.html</a></p></blockquote><p>而若要水平擴展，通常代表架構會接收到更多消息，所以會需要根據流量&#x2F;訊息量來去擴展並且分擔單一實例的負擔。</p><h2 id="ActiveMQ-代理網路（Network-of-brokers）"><a href="#ActiveMQ-代理網路（Network-of-brokers）" class="headerlink" title="ActiveMQ 代理網路（Network of brokers）"></a>ActiveMQ 代理網路（Network of brokers）</h2><p>這是一個 ActiveMQ 的原生功能，代理網路包含了多個連接在一起的 Brokers，代理程式之間可共享所代管 client 端以及目標資訊，代理程式之間可以透過網路來路由資訊。</p><p>代理程式可以是：</p><ul><li>Single Instance Broker (節點失敗會無法使用，除非重新啟動)</li><li>Active&#x2F;Standby Brokers (網路中有待命模式的 broker，可以共用儲存空間，若Active 節點失敗，則由 Standby 接管)</li></ul><p>一般來說，若有 Horizontal Scaling的需求，會使用代理網路</p><blockquote><p>[+] Amazon MQ 代理程式網路 - <a href="https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/network-of-brokers.html">https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/network-of-brokers.html</a></p></blockquote><p>下面會逐步帶建構的步驟</p><h2 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h2><p><img src="/img/ActiveMQ/ActiveMQ1.png"></p><p><img src="/img/ActiveMQ/ActiveMQ2.png"></p><p><img src="/img/ActiveMQ/ActiveMQ3.png"></p><p><img src="/img/ActiveMQ/ActiveMQ4.png"></p><p>選擇 <strong>Next</strong></p><p><img src="/img/ActiveMQ/ActiveMQ5.png"></p><p>這時可以下載 CloudFormation 模板，未來可以方便修改配置重新部署</p><p>預估部署所需時間： <strong>25 minutes</strong></p><p><img src="/img/ActiveMQ/ActiveMQ6.png"></p><p>可以發現三個 Broker 都正在部署中</p><p><img src="/img/ActiveMQ/ActiveMQ7.png"></p><p>可以點進去 broker 查看詳細的設定配置</p><p><img src="/img/ActiveMQ/ActiveMQ8.png"></p><p>在設定檔當中可以透過編輯 <code>&lt;networkConnector&gt;&lt;/networkConnector&gt;</code> 當中的屬性進行 MQ 拓墣上的設計</p><p>以下是目前建立的 Broker的設定</p><ul><li>Broker1 上面的 <networkConnectors> 設置</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;networkConnectors&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker2&quot; uri=&quot;masterslave:(ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-1.mq.us-east-1.amazonaws.com:61617,ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker2&quot; uri=&quot;masterslave:(ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-1.mq.us-east-1.amazonaws.com:61617,ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker3&quot; uri=&quot;masterslave:(ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-1.mq.us-east-1.amazonaws.com:61617,ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker3&quot; uri=&quot;masterslave:(ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-1.mq.us-east-1.amazonaws.com:61617,ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">  &lt;/networkConnectors&gt;</span><br></pre></td></tr></table></figure><ul><li>Broker2 上面的 <networkConnectors> 設置</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;networkConnectors&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker1&quot; uri=&quot;masterslave:(ssl://b-853601ab-b005-4305-b511-283b560a6ddb-1.mq.us-east-1.amazonaws.com:61617,ssl://b-853601ab-b005-4305-b511-283b560a6ddb-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker1&quot; uri=&quot;masterslave:(ssl://b-853601ab-b005-4305-b511-283b560a6ddb-1.mq.us-east-1.amazonaws.com:61617,ssl://b-853601ab-b005-4305-b511-283b560a6ddb-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker3&quot; uri=&quot;masterslave:(ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-1.mq.us-east-1.amazonaws.com:61617,ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker3&quot; uri=&quot;masterslave:(ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-1.mq.us-east-1.amazonaws.com:61617,ssl://b-52af7fc7-4bb2-4c0d-b427-11a1c965434f-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">  &lt;/networkConnectors&gt;</span><br></pre></td></tr></table></figure><ul><li>Broker3 上面的 <networkConnectors> 設置</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;networkConnectors&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker1&quot; uri=&quot;masterslave:(ssl://b-853601ab-b005-4305-b511-283b560a6ddb-1.mq.us-east-1.amazonaws.com:61617,ssl://b-853601ab-b005-4305-b511-283b560a6ddb-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker1&quot; uri=&quot;masterslave:(ssl://b-853601ab-b005-4305-b511-283b560a6ddb-1.mq.us-east-1.amazonaws.com:61617,ssl://b-853601ab-b005-4305-b511-283b560a6ddb-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;false&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;QueueConnectorConnectingToBroker2&quot; uri=&quot;masterslave:(ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-1.mq.us-east-1.amazonaws.com:61617,ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;topic physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">    &lt;networkConnector conduitSubscriptions=&quot;true&quot; consumerTTL=&quot;1&quot; messageTTL=&quot;-1&quot; name=&quot;TopicConnectorConnectingToBroker2&quot; uri=&quot;masterslave:(ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-1.mq.us-east-1.amazonaws.com:61617,ssl://b-88e0e40a-d67a-4476-ac04-9015b4a491e5-2.mq.us-east-1.amazonaws.com:61617)&quot; userName=&quot;Kevin&quot;&gt;</span><br><span class="line">      &lt;excludedDestinations&gt;</span><br><span class="line">        &lt;queue physicalName=&quot;&amp;gt;&quot;/&gt;</span><br><span class="line">      &lt;/excludedDestinations&gt;</span><br><span class="line">    &lt;/networkConnector&gt;</span><br><span class="line">  &lt;/networkConnectors&gt;</span><br></pre></td></tr></table></figure><h3 id="conduitSubscriptions-屬性"><a href="#conduitSubscriptions-屬性" class="headerlink" title="conduitSubscriptions 屬性"></a>conduitSubscriptions 屬性</h3><p>根據 ActiveMQ 官方文件 </p><blockquote><p><a href="https://activemq.apache.org/networks-of-brokers">https://activemq.apache.org/networks-of-brokers</a></p></blockquote><p><img src="/img/ActiveMQ/ActiveMQ9.png"></p><p>訂閱相同目的地的多位消費者被網路視為一個消費者，這是為了避免有收到相同消息的狀況</p><p>ActiveMQ 會依賴有關活動消費者（訂閱者）的資訊來在網絡中傳遞訊息，<strong>使用 Conduit Subscription時，如果有多個遠端訂閱，遠程代理將每個消息的副本視為有效，這可能導致訊息重復的狀況產生</strong>。</p><p>因此，預設的 Conduit 行為會去<strong>整合所有匹配的訂閱訊息，以防止在網絡中傳播重複</strong>。</p><p>這樣，遠程代理上的 <code>N</code> 個訂閱看起來對於網絡代理來說就像是一個單一的訂閱。</p><blockquote><p>然而，如果只使用 Queue，重複的訂閱是一個有用的功能，因為負載平衡算法將嘗試均勻分配消息負載，僅當 <code>conduitSubscriptions=false</code> 時，跨網絡的消費者才會均勻分享消息負載。</p></blockquote><p>舉例來說，有兩個代理，A 和 B，它們通過一個 proxy bridge 相互連接。</p><p>連接到代理 A 的消費者訂閱一個名為 <code>Q.TEST</code> 的Queue，連接到代理 B 的兩個消費者也訂閱 <code>Q.TEST</code>，所以這裡有三個消費者，並且假設所有消費者具有相等的優先級。</p><p>然後，在代理 A 上啟動一個生產者，將 30 條消息寫入 <code>Q.TEST</code>。默認情況下（<code>conduitSubscriptions=true</code>），將有 15 條消息發送到代理 A 上的消費者，其餘的 15 條消息將發送到代理 B 上的兩個消費者。</p><p><strong>但也由於預設狀況下，代理 A 將代理 B 上的兩個訂閱視為一個，消息負載並未均勻分佈在所有三個消費者之間。</strong></p><p>但如果你將 <code>conduitSubscriptions</code> 設置為 <code>false</code>，那麼三個消費者中的每個將分配到 10 條消息。</p><h2 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h2><p>[+] 執行個體類型 - <a href="https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/broker-instance-types.html">https://docs.aws.amazon.com/zh_tw/amazon-mq/latest/developer-guide/broker-instance-types.html</a><br>[+] Amazon MQ 代理网络 - 代理网络的工作原理是什么？ - <a href="https://docs.aws.amazon.com/zh_cn/amazon-mq/latest/developer-guide/network-of-brokers.html#how-does-it-work">https://docs.aws.amazon.com/zh_cn/amazon-mq/latest/developer-guide/network-of-brokers.html#how-does-it-work</a><br>[+]ActiveMQ - NetworkConnectors - <a href="https://activemq.apache.org/networks-of-brokers">https://activemq.apache.org/networks-of-brokers</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 實作紀錄 </category>
+          
+          <category> 學習筆記 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AWS </tag>
+            
+            <tag> ActiveMQ </tag>
+            
+            <tag> MQ </tag>
+            
+            <tag> Scaling </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【學習筆記】OTA Update -1</title>
+      <link href="/posts/613d9ed0.html"/>
+      <url>/posts/613d9ed0.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="什麼是-OTA-Update-Over-The-Air-Updtae"><a href="#什麼是-OTA-Update-Over-The-Air-Updtae" class="headerlink" title="什麼是 OTA Update (Over The Air Updtae)?"></a>什麼是 OTA Update (Over The Air Updtae)?</h2><p>透過無線通訊去對設備進行軟體&#x2F;韌體更新</p><h2 id="OTA-的流程"><a href="#OTA-的流程" class="headerlink" title="OTA 的流程"></a>OTA 的流程</h2><ul><li>Notify<ul><li>設備會被通知有擱置的OTA更新</li><li>設備可以選擇忽略更新或者接受更新以觸發下載</li></ul></li><li>Download<ul><li>設備通過各種支援的協定進行更新下載</li><li>更新包會下載到預先設定好的儲存區域<ul><li>Ex. S3 Bucket</li></ul></li><li>更新可能是全新的韌體映像或現有韌體的補丁</li></ul></li><li>Verify<ul><li>驗證更新包的有效性</li></ul></li><li>Install<ul><li>設備通過更新包開始更新（通常是通過 bootloader）成最新的韌體</li><li>安裝後可以執行檢查以驗證功能</li><li>設備將向 OTA 更新提供者報告韌體更新成功</li></ul></li></ul><p>主要分成這四個步驟</p><h2 id="模組化-OTA-更新"><a href="#模組化-OTA-更新" class="headerlink" title="模組化 OTA 更新"></a>模組化 OTA 更新</h2><ul><li>模組化 OTA 由幾個小型函式庫和一個協調器(Orchestrator)組成。</li><li>每個 Lib 負責特定的子任務，例如通知待處理的 OTA 更新或透過 MQTT 下載檔案</li><li>編排器將所有小型程式庫與bootloader 和 Memory Pool 同步以執行 OTA 更新。</li></ul><p>模組化 OTA 方法可讓您根據需求的變化更換或更改 OTA 的不同部分。例如：</p><ol><li>如果您想從 AWS IoT 觸發 OTA，則可以使用 IoT Job Lib檢查新的 OTA 更新或傳送有關 OTA Jobs 狀態的通知。或者，您可以將其替換為任何其他其他的程式庫。</li><li>可以使用IoT Job Lib 中的 <strong>OTA Job Parser</strong> 來解析接收到的OTAJob Document。或者，您可以根據 OTA Job Document 使用自己自訂的 Job Document Parser。</li></ol><h2 id="模組化-OTA-更新流程"><a href="#模組化-OTA-更新流程" class="headerlink" title="模組化 OTA 更新流程"></a>模組化 OTA 更新流程</h2><p>以下是根據 FreeRTOS 官網提供的模組化 OTA更新的流程</p><p><img src="https://hackmd.io/_uploads/Sk_CRjSB6.png" alt="image"></p><h2 id="協調器（Orchestrator）"><a href="#協調器（Orchestrator）" class="headerlink" title="協調器（Orchestrator）"></a>協調器（Orchestrator）</h2><ul><li>Orchestrator 是指定如何協調 OTA 更新的核心元件</li><li>Orchestrator 由使用者提供，並包含所需數量的自訂元件，以完成所需的 OTA 更新方法</li><li>典型的更新將包含「通知」、「下載」、「驗證」和「安裝」階段。 </li><li>Orchestrator 將透過將元件函式庫和其他外部函式庫拼接在一起來提供這些階段</li><li>每個元件函式庫的描述可以在下面找到</li></ul><h2 id="IoT-Job-Libraries"><a href="#IoT-Job-Libraries" class="headerlink" title="IoT Job Libraries"></a>IoT Job Libraries</h2><ul><li>IoT Job Handler 會是整個 OTA Flow 當中第一個使用到的元件</li><li>這個函式庫提供了啟動待處理的 IoT 作業以及更新作業狀態的功能</li><li>當作業處理程序獲悉新的 OTA 更新（透過 IoT Job 進行）時，處理程序將啟動 Job 並將 Job 及其 metadata 傳遞到解析器鏈</li><li>如果設定了解析器來處理該 Job ，它將向 Job Handler 轉送 Job 已成功啟動的資訊</li><li>此成功啟動通知將轉發回 OTA 更新提供者（即 IoT Jobs），以將更新標記為已啟動。如果沒有解析器能夠理解該作業，則啟動 OTA 更新的失敗將轉發給提供者</li></ul><h2 id="OTA-Job-Parser"><a href="#OTA-Job-Parser" class="headerlink" title="OTA Job Parser"></a>OTA Job Parser</h2><p>解析器將驗證 IoT 作業是否為 OTA 更新，並在呼叫下載器之前將欄位解析為可用格式</p><h2 id="MQTT-file-streaming-library"><a href="#MQTT-file-streaming-library" class="headerlink" title="MQTT file streaming library"></a>MQTT file streaming library</h2><ul><li>文件下載器提供下載 OTA 檔案的功能。檔案下載器透過 CBOR 或 JSON 格式的 MQTT Stream 處理下載更新</li><li>下載本身是在 Chunk 上執行的，這更容易被視為整個 OTA 更新檔案的區塊。這樣做是為了提高下載的可靠性，並允許比單一下載「區塊」中可能進行的更大的韌體更新。</li></ul><h2 id="Bootloader-and-Signature-Verifier"><a href="#Bootloader-and-Signature-Verifier" class="headerlink" title="Bootloader and Signature Verifier"></a>Bootloader and Signature Verifier</h2><ul><li>bootloader 的存在是為了驗證新韌體並將其安裝到裝置上</li><li>模組化 OTA 刻意避免實施 bootloader，因為已經存在適用於大量受支援微控制器的多個行業範圍的 bootloader</li><li>模組化 OTA 將 bootloader和簽章驗證機制的選擇留給使用者。</li></ul><h2 id="AWS-IoT-Jobs-以及-AWS-IoT-OTA-Update差異"><a href="#AWS-IoT-Jobs-以及-AWS-IoT-OTA-Update差異" class="headerlink" title="AWS IoT Jobs 以及 AWS IoT OTA Update差異"></a>AWS IoT Jobs 以及 AWS IoT OTA Update差異</h2><ul><li>AWS IoT Jobs<ul><li>定義一組可以發送到一個或多個設備並在其上運行的遠端操作</li><li>最常見的是，作業用於執行軟體或韌體更新，但也可用於執行任何任意操作，例如重新啟動、憑證 Rotate等</li></ul></li><li>AWS IoT OTA Update<ul><li>基於 AWS IoT Jobs 建置的功能，專門實現軟體&#x2F;韌體更新操作，並且僅實現該操作</li><li>OTA 更新是一項 Job，<strong>但有預先定義的 Job文件</strong>。它捆綁了常見的軟體更新功能（例如程式碼簽署），可以能夠更快建立軟體更新解決方案</li></ul></li></ul><p>比較表格</p><table><thead><tr><th></th><th>AWS IoT Jobs</th><th>AWS IoT OTA Updates</th></tr></thead><tbody><tr><td>用途</td><td>任何自定義的行為</td><td>FreeRTOS OTA update</td></tr><tr><td>Job 文件</td><td>可自定義</td><td>預先定義</td></tr><tr><td>建立的 API</td><td>CreateJob</td><td>CreateOTAUpdate</td></tr><tr><td>程式碼簽署</td><td>需使用者自行實踐</td><td>已整合</td></tr><tr><td>HTTP&#x2F;MQTT</td><td>需使用者自行選擇</td><td>已整合</td></tr><tr><td>支援AWS IoT Device SDK</td><td>C, C++, Python, Java, Javascript</td><td>僅有 C</td></tr><tr><td>Platform Abstraction Layer (PAL)</td><td>無</td><td>有 [3]</td></tr><tr><td>Max 檔案限制</td><td>HTTP: <strong>5GB (Amazon S3 limit)</strong>, MQTT: <strong>24MB (MQTT file stream limit)</strong></td><td>16MB (OTA update limit)[4]</td></tr></tbody></table><h2 id="AWS-IoT-Over-The-Air-OTA-Library"><a href="#AWS-IoT-Over-The-Air-OTA-Library" class="headerlink" title="AWS IoT Over-The-Air (OTA) Library"></a>AWS IoT Over-The-Air (OTA) Library</h2><blockquote><p><a href="https://github.com/aws/ota-for-aws-iot-embedded-sdk">https://github.com/aws/ota-for-aws-iot-embedded-sdk</a></p></blockquote><p>這個AWS函式庫同時包含了，FreeRTOS 以及 AWS IoT Device SDK for Embedded-C</p><p>這個函式庫同時包含了<strong>OTA Platform Abstration Layer (PAL)</strong> [3] 來去簡化將函式庫遷移到特定硬體的難度 [5]。</p><p>也有  OTA Operating System (OS) Functional Interface 來去簡化移植到 FreeRTOS 以外的 RTOS 甚至是裸機的困難度。</p><blockquote><p>由於 AWS IoT OTA 適用於資源受限的設備，因此在原生的Device SDK 並沒有整合 FreeRTOS。出於同樣的原因，OTA 檔案大小限制為 16MB。</p></blockquote><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p>[1] <a href="https://www.freertos.org/freertos-core/over-the-air-updates/index.html">https://www.freertos.org/freertos-core/over-the-air-updates/index.html</a><br>[2] <a href="https://repost.aws/articles/ARDHNhV0bnRGau0kmdhTSZZA/comparing-aws-iot-jobs-and-aws-iot-over-the-air-ota-updates">https://repost.aws/articles/ARDHNhV0bnRGau0kmdhTSZZA/comparing-aws-iot-jobs-and-aws-iot-over-the-air-ota-updates</a><br>[3] <a href="https://www.freertos.org/Documentation/api-ref/ota-for-aws-iot-embedded-sdk/docs/doxygen/output/html/ota_pal_interface.html">https://www.freertos.org/Documentation/api-ref/ota-for-aws-iot-embedded-sdk/docs/doxygen/output/html/ota_pal_interface.html</a><br>[4] <a href="https://docs.aws.amazon.com/general/latest/gr/amazon-freertos.html#limits-ota-manager">https://docs.aws.amazon.com/general/latest/gr/amazon-freertos.html#limits-ota-manager</a><br>[5] Porting Guide - <a href="https://www.freertos.org/Documentation/api-ref/ota-for-aws-iot-embedded-sdk/docs/doxygen/output/html/ota_porting.html">https://www.freertos.org/Documentation/api-ref/ota-for-aws-iot-embedded-sdk/docs/doxygen/output/html/ota_porting.html</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 學習筆記 ota-update </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AWS </tag>
+            
+            <tag> IoT </tag>
+            
+            <tag> OTA </tag>
+            
+            <tag> Firmware </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【爬山紀錄】七星山主峰 + 東峰</title>
+      <link href="/posts/22f14c54.html"/>
+      <url>/posts/22f14c54.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>由於生長在台北多年還沒去七星山主峰的三角點，趁著難得的好天氣出遊踩點</p><p>這次爬七星山的主要路線是從 <strong>小油坑登山口</strong> -&gt; <strong>七星山主峰</strong> -&gt; <strong>七星山東峰</strong>，接著原路返回到 <strong>小油坑停車場</strong></p><p><img src="/img/mountain-1/161346.jpg"></p><p>七星山是台北市內最高的山，海拔達到 <code>1120</code> 公尺</p><h2 id="小油坑地熱口"><a href="#小油坑地熱口" class="headerlink" title="小油坑地熱口"></a>小油坑地熱口</h2><p>地熱口附近硫磺味很重，但天氣冷其實靠近挺暖的<br><img src="/img/mountain-1/m1.jpg"></p><p>湧出的硫磺泉會沸騰冒泡<br><img src="/img/mountain-1/m2.jpg"><br><img src="/img/mountain-1/m3.jpg"><br><img src="/img/mountain-1/m4.jpg"><br><img src="/img/mountain-1/m5.jpg"><br><img src="/img/mountain-1/m6.jpg"></p><h2 id="七星山主峰"><a href="#七星山主峰" class="headerlink" title="七星山主峰"></a>七星山主峰</h2><p>通往主峰的路上幾乎都是石頭階梯，但階梯路途中挺多陡上，<strong>建議攜帶登山杖</strong></p><p><img src="/img/mountain-1/m13.jpg"><br><img src="/img/mountain-1/m8.jpg"></p><p>現在是11月的芒草季，但這裡風大，芒草都被吹得彎曲，但景色還是挺美</p><p><img src="/img/mountain-1/m7.jpg"><br><img src="/img/mountain-1/m10.jpg"></p><p>假日會很多登山客要來跟這根拍照，就自行考量要不要留個紀念了<br><img src="/img/mountain-1/m9.jpg"></p><h2 id="七星山東峰"><a href="#七星山東峰" class="headerlink" title="七星山東峰"></a>七星山東峰</h2><p>主峰往東峰的路段只需再走 <code>0.3K</code>，可以選擇一次蒐集兩個峰頂。但從七星主峰到七星東峰的部分路段較為濕滑，建議穿有防滑的登山鞋來。</p><h2 id="草叢"><a href="#草叢" class="headerlink" title="草叢"></a>草叢</h2><p>順帶一提，一路上都有很多像是下面這樣，人可以通過的樹叢，如果透過離線地圖看是可以發現路的，而且也能發現有綁繩子，舊友進去稍微探險一下，但由於後面泥濘太多，就沒有深入往下探下去了</p><p><img src="/img/mountain-1/m11.jpg"><br><img src="/img/mountain-1/m12.jpg"><br><img src="/img/mountain-1/m14.jpg"></p><p>東峰的景色個人覺得還好，但也是多人跟著合照。</p><p><img src="/img/mountain-1/m15.jpg"></p><p>之後就原路返回停車場，結束今天的旅程了</p><blockquote><p>其實大多數人都會從小油坑上去到主峰再到東峰，再從冷水坑下去或是反向路線，但由於有開車就只能原路來回拉</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 爬山健行 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 北部 </tag>
+            
+            <tag> 小百岳 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>機群佈建(Fleet Provisioning) - 預先佈建裝置到 AWS IoT</title>
       <link href="/posts/889a40ef.html"/>
       <url>/posts/889a40ef.html</url>
@@ -146,9 +237,9 @@
       
         <tags>
             
-            <tag> Lambda </tag>
-            
             <tag> AWS </tag>
+            
+            <tag> Lambda </tag>
             
         </tags>
       
@@ -173,9 +264,9 @@
       
         <tags>
             
-            <tag> Lambda </tag>
-            
             <tag> AWS </tag>
+            
+            <tag> Lambda </tag>
             
         </tags>
       
@@ -200,9 +291,9 @@
       
         <tags>
             
-            <tag> Lambda </tag>
-            
             <tag> AWS </tag>
+            
+            <tag> Lambda </tag>
             
         </tags>
       
@@ -227,9 +318,9 @@
       
         <tags>
             
-            <tag> Lambda </tag>
-            
             <tag> AWS </tag>
+            
+            <tag> Lambda </tag>
             
             <tag> Connect </tag>
             
@@ -256,9 +347,9 @@
       
         <tags>
             
-            <tag> Amazon </tag>
-            
             <tag> Lambda </tag>
+            
+            <tag> Amazon </tag>
             
         </tags>
       
@@ -283,9 +374,9 @@
       
         <tags>
             
-            <tag> Amazon </tag>
-            
             <tag> Lambda </tag>
+            
+            <tag> Amazon </tag>
             
             <tag> 網頁爬蟲 </tag>
             
