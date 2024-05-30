@@ -1,5 +1,5 @@
 ---
-title: 二元搜尋法 | ✅ 704. Binary Search | LeetCode 
+title: 二元搜尋法 | 704. Binary Search | LeetCode#1
 toc: true
 tags:
   - Search
