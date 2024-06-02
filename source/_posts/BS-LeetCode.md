@@ -5,6 +5,7 @@ tags:
   - Search
   - LeetCode
   - Array
+  - Easy
 categories: LeetCode筆記
 aside: true
 abbrlink: 22bf447e
