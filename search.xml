@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>刪除鏈結串列 | LeetCode#237 Delete Node in a Linked List</title>
+      <link href="/posts/5efda43a.html"/>
+      <url>/posts/5efda43a.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="題目敘述"><a href="#題目敘述" class="headerlink" title="題目敘述"></a>題目敘述</h1><p><img src="/img/LeetCode/237/question-1.png"></p><p><img src="/img/LeetCode/237/question-2.png"></p><p><img src="/img/LeetCode/237/question-3.png"></p><ul><li>題目難度: <code>Medium</code></li><li>題目描述: 如同圖中所述，題目中要求我們對一個 Single Linked List <code>head</code> 去實現一個刪除特定節點的函式，函式的輸入叫做 <code>node</code>，題目中有特別說明。</li><li>限制:<ul><li><code>node</code> 不會是 <code>head</code>中的最後一個節點，並且我們並不能夠存取 <code>head</code> 中的第一個元素，也就是整個 List 的初始節點。</li><li>這題的刪除節點不需要釋放記憶體，僅需將前一個節點連接到 <code>node</code> 的後一個節點</li></ul></li></ul><blockquote><p>在 Run 以及 Submit 的時候，題目會建好List 並且呼叫我們寫的function，來去進行測試，這題只需要專注在刪除節點的邏輯上就好</p></blockquote><h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><h2 id="一開始的想法"><a href="#一開始的想法" class="headerlink" title="一開始的想法"></a>一開始的想法</h2><p>一開始我陷入了傳統刪除節點的做法當中，也就是已知初始節點的條件下去走訪每個節點，指到找到給定節點，再去執行刪除的邏輯。</p><h3 id="傳統作法"><a href="#傳統作法" class="headerlink" title="傳統作法"></a>傳統作法</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Node* <span class="title function_">DeleteNode</span><span class="params">(Node* first ,Node* node)</span>&#123;</span><br><span class="line">    Node* ptr= first;</span><br><span class="line">    <span class="keyword">if</span> (first == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Noting to print\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Delete first node of the list</span></span><br><span class="line">    <span class="keyword">if</span> (node == first)&#123;</span><br><span class="line">        <span class="comment">// Update the first pointer to the next node</span></span><br><span class="line">        first = first-&gt;next;</span><br><span class="line">        <span class="built_in">free</span>(node);</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// ptr traverse through the list</span></span><br><span class="line">        <span class="keyword">while</span> (ptr-&gt;next != node)</span><br><span class="line">        &#123;</span><br><span class="line">            ptr = ptr-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ptr-&gt;next = node-&gt;next;</span><br><span class="line">        <span class="built_in">free</span>(node);</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>這種做法會<strong>需要知道 <code>node</code>的前一個節點，才有辦法指向到 <code>node</code>的下一個節點</strong>，但這題中，已知資訊只有 <code>node</code> 的位址，<strong>因此沒辦法知道前一個節點是誰。</strong></p><p><img src="/img/LeetCode/237/explain.png"></p><h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><p>面對這種狀況，可以換一個想法，<strong>可以把 <code>node</code> 後面節點的資料往前複製過來，持續進行，直到遇到NULL，也能夠實現一樣的效果</strong></p><p><img src="/img/LeetCode/237/solution.png"></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">deleteNode</span><span class="params">(<span class="keyword">struct</span> ListNode* node)</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span>  *<span class="title">nextNode</span>, *<span class="title">current</span> =</span> node ;</span><br><span class="line">    <span class="keyword">while</span>(current-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line"></span><br><span class="line">        nextNode = current-&gt;next;</span><br><span class="line">        current-&gt;val = nextNode-&gt;val;</span><br><span class="line">        <span class="keyword">if</span>(current-&gt;next-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">            current-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//update current pointer</span></span><br><span class="line">            current = nextNode;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>執行結果如下:</p><p><img src="/img/LeetCode/237/result-1.png"></p><h2 id="更好的做法"><a href="#更好的做法" class="headerlink" title="更好的做法"></a>更好的做法</h2><p>其實有更加精簡的寫法，但時間複雜度其實沒什麼太大差異</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">deleteNode</span><span class="params">(<span class="keyword">struct</span> ListNode* node)</span>&#123;</span><br><span class="line">    node-&gt;val = node-&gt;next-&gt;val;</span><br><span class="line">    node-&gt;next = node-&gt;next-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>執行結果:<br><img src="/img/LeetCode/237/result-2.png"></p><blockquote><p>但好像多花費了 1ms, ….</p></blockquote><h2 id="時間複雜度分析"><a href="#時間複雜度分析" class="headerlink" title="時間複雜度分析"></a>時間複雜度分析</h2><p><strong>時間複雜度</strong>: $O(1)$: 本演算法包含固定數量的操作，像是更新當前節點的資料並更改其下一個指標，這些操作中的每一個都需要固定的時間，無論 Linked List 的大小如何。<br><strong>空間複雜度</strong>: $O(1)$: 這種刪除技術不需要任何額外的記憶體分配，因為它直接在現有節點上操作而無需建立額外的資料結構</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> LeetCode筆記 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> LeetCode </tag>
+            
+            <tag> Linked List </tag>
+            
+            <tag> Medium </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>刷題必備神器 | 鏈結串列 (Linked List) | LeetCode 筆記</title>
       <link href="/posts/c1fe4928.html"/>
       <url>/posts/c1fe4928.html</url>
@@ -110,6 +139,8 @@
             <tag> LeetCode </tag>
             
             <tag> Array </tag>
+            
+            <tag> Easy </tag>
             
         </tags>
       
