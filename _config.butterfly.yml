@@ -9,15 +9,15 @@ nav:
 
 # Menu 目錄
 menu:
-  首頁: / || fas fa-home
-  找文章||fas fa-list:
-      歸檔: /archives/ || fas fa-archive
-      標籤: /tags/ || fas fa-tags
-      分類: /categories/ || fas fa-folder-open
-  鏈結: /link/ || fas fa-link
-  語言:||fas fa-language:
-    English: /en/ || fas fa-e
-    中文: / || fa-c
+  Home: / || fas fa-home
+  Find Posts||fas fa-list:
+      Archives: /archives/ || fas fa-archive
+      Tags: /tags/ || fas fa-tags
+      Categories: /categories/ || fas fa-folder-open
+  Links: /link/ || fas fa-link
+  Languages:||fas fa-language:
+    English: / || fas fa-e
+    中文: https://leozzmc.github.io/ || fas fa-c
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
@@ -57,20 +57,20 @@ favicon: /img/kevin3.png
 
 # Avatar (頭像)
 avatar:
-  img: /img/2.png
+  img: /img/me.jpg
   effect: false
 
 # Disable all banner image
 disable_top_img: false
 
 # The banner image of home page
-index_img: /img/PXL_20230528_010606799.jpg
+index_img: /img/cover7.jpg
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: /img/PXL_20230528_010606799.jpg
+default_top_img: /img/cover7.jpg
 
 # The banner image of archive page
-archive_img: /img/PXL_20230528_010606799.jpg
+archive_img: /img/cover7.jpg
 
 # If the banner of tag page not setting, it will show the top_img
 # note: tag page, not tags page (子標籤頁面的 top_img)
@@ -307,14 +307,14 @@ newest_comments:
 translate:
   enable: true
   # The text of a button
-  default: EN
+  default: 繁
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
-  defaultEncoding: 3
+  defaultEncoding: 1
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
   #msgToTraditionalChinese: '繁'
-  # # The text of the button when the language is Traditional Chinese
+  # The text of the button when the language is Traditional Chinese
   #msgToEnglish: 'EN'
 
 # Read Mode (閲讀模式)
@@ -780,8 +780,8 @@ subtitle:
   source: false
   # 如果關閉打字效果，subtitle 只會顯示 sub 的第一行文字
   sub:
-    - 蹲的越低
-    - 腳就越酸 
+    - Deep dive into tech
+    - Breadth experience in life
 
 # Loading Animation (加載動畫)
 preloader:
@@ -922,10 +922,10 @@ css_prefix: true
 # 插入代码到头部 </head> 之前 和 底部 </body> 之前
 inject:
   head:
-    - <link rel="stylesheet" href="/css/style.css">
+    - <link rel="stylesheet" href="/en/css/style.css">
   bottom:
-    - <script data-pjax src="/self/btf.js"></script> 
-    - <script data-pjax src="/self/tw_en.js"></script>
+    - <script data-pjax src="/en/self/btf.js"></script> 
+    - <script data-pjax src="/en/self/tw_en.js"></script>
     # - <script src="xxxx"></script>
 
 # CDN

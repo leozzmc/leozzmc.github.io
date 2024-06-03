@@ -57,20 +57,20 @@ favicon: /img/kevin3.png
 
 # Avatar (頭像)
 avatar:
-  img: /img/2.png
+  img: /img/me.jpg
   effect: false
 
 # Disable all banner image
 disable_top_img: false
 
 # The banner image of home page
-index_img: /img/PXL_20230528_010606799.jpg
+index_img: /img/cover7.jpg
 
 # If the banner of page not setting, it will show the top_img
-default_top_img: /img/PXL_20230528_010606799.jpg
+default_top_img: /img/cover7.jpg
 
 # The banner image of archive page
-archive_img: /img/PXL_20230528_010606799.jpg
+archive_img: /img/cover7.jpg
 
 # If the banner of tag page not setting, it will show the top_img
 # note: tag page, not tags page (子標籤頁面的 top_img)
