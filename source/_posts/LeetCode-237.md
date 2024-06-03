@@ -1,5 +1,5 @@
 ---
-title: 刪除鏈結串列 | LeetCode#237 Delete Node in a Linked List
+title: 刪除鏈結串列 | Medium | LeetCode#237 Delete Node in a Linked List
 toc: true
 tags:
   - Linked List
