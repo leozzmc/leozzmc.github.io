@@ -22,7 +22,7 @@ date: 2024-06-06 07:24:58
 # 解法
 
 ## 一開始的想法
-![](/img/LeetCode/21/algo1.png)
+![](/img/LeetCode/21/algo.jpg)
 
 一開始我想說可以先走訪 `list1` 然後逐項比對 `list2` 的item，如果 `list1`中的元素小於 `list2` 的，就插入到 `list2`，並且插入後，再繼續迭代 `list1`當中的元素
 

@@ -16,7 +16,7 @@ cover: /img/LeetCode/206/cover.jpg
 
 ![](/img/LeetCode/206/question-1.png)
 
-![](/img/LeetCode/206/question-1.png)
+![](/img/LeetCode/206/question-2.png)
 
 - 題目難度: `Easy`
 - 題目描述: 給定一個 linked list 的 `head`，希望整個 list 反轉，並且回傳反轉後的list
