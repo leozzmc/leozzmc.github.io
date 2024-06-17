@@ -7,7 +7,7 @@ tags:
   - Easy
 categories: LeetCode筆記
 aside: true
-abbrlink: a8f8d3c5
+abbrlink: search_insert_position
 date: 2024-06-17 14:34:06
 cover: /img/LeetCode/35/cover.jpg
 ---
