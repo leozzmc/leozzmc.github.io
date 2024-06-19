@@ -8,7 +8,7 @@ tags:
 categories: LeetCode筆記
 aside: true
 cover: /img/LeetCode/12/cover.jpeg
-abbrlink: f3274037
+abbrlink: Integer_to_Roman
 date: 2024-06-19 09:22:14
 ---
 
