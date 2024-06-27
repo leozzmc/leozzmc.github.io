@@ -4,6 +4,7 @@ tags:
   - Linked List
   - LeetCode
   - Easy
+  - C
 categories: LeetCode筆記
 aside: true
 abbrlink: a6b83df3

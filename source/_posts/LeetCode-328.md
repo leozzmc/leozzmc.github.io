@@ -5,6 +5,7 @@ tags:
   - Linked List
   - LeetCode
   - Medium
+  - C
 categories: LeetCode筆記
 aside: true
 abbrlink: Odd_Even_Linked_List

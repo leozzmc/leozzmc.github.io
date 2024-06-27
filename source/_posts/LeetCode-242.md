@@ -5,6 +5,7 @@ tags:
   - Hash Table
   - LeetCode
   - Easy
+  - 'C++'
 categories: LeetCode筆記
 aside: true
 cover: /img/LeetCode/242/cover.jpg

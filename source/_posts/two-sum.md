@@ -5,6 +5,7 @@ tags:
   - Hash Table
   - LeetCode
   - Array
+  - C
 categories: LeetCode筆記
 aside: true
 abbrlink: cb46ac9d

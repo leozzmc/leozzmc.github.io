@@ -4,6 +4,7 @@ tags:
   - Linked List
   - LeetCode
   - Easy
+  - C
 categories: LeetCode筆記
 aside: true
 abbrlink: the_middle_of_the_list

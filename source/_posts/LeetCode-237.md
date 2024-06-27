@@ -5,6 +5,7 @@ tags:
   - Linked List
   - LeetCode
   - Medium
+  - C
 categories: LeetCode筆記
 aside: true
 cover: /img/LeetCode/237/cover.jpg

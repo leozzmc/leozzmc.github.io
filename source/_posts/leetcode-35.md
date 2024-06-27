@@ -5,6 +5,7 @@ tags:
   - Binary Search
   - LeetCode
   - Easy
+  - C
 categories: LeetCode筆記
 aside: true
 abbrlink: search_insert_position
