@@ -13,7 +13,7 @@ cover: /img/LeetCode/stack/cover.jpg
 
 # 甚麼是 Stack?
 
-Stack 是一種資料結構，具有**後進先出(Last-In-First-Out, LIFO)**的特性，
+Stack 是一種資料結構，具有 **後進先出(Last-In-First-Out, LIFO)** 的特性，
 
 ![](/img/LeetCode/stack/stack.png)
 
