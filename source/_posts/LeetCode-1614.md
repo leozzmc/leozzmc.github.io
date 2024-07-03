@@ -18,9 +18,9 @@ date: 2024-07-03 15:05:37
 
 **Constraints:**
 
-1 <= s.length <= 100
-s consists of digits 0-9 and characters '+', '-', '*', '/', '(', and ')'.
-It is guaranteed that parentheses expression s is a VPS.
+- 1 <= s.length <= 100
+- s consists of digits 0-9 and characters '+', '-', '*', '/', '(', and ')'.
+- It is guaranteed that parentheses expression s is a VPS.
 
 - 題目難度: `Easy`
 - 題目敘述: 給定一個有效的括號字串 `s`，回傳括號nesting的深度
@@ -34,7 +34,7 @@ It is guaranteed that parentheses expression s is a VPS.
 
 > 這題很簡單，從想解法(畫在平板上)到最後Submission Accept花了11分鐘。
 
-首先要想的問題會是: **如何判斷nesting parentheses?** 我認為只要有連續的左邊未密合括號出現，就能夠判斷出nesting深度。因此要做的事情就是當出現佐括號 `(` 就 push 進 stack，當出現右括號就 pop出stack，這些操作進行的同時記錄下stack的數量變化，最大值即為深度。
+首先要想的問題會是: **如何判斷nesting parentheses?** 我認為只要有連續的左邊未閉合括號出現，就能夠判斷出nesting深度。因此要做的事情就是當出現左括號 `(` 就 push 進 stack，當出現右括號就 pop出stack，這些操作進行的同時記錄下stack的數量變化，最大值即為深度。
 
 ![](/img/LeetCode/1614/algo.png)
 
