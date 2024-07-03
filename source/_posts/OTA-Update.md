@@ -7,7 +7,7 @@ tags:
   - OTA
   - Firmware
 aside: true
-categories: 學習筆記 ota-update
+categories: 學習筆記
 abbrlink: 613d9ed0
 date: 2023-12-13 12:32:05
 cover: /img/OTA/OIG.jpeg
