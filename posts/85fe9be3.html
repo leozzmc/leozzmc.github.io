@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VNF Deployment and Flow Scheduling in Geo-distributed Data Centers | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="論文導讀_了解在不同地理位置資料中心之間的VNF的部署以及網路流量問題">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VNF Deployment and Flow Scheduling in Geo-distributed Data Centers">
+<meta property="og:url" content="https://leozzmc.github.io/posts/85fe9be3.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="論文導讀_了解在不同地理位置資料中心之間的VNF的部署以及網路流量問題">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:published_time" content="2021-06-25T00:51:54.000Z">
+<meta property="article:modified_time" content="2023-07-02T14:13:30.317Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="VNF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/85fe9be3.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VNF Deployment and Flow Scheduling in Geo-distributed Data Centers',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-02 22:13:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">63</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.imgur.com/YfR1XMZ.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">VNF Deployment and Flow Scheduling in Geo-distributed Data Centers</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2021-06-25T00:51:54.000Z" title="發表於 2021-06-25 08:51:54">2021-06-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2023-07-02T14:13:30.317Z" title="更新於 2023-07-02 22:13:30">2023-07-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/">論文導讀</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="VNF Deployment and Flow Scheduling in Geo-distributed Data Centers"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>NFV可降低網路營運上的設備採購以及維護成本，透過NFV可將網路功能與物理基礎設施進行解耦合。<br>並在通用硬體上運行虛擬網路功能(VNF)，NFV可使網路更加靈活可控，但仍然存在各種技術挑戰<br>像是如何在不同地理位置上有效部屬VNFs，以及在不同地理位址的資料中心調度網路流量。</p>
+<p>本篇論文中研究此議題並最大縣動減少部屬以及通訊成本，此問題被轉換成 混合整數線性規劃問題(mixed-integer linear programming)，本論文提出一種基於放鬆的演算法(relaxtion-based algorithm)來解決它的計算複雜度，最後通過實驗結果表明，該演算法可有效降低部屬與通訊成本。</p>
+<h2 id="Ch1-Introduction"><a href="#Ch1-Introduction" class="headerlink" title="Ch1-Introduction"></a>Ch1-Introduction</h2><p>傳統資料中心或雲端運算網路架構仰賴特定硬體來提供特定網路服務，像是防火牆、入侵偵測系統。<br>這些造成硬體成本過高。而NFV的出現取代了這種往賴特定硬體的網路架構。</p>
+<p>藉由NFV，網路功能可能被虛擬化成基於軟體的VNF並運行在一般COTS服器上。<br><img src="https://i.imgur.com/9GcTBYs.png"></p>
+<p>而為了提供網路服務，網路流需要流經過一連串以排序之網路功能的集合<br><img src="https://i.imgur.com/fBK2DgN.png"></p>
+<p>然而要實際應用NFV技術，必須考量到VNF要如何串接成一串服務鏈(service chains)以降低成本<br>以往這部分的研究都僅僅關注於部屬成本，旨在減少資料中心的資源消耗，像是CPU、記憶體、儲存空間等，或是單獨著重於通訊成本，像是最大限度減少點對點的延遲等<br>但幾乎沒有考量到若作為VNF部屬的通訊成本。</p>
+<p>在服務鏈上每個鏈結上的網路功能都是有序的，每個鏈結也都有自己的流速，同時在不同VNF部屬在地域分布的資料中心的不同VNF，將導致不同的通訊成本。這代表部屬成本與通訊成本之間的關係不疼夠被忽視，此外舊有研究也很少考慮NFV服務中的流量平衡問題，以前的研究通常會假設VNF流不能夠被分配到同一類的多個VNF Instance上，或是其分散式流量率(distributed flow rate)是預先定義好的，這對於大規模網路中的私有NFV服務來說是不限實也沒效率的，本篇論文認為VNF instance的數量和相應的網路流量應該根據當前網路狀態進行調整。</p>
+<p>本篇論文，考量到有序服務鏈在不同地理分布資料中心下的部屬成本以及通訊成本間的權衡問題，並且我們允許一種 NF 具有多個 VNF 實例。</p>
+<p>本文主要貢獻：</p>
+<ul>
+<li>本文將綜合考量網絡拓撲、VNF的數量和部署以及流量調度，來將VNF部屬以及流量調度問題轉換為混和整數線性規劃問題(mixed integer linear programming, MILP)，，以降低部署成本和通訊成本。</li>
+<li>在該MILP方程式的基礎上設計一種低複雜度的 基於鬆弛的演算法，並進行大量實驗來說明此演算法相較現有演算法的優勢，結果表明本研究提出的演算法可有效降低部屬成本以及通訊成本。</li>
+</ul>
+<h2 id="Ch2-System-Model"><a href="#Ch2-System-Model" class="headerlink" title="Ch2-System Model"></a>Ch2-System Model</h2><h3 id="A-DCs-Topology"><a href="#A-DCs-Topology" class="headerlink" title="A. DCs Topology"></a>A. DCs Topology</h3><p>由於資料中心分布在世界各地，不同資料中心間所傳輸的網路流量會有著不同的成本(cost)<br>這裡透過無向圖(indirected graph) 來代表資料中心的網路拓圖 $G_{d}&#x3D;(D,E_{d})$<br>$D$ 為資料中心  $E_{d}$ 代表網路邊緣<br>$H_{dp}$ 為 edge $e_{dp} \in E_{d}$的 權重(weight) 其中 $d,p \in D$<br>(上面就代表，D和P是資料中心，而H是DP這之間網路連接的Weight，所代表的是這兩資料中心之間的傳輸成本)<br>而這裡須注意，個別資料中心自己到自己之間沒有傳輸成本 $H_{dd}&#x3D;0$</p>
+<h3 id="B-Chain-Set"><a href="#B-Chain-Set" class="headerlink" title="B. Chain Set"></a>B. Chain Set</h3><p>有一組鏈 $C&#x3D;{c1,c2,…}$ 被部屬到資料中心，若將服務鏈中$c_{i} \in C$來源節點(source)與目的節點(destination)分別以 $o_{i}$ 以及 $t_{i}$ 表示。<br>每個服務鏈 $c_{i}$中都有一組以排序之網路功能 $c_{i}&#x3D;{s_{i,1},s_{i,2},….s_{i,j},…}$ 來以速率 $R_{i}$處理網路流量<br>我們定義 $|c_{i}|$ 為服務鏈 $c_{i}$的長度，並且定義 $n(s_{i,j})$ 來表示𝑠𝑖,𝑗的網絡功能的類型<br>舉例來說如圖<br><img src="https://i.imgur.com/y39ct1S.png"><br>圖中三個服務鏈的長度分別為2,3,3 (注意:，不同的服務鏈可能需要一種網絡功能)<br>舉例來說，$c1$ $c2$ $c3$ 可能都共同包含網路功能 $f1$，即 $n(s_{1,1})&#x3D;n(s_{2,2})&#x3D;n(s_{3,2})&#x3D;f_{1}$</p>
+<h3 id="C-NFs-Graph"><a href="#C-NFs-Graph" class="headerlink" title="C. NFs Graph"></a>C. NFs Graph</h3><p>基於上述的鏈集合(Chain Set)，我們可以建構網路功能圖 $G_{n}$<br>此網路功能圖為有向非循環圖(directed acyclic graph, DAG)<br>$G_{n}&#x3D;(V_{n},E_{n})$，且$V_{n}$ 可被歸納為三個種類:</p>
+<ul>
+<li>sources $O$</li>
+<li>network function $N$</li>
+<li>destinations $T$<br>而每個edge $e_{m,n} \in E_{n}$ 代表網路功能$m$與$n$之間的網路流量<br>對於鏈 $c_{i}$ 中的每個服務對(service pair) $(s_{i,j},s_{i,j+1})$，在$G_{n}$中存在一個網路功能對(network function pair)<br>$(m,n)$，存在從$m$到$n$的有向鏈結，其中 $n(s_{i,j})&#x3D;m$ , $n(s_{i,j+1})&#x3D;n$</li>
+</ul>
+<p>如同剛剛提及，不同網路功能可能會由不同服務鏈以不同的網量速率來共享功能<br>對於每個edge $e_{m,n} \in E_{n}$，我們定義一個集合 $U_{m,n} &#x3D; { i : c_{i} \in C, n(s_{i,j})&#x3D;m,n(s_{i,j+1})&#x3D;n}$ 來記錄具有網路功能對($m$,$n$)的服務鏈</p>
+<p>存在具有不同流量要求的不同網路流量在edge $e_{m,n}$ 上傳輸，表示為 $R_{i}$, $\forall i \in U_{m,n}$<br>舉例來說，來自服務鏈 $c1$ 和 $c2$ 的網路流量在 edge $e_{f_{1},f_{2}}$上傳輸，如下圖所示<br><img src="https://i.imgur.com/Ba0onF6.png"><br>速率分別是 2與1</p>
+<h3 id="D-VNFs-Graph"><a href="#D-VNFs-Graph" class="headerlink" title="D. VNFs Graph"></a>D. VNFs Graph</h3><p>我們的目標是要以VNF instance形式來在圖 $G_{n}$ 之中部屬所有網路功能<br>$G_{n}$中每個網路功能n可能會有多個VNF Instances 在不同資料中心<br>舉例來說如下圖<br><img src="https://i.imgur.com/nZQBKNl.png"><br>網路功能 $f1$可能會有兩個VNF Instance分別位於資料中心 $d1$以及 $d2$</p>
+<p>注意，每個網絡功能 $n$ 在所有 $|D|$ 數據中心中可能最多有 $|D|$ 可能的Instance，<br>並且 $G_{n}$ 中的每一對 $(m,n)$ 也可能相應地在它們之間最多有 $|D|^{2}$ 個鏈接。</p>
+<p>因此，在VNF圖 $G_{v}&#x3D;(V_{v},E_{v})$，節點集合 $V_{v}$ 包括 $|V_{n}| \cdot |D|$ instances 表示為集合 $V$、sources集合 $O$以及目標節點集合 $T$，而 $E_{v}$ 表示他們之間的鏈結。<br>對於每個edge $e_{u,v} \in E_{v}$，讓 $f^{i}<em>{uv}$ 註記為服務鏈 $C</em>{i}$中 instance $u$,$v$ 間的流量速率。</p>
+<p>舉例來說，我們考慮圖 $G_{n}$ 中的兩個網路功能 $(f1,f2)$ 以及edge $e_{f_{1},f_{2}}$，對應的 $G_{v}$ 在下圖中顯示，有 2 個資料中心</p>
+<p><img src="https://i.imgur.com/YhG7xQY.png"></p>
+<p>$f1,f2$的Instance分別是 $v1$ $v2$ 以及 $v3$ $v4$，並且j我們可以觀察到，網路功能 $f1$ $f2$共有4個edge，而𝑓1和𝑓2之間的網絡流量可以在這四個edge之間自由分佈</p>
+<p>於任何實例$v \in V$，我們使用$d(v)$ 和$n(v)$分別表示其資料中心位置和網絡功能類型。例如，$d(v_{1})&#x3D;d1$，$n(v_{1})&#x3D;f1$</p>
+<p>Let $N(n)$ 代表提供網路功能 $n$的VNF集合，例如在上圖中，我們有 $v1$以及 $v2$ 來提供網路功能 $f1$，即 $N(f1)&#x3D;{ v1,v2 }$，對於每個 VNF Instance Pair $(u,v)$，可以透過 $f_{uv}^{i}$ 來表示流經邊緣的網路流量速率。<br>其中對於鏈 $c_{i}$ 上的邊緣滿足 $e_{u,v}\in E_{v}$<br>且在圖 $G_{v}$中，$\forall i\in U_{n(u),n(v)}$</p>
+<p><img src="https://i.imgur.com/heLrZ8U.png"></p>
+<h2 id="Ch3-Problem-Formulation"><a href="#Ch3-Problem-Formulation" class="headerlink" title="Ch3-Problem Formulation"></a>Ch3-Problem Formulation</h2><p>基於上一章的系統模型，我們可以公式化VNF部屬以及流量調度問題，轉換成混合整數線性規劃問題<br>(MILP)，且目標是要最小化所有VNF Pairs之間的部屬以及通訊總成本</p>
+<h3 id="VNF-Instance-Placement"><a href="#VNF-Instance-Placement" class="headerlink" title="VNF Instance Placement"></a>VNF Instance Placement</h3><p>如圖$G_{v}$所示，每個網絡功能可以由所有資料中心託管，每個資料中心可以託管所有類型的網絡功能，因此我們定義了二進位的變數 $x_{v}$ 來表示 <strong>在資料中心 $d(v) 中負責提供的網路功能 $n(v)$ 的VNF Instance 是否被實際部屬</strong></p>
+<p><img src="https://i.imgur.com/LW9uzOu.png"></p>
+<h3 id="Flow-requirement-constraints"><a href="#Flow-requirement-constraints" class="headerlink" title="Flow requirement constraints"></a>Flow requirement constraints</h3><p>對於每個服務鏈 $c_{i}$ 所需要的流量，可被分配到所有它的VNF Instance上<br>例如，鏈 $c_{i}$中的網絡功能pair $m$、$n$ 之間的網絡流率 $R_{i}$ 將分佈到$G_{v}$中Instance $v$、$u$ 之間的所有邊上，其中$n(u)&#x3D;m$，$n(v)&#x3D;n$</p>
+<p><img src="https://i.imgur.com/IdjsfTH.png"></p>
+<p>對於來源節點與目標節點，可以列出以下等式<br><img src="https://i.imgur.com/iattDHR.png"></p>
+<h3 id="VNF-flow-constraint"><a href="#VNF-flow-constraint" class="headerlink" title="VNF flow constraint"></a>VNF flow constraint</h3><p>對於每個VNF Instance，輸入流量是源自輸入instance $i(v)$來處理<br>然後分散到輸出instance $o(v)$</p>
+<p><img src="https://i.imgur.com/4EfnGB6.png"></p>
+<p>其中 $\alpha_{n(v)}$ 是由網路功能來決定的擴展因子(scaling factor)</p>
+<h3 id="The-relationship-between-x-v-and-f-i-uv"><a href="#The-relationship-between-x-v-and-f-i-uv" class="headerlink" title="The relationship between $x_{v}$ and $f^{i}_{uv}$"></a>The relationship between $x_{v}$ and $f^{i}_{uv}$</h3><p>只要有流量通過 VNF 實例 $v$，二進位變數應設定為 1 以提供網絡功能$n(v)$，並且此 VNF 實例應部署在$d(v)$ 中。這可以描述為</p>
+<p><img src="https://i.imgur.com/kNT4fbV.png"></p>
+<p><code>A Joint MILP Formulation</code></p>
+<p>若把上述總結，可以得到以下的 <strong>Cost-min</strong> 問題</p>
+<h3 id="Cost-Min"><a href="#Cost-Min" class="headerlink" title="Cost-Min"></a>Cost-Min</h3><p><img src="https://i.imgur.com/g756xNt.png"></p>
+<p>係數 $\gamma$ 和 $\delta$ 由用戶定義，以平衡部署成本和通訊成本，並可根據不同的 QoS 要求進行調整。</p>
+<h2 id="Ch4-Relaxation-Based-Algorithm"><a href="#Ch4-Relaxation-Based-Algorithm" class="headerlink" title="Ch4-Relaxation-Based Algorithm"></a>Ch4-Relaxation-Based Algorithm</h2><p><img src="https://i.imgur.com/X5V2paB.png"><br>因為有 整數變數 $x_{v}$ ，計算上來解決 Cost-Min問題是被禁止的，特別規模大的網路中。<br>此章節中，我們會提出基於鬆散的方式，來解決Cost-min問題。</p>
+<p>首先我們將 $x_{v}$ 鬆弛為[0,1]範圍內的實數，以降低計算複雜度。經過鬆弛後，我們的模型被簡化為線性規劃(LP)問題，如演算法中第1行，這可以透過Matlab輕鬆解決。</p>
+<p><img src="https://i.imgur.com/cW2iRuY.png"></p>
+<p>我們對 $x_{v}$ 做遞增排序，如演算法表中第2行，</p>
+<p>並將每個非零 $x_{v}$ 的值設為1，如演算法表中第5行，</p>
+<p>在這種情況下，我們以整數 $x_{v}^{*}$ 形式獲得一個新的 VNF 部署解決方案，</p>
+<p>並將每個網絡功能的 VNF Instance 數量記錄為 $count_{n(v)}$，如演算法表中第6行，<br>我們將整數solution  $ x_{v}^{*} $ 作為輸入並計算流量調度的解答 $ f_{uv}^{*j} $ ，且總成本 $cost’$</p>
+<p>我們將整數解 $x_{v}^{*}$ 作為輸入，通過在第 11 行再次求解 Cost-Min-LP 問題來計算流量調度解 $f_{uv}^{*j}$ 和總成本 $cost’$</p>
+<p>請注意，放寬可能會導致更多 VNF 實例，因此我們下一步將嘗試進一步減少實例數量以及部署成本，同時確保從第 12 行到第 22 行間的通訊成本接近最佳化。<br>我們從非零 $x_{v}$ 的最小值內的實例 $v$ 開始。<br>請注意，如果$v$是網絡中唯一提供網絡功能$n(v)$的VNF實例，即$count_{n(v)}$ &#x3D;&#x3D; 1，則必須部署$v$，並且跳到下一個Instance<br>否則，若網路中存在提供相同網路功能 $n(v)$的VNF Instance(見14行)，則我們$x_{v}^{*}$ 設為0，並重新計算流量調度解 $f_{uv}^{*i}$ 和新的總成本 $cost’$</p>
+<p>只有當新成本低於當前的 $minCost$時，才會更新NFV部屬解 $x_{v}^{*}$、流量調度解 $f_{uv}^{*j}$ 以及總成本 $minCost$，然後更新網路功能 $n(v)$的Instance數量 (見18、19行)</p>
+<p>另一方面，如果總成本沒有降低，我們將 $x_{v}^{*}$ 的值設置回 1 並移動到下一個實例，直到我們遍歷 $V$ 中的所有 VNF 實例（第 25 行）</p>
+<p>最終我們會返回 NFV部屬解 $x_{v}^{*}$、流量調度解 $f_{uv}^{*j}$ 以及總成本 $minCost$ 作為演算法的輸出。</p>
+<h2 id="Ch5-Performance-Evaluation"><a href="#Ch5-Performance-Evaluation" class="headerlink" title="Ch5-Performance Evaluation"></a>Ch5-Performance Evaluation</h2><p>在本節中，我們通過將基於鬆弛的算法 (“RLX”) 與 Cost-Min 的最佳結果 (“OPT”) 和最短路徑算法 (“SP”) 進行比較來評估它<br>實驗設置：</p>
+<ul>
+<li>網絡中有∣𝐷∣ &#x3D; 20 個資料中心。 $H_{dp}$ 隨機設置在 [1,20] 的範圍內，表示DC之間的跳躍數</li>
+<li>共有 20 條服務鏈，多條鏈共享 15 種不同類型的網絡功能</li>
+<li>服務鏈的流量設置在 [1, 10] 的範圍內</li>
+<li>係數 $\gamma$ 設置為 10，$\delta$ 設置為 1</li>
+<li>我們使用商業求解器 Gurobi 來解決我們的 Cost-Min 和 Cost-Min-LP 問題<br>本研究通過在不同場景中改變參數提供了廣泛的實驗</li>
+</ul>
+<h3 id="The-value-of-𝛾"><a href="#The-value-of-𝛾" class="headerlink" title="The value of 𝛾"></a>The value of 𝛾</h3><p><img src="https://i.imgur.com/Et8CiI7.png"><br>首先，我們調查𝛾和𝛿的影響。我們設置 𝛿 &#x3D; 1，並將 𝛾 的值從 5 變為 50。結果如圖 4 所示<br>圖 4 中的結果表明，三種算法的所有成本都隨著 𝛾 的增加而增長。原因是，𝛾的增加會導致更高的 VNF 部署成本。<br>得注意的是，SP 的增長率遠大於其他兩種算法，因為 SP 主要通過減少每個網絡流的路徑長度來關注通信成本，而忽略了部署成本。<br>因此，當部署成本成為主導部分時，SP 顯示的優勢較小<br>例如，當𝛾 &#x3D; 10 時，RLX 算法的部署成本佔總成本的比例為 57%，OPT 為 35%，SP 為 82%。</p>
+<h3 id="The-effect-of-number-of-hops"><a href="#The-effect-of-number-of-hops" class="headerlink" title="The effect of number of hops"></a>The effect of number of hops</h3><p><img src="https://i.imgur.com/ctY1hjZ.png"><br>我們通過將跳數的上限從 2 變為 20 來研究不同網絡拓撲的 OPT、RLX 和 SP 的總成本<br>從圖 5 可以看出，OPT 和 RLX 的成本隨著跳數的增加而略有增長，因為跳數的增加可能會增加通信成本。</p>
+<p>然而，SP卻呈現出下降的趨勢。主要原因是當不同數據中心之間的跳數都很小時，SP可以找到很多最短路徑並在這些路徑上部署VNF實例，而某些網絡功能可能有多個實例，導致部署成本較高。<br>當跳數增加時，SP 只會找到更少的最短路徑，從而導致 VNF 實例更少，部署成本更低。因此，總成本降低。</p>
+<h3 id="The-effect-of-rate"><a href="#The-effect-of-rate" class="headerlink" title="The effect of rate"></a>The effect of rate</h3><p><img src="https://i.imgur.com/KaJ7KXI.png"><br>同樣，我們將 20 條鏈的速率要求上限從 3 更改為 30，以顯示流量要求的影響。<br>圖 6 顯示，當速率上限增加時，所有三種算法的總成本也會增加。<br>這是因為增加流量會導致更高的通信成本以及總成本。</p>
+<h3 id="The-effect-of-the-number-of-chains"><a href="#The-effect-of-the-number-of-chains" class="headerlink" title="The effect of the number of chains"></a>The effect of the number of chains</h3><p><img src="https://i.imgur.com/AKitxrs.png"><br>在這一部分，我們討論了鏈數從 5 到 50 的影響，並比較了三種算法的結果。<br>所有三種算法的上升趨勢都可以在圖 7 中觀察到。<br>原因是更多的服務鏈帶來了更多的網絡功能部署在數據中心，更多的網絡流分佈到 VNF 實例。<br>這將導致更高的部署成本和通信成本，因此所有三種算法的總成本都會上升</p>
+<h3 id="The-effect-of-the-number-of-NFs"><a href="#The-effect-of-the-number-of-NFs" class="headerlink" title="The effect of the number of NFs"></a>The effect of the number of NFs</h3><p><img src="https://i.imgur.com/CqLQxDV.png"><br>最後，圖 8 顯示了所有三種算法的結果，網絡功能的數量從 10 到 55 不等<br>可以得出，成本也上升了。這是因為所有算法都需要在數據中心放置更多的 VNF 實例，從而導致部署成本的增加。同時，不同數據中心的網絡功能之間更多的網絡流量也會導致通信成本的增加。因此，總成本呈上升趨勢。<br>儘管如此，我們的RLX 的優勢始終可以在任何設置下觀察到，因為它優於SP 並接近OPT</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>在本文中，我們研究了地理分佈式數據中心的 VNF 部署和網絡流量調度問題。我們進一步將此問題表述為混合整數線性規劃，目標是最小化總部署成本和通信成本。然後我們提出了一種低複雜度的基於鬆弛的算法來處理計算複雜度。大量基於模擬的性能評估結果表明，我們的算法具有更好的性能，可以有效降低各種場景下的總成本</p>
+<h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8422334">https://ieeexplore.ieee.org/document/8422334</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/85fe9be3.html">https://leozzmc.github.io/posts/85fe9be3.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Network/">Network</a><a class="post-meta__tags" href="/tags/VNF/">VNF</a></div><div class="post_share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/Buffer_Overflow_Test.html" title="實驗緩衝區溢位漏洞 (Buffer Overflow)"><img class="cover" src="/img/BOF.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">實驗緩衝區溢位漏洞 (Buffer Overflow)</div></div></a></div><div class="next-post pull-right"><a href="/posts/3d68fc76.html" title="🧪筆記- 5G 網路功能介面與協定堆疊"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🧪筆記- 5G 網路功能介面與協定堆疊</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">54</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">63</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ch1-Introduction"><span class="toc-number">2.</span> <span class="toc-text">Ch1-Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ch2-System-Model"><span class="toc-number">3.</span> <span class="toc-text">Ch2-System Model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-DCs-Topology"><span class="toc-number">3.1.</span> <span class="toc-text">A. DCs Topology</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-Chain-Set"><span class="toc-number">3.2.</span> <span class="toc-text">B. Chain Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-NFs-Graph"><span class="toc-number">3.3.</span> <span class="toc-text">C. NFs Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D-VNFs-Graph"><span class="toc-number">3.4.</span> <span class="toc-text">D. VNFs Graph</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ch3-Problem-Formulation"><span class="toc-number">4.</span> <span class="toc-text">Ch3-Problem Formulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VNF-Instance-Placement"><span class="toc-number">4.1.</span> <span class="toc-text">VNF Instance Placement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flow-requirement-constraints"><span class="toc-number">4.2.</span> <span class="toc-text">Flow requirement constraints</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VNF-flow-constraint"><span class="toc-number">4.3.</span> <span class="toc-text">VNF flow constraint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-relationship-between-x-v-and-f-i-uv"><span class="toc-number">4.4.</span> <span class="toc-text">The relationship between $x_{v}$ and $f^{i}_{uv}$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cost-Min"><span class="toc-number">4.5.</span> <span class="toc-text">Cost-Min</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ch4-Relaxation-Based-Algorithm"><span class="toc-number">5.</span> <span class="toc-text">Ch4-Relaxation-Based Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ch5-Performance-Evaluation"><span class="toc-number">6.</span> <span class="toc-text">Ch5-Performance Evaluation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-value-of-%F0%9D%9B%BE"><span class="toc-number">6.1.</span> <span class="toc-text">The value of 𝛾</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-effect-of-number-of-hops"><span class="toc-number">6.2.</span> <span class="toc-text">The effect of number of hops</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-effect-of-rate"><span class="toc-number">6.3.</span> <span class="toc-text">The effect of rate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-effect-of-the-number-of-chains"><span class="toc-number">6.4.</span> <span class="toc-text">The effect of the number of chains</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-effect-of-the-number-of-NFs"><span class="toc-number">6.5.</span> <span class="toc-text">The effect of the number of NFs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusion"><span class="toc-number">7.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B3%87%E6%96%99%E4%BE%86%E6%BA%90"><span class="toc-number">8.</span> <span class="toc-text">資料來源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path"><img src="/img/LeetCode/71/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="簡化路徑 | Medium | LeetCode#71. Simplify Path"/></a><div class="content"><a class="title" href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path">簡化路徑 | Medium | LeetCode#71. Simplify Path</a><time datetime="2024-07-07T06:22:35.000Z" title="發表於 2024-07-07 14:22:35">2024-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/511cdb2f.html" title="Min 堆疊 | Medium | LeetCode#155 Min Stack"><img src="/img/LeetCode/155/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Min 堆疊 | Medium | LeetCode#155 Min Stack"/></a><div class="content"><a class="title" href="/posts/511cdb2f.html" title="Min 堆疊 | Medium | LeetCode#155 Min Stack">Min 堆疊 | Medium | LeetCode#155 Min Stack</a><time datetime="2024-07-06T12:44:36.000Z" title="發表於 2024-07-06 20:44:36">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/31bdd3b4.html" title="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses"><img src="/img/LeetCode/1614/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses"/></a><div class="content"><a class="title" href="/posts/31bdd3b4.html" title="括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses">括號的最大嵌套深度 | Easy |LeetCode#1614. Maximum Nesting Depth of the Parentheses</a><time datetime="2024-07-03T07:05:37.000Z" title="發表於 2024-07-03 15:05:37">2024-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/c0ef3a5f.html" title="近一年半的 AWS Cloud Support Engineer 心得記錄">近一年半的 AWS Cloud Support Engineer 心得記錄</a><time datetime="2024-07-03T04:26:11.000Z" title="發表於 2024-07-03 12:26:11">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/92b56b8e.html" title="有效的括號 | Easy |LeetCode#20. Valid Parentheses"><img src="/img/LeetCode/20/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="有效的括號 | Easy |LeetCode#20. Valid Parentheses"/></a><div class="content"><a class="title" href="/posts/92b56b8e.html" title="有效的括號 | Easy |LeetCode#20. Valid Parentheses">有效的括號 | Easy |LeetCode#20. Valid Parentheses</a><time datetime="2024-06-28T08:16:56.000Z" title="發表於 2024-06-28 16:16:56">2024-06-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
