@@ -9,7 +9,7 @@ categories: LeetCode筆記
 aside: true
 abbrlink: 7abe6380
 date: 2024-07-11 18:15:24
-cover:
+cover: /img/LeetCode/125/cover.jpg
 ---
 
 # 題目敘述
@@ -86,7 +86,11 @@ public:
 
 ## 時間複雜度
 
+- 首先在遍歷跟轉換字串的迴圈，複雜度為 $O(n)$，$n$ 為字串數量
+- 接下來 two pointer 檢查回文的地方，複雜度為 $O(m/2)$，worst case 會是 $m=n$
+- 整體時間複雜度會是 $O(n)+O(m/2) = O(n)$
+
 ## 空間複雜度
 
-
-# 結語
+- 程式碼中建立了一個新的字串 `tempStr`，其最壞情況下的長度為 n。因此，這段程式碼的空間複雜度是 $O(n)$
+- `isPalindrome ` 和 `length` 這些變數只佔用常數空間，因此其空間複雜度是 $O(1)$
