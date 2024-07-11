@@ -18,7 +18,7 @@ cover: /img/LeetCode/150/cover.jpg
 ![](/img/LeetCode/150/question2.jpeg)
 
 - 題目難度: `Easy`
-- 題目描述: 本題要求給定一個字串陣列 `tokens`，當中是以**[逆波蘭表示法](https://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95)**的算式運算式，需要回傳算術運算的結果，結果為整數型態。
+- 題目描述: 本題要求給定一個字串陣列 `tokens`，當中是以 **[逆波蘭表示法](https://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95)** 的算式運算式，需要回傳算術運算的結果，結果為整數型態。
 
 注意:
 - 有效的運算子只會有: `+`, `-`, `*`,`/`。
