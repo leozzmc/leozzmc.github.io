@@ -8,7 +8,7 @@ categories: 爬山健行
 aside: true
 abbrlink: f9156e74
 date: 2024-07-12 14:31:03
-cover:
+cover: img/Mountain/Mt.Fuji/cover.jpg
 ---
 
 # 富士山之旅
@@ -30,7 +30,7 @@ cover:
 
 ### 須走路線
 
-吉田路線跟須走路線在本八合目後就會交會，因此人潮會開始便更多。這個路線最大的樂趣就是可以在下山途中體驗砂走，也就是在沙中滑行
+吉田路線跟須走路線在本八合目後就會交會，因此人潮會開始便更多。這個路線最大的樂趣就是可以在下山途中體驗砂走，也就是在沙中滑行，實際上吉田路線的下山道也必須先從須走路線開始走，大概走道八合目才會又岔開
 
 ![](/img/Mountain/Mt.Fuji/path3.jpg)
 > 圖源: https://www.fujisan-climb.jp/trails/subashiri/index.html
@@ -39,11 +39,15 @@ cover:
 
 ### 富士宮路線
 
+距離最短的路線，但會是一路陡上，建議有許多登山經驗者前往
+
 ![](/img/Mountain/Mt.Fuji/path2.jpg)
 > 圖源: https://www.fujisan-climb.jp/trails/fujinomiya/index.html
 
 
 ### 御殿場路線
+
+坡度最平緩，也可以體驗砂走，山屋，廁所都較少。但登山者也最少
 
 ![](/img/Mountain/Mt.Fuji/path4.jpg)
 > 圖源: https://www.fujisan-climb.jp/trails/gotenba/index.html
@@ -163,21 +167,48 @@ cover:
 這次選擇先抵達河口湖過夜，隔日早晨再從河口湖出發五合目
 
 ## 成田機場 → 新宿
+
+我自己是搭乘京成特快 NEX，可以先用 Klook 或者 KKday 先買好，取得QR Code，再去機場的NEX機台兌換。
+
+![](/img/Mountain/Mt.Fuji/nex.jpg)
+
 ## 新宿 → 河口湖
+
+接著就是搭乘高速巴士到河口湖站過夜，有事先在高速巴士網站上預約新宿車站到河口湖站的車票
+
+行動車票會像是下面這樣，再交給乘務員掃瞄檢查即可上車
+![](/img/Mountain/Mt.Fuji/highwaybus.jpeg)
+
+
+> 高速巴士網站: https://highway-buses.jp/chi/
+
+
 ## 河口湖 → 五合目
 
-# 登山裝備清點
+可以線上預約車票，第一班車，在使用車票時，可以點選啟用票券，**建議等車到再點選啟用，啟用後會開始倒數計時兩小時，兩小時候票券會作廢。**
+
+![](/img/Mountain/Mt.Fuji/fujikyubus.png)
+
+河口湖站的候車地點會是在 7號站牌。
+
+![](/img/Mountain/Mt.Fuji/bustop.jpg)
+
+> 接駁巴士車票預約: https://fujikyubus.quicktrip.jp/bought
 
 
-> https://rakurakujp.com/food-preparation-for-climbing-mt-fuji/
+如果要去富士山五合目，一定要注意時間，我們去是趕第一班 6:40分的車，但巴士遲到了一下，到達五合目大概是7:45左右
 
-# 希望能夠順利體驗到的
+![](/img/Mountain/Mt.Fuji/time.jpeg)
 
-- 山頂鉢巡
-- 富士山郵局
-- 影富士
-- 御來光
-> https://manyujp.com/fujisan-2/
+> 富士巴士時刻表: https://www.fujikyubus.co.jp/mycar/timetablefares/
+
+![](/img/Mountain/Mt.Fuji/5stage.jpg)
+
+
+題外話，第一天起登到御來光館起大霧跟暴雨，十分狼狽的一天，雨衣雨褲，防寒衣物務必要準備好，上山路上看到許多穿短袖短褲快冷死的外國人....，登山分享可能之後再整理XD
+
+另外，去跟回的車票可以一次買，但回程到河口湖的巴士建議爬完後再買，除非你很能控制上下山的時間，下山後也可以去神社或者旁邊的紀念品店晃晃~
+ 
 
 # 參考
 
