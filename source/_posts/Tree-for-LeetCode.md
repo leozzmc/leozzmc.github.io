@@ -154,7 +154,7 @@ Full / perfect binary tree 為 complete binary tree，但 complete binary tree �
 > 其實總結 Complete Binary Tree的特性其實就是各層節點全滿，除了最後一層，最後一層節點全部靠左
 
 
-# 用 Linked List 建立一個 Tree
+## 用 Linked List 表示一個 Tree
 
 一個節點結構如下:
 
@@ -170,11 +170,38 @@ struct Node
 Node* root = 0;
 ```
 
+##  用 Array 表示一個 Tree
 
+根據[這篇文章](https://web.ntnu.edu.tw/~algo/BinaryTree.html)，也可以透過陣列去實作一個Tree。
+
+
+也就是以陣列編號來存取節點，並且以編號奇偶數來判斷左或是右子樹。建立一個陣列，以陣列索引值得到節點：樹根的索引值是一，索引值的兩倍是left child，索引值的兩倍再加一是right child，索引值除以二是parent。
+
+```cpp
+int tree[1024];	// tree[0] do nothing
+int parent(int index) {return index / 2;}
+int left(int index) {return index * 2;}
+int right(int index) {return index * 2 + 1;}
+
+void binary_tree()
+{
+	cout << "Root: " << tree[1];
+	cout << "The left child of the root: " << tree[left(1)];
+	cout << "The right child of the root: " << tree[right(1)];
+}
+```
+
+![](/img/LeetCode/tree/arrary_tree.png)
+
+
+但這樣做的缺點也顯而易見，就是樹的大小是固定的，並且如果不是perfect binary tree的話，陣列中會有大量的空值，非常浪費記憶體空間。以陣列大小1024為例，樹的高度也僅為10  ($2^{10}$) 
  
-# Tree Traversal
+# Binary Tree Traversal
 
-
+## Preorder Traversal
+## Postorder Traversal
+## Inorder Traversal
+## Level-order Traversal
 
 
 # Tree 相關的 LeetCode 題目
