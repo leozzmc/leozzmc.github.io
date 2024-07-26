@@ -10,7 +10,7 @@ categories: LeetCode筆記
 aside: true
 abbrlink: 1f138bdd
 date: 2024-07-26 12:35:56
-cover:
+cover: /img/LeetCode/tree/cover.jpg
 ---
 
 
@@ -198,10 +198,44 @@ void binary_tree()
  
 # Binary Tree Traversal
 
+> 怎樣算是 Traversal?
+> 取決於實作方式，如果是用 Linked List 實現的 Tree，位於 node(A) 可以藉由指向 node(B) 的pointer，由A往B進行移動，可被視為 traversal
+
+![](/img/LeetCode/tree/traversal.png)
+
+對於當前節點可以進行的操作:
+- V: visting, 可以是印出節點資料之類的操作
+- L: 移動到 left child
+- R: 移動到 right child
+
+> 如果現在當前節點是 A節點，加入一個限制  **「L 一定在 R 之前」**，則會產生三種 Traversal 方式: 前序遍歷(preorder traversal)、中序遍歷(inorder traversal)、後序遍歷(postorder traversal)、層序遍歷 (level-order traversal)
+
+![](/img/LeetCode/tree/3traversal.png)
+
 ## Preorder Traversal
-## Postorder Traversal
+
+遍歷順序會是: Root, Left subTree, Right subTree
+
+可應用於 **Depth-first Search (DFS)**
+
 ## Inorder Traversal
+
+遍歷順序會是: Left subTree, Root, Right subTree
+實際上是採用depth-first search，只不過更動了節點的輸出順序。
+
+## Postorder Traversal
+
+遍歷順序會是: Left subTree, Right subTree, Root
+
 ## Level-order Traversal
+
+即為 **breadth-first search(BFS)**
+
+
+# 實作 Binary Tree 的不同 Traversal
+
+
+(未完待續)
 
 
 # Tree 相關的 LeetCode 題目
