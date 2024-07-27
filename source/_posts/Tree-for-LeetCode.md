@@ -212,20 +212,40 @@ void binary_tree()
 
 ![](/img/LeetCode/tree/3traversal.png)
 
-## Preorder Traversal
+## Pre-Order Traversal
 
 遍歷順序會是: Root, Left subTree, Right subTree
 
 可應用於 **Depth-first Search (DFS)**
 
-## Inorder Traversal
+![](/img/LeetCode/tree/preorder_traversal.png)
+
+遍歷順序的圖解如上圖，一開始 CurrentNode 會進到 Root 節點，也就是 A 節點，接著按到 VLR 的順序進行檢查，首先先 Visiting A節點(可能執行print節點值之類的操作)，接著檢查 left-child B(L)是否為 null，若不是則 CurrentNode 移動到 B(L)，接著以currentNode為scope，之後拜訪 B，並接續檢查 left-child，並移動到 D(L)節點，並且Visiting D(L)，由於 D 節點是 Leaf (Left, Right Child 都是 null)，因此回到 B 作為 currentNode 並且拜訪其 right child E(R)，完成後以 B 為 currentNode 的 scope 所有節點拜訪完畢，回到 B的 Parent Node 作為 currenNode 的 scope，這裡也就是指 A(V)，並且接續拜訪其 right child，也就是 C(R)，visiting C完畢後拜訪其 left child，也就是 F(L)，拜訪完畢後，嘗試訪問C的Rigth Child 發現為null，所有結點拜訪完畢，完成本次 Traversal，印出  A B D E C F。
+
+
+## In-Order Traversal
 
 遍歷順序會是: Left subTree, Root, Right subTree
 實際上是採用depth-first search，只不過更動了節點的輸出順序。
 
-## Postorder Traversal
+![](/img/LeetCode/tree/inorder_traversal.png)
+
+遍歷順序的圖解如上圖，一開始 CurrentNode 會進到 Root 節點，也就是 A 節點，接著按到 LVR 的順序進行檢查，先檢查 Left-Child 也就是 B 是否為 NULL，若不是則 CurrentNode 移動到 B(L)，接著以currentNode為scope 依序檢查其child，首先檢查 B的 Left-child，也就是 D 是否為NULL，若不是則將 CurrentNode 移動到 D(L)，接著就是以 D作為 currentNode 再做一次 post-order 檢查，這時會發現 D的 Letf child 和 right child 都是 NULL，這時就回到 D本身做 visiting (可能是print出D的資料值等等行為)，當前 scope 中所有節點拜訪完畢，之後就要回到 D 的 Parent 來作為當前 CurrentNode 的 scope，currentNode 便移動回 B。接著拜訪 B 的 Right child 也就是 E(R)，拜訪完畢後，以 B 為 currentNode 的 scope 全部拜訪完畢，回到 B 的 parent 也就是 A(V) 進行 Visiting，之後移動到 C(R)，檢查當前 currentNode 的 Left child 也就是 F(L)，進行拜訪，結束後移動回 C(V) 進行拜訪，確認沒有 Right child 後，本次 Traversal 結束，印出 D B E A F C。
+
+
+## Post-Order Traversal
 
 遍歷順序會是: Left subTree, Right subTree, Root
+
+
+![](/img/LeetCode/tree/postorder_traversal.png)
+
+
+遍歷順序的圖解如上圖，一開始 CurrentNode 會進到 Root 節點，也就是 A 節點，接著按到 LRV 的順序進行檢查，先檢查 Left-Child 也就是 B 是否為 NULL，若不是則 CurrentNode 移動到 B(L)，接著以currentNode為scope 依序檢查其child，首先檢查 B的 Left-child，也就是 D 是否為NULL，若不是則將 CurrentNode 移動到 D(L)，接著就是以 D作為 currentNode 再做一次 post-order 檢查，這時會發現 D的 Letf child 和 right child 都是 NULL，這時就回到 D本身做 visiting (可能是print出D的資料值等等行為)，當前 scope 中所有節點拜訪完畢，之後就要回到 D 的 Parent 來作為當前 CurrentNode 的 scope，currentNode 便移動回 B。
+
+> 回到 B 就代表 以 D 作為 CurrentNode 的迴圈或函式結束
+
+以 B 作為 CurrentNode，post-order 規則來看，目前 Left child 拜訪完畢，接著要拜訪 right child，所以往 E(R) 移動，但也由於 E 跟 D 一樣都是 Leaf，並不會朝 null 移動，因此回到 B(v) 節點進行visting，這樣就完成以 B 為 Scope 的所有 node 之 Visiting。之後回到 A(V)，以A作為 CurrentNode 進行檢查，這時要朝Right child，也就是 C(R) 移動，此時 currentNode 為 C(R)，按照post-order 進行檢查，發現 F 為 Leaf Node，就對 F 進行 Visiting，而之後可以發現 C 的 Right child 為 null，因此掠過 right child 回到 C(V)，對 C 進行 Visiting，之後 currentNode 再回到 A(V) 進行 Visiting，完成本次 Traversal，印出 D E B F C A。
 
 ## Level-order Traversal
 
@@ -235,7 +255,6 @@ void binary_tree()
 # 實作 Binary Tree 的不同 Traversal
 
 
-(未完待續)
 
 
 # Tree 相關的 LeetCode 題目
