@@ -8,7 +8,7 @@ tags:
   - LeetCode
 categories: LeetCode筆記
 aside: true
-abbrlink: 1f138bdd
+abbrlink: tree_for_leetcode
 date: 2024-07-26 12:35:56
 cover: /img/LeetCode/tree/cover.jpg
 ---
@@ -249,15 +249,187 @@ void binary_tree()
 
 ## Level-order Traversal
 
-即為 **breadth-first search(BFS)**
+即為 **breadth-first search(BFS)** ，主要是按照 Level 大小順序由上而下，並且在相同 Level 由左至右依序 Visiting 每個節點
 
+> 通常會以 Queue 來去進行實作
+
+![](/img/LeetCode/tree/levelorder_traversal.png)
+
+
+輸出順序會是: A B C D E F G H I
 
 # 實作 Binary Tree 的不同 Traversal
 
+## 暴力實作一個 Binary Tree
+
+```cpp
+
+# include <iostream>
+# include <string>
+# include <queue>
+using namespace std;
+
+class BinaryTree;
+
+class TreeNode{
+    public:
+        TreeNode *leftchild;
+        TreeNode *rightchild;
+        TreeNode *parent;
+        string str;
+
+        //constructor
+        TreeNode(): leftchild(0), rightchild(0),parent(0), str(""){};
+        TreeNode(string s): leftchild(0), rightchild(0), parent(0), str(s){};
+
+        friend class BinaryTree;
+};
 
 
+class BinaryTree{
+    public:
+        // the root is the starting node ot the tree
+        TreeNode *root; 
+        BinaryTree(): root(0){};
+        BinaryTree(TreeNode *node): root(node){};
 
-# Tree 相關的 LeetCode 題目
+        void Preorder(TreeNode *current);
+        void Inorder(TreeNode *current);
+        void Postorder(TreeNode *current);
+        void Levelorder();
+};
+```
+
+在 `main()` 中依序建立節點以及串連節點，形成一顆 Binary Tree
+
+```cpp
+int main(){
+    // Instanitate  all tree nodes
+    TreeNode *nodeA = new TreeNode("A");
+    TreeNode *nodeB = new TreeNode("B");
+    TreeNode *nodeC = new TreeNode("C");
+    TreeNode *nodeD = new TreeNode("D");
+    TreeNode *nodeE = new TreeNode("E");
+    TreeNode *nodeF = new TreeNode("F");
+    TreeNode *nodeG = new TreeNode("G");
+    TreeNode *nodeH = new TreeNode("H");
+    TreeNode *nodeI = new TreeNode("I");
+
+    //Construct a binary tree
+    nodeA -> leftchild = nodeB;
+    nodeA -> rightchild = nodeC;
+    nodeB -> leftchild = nodeD;
+    nodeB -> rightchild = nodeE;
+    nodeE -> leftchild = nodeG;
+    nodeE -> rightchild = nodeH;
+    nodeC -> leftchild = nodeF;
+    nodeF -> rightchild = nodeI;
+
+    // Given a root node
+    BinaryTree T(nodeA);
+
+    //Traversal
+    T.Preorder(T.root);
+    cout << endl;
+    T.Inorder(T.root);
+    cout << endl;
+    T.Postorder(T.root);
+    cout << endl;
+    T.Levelorder();
+    cout << endl;
+
+    return 0;
+}
+```
+這裡建構出來的樹會長這個樣子
+
+
+![](/img/LeetCode/tree/BT.png)
+
+接著定義 Traversal Methods，主要透過遞迴的方式來實踐，因為這樣可以在 child 拜訪結束後回到它的 parent
+
+## Pre-Order
+
+```cpp
+// V-> L-> R
+void BinaryTree::Preorder(TreeNode *current){
+    if(current){
+        // visiting the current node
+        cout << current->str << " " ;
+        // if leftchild exists, moving currentNode to the left child
+        Preorder(current->leftchild);
+        Preorder(current->rightchild);
+    }
+}
+```
+
+## In-Order
+
+```cpp
+// L -> V -> R
+void BinaryTree::Inorder(TreeNode *current){
+    if(current){
+        Inorder(current->leftchild);
+        cout << current->str << " " ;
+        Inorder(current->rightchild);
+    }
+
+}
+```
+
+## Post-Order
+
+```cpp
+// L -> R -> V
+void BinaryTree::Postorder(TreeNode *current){
+    if(current){
+        Postorder(current->leftchild);
+        Postorder(current->rightchild);
+        cout << current->str << " " ;
+    }
+}
+```
+
+## Level-Order
+
+Level-Order 的特性就是在相同 Level 由左至右存取，不同Level 由上而下存取，由於先存取得先拜訪，這種特性與Queue相似，因此選擇 Queue 來實作。
+
+```cpp
+// Using Queue
+void BinaryTree::Levelorder(){
+    queue<TreeNode*> q;
+    q.push(this->root);
+
+    while(!q.empty()){
+        TreeNode *current = q.front();
+        q.pop();
+
+        cout << current->str << " " ;
+        if(current->leftchild != NULL){
+            q.push(current->leftchild);
+        }
+        if(current->rightchild != NULL){
+            q.push(current->rightchild);
+        }
+    }
+}
+```
+
+首先定義一個 Queue，並且將 root 節點推進queue，而開始走訪時，將 current 定義為Queue 的front，並在 Queue 中移除該節點，接著印出當前節點值，之後先檢查left child，如果不為NULL，則 push 到 queue 中，而相同LEVEL中，檢查right child 是否為空，如果不為空一樣push 進 queue 中，接著由於 Queue 不為空，因此這時的 front 會是剛剛的left child，此時將 current 更新為 front，並且印出其值，接著檢查是否左右子樹為空，不為空就push 進 queue。下一次跌代就是處理剛剛推進 queue 的 right child，一樣印出其值，並檢查其後代是否為空，不為空就push進queue，這樣第二層 Level 的拜訪就完成了，後面就對下一層level (現在 Queue 中元素)做處理。
+
+## 輸出結果
+
+```
+A B D E G H C F I   // Preorder
+D B G E H A F I C   // Inorder
+D G H E B I F C A   // Postorder
+A B C D E F G H I   // Levelorder
+```
+
+
+# 結語
+
+這篇介紹了甚麼是Tree，它的定義與特性， Binary Tree 和不同的 Traversal 方法和程式碼，後續會更進一步介紹的延伸的程式碼實作，並且介紹 BST(Binary Search Tree) 還有 BFS, DFS的實作方式。
 
 
 # Reference
