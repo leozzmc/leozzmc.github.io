@@ -228,7 +228,7 @@ void binary_tree()
 遍歷順序會是: Left subTree, Root, Right subTree
 實際上是採用depth-first search，只不過更動了節點的輸出順序。
 
-![](/img/LeetCode/tree/inorder_traversal.png)
+![](/img/LeetCode/tree/Inorder_traversal.png)
 
 遍歷順序的圖解如上圖，一開始 CurrentNode 會進到 Root 節點，也就是 A 節點，接著按到 LVR 的順序進行檢查，先檢查 Left-Child 也就是 B 是否為 NULL，若不是則 CurrentNode 移動到 B(L)，接著以currentNode為scope 依序檢查其child，首先檢查 B的 Left-child，也就是 D 是否為NULL，若不是則將 CurrentNode 移動到 D(L)，接著就是以 D作為 currentNode 再做一次 post-order 檢查，這時會發現 D的 Letf child 和 right child 都是 NULL，這時就回到 D本身做 visiting (可能是print出D的資料值等等行為)，當前 scope 中所有節點拜訪完畢，之後就要回到 D 的 Parent 來作為當前 CurrentNode 的 scope，currentNode 便移動回 B。接著拜訪 B 的 Right child 也就是 E(R)，拜訪完畢後，以 B 為 currentNode 的 scope 全部拜訪完畢，回到 B 的 parent 也就是 A(V) 進行 Visiting，之後移動到 C(R)，檢查當前 currentNode 的 Left child 也就是 F(L)，進行拜訪，結束後移動回 C(V) 進行拜訪，確認沒有 Right child 後，本次 Traversal 結束，印出 D B E A F C。
 
