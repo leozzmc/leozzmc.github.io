@@ -10,7 +10,7 @@ categories: LeetCode筆記
 aside: true
 abbrlink: tree_for_leetcode_2
 date: 2024-07-27 21:24:07
-cover:
+cover: /img/LeetCode/tree/cover.jpg
 ---
 
 # In-Order Traversal by Parent Field
@@ -216,9 +216,79 @@ C I F A H E G B D
 <!-- https://alrightchiu.github.io/SecondRound/binary-search-tree-searchsou-xun-zi-liao-insertxin-zeng-zi-liao.html -->
 <!-- https://alrightchiu.github.io/SecondRound/binary-search-tree-sortpai-xu-deleteshan-chu-zi-liao.html#binary-search-tree-sortpai-xu-deleteshan-chu-zi-liao -->
 
-# BFS
+## 甚麼是 Binary Search Tree?
 
-# DFS
+> Binary Search Tree 是一種 Binary Tree，它的節點滿足一個特性的順序: 所有左子樹節點 <= n < 右子樹節點，對於每個節點 n 都要成立，也就代表對節點的所有後代，這個不等式都要成立
+
+![](/img/LeetCode/tree/BST.png)
+
+{% note info %}
+上面定義中的等式部分可能會有所不同，某些定義中樹不可以有重複值，或者重複值會位在右側，所以還是要回歸到題目定義。
+{% endnote %}
+
+```
+對任一節點R，以其左節點為根的子樹(左子樹)的所有節點必小於R
+對任一節點R，以其右節點為根的子樹(右子樹)的所有節點必大於R
+以子樹中任一子節點為根的子樹也都符合上述定義
+```
+
+滿足上面定義的也稱作 **Normal Binary Search Tree**，而具有其他特性的 BST，像紅黑樹就以後再討論。 
+
+## 建構 Binary Search Tree
+
+```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class BST;
+
+class TreeNode{
+    private:
+        TreeNode *leftchild, *rightchild, *parent;
+        int key;
+        string element;
+    public:
+        //constructor
+        TreeNode():leftchild(0),rightchild(0), parent(0), key(0), element("") {};
+        TreeNode(int a, string b):leftchild(0),rightchild(0),parent(0), key(a), element(b){};
+
+        // main() will use these functions to access pointers in the private section
+        int GetKey() { return key;}
+        string GetElement() { return element;}
+
+    friend class BST; // Can access pointers in the private section in TreeNode class
+};
+
+class BST{
+    private:
+        TreeNode *root;
+        TreeNode *leftmost(TreeNode *current);
+        TreeNode *rightmost(TreeNode *current);
+    public:
+        BST(): root(0){};
+
+        TreeNode * search(int key);
+        void insertBST(int key, string element);
+        void inorderPrint();
+        void levelorder();
+    friend class BST;
+};
+```
+
+
+## Search 
+
+![](/img/LeetCode/tree/BST_example.png)
+
+## Insertion
+
+## Sort
+
+可以觀察一下圖，其實上面的樹也可以看成對一棵樹進行 Inorder Traversal 後的結果。因為BST的定義 ~`L subTree <= n < R subTree` 與 Inorder `(L<V<R)` 順序相同。
+
+## Deletion
 
 # Reference
 
