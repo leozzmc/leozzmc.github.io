@@ -205,11 +205,11 @@ C I F A H E G B D
 
 > 完整程式碼可以看我的 **[GitHub](https://github.com/leozzmc/Leetcode/blob/main/Tree/Binary_Tree-2.cpp)**
 
-# 如果給定一個字元陣列，要如何重新建構 Binary Tree?
+### 重新建構 Binary Tree
 
 <!-- https://alrightchiu.github.io/SecondRound/binary-tree-jian-li-yi-ke-binary-tree.html -->
 
-前一篇暴力建構Binary Tree 其實是有些問題的，因為定義的 pointer 都放 `public`，目的是為了能夠讓 main存取，接下來會進行一些改動，也就是把 pointer 放入 `private` 區塊中。 
+前一篇暴力建構Binary Tree 其實是有些存取安全問題的，因為定義的 pointer 都放 `public`，目的是為了能夠讓 main存取，接下來會進行一些改動，也就是把 pointer 放入 `private` 區塊中。 
 
 # Binary Search Tree(BST)
 
@@ -282,11 +282,96 @@ class BST{
 
 ![](/img/LeetCode/tree/BST_example.png)
 
+> 上面這張圖用咒術迴戰漫畫角色為例，暫時幫他們設定戰力值 (隨意設定的，勿認真XD)
+
+### 搜尋成功
+如果我要搜尋 `KEY(1250)` 流程會像下面一樣：
+
+- 首先進入BST，`*current` 會指向 root，接著將 KEY(1250) 與甚爾的戰鬥力(500) 進行比較，由於 1250 > 500，因此進入 right subTree
+- current 移動到羂索(550)，此時進行比較: 1250 > 550，因此current移動到羂索的 right subTree，也就是五條(2500)
+- 此時進行比較: 2500 > 1250，因此將current 移動到五條的 left subTree，也就是乙骨(1250)
+- 此時再進行比較: 1250 = 1250，發現匹配結果，確認搜尋結果為乙骨，跳出while迴圈，回傳 current 值 
+
+### 搜尋失敗
+
+如果我要搜尋 `KEY(6)` 流程如下:
+- 首先進入BST，`*current` 會指向 root，接著將 KEY(6) 與甚爾的戰鬥力(500) 進行比較，由於 500 > 6，因此進入 left subTree
+- current 移動虎杖爺爺(13)，此時進行比較: 13 > 6，因此current移動到虎杖爺爺的 right subTree，也就是虎杖(12)
+- 此時進行比較: 12 > 6，因此需要將current 移動到虎杖的 left subTree，但虎杖的 left subTree 為 NULL
+- current為 NULL 則跳出迴圈，並回傳NULL，代表搜尋失敗
+
+
+```cpp
+TreeNode *BST::search(int KEY){
+    TreeNode *current = root;
+    while(current!= NULL && KEY != current->key){
+        if (current->key > KEY){
+            current = current->leftchild;
+        }
+        else{
+            current = current->rightchild;
+        }
+    }
+    return current;
+}
+```
+
 ## Insertion
+
+![](/img/LeetCode/tree/BST_insert_example.png)
+
+接續著 Search，如果想要插入資料的話，**必須要先找到適當的插入位置，再將節點連接到樹上。**
+
+要找到適當的插入位置，需要兩個指標，一個負責找位置，一個指向新插入節點的Parent。
+
+首先找位置的指標就叫 `*current`，而指向parent 的指標就先叫 `*parentInsert`，這兩個指標每次都會同步移動。
+
+- 首先 `*current` 進入 root 節點，此時的 `*parentInsert` 為 root 的 parent，即為NULL
+- 此時我們要插入的角色為里香，戰鬥值為 520，所以 KEY(520) 與 `*current` 的 Key(500) 相比， 520 > 500，因此里香應該會是在甚爾的 right subTree
+- 因此將 `*current` 往甚爾的 right child 移動 (羂索)，並且 `*parentInsert` 更新為甚爾(500)
+- 此時將里香的 Key(520) 與 羂索(550)做比較，520 < 550，因此里香應該要再羂索的 left subTree
+- 因此 `*current` 往羂索的 left child (NULL) 移動，並且 `*parentInsert` 更新為羂索(550)
+- 由於此時的 `*current` 為 NULL，因此跳出迴圈，因為找到了適當的插入位置，即為當前 `*parentInsert` 的 child 
+
+這時候僅需要判斷要插入在當前parent 的 left 還是 right child 位置，所以比較里香(520) 與 parent 羂索(550)，要插入的位置為羂索的 left child位置，因此這時候將節點新增在該位置上，如圖所示。
+
+
+```cpp
+void BST::insertBST(int key, string element){
+    TreeNode *current = root;
+    TreeNode *parentInsert = NULL;
+    TreeNode *insertNode = new TreeNode(key, element);
+
+
+    //Find the appropriate insert position
+    while(current != NULL){
+        parentInsert = current;
+        if(current-> key > insertNode->key){
+            current = current->leftchild;
+        }
+        else if(current-> key < insertNode->key){
+            current = current->rightchild;
+        }
+    }
+
+    insertNode->parent = parentInsert;
+
+    if(parentInsert == NULL){
+        this->root = insertNode;
+    }
+    else if(insertNode->key > parentInsert->key){
+        parentInsert->leftchild = insertNode;
+    }
+    else if (insertNode->key < parentInsert->key){
+        parentInsert->rightchild = insertNode;
+    }
+}
+```
+
 
 ## Sort
 
-可以觀察一下圖，其實上面的樹也可以看成對一棵樹進行 Inorder Traversal 後的結果。因為BST的定義 ~`L subTree <= n < R subTree` 與 Inorder `(L<V<R)` 順序相同。
+可以觀察一下前面的圖，其實上面的樹也可以看成對一棵樹進行 Inorder Traversal 後的結果。因為BST的定義  `L subTree <= n < R subTree` 與 Inorder `(L<V<R)` 順序相同。
 
 ## Deletion
 
