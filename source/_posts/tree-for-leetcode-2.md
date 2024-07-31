@@ -265,7 +265,7 @@ class BST{
     private:
         TreeNode *root;
         TreeNode *leftmost(TreeNode *current);
-        TreeNode *rightmost(TreeNode *current);
+        TreeNode* Successor(TreeNode *current);
     public:
         BST(): root(0){};
 
@@ -368,15 +368,262 @@ void BST::insertBST(int key, string element){
 }
 ```
 
+可以用 `insertBST` 來去建立一顆 BST Tree
+
+```cpp
+int main(){
+
+    BST T;
+
+    T.insertBST(500,"甚爾");
+    T.insertBST(550,"羂索");
+    T.insertBST(2500,"五條");
+    T.insertBST(48,"七海");
+    T.insertBST(1250,"乙骨");
+    T.insertBST(13,"虎杖爺爺");
+    T.insertBST(3000,"宿儺");
+    T.insertBST(70,"東堂");
+    T.insertBST(520,"里香");
+    T.insertBST(50,"帳相");
+    T.insertBST(12,"虎杖");
+
+
+    // Test insertion method
+    cout << "Inorder Traversal:\n";
+    T.inorderPrint();
+    cout << endl;
+
+    // Test search method
+    TreeNode *node = T.search(1000);
+    if(node != NULL){
+        cout << "There is " << node->GetElement() << "(" << node->GetKey() << ")" << endl;
+    }
+    else {
+        cout << "no element with Key(1000)" << endl;
+    }
+
+    node = T.search(73);
+    if(node != NULL){
+        cout << "There is " << node->GetElement() << "(" << node->GetKey() << ")" << endl;
+    }
+    else {
+        cout << "no element with Key(73)" << endl;
+    }
+
+
+    return 0;
+}
+```
+
+上面的 `inorderPrint()` 可以透過本篇前半部分提到的 `leftmost()` 以及 `Successor` 來實現。
+
+```cpp
+TreeNode *BST::leftmost(TreeNode *current){
+    while(current->leftchild != NULL){
+        current = current->leftchild;
+    }
+    return current;
+};
+```
+
+```cpp
+TreeNode *BST::Successor(TreeNode *current){
+    if(current->rightchild != NULL){
+        return leftmost(current->rightchild);
+    }
+    TreeNode *SuccessorNode = current->parent;
+    // if current node is succesor's right child, then keep moving back to it's parent node.
+    while( SuccessorNode != NULL && current == SuccessorNode->rightchild){
+        current = SuccessorNode;
+        SuccessorNode = SuccessorNode->parent;
+    }
+    // Suceessor == NULL or the current node is Successor's left child
+    return SuccessorNode;
+}
+```
+
+```cpp
+void BST::inorderPrint(){
+    TreeNode *current = new TreeNode;
+    current = leftmost(root);
+    while(current){
+        cout << current->element << "(" << current->key << ")" << " ";
+        current = Successor(current);
+    }
+}
+```
+
+我們執行程式後的輸出結果如下:
+
+```output
+Inorder Traversal:
+虎杖(12) 虎杖爺爺(13) 七海(48) 帳相(50) 東堂(70) 甚爾(500) 里香(520) 羂索(550) 乙骨(1250) 五條(2500) 宿儺(3000) 
+no element with Key(1000)
+no element with Key(73)
+```
+
+這樣看起來輸出結果是正確的
+
 
 ## Sort
 
-可以觀察一下前面的圖，其實上面的樹也可以看成對一棵樹進行 Inorder Traversal 後的結果。因為BST的定義  `L subTree <= n < R subTree` 與 Inorder `(L<V<R)` 順序相同。
+可以觀察一下前面的圖，其實上面的樹也可以看成對一棵樹進行 Inorder Traversal 後的結果。因為BST的定義  `L subTree <= n < R subTree` 與 Inorder `(L<V<R)` 順序相同。 
+
+因此執行 `inorderPrint()` 就是以 inorder 順序對 BST 中節點依序進行 visiting
+
 
 ## Deletion
+
+
+由於刪除節點，與該節點連接的所有節點 ( `leftchild`, `rightchild`, `parent` )都會受到影響，以下歸類三種處理情境:
+
+- **情境一: 要刪除的節點是 leaf，沒有 child pointer**
+- **情境二: 要刪除的節點只有一個 child (不管是 leftchild 或是 rightchild)**
+- **情境三: 要刪除的節點有兩個 child**
+
+
+### 情境一
+
+解決方法很簡單，就直接把 Leaf node 刪除，原本 parent 的 child pointer 指向 NULL
+
+![](/img/LeetCode/tree/BST_delete_1.png)
+
+
+### 情境二
+
+情境二，要刪除的node有一個child，這時必須將其child的 `*parent` 指向要刪除node的 `*parent`，而parent node 的 child pointer 要指向該node的child，之後再進行刪除節點的動作
+
+舉例來說，如果我們要把 五條(2500) 刪掉，我們就必須
+
+1. 先把 乙骨(1250) 的 `*parent` 指向五條的 parent node 羂索(550)
+2. 把 羂索(550) 的 `rightchild` 指向 乙骨(1250)，由於乙骨本來就再羂索的 rigtht subTree，因此這麼做一樣可以維持BST
+3. 刪除 五條(2500) 這個節點
+
+
+![](/img/LeetCode/tree/BST_delete_2.png)
+
+
+### 情境三
+
+情境三，要刪除的node有兩個 child，影響到的node較多，但有個好方法:
+
+{% note info %}
+**與其直接刪除節點，不如釋放其 Successor 或 Predecessor 的記憶體位置，之後再拿原本 Successor 或 Predecessor 的值將待刪除節點的資料替換掉。**
+{% endnote %}
+
+舉例來說，我想要刪除帳相(50)，可以把他的 Successor 東堂(70) (或 Predecessor 七海(48)) 的記憶體位置釋放，再將Successor的資料值 東堂(70) (或 Predecessor 七海(48)) 放回帳相(50) 的記憶體位址。
+
+![](/img/LeetCode/tree/BST_delete_3.png)
+
+
+如何實現，可以透過一個BST的特性來簡化問題，即 **「具有兩個child的node，其 Successor 或 Predecessor 一定是 Leaf Node 或只有一個child 的 node」**。這裡可以為這個特性舉例子驗證看看:
+
+虎杖爺爺(13) 的 Successor是七海(48), Predecessor 是虎杖(12)
+甚爾(500) 的 Successor是羂索(550), Predecessor 是虎杖爺爺(13)
+
+> Successor: 找 right subTree 中的最小值
+> Predecessor: 找 left subTree 中最大值
+
+**所以這樣問題就會簡化成情境一與情境二**
+
+### 實作
+
+這裡可以在先前的 BST class 中定義一個新的成員函數
+
+```cpp
+void DeleteBST(int key);
+```
+實作DeleteBST 流程如下:
+
+1. 先透過 `Search()`確認想要刪除的node是否存在BST中
+2. 把真正會被釋放記憶體的pointer調整成「至多只有一個child」的node
+3. 把真正會被釋放記憶體的node的child指向新的parent
+4. 把真正會被釋放記憶體的node的parent指向新的child
+5. 若真正會被釋放記憶體是「替身」，再把替身的資料放回BST中
+
+```cpp
+void BST::DeleteBST(int KEY){
+
+    TreeNode *deleteNode = search(KEY);
+    if(deleteNode == NULL){
+        cout << "Error: no such node in the tree" << endl;
+        return;
+    }
+
+    TreeNode *actualDeleteNode = 0;
+    TreeNode *childOfDeleteNode = 0;
+    
+    if(deleteNode->leftchild == NULL || deleteNode->leftchild == NULL){
+        // 如果是情境一或二，那要被刪除的node就是搜尋找到的node
+        actualDeleteNode = deleteNode;
+    }
+    else{ 
+        // 如果是情境三，要被刪除的就會是該node的Successor 或 Predecessor
+        actualDeleteNode = Successor(deleteNode);
+    }
+
+    // 接著將 childOfDeleteNode 指向要被釋放記憶體節點的left child 或 right child節點
+    if(actualDeleteNode->leftchild!=NULL){
+        childOfDeleteNode = actualDeleteNode->leftchild;
+    }
+    else{
+        childOfDeleteNode = actualDeleteNode->rightchild;
+    }
+
+    // 如果要刪除的節點不是leaf，則需要將chuld的parent指回待刪除node的parent
+    if(childOfDeleteNode!=NULL){ 
+        childOfDeleteNode->parent = actualDeleteNode->parent;
+    }
+
+    //接著要分別處理 Parent 指向 child node 的部分
+    if(actualDeleteNode->parent==NULL){ // 要考慮如果 root 就是要被刪掉的node，那他就不會有parent
+        this->root = childOfDeleteNode;
+    }
+    else if(actualDeleteNode == actualDeleteNode->parent->leftchild){
+         actualDeleteNode->parent->leftchild = childOfDeleteNode;
+    }
+    else{
+        actualDeleteNode->parent->rightchild = childOfDeleteNode;
+    }
+
+    //Case3, the actualDeleteNode might be assigned to successor or predecessor
+    if(deleteNode!= actualDeleteNode){
+        deleteNode->key = actualDeleteNode->key;
+        deleteNode->element = actualDeleteNode->element;
+    }
+
+    delete actualDeleteNode;
+    actualDeleteNode = 0;
+}
+```
+
+接著在 `main()` 加入 `T.DeleteBST(50);` (刪除帳相)，輸出結果如下:
+
+```
+Inorder Traversal:
+虎杖(12) 虎杖爺爺(13) 七海(48) 帳相(50) 東堂(70) 甚爾(500) 里香(520) 羂索(550) 乙骨(1250) 五條(2500) 宿儺(3000) 
+After deletion:
+虎杖(12) 虎杖爺爺(13) 七海(48) 東堂(70) 甚爾(500) 里香(520) 羂索(550) 乙骨(1250) 五條(2500) 宿儺(3000)
+```
+
+刪掉甚爾(500) root:
+
+```
+Inorder Traversal:
+虎杖(12) 虎杖爺爺(13) 七海(48) 帳相(50) 東堂(70) 甚爾(500) 里香(520) 羂索(550) 乙骨(1250) 五條(2500) 宿儺(3000) 
+After deletion:
+虎杖(12) 虎杖爺爺(13) 七海(48) 帳相(50) 東堂(70) 里香(520) 羂索(550) 乙骨(1250) 五條(2500) 宿儺(3000)
+```
+
+# 結語
+
+這次學習手刻一個 Binary Tree 以及實現BST Tree 的許多相關操作，也參考了許多資料，逐步完成。而一定會有更好或更加簡易的寫法，希望之後能夠結合 STL 的使用，實際在刷leetcode的過程中用出來。
+
 
 # Reference
 
 [1] https://alrightchiu.github.io/SecondRound/binary-tree-traversalxun-fang.html?source=post_page-----a02fedbc51a8--------------------------------#in
 
 [2] https://alrightchiu.github.io/SecondRound/binary-search-tree-sortpai-xu-deleteshan-chu-zi-liao.html#binary-search-tree-sortpai-xu-deleteshan-chu-zi-liao
+
+[3] https://pjchender.dev/dsa/dsa-bst/
