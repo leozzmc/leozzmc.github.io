@@ -31,7 +31,7 @@ cover: /img/LeetCode/104/cover.jpg
 
 這次是看了提示後才寫出來，並且了解到我自己對Recursive 的不熟練
 
-## 解法
+## 我的解法
 
 ```cpp
 /**
