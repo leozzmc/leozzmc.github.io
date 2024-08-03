@@ -2,6 +2,7 @@
 title: 二元樹的最大深度 | Easy | LeetCode#104. Maximum Depth of Binary Tree
 tags:
   - Tree
+  - Binary Tree
   - LeetCode
   - Easy
   - C++

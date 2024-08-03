@@ -2,6 +2,7 @@
 title: 反轉二元樹 | Easy | LeetCode#226. Invert Binary Tree
 tags:
   - Tree
+  - Binary Tree
   - LeetCode
   - Easy
   - C++
