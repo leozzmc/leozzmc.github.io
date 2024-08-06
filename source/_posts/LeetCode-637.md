@@ -183,7 +183,7 @@ expect output: [2147483647,2147483647]
 
 有看到解答區，也有人是透過DFS，然後持續追縱當前深度，並把同一深度的值做加總
 
-![](/img/LeetCode/637/dfs.jpeg)
+![](/img/LeetCode/637/dfs.png)
 
 ```cpp
 /**
