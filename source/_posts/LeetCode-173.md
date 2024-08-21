@@ -1,6 +1,5 @@
 ---
 title: 二元搜尋樹迭代器 | Medium | LeetCode#173. Binary Search Tree Iterator
-date: 2024-08-21 09:12:54
 tags:
   - Binary Search Tree
   - LeetCode
@@ -8,7 +7,9 @@ tags:
   - C++
 categories: LeetCode筆記
 aside: true
-cover: 
+abbrlink: 4a669d62
+date: 2024-08-21 09:12:54
+cover: /img/LeetCode/173/cover.jpeg
 ---
 
 # 題目敘述
