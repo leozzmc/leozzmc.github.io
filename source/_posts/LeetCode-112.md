@@ -4,7 +4,6 @@ tags:
   - Tree
   - Binary Tree
   - Easy
-  - Medium
   - C++
 categories: LeetCode筆記
 aside: true
