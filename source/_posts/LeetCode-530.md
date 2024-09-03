@@ -8,7 +8,7 @@ tags:
   - C++
 categories: LeetCode筆記
 aside: true
-cover: img/LeetCode/530/cover.jpeg
+cover: /img/LeetCode/530/cover.jpeg
 abbrlink: 9f5948c3
 date: 2024-08-29 13:31:25
 ---
