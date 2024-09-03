@@ -1,5 +1,5 @@
 ---
-title: BST 中的最小節點差值 | Medium| LeetCode#98. Validate Binary Search Tree
+title: Valid 的二元搜尋樹 | Medium| LeetCode#98. Validate Binary Search Tree
 tags:
   - Binary Search Tree
   - Traversal
