@@ -1,5 +1,5 @@
 ---
-title: 二元樹Z字形走訪 | Medium| LeetCode#103. Binary Tree Zigzag Level Order Traversal
+title: 二元樹Z字形走訪 | Medium | LeetCode#103. Binary Tree Zigzag Level Order Traversal
 tags:
   - Binary Tree
   - Traversal
