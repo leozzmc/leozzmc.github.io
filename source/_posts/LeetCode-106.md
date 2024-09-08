@@ -12,12 +12,14 @@ categories: LeetCode筆記
 aside: true
 abbrlink: 7af71e27
 date: 2024-09-07 22:13:23
+cover: /img/LeetCode/106/cover.jpg
 ---
 
 
 # 題目敘述
 
 ![](/img/LeetCode/106/question1.png)
+
 ![](/img/LeetCode/106/question2.png)
 
 - 題目難度: `Medium`
@@ -34,7 +36,7 @@ date: 2024-09-07 22:13:23
 
 其實有想法很像:
 
-{% noet info %}
+{% note info %}
 - Inorder 的第一個元素是 leftmost 元素
 - Preorder 的最後一個元素會是 root
 {% endnote %}
@@ -88,6 +90,7 @@ public:
 整體作法跟 LeetCode-105 很像 都是額外建立一個 `helper` 函數，每次迭代過程中找到用來在陣列區分左右子樹的中間值的index，找到在 `inorder` 當中的分界值就可以 `break` 了。
 
 之後就是透過下面這樣的 pattern 來建構樹
+
 ```
 root->left = buildTree(左子樹inorder陣列，左子樹postorder陣列)
 root->right = buildTree(右子樹inorder陣列，右子樹postorder陣列)
@@ -96,6 +99,41 @@ root->right = buildTree(右子樹inorder陣列，右子樹postorder陣列)
 ### 執行結果
 
 ![](/img/LeetCode/106/result.png)
+
+## 更好的做法
+
+```cpp
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        unordered_map<int, int> index;
+        for (int i = 0; i < inorder.size(); i++) {
+            index[inorder[i]] = i;
+        }
+        return buildTreeHelper(inorder, postorder, 0, inorder.size() - 1, 0, postorder.size() - 1, index);
+    }
+    
+    TreeNode* buildTreeHelper(vector<int>& inorder, vector<int>& postorder, int inorderStart, int inorderEnd, int postorderStart, int postorderEnd, unordered_map<int, int>& index) {
+        if (inorderStart > inorderEnd || postorderStart > postorderEnd) {
+            return nullptr;
+        }
+        int rootVal = postorder[postorderEnd];
+        TreeNode* root = new TreeNode(rootVal);
+        int inorderRootIndex = index[rootVal];
+        int leftSubtreeSize = inorderRootIndex - inorderStart;
+        root->left = buildTreeHelper(inorder, postorder, inorderStart, inorderRootIndex - 1, postorderStart, postorderStart + leftSubtreeSize - 1, index);
+        root->right = buildTreeHelper(inorder, postorder, inorderRootIndex + 1, inorderEnd, postorderStart + leftSubtreeSize, postorderEnd - 1, index);
+        return root;
+    }
+};
+
+```
+
+主要想法還是一樣，但每次查找節點很耗費時間，如果先用個 hash table 將陣列index 和值存放起來，這樣就有機會將時間複雜度從 $O(n^2)$ 降低到 $O(n)$
+
+### 執行結果
+
+![](/img/LeetCode/106/result2.png)
 
 # 複雜度
 
