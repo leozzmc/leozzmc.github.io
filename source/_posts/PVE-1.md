@@ -11,18 +11,13 @@ date: 2024-09-11 16:16:15
 cover: /img/PVE/cover.jpg
 ---
 
-<!-- # Proxmox VE 介紹
 
-# 檢查 Wake On Lan (WOL) 設定
-
-# 腳本測試 Migration
-
----
+<!-- ---
 Part3
 
 # High Availability (HA)
 
-# 設定 HA Group -->
+# 設定 HA Group --> -->
 
 
 # Proxmox VE 介紹
@@ -100,6 +95,15 @@ Part3
 
 > 為了實現這兩項目的，就必須要能夠有 shared storage 的 solution
 
+
+# Migration 流程
+
+![](/img/PVE/mg1.png)
+
+到這裡來補充一下我們這次進行 Migration 的流程，這一篇我們會手動用在PVE介面上進行 migration，主要就是兩台 PVE 節點，預先建立好共享儲存架構，並且基於這個架構去建立虛擬機，再將這個虛擬機從一個節點轉移到另一個節點。
+
+> 所以接著就要來透過 Ceph 來建立儲存的架構了。
+
 # Ceph 介紹
 
 > Ceph的儲存叢集（Ceph Storage Cluster），又稱為`RADOS`（**R**eliable, **A**utonomic **D**istributed **O**bject **S**tore）它提供了一個可靠、能自我管理的分散式物件儲存區。採C++開發，這個叢集是居於Ceph架構底層的軟體儲存系統，整個環境的資料都放在這裡，具有自我修復與管理的能力，並且是以自動運作的OSD儲存節點，以及輕量的Monitor監控程式組成。
@@ -126,6 +130,7 @@ Part3
     - Ceph MDS 使 POSIX 文件系統使用者可在不對 Ceph 儲存 cluster 造成負擔的狀況下執行像是 `ls` 或者 `find` 命令
 
 >  Ceph 會是一種分散式儲存系統，它的底層由多臺伺服器組成的叢集環境支撐 (也就是我們剛才架設的 PVE Cluster)。如果你需要擴充儲存空間或提升系統規模，只要再加入更多的伺服器到叢集中即可，這讓擴展變得非常簡單。在這種架構下，Ceph 有很高的可靠性，系統會自動進行修復和管理。當資料寫入時，會自動複製到多個節點上，**這樣即使某個節點出現故障，整個系統依然能正常運作，資料也不會損壞。** 這樣的設計讓 Ceph 能夠提供穩定且安全的儲存解決方案。
+
 
 ## 安裝 Ceph
 
@@ -238,6 +243,9 @@ Ceph Pool 會用來 Combined 不同節點之間的 OSD，這也會是我們後�
 建立好後，兩邊節點就會出現 `cephdfs` ，接著就可以上傳 iso image 到 shared file system，我這裡上傳的是 Ubuntu 22.04 Desktop 的映像檔
 
 ![](/img/PVE/fs2.png)
+
+
+
 
 # 建立 VM 進行測試
 
