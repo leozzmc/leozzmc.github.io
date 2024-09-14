@@ -184,6 +184,8 @@ fi
 
 ![](/img/PVE/exp2.png)
 
+![](/img/PVE/exp3.png)
+
 
 >如果觀察 Ubuntu VM 的 Memory 指標可以發現會出現斷層，這就是移轉過程中預期會出現的 downtime 。 以前在 AWS 處理 MQ 問題的時候也會發現在 maintenance windows 期間某些實例的記憶體或CPU 指標也會有這樣的斷層，這通常代表底層實例替換或重啟，其原因可能是要做 maintenance 或者security patch
 
