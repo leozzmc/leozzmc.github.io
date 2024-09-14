@@ -19,7 +19,7 @@ cover: /img/PVE/cover.jpg
 
 通常可以透過幾種方式來獲取 CPU 或者是其他硬體的功耗，最簡單的方式就是透過 `powerstat` 來在 Linux/Unix 環境中查看 CPU 的功耗。 另外如果主機有 BMC和支援IPMI 的話，那就可以透過 `ipmitool` 去獲取主機的電力消耗資訊。
 
-> 題外話: 其實 Proxmox VE 本身是有支援 [**IPMI watchdog**](https://blog.jason.tools/2019/02/pve-ipmi-watchdog.html) 的，可以在 `/etc/default/pve-ha-manager` 裡面去取消註解，默認是使用作業系統層級的 softdog，但如果主機板都有支援的話那就沒辦法了
+> 題外話: 其實 Proxmox VE 本身是有支援 [**IPMI watchdog**](https://blog.jason.tools/2019/02/pve-ipmi-watchdog.html) 的，可以在 `/etc/default/pve-ha-manager` 裡面去取消註解，改成使用 IPMI watchdog，因為默認是使用作業系統層級的 softdog，但如果主機板沒有支援的話那就還是用默認的就好。
 
 {% note info %}
 
