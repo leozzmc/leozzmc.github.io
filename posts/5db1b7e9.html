@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>帶你從零開始整合 Lambda Function 到 Amazon Connect | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="前言在現代的商業環境中，提供優質且高效的客戶服務是成功的關鍵之一。Amazon Connect 是一個強大的雲端客戶服務中心，它可以幫助企業輕鬆建立高度可靠的聯絡中心，並與客戶進行無縫的互動。本篇技術部落格文章將帶領您逐步了解如何整合 Lambda Function 到 Amazon Connect，以實現更多自定義的功能。 在這篇文章中，我們將遵循以下步驟來實現整合： 步驟一、建立 Connec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="帶你從零開始整合 Lambda Function 到 Amazon Connect">
+<meta property="og:url" content="https://leozzmc.github.io/posts/5db1b7e9.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="前言在現代的商業環境中，提供優質且高效的客戶服務是成功的關鍵之一。Amazon Connect 是一個強大的雲端客戶服務中心，它可以幫助企業輕鬆建立高度可靠的聯絡中心，並與客戶進行無縫的互動。本篇技術部落格文章將帶領您逐步了解如何整合 Lambda Function 到 Amazon Connect，以實現更多自定義的功能。 在這篇文章中，我們將遵循以下步驟來實現整合： 步驟一、建立 Connec">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/Connect.png">
+<meta property="article:published_time" content="2023-08-01T14:21:33.000Z">
+<meta property="article:modified_time" content="2024-08-20T06:16:06.517Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="Lambda">
+<meta property="article:tag" content="Connect">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/Connect.png"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/5db1b7e9.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '帶你從零開始整合 Lambda Function 到 Amazon Connect',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-20 14:16:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">86</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Connect.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">帶你從零開始整合 Lambda Function 到 Amazon Connect</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2023-08-01T14:21:33.000Z" title="發表於 2023-08-01 22:21:33">2023-08-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2024-08-20T06:16:06.517Z" title="更新於 2024-08-20 14:16:06">2024-08-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/">實作紀錄</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="帶你從零開始整合 Lambda Function 到 Amazon Connect"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在現代的商業環境中，提供優質且高效的客戶服務是成功的關鍵之一。<strong>Amazon Connect</strong> 是一個強大的雲端客戶服務中心，它可以幫助企業輕鬆建立高度可靠的聯絡中心，並與客戶進行無縫的互動。本篇技術部落格文章將帶領您逐步了解如何整合 Lambda Function 到 Amazon Connect，以實現更多自定義的功能。</p>
+<p>在這篇文章中，我們將遵循以下步驟來實現整合：</p>
+<h2 id="步驟一、建立-Connect-Instance"><a href="#步驟一、建立-Connect-Instance" class="headerlink" title="步驟一、建立 Connect Instance"></a>步驟一、建立 Connect Instance</h2><p>首先，我們將在 Amazon Connect Console 上建立一個 Connect Instance。</p>
+<p>請至 Amazon Connect Console 上選擇 <strong>Add Instance</strong>。這個步驟會需要設定你的 <strong>instance-alias</strong>，這樣可以為你的connect instance 建立一個 unique的 Access URL</p>
+<p><img src="https://i.imgur.com/JgeqYRX.jpg" alt="Imgur"></p>
+<p>這個步驟是添加Admin，你會需要設定使用者名稱以及密碼。</p>
+<p><img src="https://i.imgur.com/HqRmPC9.jpg" alt="Imgur"></p>
+<p>之後的步驟我們就都按 <strong>Next</strong>，最後建立 Instance。</p>
+<div class="note info flat"><p>建立會需要等一段時間，可以趁這個時候建立 Lambda Funciton</p>
+</div>
+
+<h2 id="步驟二、建立-Lambda-Function"><a href="#步驟二、建立-Lambda-Function" class="headerlink" title="步驟二、建立 Lambda  Function"></a>步驟二、建立 Lambda  Function</h2><p>前往 Lambda Console，選擇建立 Lambda Function，我們Lambda 的Region與 Connect Instance 的 Region是一樣的，都是 <code>us-east-1</code></p>
+<p><img src="https://i.imgur.com/IF7ndGN.jpg" alt="Imgur"></p>
+<p>我們選擇 <strong>Author from Scratch</strong>，並且給定函式名稱為 <code>TestConnect</code>，Runtime 選擇 <code>Python 3.11</code><br>接著其他都保持預設設定。最後建立 Lambda Function。</p>
+<p>建立完成後，可以修改 Lambda code，加上一行在你的 handler上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Invoke Success!&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>接著按下 <strong>deploy。</strong></p>
+<h2 id="步驟三、增加Flows-到-Amazon-Connect"><a href="#步驟三、增加Flows-到-Amazon-Connect" class="headerlink" title="步驟三、增加Flows 到 Amazon Connect"></a>步驟三、增加Flows 到 Amazon Connect</h2><blockquote>
+<p><strong>這一步驟中，我們將在 Connect Instance 中增加 Flows。我們將使用剛才建立的 Lambda Function，讓 Amazon Connect 在特定情況下調用此 Lambda 函式。</strong></p>
+</blockquote>
+<p>前往剛才建立的 Connect Instance，點選左側導覽欄當中的 <strong>Flows</strong></p>
+<p><img src="https://i.imgur.com/evYMznQ.jpg" alt="Imgur"></p>
+<p>往下找到 <strong>AWS Lambda，選擇你剛才建立的Lambda名稱，接著按下 Add Lambda Function</strong></p>
+<p><img src="https://i.imgur.com/n7jvJGT.png?1" alt="Imgur"></p>
+<h2 id="步驟四、設定-Contact-Flows"><a href="#步驟四、設定-Contact-Flows" class="headerlink" title="步驟四、設定 Contact Flows"></a>步驟四、設定 Contact Flows</h2><blockquote>
+<p><strong>在這個步驟中，我們將設定 Contact Flows，讓 Amazon Connect 在特定情況下觸發 Lambda 函式並執行自定義的操作。我們將設定語音提示，以及在 Lambda 函式觸發時執行的動作。</strong></p>
+</blockquote>
+<p>點開你剛才建立 Connect Instance 的 Access URL</p>
+<p><img src="https://i.imgur.com/EgmgghI.jpg" alt="Imgur"></p>
+<p>會跳出類似這樣的畫面</p>
+<p><img src="https://i.imgur.com/OIOj9PJ.jpg" alt="Imgur"></p>
+<p>一樣去左側的 Panel中找到 <strong>Routing</strong>，並選擇 <strong>Flows</strong></p>
+<p><img src="https://i.imgur.com/CkJosG1.jpg" alt="Imgur"></p>
+<p>點開後選擇 <strong>Create Flow</strong></p>
+<p>點開後第一步先幫你的 Flow 輸入名稱，這裡我叫做 <code>TestConnect-LambdaFlow</code><br>剛開始只會出現一個 Entry 在 畫面上，你可在做側的搜尋欄當中搜尋 Lambda Invoke，接著會出現 <strong>Invoke AWS Lambda function</strong> 的功能方塊，就把他拉到中間的畫布上。你可以先點選 Invoke AWS Lambda function 右上角的點點，並選擇 <strong>edit setting</strong>，接著右側會跳出編輯視窗，請輸入你剛才建立Lambda 函式的 ARN，接著按下 <strong>Save</strong>。</p>
+<p><img src="https://i.imgur.com/9LBtvaI.jpg" alt="Imgur"></p>
+<p>接著在左側搜尋欄搜尋 <strong>Play Prompt</strong> 並拉到中間畫布上，一樣點擊右上角點點，按下 <strong>edit setting</strong>。</p>
+<p><img src="https://i.imgur.com/iskcGZZ.jpg" alt="Imgur"></p>
+<p>選擇 Text-to&#x3D;speech or chat text 的選項，並在底下輸入客戶剛接入聊天室會出現的訊息。我在這邊輸入</p>
+<p><code>Hi there,  this flow section will try to invoke Lambda function.</code></p>
+<p>完成後點選 Save。</p>
+<p>接著可以一樣在左側的搜尋欄位當中的 <strong>Terminate</strong> 找到 <strong>Disconnect</strong> 功能方塊，並把他拉到中間畫布上。</p>
+<p>最後將所有功能方塊的箭頭連接上，整體流程會像是下面的圖一樣。</p>
+<p><img src="https://i.imgur.com/RPBKkRu.jpg" alt="Imgur"></p>
+<p>不管成功與否都會調用 Lambda 函式，但觸發成功才會去觸發 Prompt，而失敗就是直接結束連線，而Lambda函式調用失敗也會直接結束連線。 </p>
+<p>最後按下 <strong>Save 完成後按下 Publish</strong></p>
+<blockquote>
+<p>一定要確保按下 Publish，若你沒有 Publish 你所設定的 Flow 不會出現在儀表板上</p>
+</blockquote>
+<h2 id="步驟五、測試-Chat"><a href="#步驟五、測試-Chat" class="headerlink" title="步驟五、測試 Chat"></a>步驟五、測試 Chat</h2><blockquote>
+<p><strong>一旦所有設定完成，我們將進行測試。透過模擬的聊天界面，我們將檢查 Lambda 函式是否被成功觸發，以及驗證整合的運作是否符合預期。</strong></p>
+</blockquote>
+<p>接著一樣點選左側的 Panel 最上面有點像 Windows Logo的圖示，點選 <strong>Dashboard，回到原先的主畫面。</strong></p>
+<p><img src="https://i.imgur.com/IL3lPpV.jpg" alt="Imgur"></p>
+<p>點選 <strong>Test Chat</strong>，之後會跳出 Test Chat 頁面，點選左上角的 <strong>Test Settings</strong></p>
+<p><img src="https://i.imgur.com/0EFhRCk.jpg" alt="Imgur"></p>
+<p>點選後會出現一個設定選單，在 Contact Flow 中請選擇你剛才建立的 Flow，接著按下 <strong>Apply</strong></p>
+<p><img src="https://i.imgur.com/sN5qfW5.jpg" alt="Imgur"></p>
+<p>當你按下 Apply 後就會出現一個 模擬的聊天界面，並且顯示客戶加入Chat的狀況，而我們的設定是不論如何都會限結束連線。所以我們可以回到Lambda 頁面去檢查 Lambda 函式有沒有被觸發。</p>
+<p><img src="https://i.imgur.com/1LoXmPY.jpg" alt="Imgur"></p>
+<h2 id="步驟六、檢查日誌"><a href="#步驟六、檢查日誌" class="headerlink" title="步驟六、檢查日誌"></a>步驟六、檢查日誌</h2><blockquote>
+<p><strong>最後，我們將檢查 Lambda 函式的日誌，以確認 Lambda 是否被正確調用，並確保整合的可靠性。</strong></p>
+</blockquote>
+<p>回到 Lambda Console 點選 <strong>View CloudWatch logs</strong></p>
+<p><img src="https://i.imgur.com/C5ziVSW.jpg" alt="Imgur"></p>
+<p>點開最新產生的 Log Streams，可以發現 <code>Invoke Success!</code> 的字串，由此得知我們的 Lambda 被成功調用了</p>
+<p><img src="https://i.imgur.com/xzwSbUl.jpg" alt="Imgur"></p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>透過這篇文章，您將學會如何使用 Amazon Connect 和 Lambda Function 整合客戶服務的流程，並實現自定義的客戶互動。讓我們一起踏出這個整合之旅吧！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/5db1b7e9.html">https://leozzmc.github.io/posts/5db1b7e9.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AWS/">AWS</a><a class="post-meta__tags" href="/tags/Lambda/">Lambda</a><a class="post-meta__tags" href="/tags/Connect/">Connect</a></div><div class="post_share"><div class="social-share" data-image="/img/Connect.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/d400aff3.html" title="⚙️在 Lambda 上設定錯誤重試 (Retry)"><img class="cover" src="/img/lambda.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">⚙️在 Lambda 上設定錯誤重試 (Retry)</div></div></a></div><div class="next-post pull-right"><a href="/posts/c79cef2b.html" title="Lambda 基本認識 feat.容器重用小實驗"><img class="cover" src="/img/PEPE1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Lambda 基本認識 feat.容器重用小實驗</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">86</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E4%B8%80%E3%80%81%E5%BB%BA%E7%AB%8B-Connect-Instance"><span class="toc-number">2.</span> <span class="toc-text">步驟一、建立 Connect Instance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E4%BA%8C%E3%80%81%E5%BB%BA%E7%AB%8B-Lambda-Function"><span class="toc-number">3.</span> <span class="toc-text">步驟二、建立 Lambda  Function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E4%B8%89%E3%80%81%E5%A2%9E%E5%8A%A0Flows-%E5%88%B0-Amazon-Connect"><span class="toc-number">4.</span> <span class="toc-text">步驟三、增加Flows 到 Amazon Connect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E5%9B%9B%E3%80%81%E8%A8%AD%E5%AE%9A-Contact-Flows"><span class="toc-number">5.</span> <span class="toc-text">步驟四、設定 Contact Flows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E4%BA%94%E3%80%81%E6%B8%AC%E8%A9%A6-Chat"><span class="toc-number">6.</span> <span class="toc-text">步驟五、測試 Chat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%A9%9F%E5%85%AD%E3%80%81%E6%AA%A2%E6%9F%A5%E6%97%A5%E8%AA%8C"><span class="toc-number">7.</span> <span class="toc-text">步驟六、檢查日誌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-number">8.</span> <span class="toc-text">結論</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/48f553b3.html" title="刷題知識整理 |  Backtracking &amp; Recursive">刷題知識整理 |  Backtracking &amp; Recursive</a><time datetime="2024-09-15T10:54:56.000Z" title="發表於 2024-09-15 18:54:56">2024-09-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8efb2cec.html" title="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2"><img src="/img/PVE/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2"/></a><div class="content"><a class="title" href="/posts/8efb2cec.html" title="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2">基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2</a><time datetime="2024-09-13T12:17:34.000Z" title="發表於 2024-09-13 20:17:34">2024-09-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"><img src="/img/LeetCode/117/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"/></a><div class="content"><a class="title" href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II">填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II</a><time datetime="2024-09-12T02:52:05.000Z" title="發表於 2024-09-12 10:52:05">2024-09-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/c5581068.html" title="實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1"><img src="/img/PVE/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1"/></a><div class="content"><a class="title" href="/posts/c5581068.html" title="實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1">實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1</a><time datetime="2024-09-11T08:16:15.000Z" title="發表於 2024-09-11 16:16:15">2024-09-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/c8b16daf.html" title="二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree"><img src="/img/LeetCode/236/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree"/></a><div class="content"><a class="title" href="/posts/c8b16daf.html" title="二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree">二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree</a><time datetime="2024-09-10T13:47:47.000Z" title="發表於 2024-09-10 21:47:47">2024-09-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
