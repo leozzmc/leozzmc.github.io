@@ -17,7 +17,7 @@ Part3
 
 # High Availability (HA)
 
-# 設定 HA Group --> -->
+# 設定 HA Group --> 
 
 
 # Proxmox VE 介紹
