@@ -87,31 +87,39 @@ int HanoiTower(int n){
 下面是簡易的實作方式:
 
 ```cpp
-# include <iostream>
-# include <vector>
-# define MAX_DEPTH 3
+#include <iostream>
+#include <vector>
 using namespace std;
 
-void permutate(int depth, vector<int> &password){
-   if(depth == MAX_DEPTH){
-      for(auto i = 0; i < password.size(); i++){
-         cout << password[i] <<" ";
-      }
-      cout << endl;
-      return;
-   };
-   for(int i = 1; i <= MAX_DEPTH; i++){
-      password.push_back(i);
-      permutate(depth+1, password);
-      password.pop_back();
-   }
+void permutate(vector<int>& nums, vector<int>& password, vector<bool>& used) {
+    if (password.size() == nums.size()) {
+        for (int i = 0; i < password.size(); i++) {
+            cout << password[i] << " ";
+        }
+        cout << endl;
+        return;
+    }
+
+    for (int i = 0; i < nums.size(); i++) {
+        if (!used[i]) {
+            used[i] = true;
+            password.push_back(nums[i]);
+            permutate(nums, password, used); 
+            password.pop_back();
+            used[i] = false;
+        }
+    }
 }
 
-int main(){
+int main() {
+    vector<int> nums = {1, 2, 3}; 
     vector<int> passList;
-    permutate(0, passList);
+    vector<bool> used(nums.size(), false);
+
+    permutate(nums, passList, used);
     return 0;
 }
+
 ```
 
 上面的這段就是終止條件，一旦為最大深度就停止繼續查找
@@ -128,10 +136,14 @@ int main(){
 下面則是在每個節點都嘗試插入`1`, `2` 或 `3` 後再去往下一層前進，而如果到達最大深度就退回，退回一層後就把原先占用在 `password` 最後一位的數字清空
 
 ```cpp
-for(int i = 1; i <= MAX_DEPTH; i++){
-      password.push_back(i);
-      permutate(depth+1, password);
-      password.pop_back();
+for (int i = 0; i < nums.size(); i++) {
+    if (!used[i]) {
+        used[i] = true;
+        password.push_back(nums[i]);
+        permutate(nums, password, used); 
+        password.pop_back();
+        used[i] = false;
+    }
 }
 ```
 
@@ -140,22 +152,12 @@ for(int i = 1; i <= MAX_DEPTH; i++){
 
 輸出結果:
 ```
-1 1 1 
-1 1 2 
-1 1 3 
-1 2 1 
-1 2 2 
 1 2 3 
-1 3 1 
 1 3 2 
-1 3 3 
-2 1 1 
-2 1 2 
 2 1 3 
-2 2 1 
-2 2 2 
-...(略)...
-
+2 3 1 
+3 1 2 
+3 2 1 
 ```
 
 ## Subnets
