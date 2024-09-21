@@ -1,0 +1,377 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🧪筆記- 5G 網路功能介面與協定堆疊 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="概括介紹其網路功能(Network Function)之間的介面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🧪筆記- 5G 網路功能介面與協定堆疊">
+<meta property="og:url" content="https://leozzmc.github.io/posts/3d68fc76.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="概括介紹其網路功能(Network Function)之間的介面">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:published_time" content="2021-07-10T00:08:06.000Z">
+<meta property="article:modified_time" content="2024-05-28T10:52:47.612Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="5G">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/3d68fc76.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🧪筆記- 5G 網路功能介面與協定堆疊',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-28 18:52:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">90</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/cover7.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">🧪筆記- 5G 網路功能介面與協定堆疊</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2021-07-10T00:08:06.000Z" title="發表於 2021-07-10 08:08:06">2021-07-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2024-05-28T10:52:47.612Z" title="更新於 2024-05-28 18:52:47">2024-05-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="🧪筆記- 5G 網路功能介面與協定堆疊"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="N2介面-控制介面與協定堆疊"><a href="#N2介面-控制介面與協定堆疊" class="headerlink" title="N2介面(控制介面與協定堆疊)"></a>N2介面(控制介面與協定堆疊)</h2><p>$5G Access,Network \stackrel{N2}{\longleftrightarrow} 5GC(AMF)$</p>
+<ul>
+<li><strong>管理流程:</strong> 不與特定UE相關，像是設定或重置N2介面</li>
+<li><strong>與單一UE相關的流程:</strong> NAS傳輸流程、UE上下文管理、PDU session資源相關流程、切換管理..etc</li>
+<li>採用 <strong>NG-AP協定</strong> (不論是哪種Access Network: 3GPP RAN 或 N3IWF non-3GPP )，屬於一種應用層協定</li>
+<li>AMF對於一個UE有唯一的N2 終結點</li>
+<li>由於SMF與AMF是解耦的，所以NG-AP支援AMF在5G RAN與5GC之間傳遞<strong>N2 SM訊息</strong></li>
+</ul>
+<p><img src="https://i.imgur.com/TP3cmJb.png"></p>
+<ul>
+<li>SCTP保證Acces Network與5GC之間的傳輸</li>
+</ul>
+<h2 id="UE與5GC之間的控制面介面與協定堆疊"><a href="#UE與5GC之間的控制面介面與協定堆疊" class="headerlink" title="UE與5GC之間的控制面介面與協定堆疊"></a>UE與5GC之間的控制面介面與協定堆疊</h2><p>針對每種UE使用的連接方式(3GPP、non-3GPP)，UE皆會有一個 <strong>N1 NAS連接</strong>，且會有唯一的N1終結點為位於AMF。</p>
+<blockquote>
+<p><strong>非接入層(NAS, Non-access stratum)</strong><br>原先存在於 3G&#x2F;UMTS中的協定層，是用戶設備與核網之間的功能層<br>具備以下功能:</p>
+<blockquote>
+<p>移動性管理<br>呼叫控制<br>會話管理<br>身分管理<br><a target="_blank" rel="noopener" href="https://hackmd.io/M4SyLAOpRam7lZVLuujOHw">NAS 參考資料</a></p>
+</blockquote>
+</blockquote>
+<p>N1 NAS可用於:</p>
+<ul>
+<li><strong>UE註冊管理</strong></li>
+<li><strong>連接管理</strong></li>
+<li><strong>會話管理</strong></li>
+</ul>
+<p>N1介面之中的NAS協議分成: NAS-MM、NAS-SM</p>
+<h2 id="NAS-MM"><a href="#NAS-MM" class="headerlink" title="NAS-MM"></a>NAS-MM</h2><p>用於UE與AMF以外的NF進行互動</p>
+<ul>
+<li>會話管理消息</li>
+<li>UE 策略</li>
+<li>位置服務</li>
+</ul>
+<p><em>NAS傳輸會話管理訊息、短訊、UE策略、位置服務等協議流程</em><br><img src="https://i.imgur.com/iPUTyxa.gif"></p>
+<h3 id="特點"><a href="#特點" class="headerlink" title="特點"></a>特點</h3><p>處理UE與AMF之間的NAS流程，包含:</p>
+<ul>
+<li>處理UE的註冊管理(RM)和連接管理(CM): 在UE與AMF之間提供安全的訊息連結 、存取控制</li>
+<li>適用於其他類型的NAS訊息(NAS-SM、SMS等)，可與RM&#x2F;CM NAS 訊息同時傳輸</li>
+<li>針對不同存取方式(3GPP, non-3GPP)也都採用相同的NAS協定</li>
+<li>UE針對不同種存取方式都會有一個N1 NAS連接</li>
+</ul>
+<p><img src="https://i.imgur.com/sdjzoKJ.gif"></p>
+<h2 id="NAS-SM"><a href="#NAS-SM" class="headerlink" title="NAS-SM"></a>NAS-SM</h2><p>支援處理UE與SMF之間的<strong>會話管理</strong></p>
+<ul>
+<li>PDU會話用戶面的建立、修改、釋放</li>
+<li>SM訊息的建立、處理都是在NAS-SM之中完成的（內容不會被AMF解析）</li>
+<li>NAS-MM層會負責UE-AMF之間SM訊息的收發，並提供安全保護(<strong>保護訊息的完整性</strong>)</li>
+</ul>
+<p><img src="https://i.imgur.com/qLGM1Hk.gif"></p>
+<h2 id="5GC-NF之間的控制面介面與協定堆疊"><a href="#5GC-NF之間的控制面介面與協定堆疊" class="headerlink" title="5GC NF之間的控制面介面與協定堆疊"></a>5GC NF之間的控制面介面與協定堆疊</h2><p>5G 核網中的NF，<strong>NF Service Producer</strong> 會透過服務化界面為 <strong>NF Service Consumer</strong> 提供服務</p>
+<p>5G核網中將以下控制介面定義為服務化界面:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- Nsmf</span><br><span class="line">- Nudm</span><br><span class="line">- Nnrf</span><br><span class="line">- Nnssf</span><br><span class="line">- Nausf</span><br><span class="line">- Nnef</span><br><span class="line">- Nsmsf</span><br><span class="line">- Nudr</span><br><span class="line">- Npcf</span><br><span class="line">- N5g-eir</span><br><span class="line">- Nlmf</span><br></pre></td></tr></table></figure>
+<p>這些服務化介面以<strong>HTTP 2.0</strong>與<strong>JSON</strong>作為應用層協定；3GPP所有網路功能都必須支持<strong>TLS</strong><br>若PLMN沒有提供其他網路安全方案，則TLS就必須被使用<br>而未來可能會以 <strong><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/QUIC">QUIC&#x2F;UDP</a></strong> 作為優化的方案</p>
+<p><img src="https://i.imgur.com/QWxhGJN.png"></p>
+<h2 id="N4介面與協定堆疊"><a href="#N4介面與協定堆疊" class="headerlink" title="N4介面與協定堆疊"></a>N4介面與協定堆疊</h2><p>$SMF\stackrel{N4}{\longleftrightarrow}UPF$</p>
+<p>N4介於SMF與UPF之間，具備控制面與用戶面功能<br>N4定義了以下流程:</p>
+<p><em>控制面流程</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- N4會話管理:</span><br><span class="line">	用於SMF建立、更新、刪除UPF上的N4會話上下文(Session Context)</span><br><span class="line">- N4報告流程:</span><br><span class="line">	用於UPF向SMF事件(EX.流量使用情況)</span><br><span class="line">- N4節點級別流程:</span><br><span class="line">	SMF、UPF之間N4節點的建立、更新、連結、釋放；UPF會向SMF報告N4節點級別的事件</span><br><span class="line">- SMF暫停計費流程:</span><br></pre></td></tr></table></figure>
+
+<p><em>用戶面流程</em><br>在SMF、UPF之間轉發流量:<br>當用戶處於<strong>CM-IDLE</strong>狀態時，UPF可轉發downlink 資料給SMF，SMF再決定呼叫策略</p>
+<table>
+<thead>
+<tr>
+<th>PFCP</th>
+<th>$\longleftrightarrow$</th>
+<th>PFCP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UDF</td>
+<td>$\longleftrightarrow$</td>
+<td>UPF</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>$\longleftrightarrow$</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>$\longleftrightarrow$</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>$\longleftrightarrow$</td>
+<td>L1</td>
+</tr>
+<tr>
+<td>Control Plane $\longleftrightarrow$ User Plane</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="用戶面介面與其協定堆疊"><a href="#用戶面介面與其協定堆疊" class="headerlink" title="用戶面介面與其協定堆疊"></a>用戶面介面與其協定堆疊</h2><p>$Access,Network\stackrel{N3}{\longleftrightarrow}UPF$<br>$UPF \stackrel{N9}{\longleftrightarrow}UPF$<br>N3與N9介面分別在5G RAN 與 UPF之間 以及UPF與UPF之間傳遞數據</p>
+<p><img src="https://i.imgur.com/p8GoGVl.gif"></p>
+<ul>
+<li><strong><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E8%AE%AE%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83">PDU(Protcol Data Unit) 層</a></strong>: 負責在UE與Data Network之間的PDU Session傳遞PDU</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/3d68fc76.html">https://leozzmc.github.io/posts/3d68fc76.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/5G/">5G</a><a class="post-meta__tags" href="/tags/Network/">Network</a></div><div class="post_share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/85fe9be3.html" title="VNF Deployment and Flow Scheduling in Geo-distributed Data Centers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">VNF Deployment and Flow Scheduling in Geo-distributed Data Centers</div></div></a></div><div class="next-post pull-right"><a href="/posts/a05f1769.html" title="🧪筆記- 5G 核心網路-移動性管理(Mobile Management)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🧪筆記- 5G 核心網路-移動性管理(Mobile Management)</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">90</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#N2%E4%BB%8B%E9%9D%A2-%E6%8E%A7%E5%88%B6%E4%BB%8B%E9%9D%A2%E8%88%87%E5%8D%94%E5%AE%9A%E5%A0%86%E7%96%8A"><span class="toc-number">1.</span> <span class="toc-text">N2介面(控制介面與協定堆疊)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UE%E8%88%875GC%E4%B9%8B%E9%96%93%E7%9A%84%E6%8E%A7%E5%88%B6%E9%9D%A2%E4%BB%8B%E9%9D%A2%E8%88%87%E5%8D%94%E5%AE%9A%E5%A0%86%E7%96%8A"><span class="toc-number">2.</span> <span class="toc-text">UE與5GC之間的控制面介面與協定堆疊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAS-MM"><span class="toc-number">3.</span> <span class="toc-text">NAS-MM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E9%BB%9E"><span class="toc-number">3.1.</span> <span class="toc-text">特點</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAS-SM"><span class="toc-number">4.</span> <span class="toc-text">NAS-SM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5GC-NF%E4%B9%8B%E9%96%93%E7%9A%84%E6%8E%A7%E5%88%B6%E9%9D%A2%E4%BB%8B%E9%9D%A2%E8%88%87%E5%8D%94%E5%AE%9A%E5%A0%86%E7%96%8A"><span class="toc-number">5.</span> <span class="toc-text">5GC NF之間的控制面介面與協定堆疊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#N4%E4%BB%8B%E9%9D%A2%E8%88%87%E5%8D%94%E5%AE%9A%E5%A0%86%E7%96%8A"><span class="toc-number">6.</span> <span class="toc-text">N4介面與協定堆疊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B6%E9%9D%A2%E4%BB%8B%E9%9D%A2%E8%88%87%E5%85%B6%E5%8D%94%E5%AE%9A%E5%A0%86%E7%96%8A"><span class="toc-number">7.</span> <span class="toc-text">用戶面介面與其協定堆疊</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/eb632302.html" title="組合問題 | Medium | LeetCode#77. Combinations"><img src="/img/LeetCode/77/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="組合問題 | Medium | LeetCode#77. Combinations"/></a><div class="content"><a class="title" href="/posts/eb632302.html" title="組合問題 | Medium | LeetCode#77. Combinations">組合問題 | Medium | LeetCode#77. Combinations</a><time datetime="2024-09-21T05:53:11.000Z" title="發表於 2024-09-21 13:53:11">2024-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/713e66af.html" title="排列問題 | Medium | LeetCode#46. Permutations"><img src="/img/LeetCode/46/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="排列問題 | Medium | LeetCode#46. Permutations"/></a><div class="content"><a class="title" href="/posts/713e66af.html" title="排列問題 | Medium | LeetCode#46. Permutations">排列問題 | Medium | LeetCode#46. Permutations</a><time datetime="2024-09-19T12:50:13.000Z" title="發表於 2024-09-19 20:50:13">2024-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/48f553b3.html" title="刷題知識整理 |  Backtracking &amp; Recursive"><img src="/img/LeetCode/backtracking/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="刷題知識整理 |  Backtracking &amp; Recursive"/></a><div class="content"><a class="title" href="/posts/48f553b3.html" title="刷題知識整理 |  Backtracking &amp; Recursive">刷題知識整理 |  Backtracking &amp; Recursive</a><time datetime="2024-09-15T10:54:56.000Z" title="發表於 2024-09-15 18:54:56">2024-09-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8efb2cec.html" title="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2"><img src="/img/PVE/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2"/></a><div class="content"><a class="title" href="/posts/8efb2cec.html" title="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2">基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2</a><time datetime="2024-09-13T12:17:34.000Z" title="發表於 2024-09-13 20:17:34">2024-09-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"><img src="/img/LeetCode/117/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"/></a><div class="content"><a class="title" href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II">填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II</a><time datetime="2024-09-12T02:52:05.000Z" title="發表於 2024-09-12 10:52:05">2024-09-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
