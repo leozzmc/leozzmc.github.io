@@ -778,6 +778,11 @@ hexo-generator-archive@^2.0.0:
   dependencies:
     hexo-pagination "3.0.0"
 
+hexo-generator-calendar@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/hexo-generator-calendar/-/hexo-generator-calendar-0.1.0.tgz"
+  integrity sha512-tpV2QUK/alMPR8qsm/7+faCUbbFaqZtqc6tnU3PFUUPsDtflapFVN0UyAoTDtL0hvqaWnpE8juVgWwqizTdaAw==
+
 hexo-generator-category@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/hexo-generator-category/-/hexo-generator-category-2.0.0.tgz"

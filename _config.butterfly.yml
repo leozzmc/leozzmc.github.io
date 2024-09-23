@@ -249,6 +249,8 @@ aside:
   card_announcement:
     enable: true
     content: 🛫🛬
+  card_calendar:
+    enable: true
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
@@ -926,6 +928,9 @@ inject:
   bottom:
     - <script data-pjax src="/en/self/btf.js"></script> 
     - <script data-pjax src="/en/self/tw_en.js"></script>
+    - <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+    - <script data-pjax src="/self/calendar.js"></script>
+    - <script data-pjax src="/self/languages.js"></script>
     # - <script src="xxxx"></script>
 
 # CDN
