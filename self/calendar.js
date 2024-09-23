@@ -372,11 +372,11 @@
       footArrows: {previous: '« ', next: ' »'},
       weekOffset: 0,
       single: true,
-      root: '/calendar/',
-      url: '/calendar.json'
+      root: '/en/calendar/',
+      url: '/en/calendar.json'
     };
     $(document).ready(function () {
-      $('#calendar').aCalendar('zh-TW');
+      $('#calendar').aCalendar('en');
     });
   }(jQuery));
 
