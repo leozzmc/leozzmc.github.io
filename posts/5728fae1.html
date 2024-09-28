@@ -1,0 +1,1585 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>📑 DMS_Troubleshooting 筆記 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="2021年在面試AWS時做的筆記，主要是整理各種Troubleshooting知識以及原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="📑 DMS_Troubleshooting 筆記">
+<meta property="og:url" content="https://leozzmc.github.io/posts/5728fae1.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="2021年在面試AWS時做的筆記，主要是整理各種Troubleshooting知識以及原理">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:published_time" content="2021-11-13T02:12:17.000Z">
+<meta property="article:modified_time" content="2023-07-02T14:13:30.358Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/5728fae1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '📑 DMS_Troubleshooting 筆記',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-02 22:13:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">91</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.imgur.com/b3n6aNl.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">📑 DMS_Troubleshooting 筆記</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2021-11-13T02:12:17.000Z" title="發表於 2021-11-13 10:12:17">2021-11-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2023-07-02T14:13:30.358Z" title="更新於 2023-07-02 22:13:30">2023-07-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/Troubleshooting/">Troubleshooting</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="📑 DMS_Troubleshooting 筆記"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Network-Debug"><a href="#Network-Debug" class="headerlink" title="Network Debug"></a>Network Debug</h2><ul>
+<li>若你SSH不到Server，你會怎麼做?<ul>
+<li>先Ping Server看通不通</li>
+<li>若還是錯誤則是根據SSH連線出現的錯誤訊息來做故障排除</li>
+<li><strong>Unable to open connection to example.com Host does not exist</strong><ul>
+<li>檢查是否可透過 <code>ping</code> 來去解析目標server域名</li>
+<li>若使用hostname則改用ip試試看(交替試試看)</li>
+</ul>
+</li>
+<li><strong>Connection timed out</strong>: client試圖與SSH Server建立network socket，但server在時間內沒能回應<ul>
+<li>檢查是否正在使用Port 22，或自定義的port口來進行連接<ul>
+<li><code>$ netstat -all</code></li>
+</ul>
+</li>
+<li>檢查firewall規則是否有阻擋來自特定ip或port 22的進入流量<ul>
+<li><code>$ iptables --list</code></li>
+<li>看是不是有設定<strong>Drop</strong> method</li>
+<li>或是port 22 沒有被加進allow connection內</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Connection Refused</strong>: 請求正在路由到host，但host沒能接收到請求<ul>
+<li>檢查是否正在使用Port 22，或自定義的port口來進行連接</li>
+<li>檢查firewall規則是否有阻擋來自特定ip或port 22的進入流量<ul>
+<li>看是不是有設定<strong>Drop</strong> method</li>
+<li>或是port 22 沒有被加進allow connection內</li>
+<li>檢查服務當前是否正在運行並綁定到預期port上</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何檢查防火牆?<ul>
+<li><code>iptable -nL</code></li>
+<li><code>ufw status</code></li>
+</ul>
+</li>
+<li>檢查SSH狀態<ul>
+<li>舊版本的OS可以使用 <code>service</code><ul>
+<li><code>service ssh status</code></li>
+<li>若結果有正確顯示process id則代表正確運行</li>
+<li>若沒有運行則會顯示，ssh stop&#x2F;waiting 之類的訊息</li>
+<li>可透過 <code>service ssh start</code> 開啟服務</li>
+</ul>
+</li>
+<li>新版本的OS可以使用 <code>systemctl</code><ul>
+<li><code>systemctl status sshd</code></li>
+<li>若正確運行，則會顯示active或running</li>
+<li>若沒再運行則會顯示inactive</li>
+<li>可透過 <code>systemctl start sshd</code>來開啟服務</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>檢查SSH Service Port<ul>
+<li>有兩種方式檢查SSH是跑在哪個port上<ul>
+<li>第一個是去查看 ssh 設定檔<ul>
+<li><code>grep Port /etc/ssh/sshd_config</code></li>
+</ul>
+</li>
+<li>若你知道ssh服務正在運行，則可透過 <code>ss</code>指令查看是否跑在預期的port上<ul>
+<li><code>ss -plnt</code> &#x2F;&#x2F;是從kernel中query出socket資訊</li>
+<li><code>netstat -plnt</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>導致SSH連線失敗的原因可能會有哪些?<ul>
+<li><strong>ssh公鑰沒有被inject到Server上</strong><ul>
+<li>我們在本地端產生ssh key pair，並可能透過passphase保護私鑰</li>
+<li>將ssh公鑰注入到遠端server上的 <strong>~&#x2F;.ssh&#x2F;authorized_keys</strong> 路徑</li>
+<li>而有時候常會跳出 <strong>Permission denied (publickey)</strong> 的錯誤訊息<ul>
+<li>原因一: 該私鑰沒有權限登入</li>
+<li>原因二: 公鑰沒有正確被放入路徑或公鑰遺失</li>
+<li>原因三: 本地 ssh 公鑰和私鑰未正確配對</li>
+<li>在連接之前，ssh 會檢查我們的公鑰和私鑰是否正確配對</li>
+</ul>
+</li>
+<li>預設路徑<ul>
+<li><code>$ ssh-keygen</code></li>
+<li>公鑰預設放在 <code>/home/username/.ssh/id_rsa.pub</code></li>
+<li>私鑰預設放在 <code>/home/username/.ssh/id_rsa</code></li>
+</ul>
+</li>
+<li>要如何將公鑰注入至Server路徑中? <ul>
+<li><code>ssh-copy-id USER@HOST</code></li>
+<li>預設就是放入 <strong>~&#x2F;.ssh&#x2F;authorized_keys</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>防火牆導致無法連線</strong><ul>
+<li>檢查Policy</li>
+</ul>
+</li>
+<li><strong>Host Key Check Fails</strong><br>  <img src="https://i.imgur.com/XSDQF9V.png"><br>  出現類似這種錯誤訊息<br>  每個Server都會有Fingerprint，不同server或server重新配置則fingerprint則不同<br>  當成功登入，則電腦會保存fingerprint來為下一次連接做比較，若fingerprint不匹配則會跳出這種警告<ul>
+<li>如果確定有重新設定server則可以忽略這個警告</li>
+<li>可以在 <strong>~&#x2F;.ssh&#x2F;known_hosts</strong> 刪除entry，或清空文件，這將會關閉所有密鑰檢查</li>
+</ul>
+</li>
+<li><strong>Your SSH Key File Mode Issues</strong><ul>
+<li>作為保護 SSH Key檔案的權限應該要是0600(Owner R+W)或0400(Owner R)<br>  <img src="https://i.imgur.com/F9O86LG.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SSH中要如何啟用無密碼認證?<ul>
+<li>至<code>/etc/ssh/sshd_config</code> 中修改設定  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PasswordAuthentication no</span><br><span class="line">PubkeyAuthentication yes</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>講解一下Ping跟Tracert指令是怎麼運作的?<br>  <img src="https://i.imgur.com/Kog8FV8.png"><ul>
+<li>Ping: 向特定目標發送ICMP Echo Request以確認對目的端的通訊狀態<ul>
+<li>可以根據ping返回的TTL值來判斷對方所使用的操作系統及數據包經過路由器數量</li>
+</ul>
+</li>
+<li>Tracert: 善用回應逾時的錯誤以查詢到目的地的路徑</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.361way.com/linux-mtu-jumbo-frames/4055.html">Linux底下要怎麼修改MTU值?</a></li>
+<li>甚麼是Jumbo Frame?<ul>
+<li>為比標準Ethernet Frame還大的Frame，比1518&#x2F;1522 bit大的frame</li>
+<li>只能在full-duplex的乙太網路中運行</li>
+<li>標準Ethernet IP訊息大小是: 1500Bit，若包含Ethernet Header以及FCS(6+6+2+4)是1518bit</li>
+<li>Jumbo frame指的是兩層封裝三層IP Message的值大於9000bit的Message</li>
+<li>若使用一般1500Bit的frame，frame越小，傳輸封包量越大，計算量越多，則:<ul>
+<li>增加Host的計算量，消耗CPU資源</li>
+<li>影響網路傳輸速度</li>
+<li>所以加大frame可以降低CPU計算量並加快傳輸速度</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何修改frame大小(如何創造Jumbo Frame?)<ul>
+<li>修改MTU(Maximum Transmission Unit)值 </li>
+<li><ol>
+<li><code>ifconfig $&#123;Interface&#125; mtu $&#123;SIZE&#125; up</code></li>
+</ol>
+</li>
+<li>ex. <code>ifconfig eth1 mtu 9000 up</code></li>
+<li>但這樣重啟需要重新設定</li>
+<li><ol start="2">
+<li>修改config檔案</li>
+</ol>
+</li>
+<li>Ubuntu&#x2F;Debian底下是在 &#x2F;etc&#x2F;network&#x2F;interfaces底下</li>
+<li>新增 <code>mtu 9000</code></li>
+<li>重啟服務 <code>/etc/init.d/network-manager restart</code></li>
+<li><strong>經過交換網路設定時，僅修改Host端的MTU值不太行，還續鑰檢查網路設備有無啟用jumbo frames功能</strong></li>
+</ul>
+</li>
+<li>測試MTU<ul>
+<li><code>ping -l 9000 -f &lt;domain&gt;</code></li>
+<li>-f 參數告訴作業系統不能私自更改封包大小</li>
+</ul>
+</li>
+<li>講解一下Email的通訊原理<ul>
+<li>當輸入Email時，”@”後面即為Domain Name<blockquote>
+<p><a target="_blank" rel="noopener" href="http://linux.vbird.org/linux_server/0380mail.php#whatmail_dns">http://linux.vbird.org/linux_server/0380mail.php#whatmail_dns</a><br><a target="_blank" rel="noopener" href="https://weils.net/blog/2017/04/19/how-email-works-dkim-all-in-one/">https://weils.net/blog/2017/04/19/how-email-works-dkim-all-in-one/</a><br><a target="_blank" rel="noopener" href="https://docs.digitalocean.com/support/how-to-troubleshoot-ssh-connectivity-issues/">https://docs.digitalocean.com/support/how-to-troubleshoot-ssh-connectivity-issues/</a><br><a target="_blank" rel="noopener" href="https://www.linux.com/topic/networking/4-reasons-why-ssh-connection-fails/">https://www.linux.com/topic/networking/4-reasons-why-ssh-connection-fails/</a><br><a target="_blank" rel="noopener" href="https://help.skysilk.com/support/solutions/articles/9000150151-how-to-troubleshoot-ssh-connection-issues-using-vnc-console">https://help.skysilk.com/support/solutions/articles/9000150151-how-to-troubleshoot-ssh-connection-issues-using-vnc-console</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>DNS設定失敗會怎麼解決?<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tutorial_series/an-introduction-to-managing-dns">https://www.digitalocean.com/community/tutorial_series/an-introduction-to-managing-dns</a> </p>
+</blockquote>
+</li>
+<li>可以講解一下HTTP協定運作原理嗎?<br>  <img src="https://i.imgur.com/kwU3Ay7.png"><ul>
+<li>通常由使用者透過瀏覽器或爬蟲來對Server端發出請求</li>
+<li>那其中我們會稱這個client為User Agent，一個代理程式</li>
+<li>而請求的Server上可能也會有一些像是HTML檔案或圖像之類的資源</li>
+<li>當HTTP Client發出請求，建立一個到Server端指定port(預設是80)的TCP連線</li>
+<li>則HTTP Server則會在那個port監聽client的請求</li>
+<li>一旦收到請求，Server會向Client返回一個狀態 ex. “HTTP&#x2F;1.1 200 OK”，以及返回內容或錯誤訊息等等資訊</li>
+<li>HTTP在1.1中加入了保持連線的機制，一個連接可以重複在多個請求&#x2F;回應使用</li>
+<li>可以減少等待時間</li>
+</ul>
+</li>
+<li>那HTTPS呢?<ul>
+<li>就是在進行HTTP連線之前會先進行TLS&#x2F;SSL Handshake</li>
+</ul>
+</li>
+<li>你知道的HTTP狀態碼有哪些?<ul>
+<li>2xx<br>  <img src="https://i.imgur.com/KWTpmAh.png"></li>
+<li>3xx<br>  <img src="https://i.imgur.com/zShTVKk.png"></li>
+<li>400 - Bad Request : 代表送到Server的HTTP Request語法有誤或無效<ul>
+<li>檢查: </li>
+<li><ol>
+<li>URL中的錯誤</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>與該網站的cookie可能毀損，清除瀏覽器的cookie以及cache</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>嘗試在不同的web瀏覽器上打開相同的網頁</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>401 - Unauthorized: 代表使用者在未經身分認證的情況下嘗試存取資源，而用戶必須提供credential才可以查看受保護的資源<ul>
+<li>檢查:</li>
+<li><ol>
+<li>檢查URL錯誤，若URL有效，則存取主頁並登入，輸入資訊，然後重試</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>瀏覽器也可能快取到無效資訊，因此可以清除快取</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>403 - Forbidden: 發生在用戶發出有效請求但Server由於缺乏存取資源的權限而拒絕服務時<ul>
+<li>檢查: </li>
+<li><ol>
+<li>確保Server中 &#x2F;www 資料的存取權限是正確的</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>檢查 .htaccess 設定(.htaccess 文件控制對資源的存取)</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>若網站沒有index文件，也有可能發生這種情況，這樣須將主頁重新命名為index.html&#x2F;index.php</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>與網站管理員聯繫已取得存取權限 (應將權限設為讀取)</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>若其他用戶可以存取，則需要聯絡ISP來解決這個問題</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>404 - Not Found: 代表用戶可與Server通訊，但無法定位所請求的資源<ul>
+<li>檢查:</li>
+<li><ol>
+<li>一樣URL有沒有錯</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>F5更新網頁</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>清除瀏覽器快取</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>修改DNS Server設定</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>500 - Internal Server Error: 這代表網站Server出現問題，Server無法偵測確切問題，但client端還是能夠嘗試以下步驟<ul>
+<li>檢查:</li>
+<li><ol>
+<li>網路流量高，按下F5，重新載入網頁</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>清除網路瀏覽器快取和cookie</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>檢查網站的 .htaccess文件被正確建立</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>檢查文件和資料夾是否有任何不正確的權限</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>502 - Bad Gateway: 代表Server充當gateway或proxy，無法從上游Server獲得有效的Response，這也有可能是由於DNS問題所造成的<ul>
+<li>檢查:</li>
+<li><ol>
+<li>F5鍵，重新載入網頁</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>關閉所有打開的瀏覽器並啟動新的瀏覽器Session</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>清空瀏覽器快取</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>暫時禁用CDN(Content Delivery Network)</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>重啟網路設備(modem, router etc.)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>503 - Service Unavailable: 這代表server負載過大，或正在維護中<ul>
+<li>檢查:</li>
+<li><ol>
+<li>F5鍵，重新載入網頁</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>重啟網路設備(modem, router etc.)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>504 - Gateway Timeout: 代表Server是Gateway或proxy，在允許的時間內無法從後端server獲得response<ul>
+<li>檢查:</li>
+<li><ol>
+<li>F5鍵，重新載入網頁</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>重啟網路設備(modem, router etc.)</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>變更DNS Server(若你網路中的所有設備都收到相同錯誤)</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>仍然有錯誤可能要聯絡網管或ISP</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以講解一下SMTP運作原理嗎?</li>
+<li>可以講解一下DNS的運作原理?<ul>
+<li>有分成兩種，一種是授權型DNS另一種是遞迴型server</li>
+<li>授權型會接收並回應DNS查詢服務，一層一層找到root DNS Server</li>
+<li>遞迴型則本身沒有DNS Record，但它會將請求傳遞給授權DNS Server去取得IP位址</li>
+<li>運作流程:<ul>
+<li>當輸入<a target="_blank" rel="noopener" href="http://www.ntust,edu.tw/">www.ntust,edu.tw</a> 時，DNS Server會接收到查詢IP位址的請求</li>
+<li>DNS Server會開始查詢<a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a> 的IP位址</li>
+<li>並檢查local DNS Server的Cache中有沒有dns record<ul>
+<li>會去 <code>/etc/resolv.conf</code> 查找，將網域變更為FQDN</li>
+</ul>
+</li>
+<li>若沒有則會去root DNS Server去查找</li>
+<li>root DNS Server會去告知DNS Server 「管理tw的DNS Server」的IP地址</li>
+<li>而local DNS Server取得該IP後就會去發出DNS請求<ul>
+<li><code>dig tw ns +short</code></li>
+</ul>
+</li>
+<li>而管理tw的DNS Server會去告訴local DNS Server 「管理 edu.tw的DNS Server」的IP位址<ul>
+<li><code>dig @nameserver edu.tw ns</code></li>
+<li><code>dig @a.dns.tw edu.tw ns +short</code></li>
+</ul>
+</li>
+<li>而local DNS Server取得該IP後就會去發出DNS請求</li>
+<li>管理edu.tw的DNS Server會去告訴local DNS Server 「管理ntust.edu.tw的DNS Server」的IP位址<ul>
+<li><code>dig @nameserver ntust.edu.tw ns +short</code></li>
+</ul>
+</li>
+<li>接著local DNS Server就會去對該IP位址發出請求<ul>
+<li><code>dig @RealAuthorieServer ntust.edu.tw a +short</code></li>
+</ul>
+</li>
+<li>則管理ntust.edu.tw的DNS Server會返回<a target="_blank" rel="noopener" href="http://www.ntust.edu.tw的ip位址/">www.ntust.edu.tw的IP位址</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以講解一下TLS&#x2F;SSL Handeshake的過程嗎?<br>  <a target="_blank" rel="noopener" href="https://www.cloudflare.com/zh-tw/learning/ssl/what-happens-in-a-tls-handshake/">https://www.cloudflare.com/zh-tw/learning/ssl/what-happens-in-a-tls-handshake/</a><br>  <img src="https://i.imgur.com/4EOqjes.png"><br>  運作在Session Layer，主要會在通訊雙方交換資訊並互相驗證，並透過他們所使用的通訊加密演算法並產生一致的工作金鑰<ul>
+<li>TLS 握手什麼時候發生？<ul>
+<li>用戶導航到一個使用 HTTPS 的網站，瀏覽器首先開始查詢網站的原始伺服器，這時就會發生 TLS 握手。</li>
+<li>在任何其他通信使用HTTPS時（包括 API 調用和 DNS over HTTPS 查詢），也會發生 TLS 握手。</li>
+<li>通過 TCP Handshake 打開 TCP 連接後，將發生 TLS Handshake</li>
+</ul>
+</li>
+<li>TLS Handshake過程中發生啥事?<ul>
+<li>client與server之間會進行以下操作:<ul>
+<li>指定TLS版本(TLS 1.0、1.2、1.3)</li>
+<li>決定所使用的密碼學套件</li>
+<li>透過Server的公開密鑰和SSL憑證頒發機構的電子簽章去驗證Server的身分</li>
+<li>生成工作階段金鑰，以便在握手完成後使用對稱加密</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>TLS Handshake的步驟是甚麼?<ul>
+<li>具體步驟會隨著使用的金鑰交換演算法的不同而不同</li>
+<li>最常用的是<strong>RSA</strong>金鑰交換演算法<ul>
+<li><strong>Client Hello:</strong><ul>
+<li>client對server發出hello消息來進行Handshake，其中包含了用戶端支援的TLS版本，支援的密碼套件、以及一個client隨機亂數</li>
+</ul>
+</li>
+<li><strong>Server Hello:</strong><ul>
+<li>回覆client hello，server回傳訊息中包含:</li>
+<li>SSL憑證 <code>這是哪來的?怎麼產生的?</code></li>
+<li>伺服器選擇的密碼套件</li>
+<li>server隨機亂數</li>
+</ul>
+</li>
+<li><strong>身分認證</strong><ul>
+<li>client端使用頒發該憑證的憑證授權驗證伺服器的 SSL 憑證</li>
+<li>此舉確認Server是其聲稱的身份，且client正在與該domain的實際所有者進行互動</li>
+</ul>
+</li>
+<li><strong>premaster secret</strong><ul>
+<li>client端再發送一串隨機位元組，即premaster secret</li>
+<li>premaster secret使用公開金鑰加密(是client從SSL憑證中取得公鑰，來進行加密的)</li>
+<li>只能使用server的secret key進行解密</li>
+</ul>
+</li>
+<li><strong>secret key被使用</strong><ul>
+<li>server透過私鑰對premaster secret進行解密</li>
+</ul>
+</li>
+<li><strong>生成工作階段金鑰</strong><ul>
+<li>client 與 server端均使用client亂數、server亂數和premaster secret去生成工作階段金鑰</li>
+</ul>
+</li>
+<li><strong>client就緒</strong><ul>
+<li>client會發送一條<strong>已完成</strong>的消息</li>
+</ul>
+</li>
+<li><strong>server就緒</strong> <ul>
+<li>server會發送一條<strong>已完成</strong>的消息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>所有 TLS 握手都使用非對稱加密（公開金鑰和私密金鑰），但並不是所有的 TLS 握手都會在生成工作階段密鑰的過程中使用私密金鑰。例如，臨時 <strong>Diffie-Hellman</strong> 握手的步驟如下：<ul>
+<li><strong>Client Hello</strong><ul>
+<li>包含協定版本、client亂數、密碼學套件清單</li>
+</ul>
+</li>
+<li><strong>Server Hello</strong><ul>
+<li>包含SSL憑證、選定的密碼套件、Server亂數</li>
+</ul>
+</li>
+<li><strong>server的數位簽章</strong><ul>
+<li>server使用其私鑰對client亂數、server亂數以及DH參數進行加密</li>
+<li>加密後的資料用作伺服器的數位簽章</li>
+<li>已確定Server中具有與SSL憑證中的公鑰匹配的私鑰</li>
+</ul>
+</li>
+<li><strong>Server與Client計算premaster secret</strong><ul>
+<li>client與server使用交換的DH參數分別計算匹配的premaster secret</li>
+<li>而不像RSA Handshake那樣由用戶端生成premaster secret並將其發送到server</li>
+</ul>
+</li>
+<li><strong>建立工作階段金鑰</strong><ul>
+<li>client與server從premaster secret、client亂數、server亂數中計算工作階段金鑰</li>
+</ul>
+</li>
+<li><strong>client就緒</strong><ul>
+<li>client會發送一條<strong>已完成</strong>的消息</li>
+</ul>
+</li>
+<li><strong>server就緒</strong> <ul>
+<li>server會發送一條<strong>已完成</strong>的消息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021778053">TLS Handshake失敗可能原因會是甚麼?</a><ul>
+<li>常見錯誤訊息:<code>SSL Handshake Failed error</code></li>
+<li>常見錯誤原因:<ul>
+<li>協定不匹配  <code>server端出錯</code></li>
+<li>加密套件不匹配 <code>server端出錯</code> → Server端不支援client請求使用的加密套件</li>
+<li>系統時間不準確 (可是剛剛過程沒用到時間資訊阿:|)</li>
+<li>瀏覽器設定錯誤</li>
+<li>憑證錯誤 <code>server端出錯</code><ul>
+<li>憑證中的domain name與URL中的domain name不符</li>
+<li>憑證過期</li>
+<li>或憑證鏈出錯</li>
+<li>使用自簽名的憑證</li>
+</ul>
+</li>
+<li>Server啟用了SNI-Enabled <code>server端出錯</code></li>
+</ul>
+</li>
+<li><strong>協定不匹配</strong><ul>
+<li>透過 <code>tcpdump -i any -s 0 host IP address -w File name</code> 在client或server上蒐集資訊</li>
+<li>透過wireshark去分析蒐集的packet</li>
+<li>去找<strong>client hello</strong>所使用的TLS版本</li>
+<li>去看Sever端之後後續處理的錯誤資訊</li>
+<li><a target="_blank" rel="noopener" href="https://docs.apigee.com/api-platform/troubleshoot/runtime/ssl-handshake-failures">https://docs.apigee.com/api-platform/troubleshoot/runtime/ssl-handshake-failures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>網站憑證過期該怎麼辦?<ul>
+<li>去更新憑證</li>
+</ul>
+</li>
+<li>可以講解一下甚麼是SSL嗎?<ul>
+<li>全名是Secure Soekcts Layers，用來確保兩個系統之間所傳遞的敏感資料被竄改或讀取</li>
+<li>TLS就是更安全的SSL版本</li>
+</ul>
+</li>
+</ul>
+<h2 id="Linux-Admin"><a href="#Linux-Admin" class="headerlink" title="Linux Admin"></a>Linux Admin</h2><blockquote>
+<p>感覺偏向指令使用或config如何設定</p>
+</blockquote>
+<ul>
+<li>在Linux中你會怎麼管理User跟Group?那在Windows中你又會怎麼做管理?<ul>
+<li>看user<code>cat /etc/passwd</code></li>
+<li>新增user <code>useradd</code></li>
+<li>新增group <code>groupadd</code></li>
+<li>再透過 <code>gpasswd</code> 將使用者加入或移除 root (sudo) 權限群組</li>
+</ul>
+</li>
+<li>可以講解一下<code>curl</code> 指令的原理嗎?<ul>
+<li>一個command line工具可以傳遞資料到server中</li>
+</ul>
+</li>
+<li>你會怎麼使用 <code>curl</code> 這個指令來做Troubleshooting?<ul>
+<li><code>$ curl protocol://IP/host:port</code></li>
+<li>Troubleshooting Web Servers<ul>
+<li><code>curl http://example.com -I</code> 透過-I參數來返回Header</li>
+</ul>
+</li>
+<li>Troubleshooting SMTP Servers <ul>
+<li><code>curl smtp://example.com</code> 預設使用 port 25 作為SMTP Port</li>
+<li>但某些ISP會阻擋標準SMTP port來防止SPAM</li>
+<li>亦可使用 2525 或 587 port</li>
+</ul>
+</li>
+<li>Troubleshooting FTP<ul>
+<li><code>curl ftp://example.com</code> 預設使用21 port</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何使用 <code>curl</code> 指令並透過proxy來連接?<ul>
+<li><code>curl --proxy yourproxy:port https://yoururl.com</code></li>
+</ul>
+</li>
+<li>如何透過 <code>curl</code> 略過檢查自簽SSL憑證的有效性?<ul>
+<li><code>curl -k https://localhost/</code></li>
+<li><code>curl --insecure https://localhost/</code></li>
+</ul>
+</li>
+<li>curl 各種用法:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ curl [protocol://domain:port/]</span><br><span class="line">$ curl -o &lt;欲下載的檔名&gt; [protocol://domain:port/] 下載特定檔案</span><br><span class="line">$ curl -O [protocol://domain:port/file]  直接下載網址中的檔案</span><br><span class="line">$ curl -C - -O [protocol://domain:port/file] 從剛剛被中斷的地方繼續下載</span><br><span class="line">$ curl -L [protocol://domain:port/] 跟隨網址的301/302 redirect</span><br><span class="line">$ curl --trace-ascii debugdump.txt [protocol://domain:port/] 追蹤整個curl過程，並將結果存入debugdump.txt檔案</span><br></pre></td></tr></table></figure></li>
+<li>curl 進行HTTP Request<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-X/--request [GET|POST|PUT|DELETE|PATCH]  使用指定的 http method 來發出 http request</span><br><span class="line">-H/--header                           設定 request 裡所攜帶的 header</span><br><span class="line">-i/--include                          在 output 顯示 response 的 header</span><br><span class="line">-d/--data                             攜帶 HTTP POST Data </span><br><span class="line">-v/--verbose                          輸出更多的訊息方便 debug</span><br><span class="line">-u/--user                             攜帶使用者帳號、密碼</span><br><span class="line">-b/--cookie                           攜帶 cookie（可以是參數或是檔案位置）</span><br></pre></td></tr></table></figure></li>
+<li>透過 curl去POST資料到 HTML Form<ul>
+<li>假設收到的Form表單的HTML長這樣  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form method=&quot;POST&quot; action=&quot;form.php&quot;&gt;</span><br><span class="line">   	&lt;input type=text name=&quot;email&quot;&gt;</span><br><span class="line">   	&lt;input type=submit name=press value=&quot; OK &quot;&gt;</span><br><span class="line">	&lt;/form&gt;</span><br></pre></td></tr></table></figure></li>
+<li><code>curl -X POST --data &quot;email=test@example.com&amp;press=%20OK%20&quot; http://www.example.com/form.php</code></li>
+</ul>
+</li>
+<li>透過 curl去進行檔案上傳<ul>
+<li>假設收到的Form表單的HTML是  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form method=&quot;POST&quot; enctype=&#x27;multipart/form-data&#x27; action=&quot;upload.php&quot;&gt;</span><br><span class="line">		&lt;input type=file name=upload&gt;</span><br><span class="line">		&lt;input type=submit name=press value=&quot;OK&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></li>
+<li><code>curl -X POST -F &#39;file=@./upload.txt&#39; http://www.example.com/upload.php</code></li>
+</ul>
+</li>
+<li>透過curl常見的RESTFul CRUD指令:<ul>
+<li>GET單一或全部資源  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X GET &quot;http://www.example.com/api/resources&quot;</span><br><span class="line">$ curl -X GET &quot;http://www.example.com/api/resources/1&quot;</span><br></pre></td></tr></table></figure></li>
+<li>POST JSON資料  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X POST -H &quot;Content-Type: application/json&quot; -d &#x27;&#123;&quot;status&quot;:false,&quot;name&quot;:&quot;Jack&quot;&#125;&#x27; &quot;http://www.example.com/api/resources&quot;</span><br></pre></td></tr></table></figure></li>
+<li>PUT JSON資料  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X PUT -H &quot;Content-Type: application/json&quot; -d &#x27;&#123;&quot;status&quot;:false&#125;&#x27; &quot;http://www.example.com/api/resources&quot;</span><br></pre></td></tr></table></figure></li>
+<li>DELETE 資源   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X DELETE &quot;http://www.example.com/api/resources/1&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>透過curl攜帶cookie</strong><ul>
+<li>在指令中輸入cookie  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --cookie &quot;name=Jack&quot; http://www.example.com</span><br></pre></td></tr></table></figure></li>
+<li>從檔案中讀取cookie  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --cookie stored_cookies_file_path http://www.example.com</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>curl指定攜帶User Agent</strong>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --user-agent &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64)&quot; 		http://www.example.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Basic Authentication:</strong> 若網頁有使用基本的Authentication則可攜帶<code>--user username:password</code> 來通過驗證  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i --user secret:vary_secret http://www.example.com/api/resources</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>透過curl指令使用proxy做連接<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --proxy yourproxy:port https://youurl.com</span><br></pre></td></tr></table></figure></li>
+<li>curl限定下載速度<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --limit-rate 2000B [URL]</span><br></pre></td></tr></table></figure></li>
+<li><strong>在請求中注入特定Content-Type來處理特定問題</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --header &#x27;Content-Type: application/json&#x27; http://yoururl.com</span><br></pre></td></tr></table></figure></li>
+<li>僅在回應中呈現header<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --head http://yoururl.com</span><br></pre></td></tr></table></figure></li>
+<li><strong>連接 HTTPS&#x2F;SSL URL 並忽略任何 SSL 憑證錯誤</strong><ul>
+<li>當試圖存取SSL&#x2F;TLS憑證的安全URL時候，若出現憑證錯誤或CN不匹配，則會出現以下錯誤<br>  <code>curl: (51) Unable to communicate securely with peer: requested domain name does not match the server&#39;s certificate.</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --insecure https://yoururl.com</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>使用特定協定(SSL&#x2F;TLS)連線<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ curl --sslv3 https://yoururl.com</span><br><span class="line">$ curl --tlsv1 https://example.com</span><br><span class="line">$ curl --tlsv1.0 https://example.com</span><br><span class="line">$ curl --tlsv1.1 https://example.com</span><br><span class="line">$ curl --tlsv1.2 https://example.com</span><br><span class="line">$ curl --tlsv1.3 https://example.com</span><br></pre></td></tr></table></figure></li>
+<li>從FTP Server中下載檔案<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -u user:password -O ftp://ftpurl/style.css</span><br></pre></td></tr></table></figure></li>
+<li>可以講解一下MTR指令怎麼用嗎?<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/mtr-linux-network-diagnostic-tool/"><strong>MTR</strong></a><ul>
+<li>指令實作: MTR 在一開始會針對指定的主機，以 traceroute 找出中間的每一個網路節點（閘道器、路由器、橋接器等），然後使用 ping 去檢查每一個節點的網路連線狀況，即時更新在輸出的報表中，讓管理者一目了然。  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mtr www.google.com.tw   </span><br><span class="line">mtr -n www.google.com.tw //統一以ip位址來呈現</span><br><span class="line">mtr -b www.google.com.tw //同時呈現ip位址以及網域名稱</span><br><span class="line">mtr -c 5 www.google.com.tw // 指定ping 上限(ICMP ECHO 上限)</span><br><span class="line">mtr -c 5 -r www.google.com.tw &gt; output.txt //輸出報表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  <img src="https://i.imgur.com/BSFP2pP.png"></li>
+<li>L(Loss): 封包遺失率</li>
+<li>S(Snt,Sent Packet): 封包發送數</li>
+<li>Avg(Average RTT): </li>
+<li>Best(Best RTT):</li>
+<li>Worst(Worst RTT):</li>
+</ul>
+</li>
+<li>所以從這個工具中可以發現甚麼?????</li>
+</ul>
+</li>
+<li>可以講解一下 <code>iperf</code> 指令怎麼使用嗎?<ul>
+<li>&#x3D; <code>iperf3</code>是一種網路頻寬測試工具，可以測試客戶端上傳資料速度</li>
+<li>透過TCP來測量頻寬、確定鏈路品質跟延遲以及抖動和封包遺失</li>
+<li>測時頻寬時，需要同時在server與client端都各執行一個iperf3程式，讓他們互相傳送資料進行測試  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># server端   </span><br><span class="line">iperf3 -s   //打開監聽socket 預設port為5201，開放Server Thread</span><br></pre></td></tr></table></figure>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># client端</span><br><span class="line">iperf3 -c SERVER_IP/HOSTNAME</span><br></pre></td></tr></table></figure></li>
+<li>iperf3 也支援Android以及IOS的使用(有APP)</li>
+<li>指定測試時間  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_IP -t 20 -i 4 //測試20秒，每隔4秒輸出一次測試數據</span><br></pre></td></tr></table></figure></li>
+<li>儲存測試結果  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_IP --logfile output.txt</span><br></pre></td></tr></table></figure></li>
+<li>指定port  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Server端</span><br><span class="line">iperf3 -s -p 12345</span><br><span class="line"></span><br><span class="line"># client端</span><br><span class="line">iperf3 -c SERVER_IP -p 12345</span><br></pre></td></tr></table></figure></li>
+<li>多條連線  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#同時使用兩條連線測試</span><br><span class="line">iperf3 -c SERVER_IP -P 2</span><br></pre></td></tr></table></figure></li>
+<li>若要測試UDP傳輸協定效能，可以使用 <code>-u</code> 參數  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_IP -u</span><br></pre></td></tr></table></figure></li>
+<li>反向傳輸:測試下載速度(server傳送，cleint接收)<ul>
+<li>預設資料流: client $\rightarrow$ Server  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_IP -R</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>IPv4、IPv6  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_IP -f</span><br><span class="line">iperf3 -c SERVER_IP -6</span><br></pre></td></tr></table></figure></li>
+<li>自訂傳送檔案  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iperf3 -c SERVER_ip -F YOUR_FILE</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>可以講解一下 <code>tracert</code> 指令怎麼使用嗎?甚麼情況下你會用到這個指令?<br>主要是用於即時網絡故障排除，以查找封包在通過網路傳輸到其目標地址時所採用的路由路徑<br>主要是透過發送ICMP封包，並設定IP Header上的TTL欄位來達成traceroute功能的<br>每次送出的為3個40bytes的封包，包括source位址，目的位址和封包發出的timestamp到目的地，第一個會是probe(探測用)，然後是走UDP，由於我們不想目的主機處理它們，因此目的埠設定為一個不可能的值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tracert -d -h maximum_hops -j host_list -w timeout target_host</span><br><span class="line">-w 要指定等待timeout的毫秒數</span><br></pre></td></tr></table></figure></li>
+<li>當 <code>tracert</code> 指令中出現星號代表甚麼?<ul>
+<li>若tracert出現星號(*)，代表該節點可能有某些防禦措施，使我們的封包被丟棄<ul>
+<li>可能是iptables設定為Drop之類的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>講解一下 <code>tracert</code> 指令的原理是甚麼嗎?<ul>
+<li>特性1: 主要是透過 TTL(Time_To_Live)值來是現功能的，每經過一個節點，路由器就會幫TTL值減1</li>
+<li>特性2: 主要呼叫者會發出 TTL&#x3D;1的封包，第一個路由器將TTL減1後得到0，不再繼續值轉發此封包</li>
+<li>而會返回一個ICMP Time_Out Response，然後電腦就會從Response中提取出封包經過的第一個gateway地址</li>
+<li>接著發出一個TTL&#x3D;2的ICMP封包，可以獲得第二個gateway地址</li>
+<li>因此依次遞增TTL值便獲取沿途所有Gatewat位址</li>
+</ul>
+</li>
+<li>如果 <code>tracert</code> 回傳response並不是ICMP Time_Out，代表甚麼?<ul>
+<li>大多防火牆或啟用防火牆功能的路由器預設會不返回各種ICMP封包</li>
+<li>其餘路由器或交換器可被admin設定成不返回ICMP Response</li>
+<li><strong>因此 Traceroute程式不一定能夠拿到所有沿途gateway位址</strong><ul>
+<li>當某個TTL值的封包得不到回覆時，並不能停止這一追蹤過程，程式仍然會把TTL遞增然後發出下一個封包，一直到預設會透過參數指定的<strong>追蹤限制(maximum_hops)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>若無法回應ICMP Response，那又是如何知道封包抵達了?<ul>
+<li>Traceroute在送出UDP datagrams到目的地時，它所選擇送達的port number 是一個一般應用程式都不會用的號碼（<strong>30000 以上</strong>）</li>
+<li>所以當此UDP datagram 到達目的地後該主機會送回一個「<strong>ICMP port unreachable</strong>」的訊息，而當traceroute 收到這個訊息時，便知道目的地已經到達了。</li>
+</ul>
+</li>
+<li>為甚麼traceroute要使用大於30000的port<ul>
+<li>跟UDP規定port號必須小於30000有關</li>
+<li>若使用UDP則可能會因為主機沒有提供 UDP 服務而簡單將封包拋棄，然後不返回任何資訊</li>
+<li>所以使用大於30000的port，目標主機能做的是就是返回一個 <strong>port不可達</strong> 的回應</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://haway.30cm.gg/dns-1-basic/">甚麼是FQDN(完整網域名稱?)</a><ul>
+<li>在&#x2F;etc&#x2F;resolv.conf中，沒有加上”.” 結尾的主機名稱，都會被系統自動附加網域名稱</li>
+<li>然後檔案中的<strong>search</strong> 就是告訴系統可以附加什麼樣的網域名稱  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">domain rsync.tw</span><br><span class="line">nameserver 168.95.1.1 (cache server)</span><br><span class="line">nameserver 8.8.8.8  (cache server)</span><br><span class="line">search hdns.com.tw example.com</span><br></pre></td></tr></table></figure></li>
+<li>上方範例中只要輸入blog，系統就會自動改為blog.rsync.tw並送到168.95.1.1去做DNS解析，但如果不成功就會換成blog.hdns.com.tw再次嘗試，以此類推</li>
+<li>若168.95.1.1的DNS服務無法連上，系統就會自動跳到第二筆的8.8.8.8伺服器</li>
+</ul>
+</li>
+<li>要怎麼設定DNS Cache Server?<ul>
+<li>去&#x2F;etc&#x2F;resolv.conf更改 nameserver</li>
+</ul>
+</li>
+<li><strong>DNS權威Server以及DNS Cache Server差別?</strong><ul>
+<li>DNS Authoritative Server:會從自己的資料庫取出DNS紀錄並回應請求</li>
+<li>Cache Server則是去詢問其他主機的DNS資料</li>
+</ul>
+</li>
+<li>DNS中甚麼是NS(Nameserver)紀錄?<br>  <img src="https://i.imgur.com/YMAcJ1x.png"><ul>
+<li>root server會去記錄每個子網域的授權主機位置就是透過NS Record</li>
+<li>NS Record的用途有兩個:一個是向下授權、一個是平行授權</li>
+<li>向下授權: 建立一個子網域 (EX. 跟Server建立一個.tw的子網域)，並授權給TWNIC的主機</li>
+<li>平行授權: 同個網域名稱的所有NameServer，都必須有相同的NS紀錄<br>  <img src="https://i.imgur.com/9mo0lwG.png"></li>
+<li>上面就是 ntpu.edu.tw 已經授權給六台nameserver，這六台的ntpu.edu.tw的ns紀錄必須完全一樣</li>
+</ul>
+</li>
+<li>要怎麼知道自己的DNS主機目前正式授權到哪些主機上面?<ul>
+<li>購買網域名稱時後填寫的Nameserver，註冊商會依照所註冊的域名</li>
+<li>把你的nameserver送給Registry，Registry確認後就會把你的主機資料放入他們的紀錄中</li>
+<li>就會產生一組NS資料  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig [domain] ns</span><br></pre></td></tr></table></figure></li>
+<li>透過上述指令確認目前NameServer資料是否跟註冊時填寫一致</li>
+</ul>
+</li>
+<li>甚麼是SOA Record?<ul>
+<li>SOA紀錄是<strong>網域名稱的系統管理紀錄</strong></li>
+<li>若使用代管則不需要處理(CloudFlare, Gandi LiveDNS)</li>
+<li>自架的DNS主機則會需要設定</li>
+<li>主要代表者會是網域名稱的管理者、管理主機、區域檔序號與全域性的TTL資料</li>
+</ul>
+</li>
+<li>甚麼是A&#x2F;AAAA紀錄<ul>
+<li>當要將網域名稱對應到Server的IP位址時，就需要用到A紀錄</li>
+<li>A紀錄指向到IPv4位址</li>
+<li>AAAA紀錄指向到IPv6位址  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dig +short blog.rsync.tw a</span><br><span class="line">$ dig +short blog.rsync.tw aaaa</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>甚麼是MX紀錄?<ul>
+<li>這個網域的mail server紀錄</li>
+<li>如果有人寄信給你，郵件主機會優先查詢這個網域名稱有沒有 MX 紀錄</li>
+<li>如果有，就會連線到郵件主機，如果沒有特別設定 MX 紀錄</li>
+<li>寄送郵件的主機會嘗試解析網域名稱的 A 紀錄</li>
+<li>如果有 A 紀錄，就會嘗試連線主機的郵件伺服器。<br>  <img src="https://i.imgur.com/eQNw7LE.png"></li>
+<li>當Domain Name有MX紀錄，mail主機會嘗試連線mg.ntust.edu.tw</li>
+<li>MX紀錄中可以設定mail server優先順序，數值越小的優先</li>
+<li>所以寄給ntust.edu.tw的信，會優先送給 mg.ntust.edu.tw</li>
+<li>若沒有mx紀錄，則會送給Domain Name名稱的A紀錄，即140.118.31.99<br>  <img src="https://i.imgur.com/rO5idoQ.png"></li>
+</ul>
+</li>
+<li>甚麼是CNAME紀錄?<ul>
+<li><strong>主機名稱的別名的一種</strong>，當你的目的位址是主機名稱時，而不是IP位址</li>
+<li>這時則須要使用CNAME進行對應	</li>
+<li>限制: 同一筆紀錄底下如果有設定CNAME紀錄，就不能設定其他紀錄<ul>
+<li>為甚麼?</li>
+</ul>
+</li>
+<li>EX. <strong>若設定某個domain的CNAME，則不可設定A、MX、TXT等紀錄</strong></li>
+</ul>
+</li>
+<li>若有人設定某個Domain Name的CNAME，例如我註冊 HelloWorld.tw 然後想要把網頁瀏覽者連到跟blog.HelloWorld.tw一樣的網站，所以設定了  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HelloWorld.tw  CNAME  blog.HelloWorld.tw</span><br></pre></td></tr></table></figure>
+<ul>
+<li>但HelloWorld.tw一定帶有SOA與NS紀錄，會跟CNAME產生衝突，會造成網域名稱運作不穩定，所以若要完成一樣的功能可以透過網頁跳轉的方式來完成</li>
+</ul>
+</li>
+<li>可以講解一下 <code>dig</code> 指令怎麼使用嗎?甚麼情況下你會用到這個指令?.<ul>
+<li>是一種DNS除錯工具，能夠模擬一般電腦查詢、遞迴查詢、非遞迴查詢、DNS 快取伺服器查詢、DNSSEC 查詢、TCP 查詢等等。</li>
+<li><code>dig</code> 的回應區段<br>  <img src="https://i.imgur.com/kHAra1e.png"><ul>
+<li>Header<br>  <img src="https://i.imgur.com/nr5u3aS.png"><ul>
+<li>ID: 純數字，DNS查詢的識別碼</li>
+<li>QR:0查詢 1 回應</li>
+<li>Opcode: 0 QUERY,1 IQUERY, 2 STATUS</li>
+<li>AA: 權威伺服器回應</li>
+<li>TC: 截斷</li>
+<li>RD: 用戶端是否要求遞迴查詢</li>
+<li>RA: 伺服器回應是支援遞迴查詢</li>
+<li>Z: 保留</li>
+<li>RCODE: 0沒有錯誤、1-5 錯誤代碼</li>
+<li>QDCOUNT: Question區段的資料數量</li>
+<li>ANCOUNT: Answer區段的資料數量</li>
+<li>NSCOUNT: Authority區段的資料數量</li>
+<li>ARCOUNT: Additional區段的資料數量</li>
+</ul>
+</li>
+<li>Question</li>
+<li>Answer</li>
+<li>Authority</li>
+<li>Additional</li>
+</ul>
+</li>
+<li><code>dig</code>的參數<ul>
+<li><code>@server</code> 指定伺服器，<strong>對哪台Server發出DNS查詢，若不指定則使用系統預設</strong></li>
+<li><code>+short</code> 簡略輸出，只顯示ANSWER部分，若沒回應則顯示空白</li>
+<li><code>-4</code> 只使用 IPv4位址進行與Server的連線</li>
+<li><code>-6</code> 只使用 IPv6位址進行與Server的連線</li>
+<li><code>+tcp</code> 使用TCP的方式與DNS Server連線<ul>
+<li><strong>DNS原生是使用 UDP&#x2F;53 協定</strong>，若有人忘記開啟主機或IP分享器的防火牆</li>
+<li>則會透過 <code>+tcp</code> 的方式將DNS查詢改為TCP連線</li>
+<li>若一般查詢沒回應，而<code>+tcp</code>會過，則代表防火牆沒有開啟</li>
+</ul>
+</li>
+<li><code>cdflag</code> 用於關閉DNSSEC查詢<ul>
+<li>DNSSEC是一種DNS的延伸安全協定，可以確保DNS紀錄無法被偽造(透過電子簽章的方式)</li>
+<li>若DNSSEC管理不當則會造成DNSSEC驗證失敗</li>
+<li>會發生不穩定的DNS解析</li>
+<li>此時可以透過此參數將其關閉</li>
+<li>若一般查詢沒回應，但+cdflag後有正確回應，則代表DNSSEC壞掉</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>指令範例  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 查詢快取Server的A紀錄</span><br><span class="line">$ dig @8.8.8.8 blog.rsync.tw. a</span><br><span class="line"># 查詢Domain Name的MX</span><br><span class="line">$ dig rsync.tw mx</span><br><span class="line"># 查詢Domain Name負責人</span><br><span class="line">$ dig rsync.tw soa</span><br><span class="line"># 追蹤模式</span><br><span class="line">$ dig +trace blog.rsync.tw a</span><br><span class="line"># tcp查詢模式</span><br><span class="line">$ dig +tcp blog.rsync.tw a</span><br><span class="line"># 查詢IP反解  = nslookup &lt;IP&gt;</span><br><span class="line">$ dig -x 8.8.8.8 ptr</span><br><span class="line"># 關閉DNSSEC查詢</span><br><span class="line">$ dig +cdflag @8.8.8.8 blog.rsync.tw a</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>DNS Troubleshooting<ul>
+<li>step 1 : 查詢NS位址<ul>
+<li>在你作 dig 除錯開始之前，首先你要確認網域名稱的名稱伺服器(NameServer) 位址，因為所有回應都一定從名稱伺服器回應，所有使用Domain Name Registry或是Cloudfare之類的服務則NameServer會是這些業者，也有是註冊時填寫的NameServer欄位資料  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig +short rsync.tw ns</span><br></pre></td></tr></table></figure></li>
+<li>可看出NameServer是哪幾台(DNS紀錄由哪幾台負責)</li>
+<li>或是由淺入深從較高層的DNS Server查下來  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig +short tw ns</span><br></pre></td></tr></table></figure>
+  <img src="https://i.imgur.com/4t141yp.png">  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig +short @a.dns.tw edu.tw ns</span><br></pre></td></tr></table></figure>
+  <img src="https://i.imgur.com/EZmwnTT.png">  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig +short  @moestar.edu.tw [target domain name] ns</span><br></pre></td></tr></table></figure></li>
+<li>為何不直接 dig +short ntust.edu.tw ?<br>  <img src="https://i.imgur.com/6miPWp1.png"><ul>
+<li>因為這樣會透過系統Cache Server去查詢DNS NS紀錄</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可能發生的情況:<ul>
+<li>空的、沒回應<ul>
+<li>如果你在查詢 NS 的時候出現錯誤，或是發現有回應，但是沒有資料</li>
+<li>可能情況-1: NameServer填錯，請Domain Name Registry檢查</li>
+<li>可能情況-2: 網遇到期沒繳錢，或狀況有問題(透過<code>Whois</code> 指令來查看)</li>
+</ul>
+</li>
+<li>NameServer是Public DNS<ul>
+<li>有人會把Public DNS以為是NameServer，就把8.8.8.8填入nameserver那邊，但這樣是不對的</li>
+</ul>
+</li>
+<li>跟你填的資料不同<ul>
+<li>Domain Name Registry沒有將你的名稱更新到域名管理局或是你剛好更換NameServer中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Step 2 : 直接查詢Name Server的資料<ul>
+<li>確認NS位址後，接下來對Name Server送出查詢</li>
+<li>查詢你要解析的域名，稱伺服器回應的資料應該是最新、最完整的，所以你要知道紀錄更新了沒、解析到底正不正確，都是透過直接查詢名稱伺服器來獲得解答。<br>  <img src="https://i.imgur.com/MHvHAb6.png"></li>
+</ul>
+</li>
+<li>可能發生的問題-2:<ul>
+<li>NameServer同步不一致<ul>
+<li>確保每台NameServer回應資料都是正確的</li>
+</ul>
+</li>
+<li>NameServer無回應<ul>
+<li>代表NameServer的DNS服務有問題</li>
+<li>可能DNS服務沒啟用或機器有問題</li>
+<li>可以ping一下NameServer，如果有回應就是DNS服務的問題</li>
+<li>則可透過 <code>dig +tcp</code>來檢查是不是防火牆的問題</li>
+<li>若有回應則要朝向防火牆的問題去解決  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#查詢Name Server回應，可以查詢SOA，因為一定有這筆紀錄</span><br><span class="line">$ dig @(NS IP) (domain) soa</span><br><span class="line">#如果沒回應，ping看看是不是主機或網路問題</span><br><span class="line">$ ping (NS IP)</span><br><span class="line"># 如果ping有回應，則改用+tcp 來檢查是不是防火牆問題</span><br><span class="line">$ dig +tcp @(NS IP) (domain) soa</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Step 3 : 檢查Authority Server回答<ul>
+<li>nameserver通常是由上往下授權<ul>
+<li>ex. rsync.tw nameserver是由.tw往下授權到 ns[1-3].gandi.net的nameserver的</li>
+</ul>
+</li>
+<li>授權不一定正確(其實是使用者自己填的，可能會填錯)，上層依照使用者輸入的資料直接變成NameServer</li>
+<li>正確授權:<ul>
+<li><ol>
+<li>由上對下正確授權</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>伺服器具備權威伺服器的回答  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ dig @ns1.gandi.net rsync</span><br><span class="line"></span><br><span class="line"># response</span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.10.3-P4-Ubuntu &lt;&lt;&gt;&gt; @ns1.gandi.net rsync.tw a</span><br><span class="line">; (2 servers found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 45858</span><br><span class="line">;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line">;; WARNING: recursion requested but not available</span><br><span class="line">...omit...</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>不使用 +short 參數，就可以看到Header部分，可以看Header中的<strong>AA Flag</strong> </li>
+<li>回應中，有一個 “flags: qr aa rd;”，aa &#x3D; AA 就是權威伺服器回答的意思</li>
+<li>代表這台Server知道自己管理了此網域，所以從區域檔中的資料回應給查詢端</li>
+<li>對Public DNS查詢則不會有這個AA Flag</li>
+<li>而若是對Name Server查詢而沒有AA，則代表管理員沒有正確設定Server</li>
+</ul>
+</li>
+<li>Step 4 : 查詢Cache Server(Public DNS)<ul>
+<li>最後一步就是要查詢快取伺服器的回應資料，看看是否正確，一般所有的用戶電腦都會透過快取伺服器 (譬如8.8.8.8、168.95.1.1) 取得 DNS 的資料，所以我們要測試一下是否正確：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dig @8.8.8.8 www.rsync.tw a</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>可能發生的問題-4<ul>
+<li>查詢到舊資料<ul>
+<li>DNS 有TTL暫存時間	</li>
+<li>暫存時間內，都會保留資料直到TTL(秒)時間過去</li>
+<li>這時需要確認每個Authority Server的查詢是否都是最新資料</li>
+</ul>
+</li>
+<li>解析失效NXDOMAIN<ul>
+<li>若上述查詢過程中都沒問題，但Public DNS這些快取Server卻沒反應</li>
+<li>可能是 DNSSEC壞掉了</li>
+<li>此時需要找你的Domain Name的註冊商去取消你的DNSKEY金鑰</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[DNSSEC壞掉會發生甚麼事?該怎麼修復]<a target="_blank" rel="noopener" href="https://haway.30cm.gg/dnssec-broken/">(https:&#x2F;&#x2F;</a>)?<ul>
+<li>現象:<ul>
+<li>可能就只有透過授權給你的domain的權威DNS Server能夠查詢到你的A紀錄</li>
+<li>但你如果查詢Public DNS Server(ex. 8.8.8.8)中A的你的domain的A紀錄可能藉會報錯</li>
+</ul>
+</li>
+<li>檢查: <ul>
+<li>這時可以透過 加上 <code>+cdflag</code> 參數來讓DNS Cache Server關閉DNSSEC驗證</li>
+<li><code>cdflag</code> 就是告訴8.8.8.8，這個DNS查詢不需要進行DNSSEC驗證</li>
+</ul>
+</li>
+<li>可能原因:<ul>
+<li>若使用了某個域名代管服務，並開啟了DNSSEC</li>
+<li>但後續又將Nameserver變更，這將會導致DNSSEC Chain 驗證失敗</li>
+<li>因為DNSKEY沒有被移轉(新的Name Server中沒有DNSKEY)，則會導致驗證失敗</li>
+</ul>
+</li>
+<li>解決方式: <ul>
+<li>或是使用域名註冊商提供的介面並關閉DNSSEC的功能</li>
+<li>或是在新的NameServer上重新簽署DNSSEC，然後更新DNSKEY</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在LINUX中如何開啟DNSSEC?<ul>
+<li>可修改 &#x2F;etc&#x2F;systemd&#x2F;resolv.conf中的DNSSEC設定值</li>
+</ul>
+</li>
+<li>在&#x2F;etc&#x2F;resolv.conf中設定的nameserver被重置怎麼辦?<ul>
+<li>透過 symbolic link指向 &#x2F;etc&#x2F;systemd&#x2F;resolv.conf  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd /etc</span><br><span class="line">$ rm resolv.conf</span><br><span class="line">$ ln -s /run/systemd/resolve/resolv.conf resolv.conf</span><br></pre></td></tr></table></figure></li>
+<li>直接修改 &#x2F;etc&#x2F;systemd&#x2F;resolv.conf 中的DNS位址</li>
+</ul>
+</li>
+<li>你會去怎麼處理Linux中Process的OOM問題?</li>
+<li>甚麼是<strong>OOM Killer</strong>?<ul>
+<li>Linux中負責監控那些占用memory過大，尤其是瞬間很快消耗大量memory的process</li>
+<li>為了防止memory耗盡而kernel會把該process kill掉</li>
+<li>有時候SSH不到機器，但能 ping 通，說明不是網絡的故障，很多原因是 sshd process被 OOM killer 殺掉了</li>
+<li>Kernel會通過特定的演算法給每個process計算一個分數來決定殺哪個process</li>
+<li>每個process的 OOM 分數可以在「**&#x2F;proc&#x2F;PID&#x2F;oom_score**」中找到</li>
+<li>重啟機器後查看系統日誌「**&#x2F;var&#x2F;log&#x2F;messages**」會發現「Out of Memory: Kill process 1865（sshd）」類似的錯誤訊息</li>
+<li><code>echo -17 /proc/PID/oom_adj</code> 來解決這個問題<ul>
+<li>可調範圍: 15~ -16</li>
+<li>-17是禁用</li>
+</ul>
+</li>
+<li>或是修改Kernel參數:  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sysctl -w vm.panic_on_oom=1 (預設為0)</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>kill -9</code> 與 <code>kill -15</code> 差別在哪?送的signal是甚麼?  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kill PID</span><br><span class="line"># 訊號: SIGKILL</span><br><span class="line">$ kill -9 PID //立即強制停止程式執行</span><br><span class="line"># 訊號: SIGTERM</span><br><span class="line">$ kill -15 PID //以正常程序通知程式停止執行，預設的訊號</span><br><span class="line">$ kill -l 列出所有可用訊號</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  <img src="https://i.imgur.com/1INBiak.png"></li>
+<li>怎麼查詢kill指令中哪個訊號對應甚麼數字<ul>
+<li><code>$ kill -l &lt;數字&gt;</code></li>
+</ul>
+</li>
+<li>可以解釋一下 <code>ss</code>指令的使用時機嗎?<ul>
+<li>可以輸出所有已經建立的 TCP 連線</li>
+<li>ss 指令可以自己指定篩選器（filter），篩選出自己需要的 sockets 資訊:  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 列出從本機連線到 192.168.0.1 這台主機的所有連線：</span><br><span class="line">$ ss -o state established dst 192.168.0.1</span><br><span class="line"># 列出從本機連線到 192.168.0.1 主機 80 連接埠的所有連線</span><br><span class="line">$ ss -o state established dst 192.168.0.1:80</span><br><span class="line"># 列出來自於 192.168.0.2 這台主機的所有連線：</span><br><span class="line">$ ss -o state established src 192.168.0.2</span><br><span class="line"># 列出所有 ssh 的連線，包含從本機往外的 ssh 連線，以及從外面連線進來的 ssh 連線：</span><br><span class="line">$ ss -o state established &#x27;( dport = :ssh or sport = :ssh )&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>在Linux中如何列出服務?<ul>
+<li>去 &#x2F;etc&#x2F;init.d 查看</li>
+<li>或 <code>systemctl list-units --type service -all</code></li>
+<li><code>sudo systemctl | grep running</code></li>
+<li><code>service --status-all</code></li>
+</ul>
+</li>
+<li>如何查看已建立的sockets<ul>
+<li><code>systemctl list-sockets</code></li>
+<li><code>netstat</code></li>
+<li><code>ss</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="app-檢測"><a href="#app-檢測" class="headerlink" title="app 檢測"></a>app 檢測</h2><p><a target="_blank" rel="noopener" href="https://www.mas.org.tw/spaw2/uploads/files/20190916/AppV3.1.pdf">https://www.mas.org.tw/spaw2/uploads/files/20190916/AppV3.1.pdf</a></p>
+<h2 id="Windows-Admin"><a href="#Windows-Admin" class="headerlink" title="Windows Admin"></a>Windows Admin</h2><ul>
+<li>安全性設定<ul>
+<li>若要使用 Local 安全性原則主控台設定設定:<ul>
+<li>win+R</li>
+<li><code>secpol.msc</code></li>
+<li>在主控台設定安全性命令下，執行下列其中一項操作：<ul>
+<li>按一下 [帳戶政策 &gt; 以編輯 <strong>密碼政策</strong> 或 <strong>帳戶鎖定政策</strong></li>
+<li>按一下 [本地原則 以編輯 <strong>稽核原則</strong>、<strong>使用者</strong> <strong>許可權指派</strong>或 <strong>安全性選項</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>若要使用本機群組策略編輯器主控台設定安全性原則設定<ul>
+<li>win +R</li>
+<li><code>gpedit.msc</code></li>
+<li>在主控台樹狀樹中，按一下 [電腦組Windows 設定 ，然後按一下[安全性設定。</li>
+<li>執行下列其中一項：<ul>
+<li>按一下 [帳戶政策 &gt; 以編輯 密碼政策 或 帳戶鎖定政策。</li>
+<li>按一下 [本地原則 以編輯 稽核原則、使用者 許可權指派或 安全性選項。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="網頁測試"><a href="#網頁測試" class="headerlink" title="網頁測試"></a>網頁測試</h2><ul>
+<li><p>有做過網頁單元測試嗎?<br>  主要架設小型的Flask Web Server<br>  然後有自己建立小型的測試用的服務<br>  <em>test_api.py</em></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import json</span><br><span class="line">from flask import request</span><br><span class="line"></span><br><span class="line">server = flask.Flask(__name__)</span><br><span class="line">@server.route(&#x27;/login&#x27;, methods=[&#x27;get&#x27;, &#x27;post&#x27;])</span><br><span class="line">def login():</span><br><span class="line">	username = request.values.get(&#x27;name&#x27;)</span><br><span class="line">	pwd = request.values.get(&#x27;pwd&#x27;)</span><br><span class="line">	if username and pwd:</span><br><span class="line">		if username == &#x27;xiaoming&#x27; and pwd == &#x27;111&#x27;:</span><br><span class="line">			resu = &#123;&#x27;code&#x27;: 200, &#x27;message&#x27;: &#x27;Login Success&#x27;&#125;</span><br><span class="line">			return json.dumps(resu, ensure_ascii=False) </span><br><span class="line">		else:</span><br><span class="line">			resu = &#123;&#x27;code&#x27;: -1, &#x27;message&#x27;: &#x27;Login Failed&#x27;&#125;</span><br><span class="line">			return json.dumps(resu, ensure_ascii=False)</span><br><span class="line">	else:</span><br><span class="line">		resu = &#123;&#x27;code&#x27;: 10001, &#x27;message&#x27;: &#x27;Parameter cannot be empty&#x27;&#125;</span><br><span class="line">		return json.dumps(resu, ensure_ascii=False)</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">	server.run(debug=True, port=8888, host=&#x27;127.0.0.1&#x27;)</span><br></pre></td></tr></table></figure>
+<p>  <img src="https://i.imgur.com/3UFNrTT.png"><br>  <em>config.ini</em></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">[HTTP]</span><br><span class="line">scheme = http</span><br><span class="line">baseurl = 127.0.0.1</span><br><span class="line">port = 8888</span><br><span class="line">timeout = 10.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[EMAIL]</span><br><span class="line">on_off = on;</span><br><span class="line">subject = Auto testing Report</span><br><span class="line">app = Outlook</span><br><span class="line">addressee = M10909302@gmail.com</span><br></pre></td></tr></table></figure>
+<p>  <em>getpathInfo.py</em></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">def get_Path():</span><br><span class="line">	path = os.path.split(os.path.realpath(__file__))[0]</span><br><span class="line">	return path</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">	print(&#x27;测试路径是否OK,路径为：&#x27;, get_Path())</span><br></pre></td></tr></table></figure>
+<p>  執行結果<br>  <img src="https://i.imgur.com/SOJEwRf.png"></p>
+<p>  <em>readConfig.py</em></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import configparser</span><br><span class="line">import getpathInfo </span><br><span class="line"></span><br><span class="line">path = getpathInfo.get_Path()</span><br><span class="line">config_path = os.path.join(path, &#x27;config.ini&#x27;)</span><br><span class="line">config = configparser.ConfigParser()</span><br><span class="line">config.read(config_path, encoding=&#x27;utf-8&#x27;)</span><br><span class="line"></span><br><span class="line">class ReadConfig():</span><br><span class="line"></span><br><span class="line">	def get_http(self, name):</span><br><span class="line">		value = config.get(&#x27;HTTP&#x27;, name)</span><br><span class="line">		return value</span><br><span class="line">	def get_email(self, name):</span><br><span class="line">		value = config.get(&#x27;EMAIL&#x27;, name)</span><br><span class="line">		return value</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">	print(&#x27;The Baseurl Value in HTTP is：&#x27;, ReadConfig().get_http(&#x27;baseurl&#x27;))</span><br><span class="line">	print(&#x27;The on_off value in EMAIL is: &#x27;, ReadConfig().get_email(&#x27;on_off&#x27;</span><br></pre></td></tr></table></figure>
+<p>  <img src="https://i.imgur.com/KyVjXZL.png"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://itpcb.com/a/1297735">https://itpcb.com/a/1297735</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="RESTFUL-API"><a href="#RESTFUL-API" class="headerlink" title="RESTFUL API"></a>RESTFUL API</h2><ul>
+<li>請問你對於RESTFul Web服務的理解是甚麼?<ul>
+<li>RESTFul Web Service就是遵循REST風格的Web服務架構</li>
+<li>REST(Representational State Transfer)並使用HTTP來實踐</li>
+</ul>
+</li>
+<li>甚麼是REST Resource?<ul>
+<li>每個在REST架構底下的內容都算是一種資源，這種資源有點像是OOP內的Object</li>
+<li>資源可以是test檔、HTML頁面、圖片或是其他動態資源</li>
+<li>REST Server提供對於這些資源的存取，並使Client可以使用這些資源</li>
+<li>每項資源都透過URI來做標誌</li>
+</ul>
+</li>
+<li>甚麼是URI?<ul>
+<li>Uniform Resource Identidier用於在REST架構中標誌資源</li>
+<li><code>&lt;protocol&gt;://&lt;service-name&gt;/&lt;ResourceType&gt;/&lt;ResourceID&gt;</code></li>
+<li>兩種種類的URI: <code>URN</code>、<code>URL</code></li>
+<li><strong>URN</strong>: Uniform Resource Name<ul>
+<li>透過一個獨特且持久的名稱來標示資源</li>
+</ul>
+</li>
+<li><strong>URL</strong>: Uniform Resource Locator<ul>
+<li>具有有關資源位置的相關資訊</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>你對JAX-RS的理解是甚麼?<ul>
+<li>JAX-RS&#x3D; Java API for RESRful Web Service</li>
+</ul>
+</li>
+<li>可以講一些你知道常見的HTTP Status Code嗎?<ul>
+<li>1xx - 代表資訊回覆 (這啥?</li>
+<li>2xx - 代表成功回應</li>
+<li>3xx - 代表重新導向</li>
+<li>4xx - 代表client出錯</li>
+<li>5xx - 代表server出錯</li>
+<li>200 ok</li>
+<li>201- CREATED 用在PUT或POST</li>
+<li>304-NOT MODIFIED - 用於有條件的GET請求，以減少網路頻寬使用，這個response的body要是空的</li>
+<li>400-BAD REQUEST -驗證錯誤或缺少資料</li>
+<li>401-UNAUTHORIZED - 請求中沒有包含有效身分認證資訊</li>
+<li>403-FORBIDDEN - 無權或禁止存取資源</li>
+<li>404-NOT FOUND - 資源方法不可用</li>
+<li>500-INTERNAL SERVER ERROR- 當Server在運行時跳出一些異常</li>
+<li>502-BAD GATEWAY - Server無法從其他Server中獲得response</li>
+</ul>
+</li>
+<li>可以講一些你知道常見的HTTP Methods嗎?<br>  <img src="https://i.imgur.com/PBaFMYj.png"><ul>
+<li>GET: 從Server中擷取資訊，一種唯讀的操作</li>
+<li>POST: 用來在server中建立資源</li>
+<li>PUT: 用來在server中更新現有資源或取代資源</li>
+<li>DELETE: 用來在server中刪除資源</li>
+<li>OPTIONS: 可獲取server上現有資源的支援選項清單</li>
+<li>HEAD: 與Get相同，但只傳送狀態行以及Header部分</li>
+</ul>
+</li>
+<li>SOAP以及REST之間的差異是甚麼?</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>SOAP</th>
+<th>REST</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Simple Object Access Protocol</td>
+<td>Representatioanl State Transfer</td>
+</tr>
+<tr>
+<td>用來實踐web服務的協定</td>
+<td>是一種web的架構設計風格</td>
+</tr>
+<tr>
+<td>SOAP無法使用REST</td>
+<td>REST可使用SOAP作為實踐的一部分</td>
+</tr>
+<tr>
+<td>有嚴格標準</td>
+<td>不須嚴格遵守</td>
+</tr>
+<tr>
+<td>client server更加耦合</td>
+<td>REST Client靈活，不依賴Server開發方式</td>
+</tr>
+<tr>
+<td>僅支援XML</td>
+<td>支援XML,JSON,MIME,Text等</td>
+</tr>
+<tr>
+<td>SOAP使用服務介面來公開資源</td>
+<td>使用URI來開放資源</td>
+</tr>
+<tr>
+<td>作為一種協定，它定義了自己的安全措施</td>
+<td>僅根據它用於實現的協議繼承安全措施</td>
+</tr>
+</tbody></table>
+<ul>
+<li>開發RESTful web 服務的Best Practice會是甚麼?<ul>
+<li>開發REST API並盡可能使用JSON資料格式並進行資料的接收與回覆，因為大多數client與server之間都內置了輕鬆讀取與解析JSON物件的方式<ul>
+<li>應用程式以JSON格式作為Response應要將Content-Type設為application&#x2F;json</li>
+<li>某些HTTP Client端會去察看Response Header的值來去做解析</li>
+<li>resquest header中的Content-Type:要設成application&#x2F;json</li>
+</ul>
+</li>
+<li><strong>在命名資源endpoint的時候應該使用複數名詞，而不是動詞，API Endpoint應要簡短、易於理解</strong><ul>
+<li>不用動詞是因為HTTP Method中已經描述了請求行為為何了</li>
+<li>常用的HTTP Verb&#x2F;Methods: GET、POST、PUT、DELETE</li>
+</ul>
+</li>
+<li>使用nesting來表示資源的層次結構<ul>
+<li>ex. GET for URI: &#x2F;authors&#x2F;:id&#x2F;address</li>
+<li>別太多層</li>
+</ul>
+</li>
+<li>錯誤處理應透過返回應用程式適當的error code來處理，REST中也定義了適當的HTTP Status Code可根據不同場景來一起發送<ul>
+<li>error code要搭配適當錯誤訊息，幫助開發人員糾正措施，但別太詳細防止駭客知道太多</li>
+<li>400-Bad Request</li>
+<li>401-Unauthorized</li>
+<li>403-Forbidden</li>
+<li>404-Not Found</li>
+<li>500-Internal Server Error</li>
+<li>502-Bad Gateway</li>
+<li>503-Service Unavailable</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>你了解哪些分散式系統架構?<ul>
+<li>我知道用來maintain以及運行分散是系統的技術，就Kubernetes</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://searchapparchitecture.techtarget.com/definition/software-stack">那甚麼是Software Stack?</a><br>  <img src="https://i.imgur.com/NOpfrAK.png"><ul>
+<li>是一堆獨立組件的集合，他們協同工作來完成應用程式的執行</li>
+<li>這些組件可能包含:OS、協定、runtime環境、Library、DB和Function Call</li>
+<li>根據所需運行的應用程式，至少會是OS、DB、支援編寫程式的工具和應用程式</li>
+</ul>
+</li>
+<li>那甚麼是Solution Stack?<ul>
+<li>要開發一款網路應用程式，會需要定義目標OS、網頁server、DB以及語言</li>
+<li>或要定義OS、Middleware、DB及應用程式，有時也會將硬體涵蓋在內</li>
+<li>舉例:<ul>
+<li>BCHS<ul>
+<li>OpenBSD</li>
+<li>C</li>
+<li>httpd</li>
+<li>SQLite</li>
+</ul>
+</li>
+<li>ELK<ul>
+<li>Elasticsearch</li>
+<li>Logstash</li>
+<li>Kibana</li>
+</ul>
+</li>
+<li>Ganeti<ul>
+<li>Xen或KVM</li>
+<li>搭配LVM的Linux</li>
+<li>DRBD</li>
+<li>Ganeti</li>
+<li>Ganeti Web Manager</li>
+</ul>
+</li>
+<li>LAMP<ul>
+<li>Linux</li>
+<li>Apache</li>
+<li>MySQL&#x2F;MariaDB</li>
+<li>Perl、PHP、Python</li>
+</ul>
+</li>
+<li>LAPP<ul>
+<li>Linux</li>
+<li>Apache</li>
+<li>PostgreSQL</li>
+<li>Perl、PHP、Python</li>
+</ul>
+</li>
+<li>LLMP<ul>
+<li>Linux</li>
+<li>Lighttpd</li>
+<li>MySQL&#x2F;MariaDB</li>
+<li>Perl、PHP、Python</li>
+</ul>
+</li>
+<li>MEAN<ul>
+<li>MongoDB</li>
+<li>Express.js</li>
+<li>Angular.js</li>
+<li>Node.js</li>
+</ul>
+</li>
+<li>MERN<ul>
+<li>MongoDB</li>
+<li>Express.js</li>
+<li>React.js</li>
+<li>Node.js</li>
+</ul>
+</li>
+<li>MEVN<ul>
+<li>MongoDB</li>
+<li>Express.js</li>
+<li>Vue.js</li>
+<li>Node.js</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Apache-Troubleshooting"><a href="#Apache-Troubleshooting" class="headerlink" title="Apache Troubleshooting"></a><a target="_blank" rel="noopener" href="https://www.acunetix.com/websitesecurity/troubleshooting-tips-for-apache/">Apache Troubleshooting</a></h2><h3 id="httpd-conf-設定錯誤"><a href="#httpd-conf-設定錯誤" class="headerlink" title="httpd.conf 設定錯誤"></a>httpd.conf 設定錯誤</h3><ul>
+<li>Syntax Error<ul>
+<li>Linux上需使用 <code>apachectl -configtest</code>來檢測Syntax Error</li>
+<li>Windows系統上的Apache須先到Apache的bin目錄上，然後執行 <code>httpd.exe -t</code></li>
+<li>修正問題後重啟Apache並重新透過上述指令做檢查</li>
+</ul>
+</li>
+</ul>
+<h3 id="Vulenrabilities"><a href="#Vulenrabilities" class="headerlink" title="Vulenrabilities"></a>Vulenrabilities</h3><ul>
+<li>使用最新版本的Apache</li>
+<li>使用弱掃工具去檢查</li>
+<li>隨時查看最新的CVE，並上Patch</li>
+</ul>
+<h3 id="Apache-HTTP-Server-Logs"><a href="#Apache-HTTP-Server-Logs" class="headerlink" title="Apache HTTP Server Logs"></a>Apache HTTP Server Logs</h3><p>應分析Apache HTTP Server中的<strong>error logs</strong>，<strong>它提供了有關 Web 服務器上發生的任何錯誤的詳細資訊</strong> 路徑: <code> /var/log/apache2/error.log</code>、<code>/etc/apache2/apache2.conf</code>、<code>/etc/httpd/conf/httpd.conf</code></p>
+<p>預設會放在Apache安裝目錄中的log目錄中的<strong>error_log</strong>檔案中<br>也可從httpd.conf中去設定要紀錄哪一類型的錯誤，httpd.conf中有8個log級別的資訊<br>除了error log以外還提供access log來紀錄Server處理過的所有請求。<br>這些日誌還可以對可能導致問題的原因提供額外的解釋，還可以補充錯誤日誌中的資訊。</p>
+<h3 id="使用Mod-log-forensic-模組"><a href="#使用Mod-log-forensic-模組" class="headerlink" title="使用Mod_log_forensic 模組"></a>使用Mod_log_forensic 模組</h3><p><code>mod_log_forensic</code>模組用於提供client端請求的<strong>forensic log</strong><br>這包含了處理前與處理後的請求，並使用相同ID來引用相同的請求，因此可以輕鬆識別由特定請求引發的任何問題<br><strong>可以用來分析哪些請求會導致Web Server崩潰</strong><br>若要啟用這個模組，需要在 <code>Apache httpd.conf</code>文件中設定:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LoadModule log_forensic_module_forensic.so</span><br><span class="line">LoadModule uniques_id_module modules/mod_unique_id.so</span><br><span class="line">ForensicLog logs/forensic_log</span><br></pre></td></tr></table></figure>
+<p>也可將 <strong>check_forensic</strong>的bash腳本與 mod_log_forensic模組結合使用，以列出在forensic log中發現任何不完整的請求<br><code>check_forensic &lt;log_file&gt;</code></p>
+<h3 id="使用-mod-whatkilledus-module"><a href="#使用-mod-whatkilledus-module" class="headerlink" title="使用 mod_whatkilledus module"></a>使用 mod_whatkilledus module</h3><p>當事情非常糟糕且Apache Server崩潰時，<code>mod_whatkilledus</code>模組可用於紀錄有關崩潰的詳細技術資訊以及導致發生crash的原始client端請求。</p>
+<p>此外若啟用了 <code>mod_backtrace</code>模組，這將包含顯示故障點的回溯，這對於在滿足某些條件後使用回溯註釋錯誤日誌很有用</p>
+<p>對於Unix系統，只有在 httpd建構中啟用了 <code>--enable-exception-hook</code> 參數時，這些模組才會起作用。而對於Windows系統則沒有特殊要求</p>
+<ul>
+<li><code>mode_whatkilledus</code> 以及 <code>mod_backtrace</code> 的說明文件: <a target="_blank" rel="noopener" href="https://emptyhammock.com/projects/httpd/diag/quick-start.html">https://emptyhammock.com/projects/httpd/diag/quick-start.html</a></li>
+</ul>
+<h3 id="使用第三方模組"><a href="#使用第三方模組" class="headerlink" title="使用第三方模組"></a>使用第三方模組</h3><p>使用第三方模組可能會導致在安裝Apache HTTP Server時遇到問題<br>因此應該禁用第三方模組，並檢查問題是否可以重現，若禁用模組可以解決問題則一個一個重起每個模組，以便確定是哪個模組帶來的原因</p>
+<h3 id="將Apache-HTTP-Server做為單一process並使用Debug工具"><a href="#將Apache-HTTP-Server做為單一process並使用Debug工具" class="headerlink" title="將Apache HTTP Server做為單一process並使用Debug工具"></a>將Apache HTTP Server做為單一process並使用Debug工具</h3><p>典型的Apache HTTP Server安裝會運行多個process<br>但如果要troubleshooting最好是以單一process運行<br>可在啟動apache時候使用X選項<br><code>$ httpd -X</code> 這可使Apache以單一process模式來啟動，這代表Apache不會去fork出新的chidren或與終端detach<br>這樣所有流量與通訊都將通過一個單一的process，就能在debugger(ex. gdb)底下運行apache httpd並取得崩潰的bracktace並強制server去行coredump</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gdb httpd</span><br></pre></td></tr></table></figure>
+<p>接著就是透過gdb先去設breakpoint，然後去做單步追蹤，一行一行看可能錯在哪?</p>
+<h3 id="腳本執行問題"><a href="#腳本執行問題" class="headerlink" title="腳本執行問題"></a>腳本執行問題</h3><p>動態內容通常由 Apache HTTP Server通過 <code>mod_cgi</code>模組執行的腳本提供<br>這個模組包含自己的logging機制用來記錄在腳本執行期間發生的任何錯誤</p>
+<p>啟用<strong>ScriptLog</strong>指令後，mod_cgi將記錄任何未按照預期執行的腳本的輸出，包含<br>Server Response Code，收到的請求以及任何向客戶端發出的任何回應</p>
+<p>要啟用此功能需要修改 httpd.conf文件，並指定ScriptLog指令和保存log的位置<br><code>ScriptLog logs/cgi_log</code></p>
+<h2 id="IIS-Troubleshooting"><a href="#IIS-Troubleshooting" class="headerlink" title="IIS Troubleshooting"></a><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms524996(v=vs.90)">IIS Troubleshooting</a></h2><h2 id="Server端安全"><a href="#Server端安全" class="headerlink" title="Server端安全"></a>Server端安全</h2><ul>
+<li>Server端有甚麼安全建議?<ul>
+<li>移除不必要服務<ul>
+<li>默認安裝有時候會安裝許多不必要的功能ex. 遠端註冊、printer server…etc</li>
+<li>服務越多，開放的port就越多，因此會暴露更多風險</li>
+<li>關閉server中的非必要服務</li>
+</ul>
+</li>
+<li>確保遠端存取的保護措施<ul>
+<li>若web admin需要遠端登入Web server，則需要使用隧道和加密協定來確保遠程連線獲得適當防護 </li>
+<li>在設備或軟體上使用安全token </li>
+<li>遠端存取應限制特定數量IP以及帳戶</li>
+</ul>
+</li>
+<li>分離開發&#x2F;測試&#x2F;生產環境<ul>
+<li>由於開發人員在生產服務器上開發更新版本的 Web 應用程序更容易、更快捷，因此 Web 應用程序的開發和測試直接在生產服務器本身上完成是很常見的。</li>
+<li>有可能會在網路上蒐到特定網站的更新版本，或在&#x2F;test&#x2F;、&#x2F;new&#x2F;或其他類似子目錄底下發現不應該給公眾知道的內容 </li>
+<li>所以如果在同台Server上同時開發、測試跟生產，如果權限沒設好而且早期開發階段安全性容易沒做好，容易被打穿網站</li>
+</ul>
+</li>
+<li>Web應用內容以及Server Script安全<ul>
+<li>web應用或網站文件應該要位於OS系統文件、log文件以外的獨立分區或driver上</li>
+<li>因為如果攻擊者獲得web目錄存取權限，可能就可以透過其他漏洞去做提權並存取整個磁碟上的資料</li>
+</ul>
+</li>
+<li>確保適當權限與特權<ul>
+<li>始終分配運行特定網路服務所需的最權限</li>
+</ul>
+</li>
+<li>按時安裝所有patch</li>
+<li>監控或audit server <ul>
+<li>應經常監控和檢查所有網路服務log、網站access log、DB Server log(ex. Microsoft SQL Server、MySQL、Oracle)和OS Log</li>
+<li>若log中發現奇怪活動，應該立刻去解決它</li>
+</ul>
+</li>
+<li>用戶帳戶管理<ul>
+<li>禁用未使用的默認帳戶<ul>
+<li><code>userdel</code> 指令</li>
+</ul>
+</li>
+<li>每個帳戶要設定它應有的正確權限</li>
+</ul>
+</li>
+<li>刪除未使用的模組和應用程式<ul>
+<li>Apache預設會安裝多預定義的模組 </li>
+<li>典型Web Server不會使用這些模組，因此需要關閉，防止針對此類模組的攻擊</li>
+</ul>
+</li>
+<li>使用Network Sever軟體所提供的安全工具<ul>
+<li>Mircosoft 發布許多工具來幫助admin來保護IIS Web Server安裝</li>
+<li>Apache也有提供 <strong>mod_security</strong>模組</li>
+</ul>
+</li>
+<li>使用外部scanner<ul>
+<li>nessus</li>
+<li>nikto</li>
+<li>或其他弱掃工具</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Log檔案"><a href="#Log檔案" class="headerlink" title="Log檔案"></a>Log檔案</h2><p>系統錯誤資訊 - <code>/var/logs/syslog</code> 或 <code>/var/logs/messages</code><br>與登入帳密有關的log - <code>/var/logs/secure</code> 或 <code>/var/logs/auth.loh</code>(Debian)<br>紀錄哪個服務的log會被放在哪? - <code>/etc/rsyslog.conf</code>，會被放在<code>/etc/rsyslog.d</code> 底下</p>
+<h3 id="Syslog等級"><a href="#Syslog等級" class="headerlink" title="Syslog等級"></a>Syslog等級</h3><p><img src="https://i.imgur.com/GxaNR3I.png"></p>
+<h3 id="Systemcall"><a href="#Systemcall" class="headerlink" title="Systemcall"></a>Systemcall</h3><h2 id="C-x2F-C"><a href="#C-x2F-C" class="headerlink" title="C&#x2F;C++"></a>C&#x2F;C++</h2><ul>
+<li>如果程式中使用malloc但沒有free掉會怎樣?<ul>
+<li>heap memory會一直被占著，直到程式結束，不會自動釋放</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/5728fae1.html">https://leozzmc.github.io/posts/5728fae1.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Network/">Network</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/Web/">Web</a></div><div class="post_share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/de3933f9.html" title="Security policies definition and enforcement utilizing policy control function framework in 5G"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Security policies definition and enforcement utilizing policy control function framework in 5G</div></div></a></div><div class="next-post pull-right"><a href="/posts/8ec27a58.html" title="實習筆記-滲透測試課程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">實習筆記-滲透測試課程</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">91</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Network-Debug"><span class="toc-number">1.</span> <span class="toc-text">Network Debug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-Admin"><span class="toc-number">2.</span> <span class="toc-text">Linux Admin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#app-%E6%AA%A2%E6%B8%AC"><span class="toc-number">3.</span> <span class="toc-text">app 檢測</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Admin"><span class="toc-number">4.</span> <span class="toc-text">Windows Admin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B6%B2%E9%A0%81%E6%B8%AC%E8%A9%A6"><span class="toc-number">5.</span> <span class="toc-text">網頁測試</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTFUL-API"><span class="toc-number">6.</span> <span class="toc-text">RESTFUL API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache-Troubleshooting"><span class="toc-number">7.</span> <span class="toc-text">Apache Troubleshooting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#httpd-conf-%E8%A8%AD%E5%AE%9A%E9%8C%AF%E8%AA%A4"><span class="toc-number">7.1.</span> <span class="toc-text">httpd.conf 設定錯誤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vulenrabilities"><span class="toc-number">7.2.</span> <span class="toc-text">Vulenrabilities</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-HTTP-Server-Logs"><span class="toc-number">7.3.</span> <span class="toc-text">Apache HTTP Server Logs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Mod-log-forensic-%E6%A8%A1%E7%B5%84"><span class="toc-number">7.4.</span> <span class="toc-text">使用Mod_log_forensic 模組</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-mod-whatkilledus-module"><span class="toc-number">7.5.</span> <span class="toc-text">使用 mod_whatkilledus module</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E7%B5%84"><span class="toc-number">7.6.</span> <span class="toc-text">使用第三方模組</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%87Apache-HTTP-Server%E5%81%9A%E7%82%BA%E5%96%AE%E4%B8%80process%E4%B8%A6%E4%BD%BF%E7%94%A8Debug%E5%B7%A5%E5%85%B7"><span class="toc-number">7.7.</span> <span class="toc-text">將Apache HTTP Server做為單一process並使用Debug工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%85%B3%E6%9C%AC%E5%9F%B7%E8%A1%8C%E5%95%8F%E9%A1%8C"><span class="toc-number">7.8.</span> <span class="toc-text">腳本執行問題</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IIS-Troubleshooting"><span class="toc-number">8.</span> <span class="toc-text">IIS Troubleshooting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Server%E7%AB%AF%E5%AE%89%E5%85%A8"><span class="toc-number">9.</span> <span class="toc-text">Server端安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Log%E6%AA%94%E6%A1%88"><span class="toc-number">10.</span> <span class="toc-text">Log檔案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Syslog%E7%AD%89%E7%B4%9A"><span class="toc-number">10.1.</span> <span class="toc-text">Syslog等級</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Systemcall"><span class="toc-number">10.2.</span> <span class="toc-text">Systemcall</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-x2F-C"><span class="toc-number">11.</span> <span class="toc-text">C&#x2F;C++</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/aeee38d.html" title="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number"><img src="/img/LeetCode/17/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number"/></a><div class="content"><a class="title" href="/posts/aeee38d.html" title="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number">電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number</a><time datetime="2024-09-28T14:24:08.000Z" title="發表於 2024-09-28 22:24:08">2024-09-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8c983568.html" title="產生括號 | Medium | LeetCode#22. Generate Parentheses"><img src="/img/LeetCode/22/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="產生括號 | Medium | LeetCode#22. Generate Parentheses"/></a><div class="content"><a class="title" href="/posts/8c983568.html" title="產生括號 | Medium | LeetCode#22. Generate Parentheses">產生括號 | Medium | LeetCode#22. Generate Parentheses</a><time datetime="2024-09-26T14:40:28.000Z" title="發表於 2024-09-26 22:40:28">2024-09-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/e650f909.html" title="組合之和問題 | Medium | LeetCode#39. Combination Sum"><img src="/img/LeetCode/39/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="組合之和問題 | Medium | LeetCode#39. Combination Sum"/></a><div class="content"><a class="title" href="/posts/e650f909.html" title="組合之和問題 | Medium | LeetCode#39. Combination Sum">組合之和問題 | Medium | LeetCode#39. Combination Sum</a><time datetime="2024-09-23T14:14:30.000Z" title="發表於 2024-09-23 22:14:30">2024-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/bd2c9140.html" title="手動 migration 的其他方式 | PVE 系列-3"><img src="/img/PVE/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="手動 migration 的其他方式 | PVE 系列-3"/></a><div class="content"><a class="title" href="/posts/bd2c9140.html" title="手動 migration 的其他方式 | PVE 系列-3">手動 migration 的其他方式 | PVE 系列-3</a><time datetime="2024-09-22T06:24:48.000Z" title="發表於 2024-09-22 14:24:48">2024-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/eb632302.html" title="組合問題 | Medium | LeetCode#77. Combinations"><img src="/img/LeetCode/77/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="組合問題 | Medium | LeetCode#77. Combinations"/></a><div class="content"><a class="title" href="/posts/eb632302.html" title="組合問題 | Medium | LeetCode#77. Combinations">組合問題 | Medium | LeetCode#77. Combinations</a><time datetime="2024-09-21T05:53:11.000Z" title="發表於 2024-09-21 13:53:11">2024-09-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
