@@ -8,6 +8,8 @@ tags:
   - LeetCode
   - Medium
   - C++
+categories: LeetCode筆記
+aside: true
 abbrlink: 8c983568
 date: 2024-09-26 22:40:28
 cover: /img/LeetCode/22/cover.jpeg
