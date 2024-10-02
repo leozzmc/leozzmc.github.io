@@ -112,6 +112,40 @@ public:
 
 這裡儲存方式使用 `vector` 但缺點就是在每次檢查時，都會耗費 $O(n)$ 時間，`n` 為 vector 長度，會隨節點數量增加而提升 
 
+
+## 其他做法 - Floyd's Cycle-Finding Algorithm
+
+其實就是 Two-Pointer 做法，只要 **快跟慢指標在某個節點相遇，就代表有cycle**
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head){
+        if (!head || !head->next) return false; 
+        ListNode *slow = head; 
+        ListNode *fast = head;
+
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next; 
+
+            if (slow == fast) { 
+                return true;
+            }
+        }
+        return false;  
+    }
+};
+```
+
 ### 執行結果
 
 *Hash Table*
@@ -119,6 +153,9 @@ public:
 
 *Vector*
 ![](/img/LeetCode/141/result2.jpeg)
+
+*Two-Pointer*
+![](/img/LeetCode/141/result3.jpeg)
 
 # 複雜度
 
@@ -130,6 +167,9 @@ public:
 *vector*
 - $O(N^2)$: 在遍歷 N 個節點的過程中，還會去 `nodelist` 檢查已儲存的 N-1 個元素，因此為 $O(N^2)$
 
+*Two-pointer*
+- $O(N)$: 在最壞的情況下，`slow` 和 `fast` 指針最多需要遍歷整個List，當linked list中有環時，`fast` 會在某個時刻與 `slow` 相遇；如果沒有環，則 fast 最終會到達鏈表末尾。因此，時間複雜度為 $O(N)$，$N$為節點數量
+
 ## 空間複雜度
 
 *Hash Table*
@@ -138,5 +178,5 @@ public:
 *vector*
 - $O(N)$: 將所有 N 個節點指針存儲在 `nodelist` 中
 
-
-
+*Two-pointer*
+- $O(1)$: 因為只使用了兩個額外的指針 (`slow` 和 `fast`) 來進行遍歷，不需要使用額外的資料結構來存儲鏈表的節點。因此，空間複雜度為 $O(1)$，即使用的空間量是常數。
