@@ -11,6 +11,8 @@ tags:
 abbrlink: aeee38d
 date: 2024-09-28 22:24:08
 cover: /img/LeetCode/17/cover.jpg
+categories: LeetCode筆記
+aside: true
 ---
 
 
