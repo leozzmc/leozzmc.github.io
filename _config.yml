@@ -3,28 +3,28 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Kevin Liu's Blog || Technical || Travel
+title: Kevin Liu's 部落格 || Technical || Travel
 subtitle: 'Life Documentation'
 description: '👍👍👍👍👍'
 keywords:
 author: Kevin Liu
-language: en
+language: zh-TW
 timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://leozzmc.github.io/en
+url: https://leozzmc.github.io
 permalink:  posts/:abbrlink.html
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: true # Set to false to remove trailing '.html' from permalinks
 
-root: /en/
+root: /
 
 # Directory
-source_dir: source-en
-public_dir: public-en
+source_dir: source
+public_dir: public
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
@@ -92,11 +92,10 @@ pagination_dir: page
 
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
-
 include:
 exclude:
 ignore:
-  - source/
+  - source-en/
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
@@ -107,9 +106,9 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:leozzmc/en.git
-  branch: main
-  message: "en-deployment"
+  repo: git@github.com:leozzmc/leozzmc.github.io.git
+  branch: deploy
+  message: "deployment"
 
 
 # abbrlink config

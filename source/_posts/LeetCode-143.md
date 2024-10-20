@@ -7,6 +7,7 @@ tags:
   - C++
 categories: LeetCode筆記
 aside: true
+toc: true
 cover: /img/LeetCode/143/cover.jpg
 abbrlink: 94b01956
 date: 2024-10-18 22:31:43

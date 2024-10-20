@@ -31,7 +31,7 @@ highlight_theme: mac #  darker / pale night / light / ocean / mac / mac light / 
 highlight_copy: true # copy button
 highlight_lang: true # show the code language
 highlight_shrink: false # true: shrink the code blocks / false: expand the code blocks | none: expand code blocks and hide the button
-highlight_height_limit: false # unit: px
+highlight_height_limit: 600 # unit: px
 code_word_wrap: false
 
 # Social Settings (社交圖標設置)
@@ -196,7 +196,7 @@ post_edit:
 
 # Related Articles
 related_post:
-  enable: false
+  enable: true
   limit: 6 # Number of posts displayed
   date_type: created # or created or updated 文章日期顯示創建日或者更新日
 
@@ -748,21 +748,21 @@ beautify:
 # Global font settings
 # Don't modify the following settings unless you know how they work (非必要不要修改)
 font:
-  global-font-size:
+  global-font-size: 15px
   code-font-size:
-  font-family:
-  code-font-family:
+  font-family: LXGW WenKai TC, Georgia, Helvetica ,'PingFang TC', 'Heiti TC', "Noto Sans TC","Microsoft JhengHei", sans-serif
+  code-font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
 
 # Font settings for the site title and site subtitle
 # 左上角網站名字 主頁居中網站名字
 blog_title_font:
-  font_link:
-  font-family:
+  font_link: "https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap"
+  font-family:  'LXGW WenKai TC'
 
 # The setting of divider icon (水平分隔線圖標設置)
 hr_icon:
   enable: true
-  icon: # the unicode value of Font Awesome icon, such as '\3423'
+  icon: \xf197 # the unicode value of Font Awesome icon, such as '\3423' 
   icon-top:
 
 # the subtitle on homepage (主頁subtitle)
