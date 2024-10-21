@@ -54,5 +54,15 @@
 			"{% endnote %}"
 		],
 		"description": "note info for butterfly blog "
+	},
+	"toggle":{
+		"scope": "markdown",
+		"prefix": "tog",
+		"body": [
+			"{% hideToggle display,bg,color %}",
+			"",
+			"{% endhideToggle %}"
+		],
+		"description": "note toggle for butterfly blog"
 	}
 }

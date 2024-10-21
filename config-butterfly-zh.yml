@@ -762,7 +762,7 @@ blog_title_font:
 # The setting of divider icon (水平分隔線圖標設置)
 hr_icon:
   enable: true
-  icon: \xf197 # the unicode value of Font Awesome icon, such as '\3423' 
+  icon: # the unicode value of Font Awesome icon, such as '\3423' 
   icon-top:
 
 # the subtitle on homepage (主頁subtitle)
