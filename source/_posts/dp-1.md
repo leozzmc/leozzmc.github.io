@@ -137,4 +137,62 @@ public:
 
 ## 步驟三 : Iteration + Tabulation
 
+正常而言，如果在上一步中沒有明顯的效能提升 (或者面試官希望你進一步改善你的答案)，那就會需要第三步。這一步驟中使用 *Tabulation*，而非 *Memoization*，並且使透過 Iteration 而非 Recursion 的方式實作。
+
+> 但無論是 *Tabulation* 或者是 *Memoization* 他們的目標都一樣，**就是要將先前計算結果儲存，在後續重複計算時取出使用**
+
+兩者的區別主要在於資料的儲存方式，*Tabulation* 主要是透過 **陣列儲存 (通常是二微陣列)** ，而 *Memoization* 則通常是用 Set, Hash Table 等方式儲存。 **所以 *Tabulation* 會透過迭代的方式來走遍每個陣列，而 *Memoization* 則是藉助於遞迴呼叫。**
+
+{% note info %}
+這個變更不一定會讓時間或空間複雜度改善，但重點是， **使用迭代陣列的方式可以容納更大的 Input Size，而不會受限於遞迴呼叫的 Call Stack 的最大上限**  (Call Stack 太深還有機會 Stack Overflow)
+{% endnote %}
+
+所以回頭看原先 Unique Paths的題目，如果要用 Iterations，就可以透過迴圈反向迭代。
+
+![](/img/LeetCode/dp/unipath5.png)
+
+
+可以看這張圖的右邊，原則上就是從右下角往左上角走，而作者在這裡選擇從倒數第二行和倒數第二列那格開始往回做的原因是，因為最下面那列和最右邊那行的可走路徑數量都會是 1，因此對於 `gird[1][5]` 從新的起點走到它會有的步驟數等於 `grid[2][5]` 和 `grid[1][6]`，因此可以得到一個關係式為 $F(m,n) = F(m+1, n) + F(m, n+1)$。
+
+重新改寫程式後會像是下面這樣:
+
+```cpp
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // init a m x n 2D vector with value 1
+        vector<vector<int>> dp(m, vector<int>(n, 1));
+        
+        for(int i=m-2; i>=0; i--){
+            for(int j=n-2; j>=0; j--){
+                // do it backwardly
+                dp[i][j] = dp[i+1][j] + dp[i][j+1];
+            }
+        }
+        return dp[0][0];
+    }
+};
+```
+
+這裡詳細解釋程式碼的變更步驟:
+
+1. 宣告一個大小 m x n 的2D Vector，其值為 1 (代表一整個網格，默認的路徑數量是 1)
+2. 建立迴圈，將倒數第二行以及到數第二列的格子 (`[m-2][n-2]`) 作為迴圈的起點，每次迭代都會將index 減去 1
+3. 走訪每個格子，並且規則就是我們剛剛得出的關係式
+4. 從右下角一路迭代回 `[0][0]`，一旦抵達 `[0][0]`，其儲存值就會是所有的路徑值
+
+如果把走訪過程視覺化就會像是下圖
+
+![](/img/LeetCode/dp/tab.png)
+
+
+> 執行結果和複雜度也跟步驟二一樣，並且也都是100% Runtime! 
+> 另外文章作者也提到這種做法很適合用在這種從A走到B 類型的題目，要做的事情就是填表格而已
+
+## 步驟四: Iteration + Tabulation [Optimized]
+
 (未完待續)
+
+# Reference
+https://medium.com/@al.eks/the-ultimate-guide-to-dynamic-programming-65865ef7ec5b
+https://shannonhung.github.io/posts/lecture-dp/
