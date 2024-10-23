@@ -191,7 +191,49 @@ public:
 
 ## 步驟四: Iteration + Tabulation [Optimized]
 
-(未完待續)
+> 不一定每次都需要到此步驟，如果面試有到前三步驟，那就已經很好了
+
+本步驟的 **目標在於降低空間複雜度** ，經過前幾個步驟，時間複雜度應該已經是 Optimized了。之所以還有機會繼續最佳化空間複雜度，是因為儘管我們前面建立了 m x n 的網格來迭代儲存路徑數量， **但實際上我們並不一定要一次持續存取整個表格。**
+
+如果觀察到目前為止建立的遞迴關係 (可以觀察上面的走訪過程圖)，**對任意格來說，所需要的格子只有它的正下方以及正右方的格子**，因此在宣告陣列時僅需要 `m=2` 的 2 x n 陣列 (對於 Unique Paths 這題僅需這樣大小的空間就好)。 那這樣又要如何存放路徑值呢?
+
+這裡的起點一樣會是 `[m-2][n-2]`，也就是步驟三的倒數第二列跟第二行的那格，可以想像成是擷取了原先 m x n 表格中的最下面兩列，並且一樣進行迭代，迭代規則就如同剛剛提到的，對於任意格來說只需要他的正下方以及正右方的格子，因此對於第一列 (`i=0`) 來說，規則會是 $F(m, n) = F(m+1, n) + F(m,n+1) $，一旦第一列算完後，那用來計算第一列的第二列 (應該都會先是1) 就沒有利用價值了，這時候就將第一列的數值全部複製到第二列，用來計算新的第一列，跟著一樣的迭代規則走，最後的 $F(0, 0)$ 就會是整體路徑數量。
+
+![](/img/LeetCode/dp/tab2.png)
+
+
+```cpp
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // init a m x n 2D vector with value 1
+        vector<vector<int>> dp(2, vector<int>(n, 1));
+        
+        for(int i=m-2; i>=0; i--){
+            for(int j=n-2; j>=0; j--){
+                // Handloe first row
+                // (m+n) = (cell below) + (cell on the right)
+                dp[0][j] = dp[1][j] + dp[0][j+1];
+            }
+            // Move to second row
+            dp[1] = dp[0];
+        }
+        return dp[0][0];
+    }
+};
+```
+
+這裡可以比對步驟三以及步驟四之間空間複雜度的差異，步驟三因為要存放整張表格，因此空間複雜度會是 $O(n \times m)$，而步驟四僅存放 $2*n$ 個表格，因此空間複雜度會是$O(2 \times n) = O(n)$。
+
+這裡也可以從結果中觀察差異:
+
+*步驟三*
+![](/img/LeetCode/dp/result1.png)
+
+*步驟四*
+![](/img/LeetCode/dp/result2.jpeg)
+
+
 
 # Reference
 https://medium.com/@al.eks/the-ultimate-guide-to-dynamic-programming-65865ef7ec5b
