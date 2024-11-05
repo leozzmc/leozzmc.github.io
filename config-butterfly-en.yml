@@ -31,7 +31,7 @@ highlight_theme: mac #  darker / pale night / light / ocean / mac / mac light / 
 highlight_copy: true # copy button
 highlight_lang: true # show the code language
 highlight_shrink: false # true: shrink the code blocks / false: expand the code blocks | none: expand code blocks and hide the button
-highlight_height_limit: true # unit: px
+highlight_height_limit: 600 # unit: px
 code_word_wrap: false
 
 # Social Settings (社交圖標設置)
@@ -196,7 +196,7 @@ post_edit:
 
 # Related Articles
 related_post:
-  enable: false
+  enable: true
   limit: 6 # Number of posts displayed
   date_type: created # or created or updated 文章日期顯示創建日或者更新日
 
@@ -249,8 +249,6 @@ aside:
   card_announcement:
     enable: true
     content: 🛫🛬
-  card_calendar:
-    enable: true
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
@@ -261,6 +259,8 @@ aside:
     limit: 8 # if set 0 will show all
     expand: none # none/true/false
     sort_order: # Don't modify the setting unless you know how it works
+  card_calendar:
+    enable: true
   card_tags:
     enable: true
     limit: 40 # if set 0 will show all
@@ -316,7 +316,7 @@ translate:
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
   #msgToTraditionalChinese: '繁'
-  # The text of the button when the language is Traditional Chinese
+  # # The text of the button when the language is Traditional Chinese
   #msgToEnglish: 'EN'
 
 # Read Mode (閲讀模式)
@@ -748,21 +748,21 @@ beautify:
 # Global font settings
 # Don't modify the following settings unless you know how they work (非必要不要修改)
 font:
-  global-font-size:
+  global-font-size: 15px
   code-font-size:
-  font-family:
-  code-font-family:
+  font-family: LXGW WenKai TC, Georgia, Helvetica ,'PingFang TC', 'Heiti TC', "Noto Sans TC","Microsoft JhengHei", sans-serif
+  code-font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
 
 # Font settings for the site title and site subtitle
 # 左上角網站名字 主頁居中網站名字
 blog_title_font:
-  font_link:
-  font-family:
+  font_link: "https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap"
+  font-family:  'LXGW WenKai TC'
 
 # The setting of divider icon (水平分隔線圖標設置)
 hr_icon:
   enable: true
-  icon: # the unicode value of Font Awesome icon, such as '\3423'
+  icon: # the unicode value of Font Awesome icon, such as '\3423' 
   icon-top:
 
 # the subtitle on homepage (主頁subtitle)
@@ -783,7 +783,7 @@ subtitle:
   # 如果關閉打字效果，subtitle 只會顯示 sub 的第一行文字
   sub:
     - Deep dive into tech
-    - Breadth experience in life
+    - Breadth experience in life 
 
 # Loading Animation (加載動畫)
 preloader:
