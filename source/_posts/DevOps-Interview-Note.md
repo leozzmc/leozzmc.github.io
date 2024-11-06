@@ -33,6 +33,8 @@ date: 2060-11-05 21:45:50
 - decorator
 - Flask
 
+> 文章： [Python for DevOps |【DevOps技能樹】]
+
 # Networking
 
 - TCP/UDP

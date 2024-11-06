@@ -1,5 +1,5 @@
 ---
-title: Python for DevOps |【DevOps技能樹】
+title: Python for DevOps 筆記 |【DevOps技能樹】
 tags:
   - DevOps
   - Python
@@ -13,7 +13,7 @@ cover:
 
 # Basic Data Types
 
-### data type
+## data type
 - 可以透過 `type()` 來獲取物件或變數的 data type
 
 ```
@@ -22,7 +22,7 @@ cover:
 <class 'str'>
 ```
 
-### Variables
+## Variables
 
 - `x` valid
 - `x_y` valid
@@ -46,24 +46,25 @@ cover:
   - 所以當你把一個變數賦值給另一個變數時，兩者用的是相同的引用
 - 多個變數若初始化的值一樣可以這樣宣告 `a = b = c = 1`
 
-### Booleans
+## Booleans
 
 ```
 bool(0), bool(), bool("") -> False
 bool(1), bool(456), bool("Hello") -> True
 ```
 
-### Strings
+## Strings
 - How to convert "2 0 1 7" to the list [2, 0, 1, 7]?
   - `int(i) for i in "2 0 1 7".split()`
 
-### Lists & Tuples
+## Lists & Tuples
 
 -  *What is a tuple in Python? What is it used for?*
   - Python 中的一種排序，並且不可更動的元素組合，**簡單來說就是想在一個變數中包含多個item**
   - 他跟 list 最大的差異在 tuple 一旦建立後，裡頭的值就不可更動
   - `coordinates = (120.5, 23.5 )`
--  List Basic Operations
+
+List Basic Operations
  
 ```
 >>> x = [1,2,3]
@@ -97,23 +98,22 @@ for item in list:
 ``` 
 - *如何透過 index 來迭代一個 list ?*
 
-```
+```python
 for i , item in enumerate(list):
     print(i)
 ```
 - *如何反向迭代一個 list?*
 
-```
+```python
 for i reversed(list):
     print(i)
 ```
 - *如何將兩個已排序的 list 合併？*  `sorted(list1, list2)`
 - *什麼是 **List Comprehension** ?*
   - 他是一種更加簡潔方便的做法來建立List
+  - 語法： `[expression for item in iterable if condition]`
 
-```
-[expression for item in iterable if condition]
-
+```python
 squares = [x**2 for x in range(10)]
 print(sqaures) 
 ## Output  [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
@@ -121,7 +121,7 @@ print(sqaures)
 
 > https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
 
-### Dictionaries
+## Dictionaries
 
 *如何建立一個 Dictionaries ?*
 
@@ -148,25 +148,72 @@ print(sqaures)
 dict1.update(dict2)
 ```
 
+## Iterators
 
-### Functions
+
 
 # OOP, Class
-Classes
-Object
-- *What information an object in Python holds? or what attributes an object has? a. Explain each one of them*
-    - 物件會是作用在某個資料上的 attributes 和 methods 的集合
-      - Attributes E.g. `self.name`, `self.age`
-      - Methods E.g. `def greet(self):`
-      - Class Variable: 在不同class之間共享的變數 E.g. `class_variable =0`
-      - Special Methods(Magic Methods): `__init__`, `__str__`, `__repr__`
-      - Docstring: 用來描述class或者method的字串: `"""This is a method"""`
-      - Class Name: 用於存取物件所屬類別的名稱，可以透過 `__class__` 來存取，Example `object.__class__.__name__`
-      - Module Name: 可以獲取物件所屬的class被定義在哪個 module，可以透過 `__module__` 來存取, Example `object.__module__`
-      - Dictionary 包含一個物件中所有attributes 和 methods，可用於動態存取。 Example `object.__dict__` 
-Inheritance
 
-### Raises exception
+
+## Object
+
+*What information an object in Python holds? or what attributes an object has? a. Explain each one of them*
+
+物件會是作用在某個資料上的 **attributes** 和 **methods** 的集合
+  - Attributes E.g. `self.name`, `self.age`
+  - Methods E.g. `def greet(self):`
+  - Class Variable: 在不同class之間共享的變數 E.g. `class_variable =0`
+  - Special Methods(Magic Methods): `__init__`, `__str__`, `__repr__`
+  - Docstring: 用來描述class或者method的字串: `"""This is a method"""`
+  - Class Name: 用於存取物件所屬類別的名稱，可以透過 `__class__` 來存取，Example `object.__class__.__name__`
+  - Module Name: 可以獲取物件所屬的class被定義在哪個 module，可以透過 `__module__` 來存取, Example `object.__module__`
+  - Dictionary 包含一個物件中所有attributes 和 methods，可用於動態存取。 Example `object.__dict__` 
+
+## Classes
+
+### Python Built-In Functions
+
+*解釋一下什麼是 `repr`, `any` 和 `all` 之間的差異?*
+
+`__repr__()` 是在Python 當中的一種特殊 method，用於在告訴其他人，物件的內容
+
+```python
+
+class Person:
+  def __init__(self, name, age):
+      self.name = name
+      self.age = age
+     
+p = Person("Kevin", 26)
+print(p)
+## output: <__main__.Person object at 0x102934370>
+```
+
+當上面的程式碼執行後會輸出物件的記憶體位址，而並不能描述物件本身，但透過 `repr` 則可以描述物件
+
+```python
+class Person:
+  def __init__(self, name, age):
+      self.name = name
+      self.age = age
+
+  def __repr__(self):
+     return f"Person(name='{self.name}', age={self.age})"
+     
+p = Person("Kevin", 26)
+print(p)
+## Output: Person(name='Kevin', age=26)
+```
+
+`any()` 函數如果可迭代對象中的至少一個元素為 `True`，則返回 `True`。如果可迭代對象為空或所有元素均為 `False`，則返回 `False`。
+
+`all()` 函數如果可迭代對象中的所有元素均為 `True`，則返回 `True`。如果可迭代對象為空或任何元素為 `False`，則返回 `False`。
+
+### Inheritance
+繼承是物件導向語言都有的特性，一個類別可以從另一個類別中繼承對應的屬性(attributes)和方法(methods)，
+
+
+## Raises exception
 - *What is an error? What is an exception? What types of exceptions are you familiar with?*
   -  錯誤可能會有的是 **Syntax Error** 跟 **Exception**
   -  Syntax Error 代表程式碼並沒有遵守 syntax rule，當 Python 的 Interpreter 在parsing 過程中檢查出，就會報錯
@@ -297,7 +344,28 @@ print(os.path.join(Dir_Path1, Dir_Path2))
 
 # 發請求的各種用法
 
+在 Python 中若要發送請求給Server，大多會用到 `requests` 模組。
 
+```python
+import requests
+
+response = requests.get("https://google.com")
+print(response.text)
+```
+
+可用的 HTTP Methods
+
+|HTTP Method|Request|Description|
+|---|---|---|
+|GET| `requests.get(url)`| 可額外設定  `params` dictionary|
+|POST|`requests.post(url)`| 可額外設定 `data` dictionary|
+|PUT|`requests.put(url)`| 可額外設定 `data` dctionary|
+|DELETE|`requests.delete(url)`|  刪除指定資源|
+|HEAD|`requests.head(url)`| 僅請求資源 response header|
+|OPTIONS|`requests.options(url)`| 請求回傳該資源所支援的所有HTTP 請求方法|
+
+
+也可以使用 `http.client` 模組來去發送請求，這個模組屬於 Python標準函式庫
 
 # Misc Questions
 
