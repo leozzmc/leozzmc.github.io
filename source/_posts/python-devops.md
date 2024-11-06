@@ -1,5 +1,6 @@
 ---
 title: Python for DevOps 筆記 |【DevOps技能樹】
+description: (尚未完成) 
 tags:
   - DevOps
   - Python
@@ -8,7 +9,7 @@ aside: true
 toc: true
 abbrlink: 70fcdd32
 date: 2050-11-06 09:20:47
-cover:
+cover: /img/devops/python/cover.jpg
 ---
 
 # Basic Data Types
@@ -365,13 +366,13 @@ print(response.text)
 |OPTIONS|`requests.options(url)`| 請求回傳該資源所支援的所有HTTP 請求方法|
 
 
-也可以使用 `http.client` 模組來去發送請求，這個模組屬於 Python標準函式庫
+> 另外，也可以使用 `http.client` 模組來去發送請求，這個模組屬於 Python標準函式庫
 
 # Misc Questions
 
 *What do Python Interpreter do?*
 
-![](/img/devops/python_flow.png)
+![](/img/devops/python/python_flow.png)
 
 - Parsing
   - Python 解釋器會在這階段將程式碼轉換成 AST(Abstract Syntax Tree)
@@ -397,8 +398,8 @@ print(response.text)
 
 *請詳細解釋一下 Concurrency 以及 Parallelism 之間的差異*
 
-Concurrency 為併發，代表在單一CPU/核心上的執行能力，多個Task彼此會在交錯執行
-Parallelism 則為平行處理，代表多個CPU/和新的執行能力，可能會包含多個 Concurrency Tasks
+**Concurrency** 為併發，代表在單一CPU/核心上的執行能力，多個Task彼此會在交錯執行
+**Parallelism** 則為平行處理，代表多個CPU/和新的執行能力，可能會包含多個 Concurrency Tasks
 
 
 # Reference
