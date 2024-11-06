@@ -26,6 +26,7 @@ date: 2060-11-05 21:45:50
 - OOP / Class
 - Raise Exceptions
 - Regex
+- Async
 - File Manipulation
 - OS
 - lambda
