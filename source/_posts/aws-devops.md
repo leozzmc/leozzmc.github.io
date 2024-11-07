@@ -4,6 +4,7 @@ description: (尚未完成)
 tags:
   - AWS
   - Python
+  - DevOps
 categories: 學習筆記
 aside: true
 toc: true

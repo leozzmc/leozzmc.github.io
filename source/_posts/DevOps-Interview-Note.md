@@ -33,7 +33,7 @@ date: 2060-11-05 21:45:50
 - decorator
 - Flask
 
-> 文章： [Python for DevOps |【DevOps技能樹】]
+> 文章： [Python for DevOps |【DevOps技能樹】](https://leozzmc.github.io/posts/70fcdd32.html)
 
 # Networking
 
@@ -166,6 +166,7 @@ date: 2060-11-05 21:45:50
 - EKS
 - Fargate
 - ...etc
+> 文章: [AWS for DevOps 筆記 |【DevOps技能樹](https://leozzmc.github.io/posts/100cc6b6.html)
 
 # Terraform
 
