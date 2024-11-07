@@ -9,7 +9,7 @@ aside: true
 toc: true
 abbrlink: 100cc6b6
 date: 2024-11-07 08:54:09
-cover:
+cover: /img/devops/AWS/cover.png
 ---
 
 
@@ -221,6 +221,22 @@ VPC Endpoint 主要可以讓不同服務相互存取而不用經過公共網路�
 
 Lambda 是一種 **Event-Driven 的 Serverless 服務**，跟可以自定義業務邏輯程式碼，來根據不同狀況去 Trigger 對其他服務的 invocation，同時也 **支援同步和非同步請求**，並且也有很高的擴展性，可以透過設定 **resevered concurrency 來去預留一定數量的 Lambda 函數**，以因應大量的API請求，在設定 resevered concurrency 的基礎下，還可以透過 **provision concurrency 來去預熱 Lambda 函數**-，預先執行 Lambda 環境初始化的過程，**減少 cold start**，這樣就可以進一步地降低延遲。
 
+
+Lambda支援多種不同的 Runtime，像是 Python 3.11, Nodejs20, Java 17, Java8, Ruby...etc。也可以自定義 Runtime。
+
+以Python 為例，需要把函數被觸發後的行為定義在 handler之中。
+
+```python
+
+def handler_name(event, context): 
+    ...
+    return some_value
+```
+
+{% note info%}
+可以透過 [這份文件](https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/lambda-runtimes.html) 來查看哪些 Runtime 之後會 deprecate，被棄用的 Runtime 還是可 trigger，但AWS並不會進行 security patch 或 maintanance，而如果被棄用的 Runtime如果遭受攻擊進而影響到AWS基礎設施，根據 Shared Responsibility 那AWS有權利凍結用戶的函數，因此就是四個字: 後果自負~
+{% endnote %}
+
 - *有哪些方式可以建立Lambda 函數?*
 
 可以上傳 zip 檔，或者是使用 blueprint，另外也可以用 **container image 的方式來建立。**  但要特別注意的是如果要打包 image，**最好要能夠在 Amazon Linux 的環境上打包**，有時候如果跑的應用會牽扯到底層得某些 system calls 的時候，那可能就會出現錯誤，畢竟 Lambda 本身其實也是運行 Amazon Linux 的 EC2。
@@ -286,11 +302,31 @@ Lambda 正常來說如果發生錯誤，會先 Retry 兩次，這通常也能夠
 
 ## Reserved Concurrency && Provision Concureency
 
-為了讓 Lambda Function 能夠進行 Auto-scaling，正常來說會建議設定 **預留並行(Reserved concurrency)**，來讓 Lambda Function 隨時保持一定數量的函數來去處理請求。
+為了讓 Lambda Function 能夠進行 Auto-scaling，正常來說會建議設定 **預留並行(Reserved concurrency)** ，來讓 Lambda Function 隨時保持一定數量的函數來去處理請求。
 
-> Reserved Concurrency 的數量上限為：未預留帳戶的Concurrency 數量 -100
+> Reserved Concurrency 的數量上限為： 未預留帳戶的Concurrency 數量 -100
+> 簡言之就是保留最少100個 Concurrency 在這個 Account上
 
-## Lambda Layer
+**佈建並行(Provision Concurrency)** 則是指定這些預留函數中有多少個函數需要先預熱，這裡的預熱指的是，初始化 Lambda 的執行環境，像是載入 runtime，初始化變數等等，也會先執行在 handler 之外變數的初始化，這就代表初始化過程需要一次，然後執行環境就會被保留來快速回應之後的請求。
+
+
+![](/img/devops/AWS/reserved_c.png)
+
+可以看上面AWS文件中的圖也有詳細說明，**如果沒有設定 Provision Concurrency 則當Lambda terminate後每次新的請求進來都會需要再經歷一次 Lambda Init 階段。**
+
+
+> Ref: 
+> 1. https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/provisioned-concurrency.html#optimizing-latency
+> 2. https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html#reserved-and-provisioned
+
+
+
+
+*要如何計算出所需要的 Concurrency?*
+
+$Concurrency = (average requests per second) \times (average request duration in seconds)$
+
+每秒平均請求乘上平均請求的持續時間，可以用這種方式來粗略估計要多少 Concurrency，**具體量測方法可以去看 Lambda Invocation Metrics 來查看每秒平均請求數，再透過 Duration 指標來預估平均請求持續的時間**
 
 
 # API Gateway
