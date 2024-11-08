@@ -135,10 +135,123 @@ Pods 會是 Kubernetes 中的最小物件單元，通常由一個或多個容器
 
 ![](/img/devops/k8s/pod.png)
 
+***如何部署一個使用 nginx:alpine 的image 並且叫做 my-pod  的 pod?***
 
-> https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471
+```
+kubectl run my-pod --image=nginx:alpine
+```
+
+這通常並不是常見用來運行 Pod 的方法，通常會透過 Deployment 去跑 Pod
+
+***通常 Pod 中會有多少個 Containers?***
+
+Pod 可以包含多個 Container，但大多情況下會是一個。另外也可以部署 sidecar container 到 pod 當中，通常是為了蒐集Log
+
+***Pod 可能會有哪些phase? 請簡要說明 Pod 的 LifeCycle***
+
+Pod 在的生命週期中可能會出現以下的階段
+
+|Value|Description|
+|---|-------|
+| Pending | Pod 已被 Cluster 接受，但是當中的 container 可能還沒運行，這個階段中可能會從等待被 schedule或者是等待下載 container image|
+| Running |所有容器都被建立，並且至少有一個容器運行中|
+| Succeeded |所有Pod中容器都成功執行完畢，但並未重啟|
+| Failed |所有Pod中容器都被終止，並且至少有一個容器是由於失敗而被終止，並且沒有 restart|
+| Unkown | 由於某種原因無法獲取 Pod 的狀態，通常是由於與Pod 與節點之間的通訊錯誤所導致的|
+
+
+
+***當你透過 Kubectl 運行 Pod 會發生什麼是？請講解一下流程***
+
+1. Kubectl 會將請求發送給 API Server 去建立Pod
+   - API Server 會去驗證請求
+   - etcd 會被更新
+2. Control Plane 中的 Scheduler 會去透過監控API Server來去知道目前有個 unassigned Pod
+3. Scheduler 會去選擇一個node來去assign pod
+   -  etcd 會被更新這個資訊
+4. Scheduler 會去告訴 API Server 他選的 Pod是哪個
+5. Kubelet 注意到有Pod被 assigned 到他的節點，但是Pod並未運行
+6. Kubelet 會去發送請求給 container engine (ex. Docker) 來去建立跟運行容器
+7. 當 Pod running 後 kubelet 會去將狀態更新給 API Server 
+  - etcd 會再度被 API Server 通知，以更新資訊
+
+> Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+
+***要怎麼知道pod中容器是有在運行的？***
+
+`kubectl describe pod <POD_NAME>` 去檢查 container 狀態是否是 `Running`
+
+或者是可以用 `kubectl exec ` 執行命令到容器內
+
+
+***當你發現 Pod 狀態是 CrashLoopBackOff，請問可能的錯誤會是什麼？ 要怎麼檢查錯誤？***
+
+
+這通常代表 Pod 反覆啟動然後崩潰，啟動、崩潰。而通常有很多種不同的錯誤原因，像是：
+- 應用程式錯誤，導致容器必須退出
+- 設定錯誤，像是錯誤的環境變數、遺失設定檔等等
+- 資源限制，容器並沒有足夠的記憶體或是 CPU 分配給容器
+- Health Check 失敗，若應用沒有在預期時間內運行也會發生錯誤
+- Container liveness probes/ startup probe 回傳錯誤
+
+這種時候若要詳細的 Troubleshooting 則需要透過 `kubectl describe pod <POD_NAME>` 查看詳細原因 或者透過 `kubectl logs <POD_NAME>` 來去看 Pod 中容器內的日誌
+
+![](/img/devops/k8s/container.png)
+
+***下方的 config 代表什麼?***
+
+```yaml
+livenessProbe:
+  exec:
+    command:
+    - cat
+    - /appStatus
+  initialDelaySeconds: 10
+  periodSeconds: 5
+```
+
+這裡要先提到什麼是 **liveness Probe** 他的用途是當容器並未達到想要的狀態時，會去重啟容器。
+
+在這行 YAML 中代表的是， **如果 `cat /appStatus` 這個指令失敗，Kubernetes 會砍掉容器接著會採取重啟策略。**  `initialDelaySeconds` 代表 Kubelet 會在初次執行 probe command （`cat /appStatus`）之前先等待 10秒，從此刻起，他每５秒就會重新執行一次 (定義在 `periodSeconds`中)
+
+***下方的 config 代表什麼?***
+
+```yaml
+readinessProbe:
+      tcpSocket:
+        port: 2017
+      initialDelaySeconds: 15
+      periodSeconds: 20
+```
+
+**Readiness probe** 通常決定了一個 container 是否 Ready 可以接受流量。所以這裡定義的是，若 Pod 尚未能夠連接到容器的port 2017前，都不會被標註 `Ready`，第一次的 Probe 會在容器運行後得 15後進行，並且每隔 20秒會持續進行檢查直到能夠連接到定義的port為止。
+
+***刪除 Pod 會發生什麼事情?***
+
+1. Kubernetes 會向 Pod 中容器發送一個 SIGTERM 訊號，用來終止容器中的主要Process
+2. 這時容器會有一段時間來完成當前任務並釋放資源 (這個時間可以被定義在 `terminationGracePeriodSeconds` 中)，若沒有在時間內關閉，則會發送 SIGKILL 訊號強制終止 
+
+***為何通常一個 Pod 只會有一個容器？***
+
+如果每個 Pod 只有一個容器，Kubernetes 可以簡單地調整 Pod 的數量來增減服務的處理能力。而多容器的 Pod 在擴展上會更困難，因為必須同時複製多個容器
 
 ## Static Pods
+
+> Ref
+> 1. https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/
+> 2. https://yuminlee2.medium.com/kubernetes-static-pods-734dc0684f31
+
+***什麼是 Static Pods ?***
+
+由 Kubelet daemon 在節點上直接管理的一種Pod，而不是讓 Control Plane 管理。**並且 Static Pod 通常直接定義在節點的指定目錄中。** kubelet 會自動檢測該目錄中的配置文件並啟動相應的 Pod。
+
+由於 Static Pod 由 kubelet 直接控制， **因此沒辦法直接由 ReplicaSet 或者是 Deployment 進行副本管理** ，也因此 Static Pod 只能在定義文件所在的 Node 上運行，並且不會自動調度到其他 Node 上
+
+***可以講一下 Static Pod 的使用情境嗎？***
+
+如果要跑 Control Plane 的控制元件，就會使用 Static Pod， **通常在 Control Plane 中的控制元件，像是 API Server, kube-scheduler, etcd , kube-controller-manager 都會作為 Static Pod 存在於 Master Node 中**
+
 
 ## Pods Commands
 
@@ -161,6 +274,9 @@ Pods 會是 Kubernetes 中的最小物件單元，通常由一個或多個容器
 # Storage
 
 # Networking
+
+
+> https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471
 
 # Policies
 
