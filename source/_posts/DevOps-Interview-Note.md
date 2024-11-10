@@ -85,6 +85,8 @@ date: 2060-11-05 21:45:50
 - troubleshooting
 - ..etc
 
+> 文章: [Git for DevOps 筆記 |【DevOps技能樹】](https://leozzmc.github.io/posts/22911275.html)
+
 # CI/CD
 - CI 
 - CD 

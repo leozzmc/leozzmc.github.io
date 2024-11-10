@@ -8,7 +8,7 @@ categories: 學習筆記
 aside: true
 toc: true
 abbrlink: 70fcdd32
-date: 2050-11-06 09:20:47
+date: 2024-11-06 09:20:47
 cover: /img/devops/python/cover.jpg
 ---
 

@@ -253,11 +253,108 @@ readinessProbe:
 如果要跑 Control Plane 的控制元件，就會使用 Static Pod， **通常在 Control Plane 中的控制元件，像是 API Server, kube-scheduler, etcd , kube-controller-manager 都會作為 Static Pod 存在於 Master Node 中**
 
 
+***如何知道一個Pod是否是 Static Pod?***
+
+```
+kubectl describe pod <POD_NAME> -n <NAMESPACE>
+```
+檢查結果的 `annotations` 或者 `nodeName` 中有沒有有 "mirror pod" 註解。如果在 `metadata.annotations` 欄位中找到 `kubernetes.io/config.mirror`， **這表示該 Pod 是一個由 Static Pod 所產生的 Mirror Pod。**
+
+```
+NAMESPACE     NAME                               READY   STATUS    RESTARTS        AGE
+default       web                                1/1     Running   0               5h14m
+kube-system   coredns-6f6b679f8f-s8l6l           1/1     Running   0               5h18m
+kube-system   etcd-minikube                      1/1     Running   0               5h18m
+kube-system   kube-apiserver-minikube            1/1     Running   0               5h18m
+kube-system   kube-controller-manager-minikube   1/1     Running   0               5h18m
+kube-system   kube-proxy-9c8vm                   1/1     Running   0               5h18m
+kube-system   kube-scheduler-minikube            1/1     Running   0               5h18m
+kube-system   storage-provisioner                1/1     Running   1 (5h18m ago)   5h18m
+~                                                                                                                                                 ○ minikube 04:28:02 下午
+❯ kdp etcd-minikube  -n kube-system
+```
+
+輸出結果：
+
+```yaml
+Name:                 etcd-minikube
+Namespace:            kube-system
+Priority:             2000001000
+Priority Class Name:  system-node-critical
+Node:                 minikube/192.168.58.2
+Start Time:           Fri, 08 Nov 2024 11:09:17 +0800
+Labels:               component=etcd
+                      tier=control-plane
+Annotations:          kubeadm.kubernetes.io/etcd.advertise-client-urls: https://192.168.58.2:2379
+                      kubernetes.io/config.hash: 0f576c7626af2d96b08f13e09b83eb08
+                      kubernetes.io/config.mirror: 0f576c7626af2d96b08f13e09b83eb08
+                      kubernetes.io/config.seen: 2024-11-08T03:09:16.930402512Z
+                      kubernetes.io/config.source: file
+Status:               Running
+SeccompProfile:       RuntimeDefault
+IP:                   192.168.58.2
+IPs:
+  IP:           192.168.58.2
+Controlled By:  Node/minikube
+Containers:
+.....
+
+```
+
+可以發現到確實有 mirror pod 的註解在
+
+***Static Pod 的 manifest檔案通常在哪？***
+
+通常會在 `/etc/kubernetes/manifests`，如果要刪除 static pod 也通常是直接刪除相關的 manifest 檔案
+
+```
+❯ minikube ssh
+docker@minikube:~$ ls /etc/kubernetes/manifests/
+etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
+docker@minikube:~$
+```
+
 ## Pods Commands
+
+***要如何確認一個 Pod 是被調度到哪個 Worker Node 上面？***
+
+```
+kubectl get pods -o wide
+```
+
+刪除Pod
+
+```
+kubectl delete pod <POD_NAME>
+```
+
+列出所有 namespace 底下的所有 pod
+
+```
+kubectl get pods --all-namespaces
+```
 
 ## Pods Troubleshooting and Debugging
 
+***當你運行一個 Pod，但他都處在 Pending 狀態，可能會是什麼原因?***
+
+有一種可能會是，負責調度 Pod 的 Scheduler 沒有在運行。可以透過 `kubectl get pod -A | grep scheduler` 來確認
+
+***指令 `kubectl describe pod` 可以幹嘛？ ***
+
+可以秀出Pod 的各種詳細資訊，有時候還會包含錯誤原因。
+
+
+***建立一個使用 python image 的 static pod，並且要執行命令 sleep 20***
+
+
+```
+kubectl run some-pod --image=python --command sleep 20 --restart=Never --dry-run=client -o yaml > statuc-pod.yaml
+```
+
 # Labels and Selectors
+
+***什麼是 Label?***
 
 # Deployment
 
