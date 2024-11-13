@@ -247,9 +247,6 @@ Cannot divide zero
 Completely
 ```
 
-# Regex
-
-*如何在一個檔案中找到所有 IP Address?*
 
 # Async && Concurrency
 
@@ -294,11 +291,18 @@ def print_line(file_path) ->str:
 
 ```python
 def print_word(file_path) ->str:
-    result = []
     with open(file_path, 'r') as file:
         text =file.read()
         words = text.split()
-        print(words)
+    return len(words)
+```
+
+*將一段文字寫入到已開啟的檔案最末端*
+
+```python
+text = "A brown fox jumped over the lazy dog."
+with open('example.txt', 'a') as file:
+    file.write('\n' +text + '\n')
 ```
 
 *如何將 dictionary 寫入一個檔案*
@@ -312,7 +316,101 @@ def write_dict(file_path) ->str:
         file.write(json.dumps(myDict))
 ```
 
+*讀取 json檔案*
+
+```python
+import json
+from pprint import pprint
+
+with open("example.json", "r") as file:
+    data = json.load(file)
+    pprint(data)
+```
+
+*寫入 json 檔案*
+
+```python
+import json
+from pprint import pprint
+
+input = '''
+{
+    "user": {
+      "id": 12345,
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "isActive": true,
+      "age": 29,
+      "address": {
+        "street": "123 Main St",
+        "city": "Wonderland",
+        "postalCode": "12345",
+        "country": "Fantasyland"
+      },
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": false
+        },
+        "theme": "dark"
+      },
+      ...
+'''
+# Convert to dictionary
+data = json.loads(input)
+
+with open("example.json", "w") as file:
+   json.dump(data, file)
+
+pprint(data)
+```
+
+
+## 使用 Pathlib
+
+*印出當前目錄下的檔案內容*
+
+```python
+import pathlib
+import os
+
+path = pathlib.Path(os.getcwd()+'/example.txt')
+text = path.read_text()
+print(text)
+```
+
+*寫入字串到檔案*
+
+```python
+import pathlib
+import os
+
+text = "A quick brown fox jumped over the dog."
+path = pathlib.Path(os.getcwd() + '/example.txt')
+path.write_text(text)
+story = path.read_text()
+print(story)
+```
+
+
 # OS operations 
+
+
+python 中的 `os` 模組提供了許多low level 的作業系統 system call，並且在多種作業系統中提供一個統一的調用介面。
+
+*os module 提供的methods*
+
+```python
+
+os.listdir('DIRECTORY PATH')
+os.rename('Bpple','Apple')
+os.chmod('script.py', 0o777)
+os.mkdir('/tmp/devops')
+os.remove('script.py')
+os.rmdir('/tmp/devops')
+os.stat('/tmp/devops') # 取得檔案或目錄資訊，像是檔案權限、存取時間..etc
+```
+
 
 *如何印出當前目錄*
 
@@ -343,6 +441,220 @@ import os
 print(os.path.join(Dir_Path1, Dir_Path2))
 ```
 
+## 使用 os.walk 遍歷資料夾
+
+`os` 模組提供了一個好用的 method 叫做 `os.walk` 用來 traverse 整個檔案樹。這個函數每次都會回傳一個 generator，可以在每次迭代過程中傳回一個 tuple，該tuple 包含當前的目錄、目錄列表和檔案列表
+
+```python
+def walk_dir(parent_path):
+    for parent_path, dir, files in os.walk(parent_path):
+        print(f"Checking: {parent_path}")
+        for fileName in files:
+            file_Path = os.path.join(parent_path, fileName)
+            last_access = os.path.getatime(file_Path)
+            size = os.path.getsize(file_Path)
+            print(f"File: {file_Path}")
+            print(f"Last accessed: {last_access}")
+            print(f"Size: {size} bytes")
+```
+
+
+
+
+
+# 正則表達式 
+
+Python 提供 `re` 模組可以進行正則表達式操作
+
+假設有個字串集合是 
+
+```python
+mail-list =  '''
+kevin@amazon.com,
+kev.mgry@jabber.ru
+kev.mgry@jabber.rualkhobar_boy@ayna.com
+rami_moman@hotmail.com
+hazeen@cam.com
+waleed_97@hotmail.com
+al_aned@hotmail.com
+wldabooh@hotmail.com
+b_m_attar@yahoo.com
+mohscript@hotmail.com
+malarifi@usa.com
+salehsul@yahoo.com
+aljwhra@hotmail.com
+ethaer@hotmail.com
+ben_njem@hotmail.com
+maas2000@maktoob.com
+aboa7med@yahoo.com
+saud124@hotmail.com
+hm_2002_ad@hotmail.com
+hm2002ad@maktoob.com
+dark_eyess@hotmail.com
+wali999@hotmail.com
+mateb_2001@ayna.com
+devil2100@maktoob.com
+ahmedshatoor@hotmail.com
+faisal20o0@hotmail.com
+m_sh4ever@hotmail.com
+shaib2005@maktoob.com
+f-tp@maktoob.com
+kevin@amazon.com
+smartstar_sa@yahoo.com
+swaah99@hotmail.com
+do7me2002@hotmail.com
+bleaks20@hotmail.com
+zaeem@ksatoday.com
+sarah_21_ksa@hotmail.com
+raheema@ayna.com
+toyota@444.net
+majeed97@hotmail.com
+khabom2@hotmail.com
+a2685@yahoo.com
+ab_alraddadi@yahoo.com
+turky_net2002@hotmail.com
+abu_fahad22@hotmail.com
+yah1418@maktoob.com
+new_sa1@yahoo.com
+anoooooooos@hotmail.com
+fem_kinani@hotmail.com
+albqaawi@ayna.com
+alhazenh@hotmail.com
+uea1@hotmail.com
+azoo1ooz@hotmail.com
+00@factmail.ca
+love-1@maktoob.com
+rami_shut@yahoo.com
+the_husaam@hotmail.com
+vip9999@ayna.com
+noor_99_99@yahoo.com
+alma7roomm@hotmail.com
+jawad76ly@yahoo.com
+hemdan_na@hotmail.com
+i@stc.com
+buok6977@ayna.come
+hwaawy@yahoo.com
+aseer2@maktoob.com
+bin_000@hotmail.com
+abeyr@ayna.com
+al_maknun2001@maktoob.com
+ahmsh@naseej.com
+far_alsekak@hotmail.com
+mos011@yahoo.com
+saud1900@hotmail.com
+essa1420@yahoo.com
+almonta7er@hotmail.com
+zayd2002-2000@maktoob.com
+kh_mahfouz@hotmail.com
+l3yonha@hotmail.com
+hat1972@hotmail.com
+mk8n@hotmail.com
+soul_devil14@hotmail.com
+khater_love@hotmail.com
+mohdbahrawi@hotmail.com
+naaader@hotmail.com
+faisal_war@yahoo.com
+arramalomari@hotmail.com
+gmmare@hotmail.com
+thamir5@hotmail.com
+seilver@hotmail.com
+aboghadi@hotmail.com
+latte2001@maktoob.com
+lotfy_s@hotmail.com
+hamadah990@hotmail.com
+'''
+```
+
+今天想要查找 `kevin@amazon.com` 但假設你只知道你要找的人的信箱開頭是 `k` 那該怎麼找
+
+```python
+import re
+print(re.search(r'[A-Za-z]+@[A-Za-z]+\.[a-z]+', mail_list))
+
+## Output
+# <re.Match object; span=(1, 17), match='kevin@amazon.com'>
+```
+這代表從字元集 `A-Z` 和 `a-z` 中任意的字母， 然後 `+` 代表前面的字元在比對過程中，出現一次到多次。由於 `.` 會是一種 wildcard 因此會需要透過反斜線 `\` 進行跳脫。
+
+**re 模組將常用字元集 `[a-zA-Z0-9_]` 用  `\w` 來代表，而一般數字 `[0-9]` 則使用 `\d` 來代表**
+
+所以上面程式碼可以替換成
+
+```python
+import re
+print(re.search(r'\w+@\w+\.\w+', mail_list))
+
+## Output
+# <re.Match object; span=(1, 17), match='kevin@amazon.com'>
+```
+
+為的可以更好的存取返回的匹配物件，**可以透過括號來定義匹配結果的 Group**，回傳匹配的group 可以透過數值直接從回傳物件中取得結果
+
+```python
+import re
+
+match = re.search(r'(\w+)@(\w+)\.(\w+)', mail_list)
+print(match.group(0))
+
+## Output
+# kevin@amazon.com
+```
+
+為了更加方便存取返回的匹配物件，**可以透過 `?P<NAME>` 來去幫group命名**
+
+```python
+import re
+
+match = re.search(r'(?P<name>\w+)@(?P<SLD>\w+)\.(?P<TLD>\w+)', mail_list)
+print(match.group("name"))
+
+## Output
+# kevin
+```
+
+
+
+*如何在一個檔案中找到所有 IP Address?*
+
+對於這樣的 input
+
+```
+In the ever-evolving digital landscape, tracking online data often requires observing user interactions from various regions. For instance, a significant number of logins were recorded from IP addresses like 24.31.173.2 and 82.33.11.118, which reflect diverse user origins. Security teams frequently monitor these access points, noting unusual activity from IPs such as 45.56.148.51 and 99.116.96.74.
+
+On an average day, they might encounter new sessions from endpoints like 24.15.139.93 or 67.166.35.191, each needing real-time analysis to ensure data protection. In one case, an IP address from the Asia-Pacific region, 180.215.121.104, demonstrated a high frequency of requests, which raised some flags in the system.
+
+Europe is also represented in traffic logs, with IPs such as 64.130.155.78 and 186.176.159.218 originating from locations that maintain stringent data compliance regulations. The North American region had frequent logins from addresses like 71.239.86.182 and 69.43.251.147, where several were validated for secure access.
+
+Moreover, a pattern was observed with IPs like 100.12.201.224 and 85.164.201.224 accessing confidential systems during peak hours. Meanwhile, analysts in cybersecurity teams often encounter unusual log requests from regions like 120.156.7.200, necessitating further investigation.
+
+The logs also revealed consistent access from IPs like 24.61.142.106, which had been previously flagged for unauthorized attempts. Similarly, 99.58.40.206 and 70.15.237.26 showed a surge in activity, prompting immediate protocol checks. Another example is the IP 108.205.48.11, detected during an audit of high-value transactions.
+
+Many more instances, such as connections from 72.168.129.149 and 189.224.44.46, add complexity to monitoring systems. Security teams must evaluate each source, even those with benign records like 68.60.26.228 or frequent accesses from 24.236.160.189.
+
+Moreover, the system recorded remote sessions from addresses like 100.36.162.76 and 47.16.121.249, both requiring location verification steps. High-risk IPs, such as 184.4.175.60 and 62.19.65.98, were flagged during the latest vulnerability scan, which further highlighted global risks.
+
+Unusual activity from Latin America was seen with addresses like 186.35.108.144, while other regions showed minimal access, as with 189.24.118.68. IPs from North America, like 71.75.81.146 and 72.89.236.44, represent legitimate access but require continuous monitoring. For example, sessions from 174.125.174.95 often triggered notifications, especially those attempting to access privileged systems.
+
+A deeper look at international traffic unveiled access from IP 190.244.119.142, a significant address due to its activity level. Occasional spikes were noted from Europe, with entries from IP 84.26.122.138, which was scrutinized during regular audits.
+
+Lastly, domestic IPs like 65.112.10.60 and overseas ones such as 108.71.92.240 reveal the complexity of maintaining cybersecurity in a global context. One user from an IP at 1.43.41.29 exhibited typical behavior but underscored the need for constant vigilance.
+```
+
+```python
+import re
+
+def find_IP(file_Path):
+  with open(file_Path, "r") as file:
+    text = file.read()
+    match = re.findall(r'(\d+)\.(\d+).(\d+)\.(\d+)', text)
+    ip_list = ['.'.join(ip) for ip in match] 
+  return ip_list
+
+print(find_IP('example.txt'))
+```
+
+一樣透過 re 模組來找到文章中的IP位址
+
 # 發請求的各種用法
 
 在 Python 中若要發送請求給Server，大多會用到 `requests` 模組。
@@ -367,6 +679,36 @@ print(response.text)
 
 
 > 另外，也可以使用 `http.client` 模組來去發送請求，這個模組屬於 Python標準函式庫
+
+
+# 加密資料
+
+在 Python 中可以透過套件 `cryptography` 來幫文字資訊加密，另外也可以透過 `hashlib` 來進行雜湊處理
+
+## 使用 Hashlib 進行雜湊
+
+`hashlib` 提供多種雜湊函式: SHA1, SHA224, SHA384, SHA512 以及 MD5
+
+
+```python
+import hashlib
+
+secret = "This is the message"
+bsecrets = secret.encode()
+m = hashlib.md5()
+m.update(bsecrets)
+print(m.hexdigest())
+```
+
+在對字進行雜湊前，需要先用 `encode` 方法將其轉換成二進位字串。接著建立 MD5 hash 物件，這個物件可以用來處理我們的訊習並計算出MD5 Hash值。
+
+之後就是更新hash object，透過 `update` 方法傳入二進位字串進行hash處理，之後輸出長度為 16 bytes 的 MD5 hash
+
+Output
+```
+87f77fdd7fa847899a10a7aab651bd75
+```
+
 
 # Misc Questions
 
