@@ -1,5 +1,5 @@
 ---
-title: 回文子字串 | Medium | 647. Palindromic Substrings
+title: 回文子字串 | Medium | LeetCode#647. Palindromic Substrings
 tags:
   - Dynamic Programming
   - Two Pointers
