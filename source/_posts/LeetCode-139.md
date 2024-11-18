@@ -11,7 +11,7 @@ aside: true
 toc: true
 abbrlink: 9081d01d
 date: 2024-11-18 15:14:29
-cover:
+cover:  /img/LeetCode/139/cover.png
 ---
 
 # 題目敘述
