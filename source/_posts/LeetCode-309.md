@@ -14,7 +14,7 @@ aside: true
 toc: true
 abbrlink: c95a58c1
 date: 2024-11-27 14:54:25
-cover:
+cover:  /img/LeetCode/309/cover.png
 ---
 
 # 題目敘述
@@ -30,6 +30,13 @@ cover:
 ## 一開始的想法
 
 這題我後來參考了 [NeetCode 的影片](https://www.youtube.com/watch?v=I7j0F7AHpb8&t=669s)，裡面的樹狀圖幫助很大，
+
+
+{% hideToggle Decision Tree ,bg,color %}
+![](/img/LeetCode/309/tree.png)
+{% endhideToggle %}
+
+
 
 ## Recursive + Memoization
 
@@ -79,8 +86,10 @@ public:
 
 ![](/img/LeetCode/309/result.jpeg)
 
-## Iteration
-
-### 執行結果
 
 # 複雜度
+
+| 複雜度     | 結果      | 說明                                                                                                                                                         |
+|------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 時間複雜度 | $O(n)$    |  `dp` 包含 $n \cdot 2$ 種狀態，其中 $n$ 是價格陣列的大小，每個狀態最多計算一次（使用遞迴函數時會檢查 `dp[start][canBuy]` 是否已計算），操作僅需常數時間 |
+| 空間複雜度 | $O(n)$    |  `dp` 占用 $O(n)$ 空間，儲存每種狀態的結果。遞迴過程中，每次調用函數會使用額外的遞迴棧空間，最深遞迴深度為 $n$，總空間複雜度為 $O(n)$              |
