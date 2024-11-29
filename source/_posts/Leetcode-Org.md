@@ -90,7 +90,14 @@ cover:
 
 # Recursion
 
->
+> [Recursion 和 Backtracking 筆記整理](https://leozzmc.github.io/posts/48f553b3.html)
+
+## 使用情境1: 排列組合
+
+## 使用情境2: 子集
+
+## 使用情境3: 迴文
+
 
 # Binary Search 
 
