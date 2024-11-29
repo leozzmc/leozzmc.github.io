@@ -2,7 +2,7 @@
 title: 子集問題 | Medium | LeetCode#78. Subsets
 tags:
   - backtracking
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

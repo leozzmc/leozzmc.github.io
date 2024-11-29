@@ -4,7 +4,7 @@ tags:
   - backtracking
   - combinations
   - parentheses
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

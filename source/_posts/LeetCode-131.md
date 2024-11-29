@@ -2,7 +2,7 @@
 title: 回文分割 | Medium | LeetCode#131. Palindrome Partitioning
 tags:
   - backtracking
-  - recursive
+  - recursion
   - Palindrome
   - LeetCode
   - Medium

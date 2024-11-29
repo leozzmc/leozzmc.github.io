@@ -1,7 +1,7 @@
 ---
 title: 爬樓梯問題 | Easy | LeetCode#70. Climbing Stairs
 tags:
-  - Recursive
+  - recursion
   - Dynamic Programming
   - LeetCode
   - Easy

@@ -3,7 +3,7 @@ title: 組合問題 | Medium | LeetCode#77. Combinations
 tags:
   - backtracking
   - combinations
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

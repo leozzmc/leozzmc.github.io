@@ -3,7 +3,7 @@ title: 組合之和問題 | Medium | LeetCode#39. Combination Sum
 tags:
   - backtracking
   - combinations
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

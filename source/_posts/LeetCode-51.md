@@ -2,7 +2,7 @@
 title: 八皇后問題 | Hard | LeetCode#51. N-Queens
 tags:
   - backtracking
-  - recursive
+  - recursion
   - LeetCode
   - Hard
   - C++

@@ -3,7 +3,7 @@ title: 排列問題 | Medium | LeetCode#46. Permutations
 tags:
   - backtracking
   - permutation
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

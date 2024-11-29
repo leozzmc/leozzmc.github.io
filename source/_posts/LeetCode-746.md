@@ -1,7 +1,7 @@
 ---
 title: 最小成本爬樓梯問題 | Easy | LeetCode#746. Min Cost Climbing Stairs
 tags:
-  - Recursive
+  - recursion
   - Dynamic Programming
   - LeetCode
   - Easy

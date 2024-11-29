@@ -2,7 +2,7 @@
 title: Group Anagrams | Medium |LeetCode#49 Group Anagrams
 toc: true
 tags:
-  - Hash Table
+  - hash table
   - LeetCode
   - Medium
   - 'C++'
