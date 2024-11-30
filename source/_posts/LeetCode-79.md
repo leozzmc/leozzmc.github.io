@@ -6,7 +6,7 @@ tags:
   - combinations
   - dfs
   - matrix
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++

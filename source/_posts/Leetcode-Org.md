@@ -12,7 +12,7 @@ cover:
 
 # 前言
 
-> 這篇用來記錄刷leetcode 的各類主題，以及不同情境下要用的對應解題策略是哪些，也連接到之前所做的筆記跟部落格
+這篇用來記錄刷leetcode 的各類主題，以及不同情境下要用的對應解題策略是哪些，也連接到之前所做的筆記跟部落格
 
 ### Roadmap
 
@@ -71,16 +71,71 @@ cover:
 
 # Linked List
 
-> (Linked List 筆記整理)(https://leozzmc.github.io/posts/c1fe4928.html) 當時主要是用C來進行實作，但是C與C++在Linked List實踐邏輯中其實一樣，語法稍有差異而已，但不太影響解題
+> [Linked List 筆記整理](https://leozzmc.github.io/posts/c1fe4928.html) 當時主要是用C來進行實作，但是C與C++在Linked List實踐邏輯中其實一樣，語法稍有差異而已，但不太影響解題
 
-### 使用時機1: 排序
 
-### 使用情境2: 檢測循環
 
-### 使用情境3: Two Pointers
+## 使用時機1. Two Pointer
 
-### 使用情境4: Dummy Head 使用
+**當需要遍歷Linked List，並且需要快速找到特定節點或結構時**，快慢指針可以在一次遍歷中完成查找，適合處理效率要求較高的問題，例如尋找中間節點或判斷是否有循環。**或者今天需要比較或操作多個指針時**，雙指針可以用來實現倒數第 N 個節點的定位，或在兩條list間進行同步操作
 
+- [**LeetCode#876 Middle of the Linked List**](https://leozzmc.github.io/posts/the_middle_of_the_list.html) 
+  快慢指針找中點
+- [**LeetCode#141 Linked List Cycle**](https://leozzmc.github.io/posts/992d29db.html)  
+  快慢指針檢測循環
+- [**LeetCode#19 Remove Nth Node From End of List**](https://leozzmc.github.io/posts/a0e0ab51.html)  
+  雙指針刪除倒數第 N 個節點
+- [**LeetCode#143 Reorder List**](https://leozzmc.github.io/posts/94b01956.html) 
+  快慢指針找中點 + 鏈表翻轉 + 交替合併
+
+
+
+## 使用時機2. Dummy Head
+
+**通常如果要新增或刪除節點，抑或是頻繁的操作頭節點**，dummy head 就會試一種簡化操作的基礎技巧，**也可以用來避免特殊判斷**
+
+- [**LeetCode#203 Remove Linked List Elements**](https://leozzmc.github.io/posts/2db2c541.html)  
+  使用 dummy head 刪除指定值的節點
+- [**LeetCode#21 Merge Two Sorted Lists**](https://leozzmc.github.io/posts/8b576379.html) 
+  使用 dummy head 合併Linked List
+- [**LeetCode#2 Add Two Numbers**](https://leozzmc.github.io/posts/3864fd1b.html) 
+  使用 dummy head 構建新Linked List處理多位數相加
+
+
+## 使用時機3. 反轉與結構轉換
+
+處理single Linked List反轉、旋轉等結構轉換相關的問題，或是將其他資料結構轉換成linked list
+
+- [**LeetCode#206 Reverse Linked List**](https://leozzmc.github.io/posts/a6b83df3.html)  
+  經典Linked List反轉
+- [**LeetCode#61 Rotate List**](https://leozzmc.github.io/posts/ea1b4e6c.html)  
+  利用反轉實現旋轉操作
+- [**LeetCode#114 Flatten Binary Tree to Linked List**](https://leozzmc.github.io/posts/f15c47a9.html)  
+  將二叉樹轉換為單向Linked List
+
+
+## 使用時機4. 排序與合併
+處理Linked List的合併、重排和排序問題
+- [**LeetCode#21 Merge Two Sorted Lists**](https://leozzmc.github.io/posts/8b576379.html)  
+  合併兩個排序Linked List
+- [**LeetCode#328 Odd Even Linked List**](https://leozzmc.github.io/posts/Odd_Even_Linked_List.html) 
+  根據奇偶節點位置重排
+- [**LeetCode#143 Reorder List**](https://leozzmc.github.io/posts/94b01956.html)  
+  合併已翻轉和未翻轉的Linked List
+
+
+## 使用時機5. 特殊指標處理
+處理Linked List中帶有隨機指針或其他特殊結構的問題
+- [**LeetCode#138 Copy List with Random Pointer**](https://leozzmc.github.io/posts/28674f4b.html)  
+  深拷貝帶隨機指針的Linked List
+- [**LeetCode#2 Add Two Numbers**](https://leozzmc.github.io/posts/3864fd1b.html)  
+  處理帶進位的Linked List
+
+
+## 使用時機6. 刪除重複節點
+刪除Linked List中多餘或重複的節點
+- [**LeetCode#83 Remove Duplicates from Sorted List**](https://leozzmc.github.io/posts/c8064a2b.html)  
+  刪除排序Linked List中的重複節點
 
 # Traversal
 

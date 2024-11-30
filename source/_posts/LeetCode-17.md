@@ -4,7 +4,7 @@ tags:
   - backtracking
   - combinations
   - hash table
-  - recursive
+  - recursion
   - LeetCode
   - Medium
   - C++
