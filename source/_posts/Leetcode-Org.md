@@ -30,10 +30,119 @@ cover:
 
 # Two Pointers
 
+Two pointer 如果出現在陣列題目中，代表兩個索引(index)，如果出現在 Linked List題目中，代表兩個不同的指標。但核心目的都是一樣的，透過移動pointer位置來減少溶於計算提高效率。
+
+常見的Two pointer類型：
+- 反向指針: 一個指向頭部一個指向尾部，逐漸向中間靠攏，檢查回文, 兩數之和通常很常用這種類型
+- 快慢指針: 一個指針較快，另一個指針較慢，可以用於檢測Linked List 中是否有環。
+
+某些情況下會搭配 Sliding Windows 來去動態調整子陣列的大小，Ex.右指針擴展Windows，左指針收斂windows。以下整理常見的 Two Pointer 使用時機：
+
+1. **$O(N^2)$ 降低成 $O(N)$,題目要求降低複雜度**
+2. **輸入資料是有序的**
+3. **題目要求將不同索引作比較**
+4. **題目要求要在不同索引間交換**
+5. **題目要求將陣列分區**
+
+> 注意，如果要用反向指針逐步收斂問題範圍，會有條件，**那就是資料必須是已排序的**
+> 但如果題目是要搭配 Sliding Windows 或者linked list 則資料不一定要排序
+
+
+- [LeetCode#392. Is Subsequence]()
+- [LeetCode#125. Valid Palindrome](https://leozzmc.github.io/posts/7abe6380.html)
+- [LeetCode#167. Two Sum II - Input Array Is Sorted]()
+- [LeetCode#15. 3Sum]()
+
+
 # Sliding Window
+
+Sliding Window 算是 Two Pointer 的其中一種變化，可以透過兩個指標 `left` 以及 `right` 來去建立窗口(Window)， **通常題目會要求返回特定條件的最大或最小子範圍**，利用 `[Left, Right]` 夾出來的 Window 來在運算過程中滑動(收縮和擴展)來找出最佳的範圍。
+
+
+## 三個關鍵步驟
+
+1. Expand out window
+2. Meet the condition and process the window
+3. Shrink the window
+
+通常會由 `right` 指針去往外擴展，一旦滿足條件時，則可透過增加 `left` 來收斂 window，其解題邏輯如下：
+
+```c++
+void slidingWindow(){
+  // Iterate through the input
+    // Expand out window
+    // If meet the condition to stop expansion
+        // process the window
+        // contract the window
+}
+```
+
+在 sliding window 題目中一定會出現三種變數:
+
+1. Window 邊界: `left`, `right`
+2. 紀錄條件的變數，看是否到達expansion 停止條件
+3. 紀錄回傳值的變數
+
+## 解題流程
+
+1. **定義停止擴展window的條件**：先明確在什麼情況下需要停止擴展窗口
+2. **擴展window直到滿足條件**：在擴展window之前，先處理當前 `right` 指標所指向的元素
+3. **當滿足停止擴展的條件時，處理當前window**：在滿足條件時，針對當前window進行需要的處理
+4. **收縮當前window**：在收縮window之前，先處理當前 `left` 指標所指向的元素
+5. **處理邊界情況**：確保對特殊情況（例如空輸入、極端值等）進行適當處理
+
+- [leetcode#487. Max Consecutive Ones II]() 
+
+
+> 參考：
+> https://shannonhung.github.io/posts/lecture-two-pointer-and-sliding-window
+> https://medium.com/@timpark0807/leetcode-is-easy-sliding-window-c44c11cc33e1
 
 # Hash Table
 
+## 基本用法
+
+```c++
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+unordered_map<stin, int> dp ={{"Kevin", 1},{"Shannon", 2},{"Roger", 3}}; // Initialization
+dp["Alan"] = 4; // Insertion, overwriting existing value
+dp.insert(pair("Alan", 4)); // If key exists, return failure
+dp.erase(dp.begin()); // Erase element
+dp.erase("Alan"); //Erase element
+dp.erase(dp.find("Shannon"),dp.end()); // Erase a range of elements
+```
+
+迭代存取 `unordered_map` 元素
+
+```c++
+for(const auto &n : dp){
+  cout << "name:" << n.first << ", id:" << n.second << endl;
+}
+
+for(auto it=dp.begin(); it!=dp.end(); ++it){
+  cout << "name:" << (*it).first << ",id:" << (*it).second << endl;
+}
+```
+
+查找特定值
+
+```c++
+if(dp.find("KEY")!=dp.end()){
+  return false;
+}
+```
+
+清空 `unordered_map` 容器
+
+```c++
+dp.clear();
+```
+
+
+> 參考：https://shengyu7697.github.io/std-unordered_map/
 
 ## 使用時機1: 用於快速存取元素
 
@@ -45,6 +154,15 @@ cover:
 在 Python 中實踐 Hash Table的方式就是 Dictionary，而在C++中則是透過 `unordered_map`，他們的特點就是都是 Key-Value Pair，這代表他們就是一個無序元素映射的集合。因此在比較無序資料時也會用到 Hash Table，像是可以用來記錄特定單字在某個文章出現的頻率那也可以使用 Hash Table
 
 - [leetCode#49 Group Anagrams](https://leozzmc.github.io/posts/e106a70e.html)
+
+## 使用時機3: Deep Copy
+如果今天對於 Linked List 的結構有Deep Copy 的需求 (Ex. 錄製出一個一模一樣的Linked List結構)，則會需要儲存舊節點的鏈結關係以及新節點的鏈結關係。這時就可以用 Hash Table 來去做映射。
+
+- [leetCode#138. Copy List with Random Pointer](https://leozzmc.github.io/posts/28674f4b.html): 這裡宣告一個 Hash Table 來分別儲存舊的list跟複製後的list。
+
+```cpp
+unordered_map <Node*, Node*> randomMap;
+```
 
 # Stack
 
@@ -197,3 +315,5 @@ return true;
 - [LeetCode#5. Longest Palindromic Substring](https://leozzmc.github.io/posts/bf0dee7b.html)
 
 # 常見演算法
+
+---
