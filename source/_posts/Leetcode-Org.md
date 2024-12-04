@@ -91,6 +91,8 @@ void slidingWindow(){
 4. **收縮當前window**：在收縮window之前，先處理當前 `left` 指標所指向的元素
 5. **處理邊界情況**：確保對特殊情況（例如空輸入、極端值等）進行適當處理
 
+
+
 - [leetcode#487. Max Consecutive Ones II]() 
 
 
@@ -191,6 +193,26 @@ unordered_map <Node*, Node*> randomMap;
 
 > [Linked List 筆記整理](https://leozzmc.github.io/posts/c1fe4928.html) 當時主要是用C來進行實作，但是C與C++在Linked List實踐邏輯中其實一樣，語法稍有差異而已，但不太影響解題
 
+## 建立節點
+
+
+```cpp
+typedef struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(): val(0), next(nullptr) {};
+    ListNode(int a): val(a), next(nullptr) {};
+    ListNode(int a, ListNode *node): val(a), next(node) {};
+} Node;
+
+int main(){
+   Node node1(4);
+   Node node2(3, &node1);
+   Node node3(2, &node2);
+   Node node4(1, &node3);
+  // Print the list:  1->2->3->4->NULL
+}
+```
 
 
 ## 使用時機1. Two Pointer
@@ -255,11 +277,89 @@ unordered_map <Node*, Node*> randomMap;
 - [**LeetCode#83 Remove Duplicates from Sorted List**](https://leozzmc.github.io/posts/c8064a2b.html)  
   刪除排序Linked List中的重複節點
 
-# Traversal
 
 # Tree
 > [Tree 筆記整理-基本](https://leozzmc.github.io/posts/tree_for_leetcode.html)
 > [Tree 筆記整理-進階](https://leozzmc.github.io/posts/tree_for_leetcode_2.html)
+
+
+## Tree 的建構
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class TreeNode{
+    public:
+        int val;
+        TreeNode *left, *right;
+        TreeNode(): val(0), left(nullptr), right(nullptr){};
+        TreeNode(int x): val(x), left(nullptr), right(nullptr){};
+        TreeNode(int x, TreeNode *lnode, TreeNode *rnode): val(x), left(lnode), right(rnode){};
+    
+    friend class BT;
+};
+class BT{
+    public:
+        TreeNode *root;
+        
+        BT():root(0) {};
+        BT(TreeNode* node): root(node){};
+        
+        //member functions;
+        // void dfs(TreeNode *root);
+};
+int main() {
+    
+    TreeNode *nodeA = new TreeNode(1);
+    TreeNode *nodeB = new TreeNode(2);
+    TreeNode *nodeC = new TreeNode(3);
+    TreeNode *nodeD = new TreeNode(4);
+    TreeNode *nodeE = new TreeNode(5);
+    TreeNode *nodeF = new TreeNode(6);
+    
+    nodeA -> left = nodeB;
+    nodeA -> right = nodeC;
+    nodeB -> left = nodeD;
+    nodeC -> left = nodeE;
+    nodeC -> right = nodeF;
+    
+    BT T(nodeA);  
+    return 0;
+}
+```
+
+## BFS
+
+又稱 Level-Order Traversal
+
+```c++
+void BT::bfs(TreeNode *head){
+  queue<TreeNode*> q;
+  q.push(head);
+
+  while(!q.empty()){
+    TreeNode *current = q.front();
+    q.pop();
+    
+    cout << current->val << " ";
+    if(current->left!=nullptr) q.push(current->left);
+    if(current->right!=nullptr) q.push(current->right);
+
+  }
+}
+```
+
+
+## DFS
+
+前序(Preorder)
+
+中序(Inorder)
+
+後序(Postorder)
+
+
 
 # Recursion
 
