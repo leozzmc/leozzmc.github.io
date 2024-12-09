@@ -1,5 +1,5 @@
 ---
-title: 子集問題 | Medium | LeetCode#90. Subsets II
+title: 子集問題ii | Medium | LeetCode#90. Subsets II
 tags:
   - backtracking
   - recursion
