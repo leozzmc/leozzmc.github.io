@@ -15,7 +15,10 @@ cover: /img/LeetCode/121/cover.png
 
 # 前言 
 
-這題是股票買賣系列的題目，與他類似的題目會是 [309. Best Time to Buy and Sell Stock with Cooldown](https://leozzmc.github.io/posts/c95a58c1.html)
+這題是股票買賣系列的題目，與他類似的題目會是 
+
+[122. Best Time to Buy and Sell Stock II](https://leozzmc.github.io/posts/fcfb0850.html)
+[309. Best Time to Buy and Sell Stock with Cooldown](https://leozzmc.github.io/posts/c95a58c1.html)
 
 # 題目敘述
 
