@@ -18,6 +18,7 @@ cover: /img/LeetCode/122/cover.png
 這題是股票買賣系列的題目:
 
 [121. Best Time to Buy and Sell Stock](https://leozzmc.github.io/posts/a0e35335.html)
+[123. Best Time to Buy and Sell Stock III](https://leozzmc.github.io/posts/cfc810b0.html)
 [309. Best Time to Buy and Sell Stock with Cooldown](https://leozzmc.github.io/posts/c95a58c1.html)
 
 
