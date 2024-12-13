@@ -17,6 +17,13 @@ date: 2024-11-27 14:54:25
 cover:  /img/LeetCode/309/cover.png
 ---
 
+# 前言
+
+[121. Best Time to Buy and Sell Stock](https://leozzmc.github.io/posts/a0e35335.html)
+[122. Best Time to Buy and Sell Stock II](https://leozzmc.github.io/posts/fcfb0850.html)
+[123. Best Time to Buy and Sell Stock III](https://leozzmc.github.io/posts/cfc810b0.html)
+[188. Best Time to Buy and Sell Stock IV](https://leozzmc.github.io/posts/96bf11ff.html)
+
 # 題目敘述
 
 ![](/img/LeetCode/309/question.jpeg)

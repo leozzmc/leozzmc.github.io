@@ -19,6 +19,7 @@ cover: /img/LeetCode/121/cover.png
 
 [122. Best Time to Buy and Sell Stock II](https://leozzmc.github.io/posts/fcfb0850.html)
 [123. Best Time to Buy and Sell Stock III](https://leozzmc.github.io/posts/cfc810b0.html)
+[188. Best Time to Buy and Sell Stock IV](https://leozzmc.github.io/posts/96bf11ff.html)
 [309. Best Time to Buy and Sell Stock with Cooldown](https://leozzmc.github.io/posts/c95a58c1.html)
 
 # 題目敘述
