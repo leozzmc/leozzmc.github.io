@@ -242,9 +242,144 @@ Distance[7]: 3  | Predecessor[7]: 3
 > 若 Graph 本身包含多個 connected components，則可能可以畫出 Breadth-First Forest
 
 
+# DFS
+
+先前有介紹過 [樹的 DFS](https://leozzmc.github.io/posts/tree_for_leetcode.html?highlight=tree#Pre-Order-Traversal)，其中一種DFS走訪方式會是 Pre-order Traversal，也就是先拜訪節點，再拜訪其左子樹，再拜訪該root的右子樹， **這種遇到節點先拜訪的特性會是Graph DFS 的核心精神，在 Graph 中，先拜訪節點，再以該節點作為新的搜尋起點，直到有edge相連的 vertex 都被搜尋到** ， 另外也如同樹的走訪一樣或者走迷宮一樣，只要 vertex 彼此透過 edge  相連，一條路不同就回到上個 vertex走別條edge相連的路。
+
+
+> DFS 能保證的是，若有Edge 相連，一定能找到 Path，但不能保證 Shortest Path 
+
+
+## 演算法介紹
+
+進行 `dfs()` 之前為了方便解釋，會需要以下的資料結構：
+
+{% note info %}
+- time: dfs 走訪是有先後順序的，這裡可以想成是有個時間軸，N個節點一共會有 2N 個時間點 (每個節點都會有開始跟結束搜尋)
+- discover array: 紀錄Vertex被發現的時間點(time)，如果 vertex(B) 由 vertex(A) 找到，則 discover[B] = discover[A]+1
+- finish array: 如過 vertex(B) 已經完全搜尋過透過有效edge與之相連的所有vertex，則代表從 vertex(B) 為起點的搜尋已經結束，標注為 finish[B]
+- visited array: 用來紀錄哪些節點未發現或者已發現在但尚未結束搜尋以及結束等狀態
+- predecessor array: 紀錄走訪的 vertex 是由哪個 vertex 發現到的，可以用於回溯路徑
+{% endnote %}
+
+{% hideToggle Step0 初始化資料結構 ,bg,color %}
+![](/img/LeetCode/graph/dfs.png)
+{% endhideToggle %}
+
+(1) `time` 為 0
+(2) visited array 初始化為0
+(3) 所有的 discover, finish array 初始化為0
+(4) predecessor array 初始化為 -1 或 null
+
+
+{% hideToggle Step1 ~ Step8 依序拜訪和回溯節點 ,bg,color %}
+![](/img/LeetCode/graph/dfs-2.png)
+{% endhideToggle %}
+
+*Step1 - vertex(A) 為起點*
+(1) vertex(A) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(A) 被發現，因此需要將 `discover[A]` 設置為 `++time` (所以這裡 `discover[A]=1`) 代表他是 `dfs` 的起點
+(3) 接著需要搜尋與 vertex(A) 相連的節點，這裡可以觀察到 Adjacency List 中第一個與 vertex(A)相連的節點會是 vertex(B)，所以下一個起點會是 vertex(B)
+
+> 此時無需更新 `finish[A]`，因為以 vertex(A) 為起點的搜尋還在進行中，並非所有與 vertex(A)相連的edge都已經搜尋完畢了
+
+*Step2 - vertex(B) 為起點*
+(1) vertex(B) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(B) 被發現，因此需要將 `discover[B]` 設置為 `++time` (所以這裡 `discover[B]=2`)
+(3) 接著需要搜尋與 vertex(B) 相連的節點，這裡可以從 Adjacency List 觀察到下一個節點會是 vertex(D)
+
+*Step3 - vertex(D) 為起點*
+(1) vertex(D) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(D) 被發現，因此需要將 `discover[D]` 設置為 `++time` (所以這裡 `discover[D]=3`)
+(3) 接著需要搜尋與 vertex(D) 相連的節點，這裡可以從 Adjacency List 觀察到下一個節點會是 vertex(H)
+
+*Step4~5 - vertex(H) 為起點*
+(1) vertex(H) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(H) 被發現，因此需要將 `discover[H]` 設置為 `++time` (所以這裡 `discover[H]=4`)
+(3) 接著需要搜尋與 vertex(H) 相連的節點，這裡可以從 Adjacency List 觀察到， **vertex(H) 並沒有下一個節點，因此需要退回上一個節點，也就是 vertex(D)**
+(4) vertex(H) 標注為 finished (這裏用藍色表示)
+(5) 更新 `finish` 為 `++time` (所以這裡 `finish[H]=5`)
+
+*Step6 - vertex(D) 為起點*
+(1) **由於已標注 visited，因此接續搜尋其他相連但尚未 visited 的節點** ，這裡可以從 Adjacency List 觀察到， **vertex(D) 並沒有其他節點相連，因此需要退回上一個節點，也就是 vertex(B)**
+(4) vertex(D) 標注為 finished (這裏用藍色表示)
+(5) 更新 `finish` 為 `++time` (所以這裡 `finish[D]=6`)
+
+*Step7 - vertex(B) 為起點*
+(1) **由於已標注 visited，因此接續搜尋其他相連但尚未 visited 的節點** ，這裡可以從 Adjacency List 觀察到， **vertex(B) 並沒有其他節點相連，因此需要退回上一個節點，也就是 vertex(A)**
+(4) vertex(B) 標注為 finished (這裏用藍色表示)
+(5) 更新 `finish` 為 `++time` (所以這裡 `finish[B]=7`)
+
+*Step8 - vertex(A) 為起點*
+(1) **由於已標注 visited，因此接續搜尋其他相連但尚未 visited 的節點** ，這裡可以從 Adjacency List 觀察到， **vertex(A) 下一個相連的節點會是 vertex(C)** ，所以下一個起點會是 vertex(C)
+
+
+{% hideToggle Step9 ~ Step16 依序拜訪和回溯節點 ,bg,color %}
+![](/img/LeetCode/graph/dfs-3.png)
+{% endhideToggle %}
+
+*Step9 - vertex(C) 為起點*
+(1) vertex(C) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(C) 被發現，因此需要將 `discover[C]` 設置為 `++time` (所以這裡 `discover[D]=8`)
+(3) 接著需要搜尋與 vertex(C) 相連的節點，這裡可以從 Adjacency List 觀察到下一個節點會是 vertex(F)
+
+
+*Step10 - vertex(F) 為起點*
+(1) vertex(F) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(F) 被發現，因此需要將 `discover[F]` 設置為 `++time` (所以這裡 `discover[F]=9`)
+(3) 接著需要搜尋與 vertex(F) 相連的節點，這裡可以從 Adjacency List 觀察到下一個節點會是 vertex(E)
+
+*Step11 - vertex(E) 為起點*
+(1) vertex(E) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(E) 被發現，因此需要將 `discover[E]` 設置為 `++time` (所以這裡 `discover[E]=10`)
+(3) 接著需要搜尋與 vertex(E) 相連的節點，這裡可以從 Adjacency List 觀察到，vertex(E) 相連的節點都已經拜訪過了，因此需要回到上一個節點 vertex(F)
+(4) vertex(E) 標注為 finished (這裏用藍色表示)
+(5) 更新 `finish` 為 `++time` (所以這裡 `finish[E]=11`)
+
+*Step12 - vertex(F) 為起點*
+(1) **由於已標注 visited，因此接續搜尋其他相連但尚未 visited 的節點** ，這裡可以從 Adjacency List 觀察到， **vertex(F) 下一個相連的節點會是 vertex(G)** ，所以下一個起點會是 vertex(G)
+
+*Step13 - vertex(G) 為起點*
+(1) vertex(G) 會標注 visited  (這裡用綠色表示)
+(2) 由於 vertex(G) 被發現，因此需要將 `discover[G]` 設置為 `++time` (所以這裡 `discover[G]=12`)
+(3) 接著需要搜尋與 vertex(G) 相連的節點，這裡可以從 Adjacency List 觀察到，vertex(G) 相連的節點都已經拜訪過了，因此需要回到上一個節點 vertex(F)
+(4) vertex(E) 標注為 finished (這裏用藍色表示)
+(5) 更新 `finish` 為 `++time` (所以這裡 `finish[G]=13`)
+
+
+*Step14 - vertex(F) 為起點*
+(1) vertex(F) 相連的節點都已經拜訪過了，因此需要回到上一個節點 vertex(C)
+(2) vertex(F) 標注為 finished (這裏用藍色表示)
+(3) 更新 `finish` 為 `++time` (所以這裡 `finish[F]=14`)
+
+*Step15 - vertex(C) 為起點*
+(1) vertex(C) 相連的節點都已經拜訪過了，因此需要回到上一個節點 vertex(A)
+(2) vertex(C) 標注為 finished (這裏用藍色表示)
+(3) 更新 `finish` 為 `++time` (所以這裡 `finish[C]=15`)
+
+*Step16 - vertex(A) 為起點*
+(1) vertex(A) 相連的節點都已經拜訪過了，已經是圖的起點
+(2) vertex(A) 標注為 finished (這裏用藍色表示)
+(3) 更新 `finish` 為 `++time` (所以這裡 `finish[A]=16`)
+
+結束 `dfs()`
+
+
+這裡可以將每個 vertex 耗費的 Timestamp展開會是像下面這樣：
+
+![](/img/LeetCode/graph/output.png)
+
+> 可以看出 DFS 一樣會是一種遞迴結構，因此實際上實作也是透過遞迴來實作
+
+## 程式碼實作
+
+
+
 
 # 參考
 https://alrightchiu.github.io/SecondRound/graph-breadth-first-searchbfsguang-du-you-xian-sou-xun.html
+https://alrightchiu.github.io/SecondRound/graph-depth-first-searchdfsshen-du-you-xian-sou-xun.html
+
 
 
 ---
