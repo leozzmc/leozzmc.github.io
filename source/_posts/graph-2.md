@@ -470,6 +470,11 @@ int main(){
 }
 ```
 
+建構樹的方式跟BFS一樣，不同的是這個範例會是有向圖，程式主體由 `dfs` 以及 `dfsVisit` 兩個函數所組成。首先可以看到 `dfs`， 一開始會按照 `num_vertex` 大小來去初始化各類變數，分配記憶體位址。並且除了 `predecessor`
+初始化成 -1 之外其餘變數都初始化為 0。接著開始迭代檢查每個節點是否有拜訪過 (`if(visit[i]==0)`) 如果是還沒拜訪過的 (就是上面圖中是白色節點的) ，就會以該節點作為起點丟到 `dfsVisit` 進行拜訪。透過這個迴圈可以確保把 `adjList` 中的 vertex 都搜尋過一次。
+
+
+一旦有vertex被發現而且是白色, 便進入 `dfsVisit`，此時做的第一件事情就是要更新 `visited[vertex]=1`，代表該節點已找到，但以該節點為起點的搜尋還沒結束， 然後更新發現時間  `discover[vertex] = ++time`。 **以當前 vertex為搜尋起點，接著要去查找跟該節點用edge相連的vertex中，有哪些還是未被搜尋過的 (`visited[i]==0`)** 所以以當前的節點來進行迭代 `for(auto it=adjList[vertex].begin(); it!=adjList[vertex].end(); ++it)` 而這裡就會按照 adjList 中節點的建構順序進行查找。一旦有搜尋到尚未拜訪過的節點，就會將當前節點更新為 `predecessor` 並且會以該節點做為新的搜尋起點，一樣遞迴下去搜尋其他新節點。 一旦已經沒有其他相連的vertex是還沒拜訪過的，就會將當前節點標註為搜尋完成 `visited[vertex]=2` 這時候還要去更新搜尋完畢的時間 `finish[vertex] = ++time`。
 
 
 輸出結果:
@@ -487,6 +492,19 @@ Vertex	Discover	Finish
 ```
 
 可以觀察到輸出結果與先前演算法介紹中的結果是一樣的
+
+## 延伸概念
+
+跟 BFS一樣，DFS一樣可以透過 Predecessor 來得到 **Predecessor Subgraph**，一樣會形成一種樹狀結構，被稱為 **Depth-First Tree**
+
+![](/img/LeetCode/graph/dfs-4.png)
+
+
+另外從結果也能夠得出幾個關於 `discover` 的特性:
+
+- 若 $discover[X] > discover[Y]$ 且 $finish[X] < finish[Y]$ ，**則 vertex(X) 一定會是 vertex(Y) 的 descendant** 。 因為這就代表 vertex(X) 比 vertex(Y) 還要晚發現，並且也比較早搜尋完畢。
+- 若 $discover[X] < discover[Y]$ 且 $finish[X] > finish[Y]$ ，**則 vertex(X) 一定會是 vertex(Y) 的 ancestor**。 因為這就代表 vertex(X) 比 vertex(Y) 還要早發現，並且也比較晚搜尋完畢。
+
 
 # 參考
 https://alrightchiu.github.io/SecondRound/graph-breadth-first-searchbfsguang-du-you-xian-sou-xun.html
