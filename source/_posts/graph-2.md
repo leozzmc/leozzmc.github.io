@@ -116,6 +116,132 @@ distance[F] = distance[C]+1 = 2
 
 ## 程式碼實作
 
+```c++
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+class Graph{
+    private:
+        int num_vertex;
+        vector<vector<int>> adjList;
+        int *label,  // 0: not found, 1: found, 2. removed
+            *distance,  // 0: starting point, MAX_INT: vertex that cannot be found by the starting point
+            *predecessor; // -1: no predecessor, starting point
+    public:
+        Graph(): num_vertex(0) {};
+        Graph(int N): num_vertex(N){
+            adjList.resize(num_vertex);
+        };
+        //member function
+        void addEdgeList(int from, int to);
+        void bfs(int start);
+        
+         // Getter functions for debugging
+        int getNumVertex() const { return num_vertex; }
+        int* getDistances() const { return distance; }
+        int* getPredecessors() const { return predecessor; }
+};
+
+void Graph::addEdgeList(int from, int to){
+    adjList[from].push_back(to);
+}
+
+void Graph::bfs(int start){
+
+    // init the arrays
+    label = new int[num_vertex];
+    distance = new int[num_vertex];
+    predecessor = new int[num_vertex];
+
+    for(int i=0; i<num_vertex; i++){
+        label[i] = 0;
+        distance[i] = INT_MAX;
+        predecessor[i] = -1;
+    }
+    queue<int> q;
+    int i=start;
+
+    for(int j=0; j<num_vertex; j++){
+        if(label[i]==0){
+            label[i]=1;
+            distance[i]=0;
+            predecessor[i]=-1;
+            q.push(i);
+            while(!q.empty()){
+                int u = q.front();
+                for(auto it=adjList[u].begin(); it!=adjList[u].end(); ++it){
+                    if(label[*it]==0){
+                        label[*it]=1;
+                        distance[*it] = distance[u] + 1;
+                        predecessor[*it] = u;
+                        q.push(*it);
+                    }
+                }
+                q.pop();
+                label[u] = 2;
+            }
+        }
+        i =j;
+    }
+}
+
+int main(){
+
+    //construct the graph
+    Graph g1(8);
+    g1.addEdgeList(0,1); g1.addEdgeList(0,2);
+    g1.addEdgeList(1,0); g1.addEdgeList(1,3); g1.addEdgeList(1,4);
+    g1.addEdgeList(2,0); g1.addEdgeList(2,5);
+    g1.addEdgeList(3,1); g1.addEdgeList(3,4); g1.addEdgeList(3,6);g1.addEdgeList(3,7);
+    g1.addEdgeList(4,1); g1.addEdgeList(4,3); g1.addEdgeList(4,5); g1.addEdgeList(3,7);
+    g1.addEdgeList(5,2); g1.addEdgeList(5,4); g1.addEdgeList(5,6); 
+    g1.addEdgeList(6,3); g1.addEdgeList(6,5); g1.addEdgeList(6,7);
+    g1.addEdgeList(7,3); g1.addEdgeList(7,4); g1.addEdgeList(7,6);
+
+    g1.bfs(0);
+
+    for (int i = 0; i < g1.getNumVertex(); i++) {
+        cout << "Distance[" << i << "]: " << g1.getDistances()[i] << " | ";
+        cout << "Predecessor[" << i << "]: " << g1.getPredecessors()[i] << endl;
+    }
+
+
+    return 0;
+}
+```
+
+輸出結果:
+
+```
+Distance[0]: 0  | Predecessor[0]: -1
+Distance[1]: 1  | Predecessor[1]: 0
+Distance[2]: 1  | Predecessor[2]: 0
+Distance[3]: 2  | Predecessor[3]: 1
+Distance[4]: 2  | Predecessor[4]: 1
+Distance[5]: 2  | Predecessor[5]: 2
+Distance[6]: 3  | Predecessor[6]: 3
+Distance[7]: 3  | Predecessor[7]: 3
+```
+
+## 延伸概念
+
+透過得到的 `predecessor` 陣列，可以知道由起點開始的節點先後關係，可以畫出一個 predecessor subgraph，通常具有 connected 和 acyclic 的特性，這使得 predecessor subgraph 會是一個以起始點 vertex 為root的一顆tree，這種樹又被稱為 **Breadth-First Tree** 其中相互連接vertex的edge 又被稱為 **Tree Edge** 
+
+![](/img/LeetCode/graph/subgraph-1.png)
+
+
+{% note info %}
+一張圖的 Breadth-First Tree 可能不只一種，因為 Predecessor Array 會是由發現vertex 的先後順序組成，而vertex 發現順序則是會被建構 adjList 的順序所影響，順序不同則建構出的 Breadth-First Tree 也不盡相同。 雖然 Breadth-First Tree 結構不同，最後節點與節點彼此的距離依舊相同。 (使用 `vector<vector<int>>` 作為鄰接表時，鄰居節點的遍歷順序取決於節點在 `vector<int>` 中的排列順序（即插入順序）)
+{% endnote %}
+
+
+> 若 Graph 本身包含多個 connected components，則可能可以畫出 Breadth-First Forest
+
+
 
 # 參考
 https://alrightchiu.github.io/SecondRound/graph-breadth-first-searchbfsguang-du-you-xian-sou-xun.html
