@@ -162,9 +162,52 @@ dp.clear();
 
 - [leetCode#138. Copy List with Random Pointer](https://leozzmc.github.io/posts/28674f4b.html): 這裡宣告一個 Hash Table 來分別儲存舊的list跟複製後的list。
 
-```cpp
+```c++
 unordered_map <Node*, Node*> randomMap;
 ```
+
+## unordered_map vs unordered_set
+
+```c++
+unordered_map <int, int> umap;
+unordered_set <int> uset;
+```
+
+從宣告上就可以看出差異， `unordered_map` 會是 Key-Value Pair 然而 `unordered_set` 會只有 Key 或 value，總之他並不是 pair，也並不能儲存映射關係。 **兩者的共同點就是都是無序的 ，並且實踐都是基於 Hash Table，因此 `unordered_set`中的元素都會是唯一的**
+
+
+
+以下是 `unordered_map` 和 `unordered_set` 在解 LeetCode 題目時的使用時機整理：
+
+
+| 功能/特性                      | **`unordered_map`**                                                                                         | **`unordered_set`**                                                                                       |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| **結構定義**                   | 雜湊表存儲鍵值對（Key-Value Pair）                                                                        | 雜湊表存儲唯一的鍵（Key）                                                                                |
+| **典型使用情境**               | 當需要同時儲存一個值（Value）與其對應的鍵（Key）時，例如計數、鍵值對查詢                                   | 當只需要快速查詢某元素是否存在，或需要儲存唯一元素集合時，例如去重、檢查存在性                             |
+| **插入/刪除/查詢操作時間複雜度** | 平均 $ O(1) $，最差 $ O(n) $                                                                         | 平均 $O(1)$，最差 $O(n)$                                                                         |
+| **重點功能**                   | - 可用於統計出現次數（如頻率計數）。<br>- 快速通過鍵查詢值                                               | - 快速判斷元素是否存在。<br>- 快速存儲唯一元素（無需額外邏輯進行去重）                                   |
+| **典型應用場景**               | 1. **頻率計數**：統計字元、數字或其他資料的出現次數，例如異位詞檢查、子陣列和問題 <br>2. **映射查詢**：需要通過鍵快速找到值<br>3. **分組**：按某些條件將資料分組並存儲對應的值 | 1. **集合操作**：判斷某元素是否存在，例如兩數和問題<br>2. **去除重複**：快速生成唯一元素集合，例如找出數組中的唯一值 |
+| **常見 LeetCode 題目範例**     | - **Two Sum** (#1)：用於記錄目標數字的補數和其索引 <br>- **Group Anagrams** (#49)：統計異位詞分組          | - **Contains Duplicate** (#217)：檢查數組中是否存在重複值<br>- **Intersection of Two Arrays** (#349)：找出兩數組交集 |
+| **注意事項**                   | - 若只需要檢查元素存在性，使用 `unordered_set` 更高效，避免存儲多餘的值                                     | - 若需要儲存並操作鍵對應的值，應使用 `unordered_map`，`unordered_set` 無法完成此需求                     |
+
+Example
+```c++
+#include <unordered_set>
+#include <vector>
+using namespace std;
+
+bool containsDuplicate(vector<int>& nums) {
+    unordered_set<int> st;
+    for (int num : nums) {
+        if (st.find(num) != st.end()) {
+            return true;
+        }
+        st.insert(num);
+    }
+    return false;
+}
+```
+
 
 # Stack
 
@@ -359,7 +402,32 @@ void BT::bfs(TreeNode *head){
 
 後序(Postorder)
 
+# Graph
 
+> [Graph 筆記整理-1](https://leozzmc.github.io/posts/2009beb7.html)
+> [Graph 筆記整理-2](https://leozzmc.github.io/posts/2e799f6d.html)
+
+
+Graph 主要由節點(vertex, node)跟邊(edge)構成，基本上有分成有向跟無向圖，還有一些特性像是是否是連接(connected) 以及是否有環(circle) 存在。 圖的題目類型通常會是給定一個2D陣列要你去求數量或是面積還有路徑，或者有些會給 Adjacency Matrix (List) 來告訴你節點的連接關係。目前學到的走訪方式有: **DFS**,  **BFS** (後續好像還有 Topological Sort)
+
+||DFS|BFS|
+|--|--|--|
+|適用範圍|有向圖、無向圖|有向圖、無向圖|
+|用途|找路徑(不一定最短)|找最短路徑|
+
+## 無向圖
+
+(1) **找出陣列中的 Connected Components**
+可使用 `DFS`, `BFS` 在走訪過程中透過 counter 來記錄數量，這種題目也會有其他變形題目
+
+-  [LeetCode#200. Number of Islands](https://leozzmc.github.io/posts/b7e69c9.html) 這題就是單純紀錄　connected components 數量
+-  [LeetCode#695. Max Area of Island](https://leozzmc.github.io/posts/6c6d3ce.html)  這題就是單純紀錄　connected components 數量，還需要累加大小並做比較
+-  [LeetCode#133. Clone Graph](https://leozzmc.github.io/posts/8d1c6ed0.html) 這題為了deep copy 一個 graph，會需要先走訪tree並記錄到 hash table
+
+
+(2) **找出最短路徑**
+
+- [LeetCode#286. Walls and Gates](https://leozzmc.github.io/posts/79e94c86.html) 這題需要透過 BFS 走訪網格，並且直接將距離更新到網格中，這題的bfs 會優先將搜尋起點(閘門)推入Queue中去解
 
 # Recursion
 
