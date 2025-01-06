@@ -423,6 +423,7 @@ Graph 主要由節點(vertex, node)跟邊(edge)構成，基本上有分成有向
 -  [LeetCode#200. Number of Islands](https://leozzmc.github.io/posts/b7e69c9.html) 這題就是單純紀錄　connected components 數量
 -  [LeetCode#695. Max Area of Island](https://leozzmc.github.io/posts/6c6d3ce.html)  這題就是單純紀錄　connected components 數量，還需要累加大小並做比較
 -  [LeetCode#133. Clone Graph](https://leozzmc.github.io/posts/8d1c6ed0.html) 這題為了deep copy 一個 graph，會需要先走訪tree並記錄到 hash table
+-  [LeetCode#130. Surrounded Regions](https://leozzmc.github.io/posts/51295e83.html) 這題比較特別，他會是從矩陣邊緣開始先找搜尋起點，再去走訪，並且搜尋起點只會在邊緣。
 
 
 (2) **找出最短路徑**
