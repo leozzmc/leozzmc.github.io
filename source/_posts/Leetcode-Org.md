@@ -92,8 +92,10 @@ void slidingWindow(){
 5. **處理邊界情況**：確保對特殊情況（例如空輸入、極端值等）進行適當處理
 
 
+## 題目
 
 - [leetcode#487. Max Consecutive Ones II]() 
+- [LeetCode#424. Longest Repeating Character Replacement](https://leozzmc.github.io/posts/1717ddff.html) 這題在窗口擴展的時候同時透過雜湊表記錄字母出現頻率，接著收窄窗口直到窗口等於最高字母頻率次數 +  K(題目給的替換操作次數)，窗口收窄後再去紀錄最大子字串長度(窗口長度)
 
 
 > 參考：
