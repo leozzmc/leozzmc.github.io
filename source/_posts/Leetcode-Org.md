@@ -447,6 +447,39 @@ Graph 主要由節點(vertex, node)跟邊(edge)構成，基本上有分成有向
 
 # Binary Search 
 
+題目可能會給陣列或字串，然後要做的事就是要先定義出左右兩側邊界以及中間值，
+
+框架會像是下面這樣
+
+```c++
+int left = <MIN_VALUE>;
+int right = <MAX_VALUE>;
+
+// left ~ mid ~ right
+while(left <= right){
+  int mid = left + (right-left) /2;
+  
+  if(<VALID>){
+    // 將範圍收窄成陣列左半邊
+    // left ~ mid-1
+    right = mid -1;
+  }
+  else{
+    //將範圍收窄成陣列右半邊
+    // mid +1 ~ right
+    left = mid +1;
+  }
+}
+```
+
+
+
+## 常見題目
+
+- [ LeetCode#875. Koko Eating Bananas](https://leozzmc.github.io/posts/7a271795.html): 這題主要是透過先定義出最大跟最小吃香蕉的速度，然後透過 Binary Search 來去挑選吃相較的速度值，再去透過其他函數驗證這個值是否能夠在時間內吃完香蕉。接著會去收窄範圍，最終得出的吃香蕉速度就會是最小的。
+
+
+
 # Heap
 
 # Dynamic Programming
