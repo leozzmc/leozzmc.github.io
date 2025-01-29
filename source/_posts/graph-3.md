@@ -128,6 +128,11 @@ finish[C3]=finish[I]=6
 ## 程式碼
 
 
+```c++
+
+```
+
+
 # 利用 DFS 的 Topological Sort 找到 Cycle
 
 
