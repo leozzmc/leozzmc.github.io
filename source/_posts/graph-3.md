@@ -10,7 +10,7 @@ categories: LeetCode筆記
 aside: true
 cover: /img/LeetCode/graph/cover.png
 abbrlink: 597eaffb
-date: 2025-01-20 11:32:23
+date: 2025-02-20 11:32:23
 ---
 
 # 前言
@@ -129,14 +129,250 @@ finish[C3]=finish[I]=6
 
 
 ```c++
+#include <iostream>
+#include <vector>
+#include <list>
+#include <stack>
+#include <algorithm>
+using namespace std;
 
+class Graph {
+    private:
+        int num_vertex;
+        vector<list<int>> AdjList;
+        void DFSVisit(int v, vector<bool> &visited, stack<int> &finishStack);
+        void DFSVisitSCC(int v, vector<bool> &visited, vector<int> &component);
+
+    public:
+        Graph(int N): num_vertex(N) {
+            AdjList.resize(num_vertex);
+        }
+        void AddEdgeList(int from, int to);
+        Graph GraphTranspose();
+        void FindSCCs();
+
+};
+
+void Graph::AddEdgeList(int from, int to){
+    AdjList[from].push_back(to);
+}
+
+void Graph::DFSVisit(int v, vector<bool> &visited, stack<int> &finishStack){
+    visited[v] = true;
+    for(int neighbor: AdjList[v]){
+        if(!visited[neighbor]){
+            DFSVisit(neighbor, visited, finishStack);
+        }
+    }
+    finishStack.push(v);
+}
+
+void Graph::DFSVisitSCC(int v, vector<bool> &visited, vector<int> &component){
+    visited[v] = true;
+    component.push_back(v);
+    for(int neighbor: AdjList[v]){
+        if(!visited[neighbor]){
+            DFSVisitSCC(neighbor, visited, component);
+        }
+    }
+}
+
+Graph Graph::GraphTranspose(){
+    Graph gT(num_vertex);
+    for(int i=0; i<num_vertex; i++){
+        for(int neighbor: AdjList[i]){
+            gT.AddEdgeList(neighbor, i);
+        }
+    }
+    return gT;
+}
+
+// Kosaraju's Algorithm to find SCCs
+void Graph::FindSCCs(){
+    stack<int> finishStack;
+    vector<bool> visited(num_vertex, false);
+
+    // First DFS to get the finish order
+    for(int i=0; i< num_vertex;i++){
+        if(!visited[i]){
+            DFSVisit(i, visited, finishStack);
+        }
+    }
+
+
+    // Get transposed graph
+    Graph gT = GraphTranspose();
+
+    //Second DFS to find SCCs in finishStack order
+    // reinit visited array
+    fill(visited.begin(), visited.end(), false);
+
+    cout << "Strongly Connected Components: \n";
+    while(!finishStack.empty()){
+        int v = finishStack.top();
+        finishStack.pop();
+
+        if(!visited[v]){
+            vector<int> components;
+            gT.DFSVisitSCC(v, visited, components);
+            for(int node: components){
+                cout << node << " ";
+            }
+            cout << endl;
+        }
+    }
+}
+
+int main(){
+
+    //Test 
+    Graph g(9);
+    g.AddEdgeList(0, 1);
+    g.AddEdgeList(1, 2);
+    g.AddEdgeList(1, 4);
+    g.AddEdgeList(2, 0);
+    g.AddEdgeList(2, 3);
+    g.AddEdgeList(2, 5);
+    g.AddEdgeList(3, 2);
+    g.AddEdgeList(4, 5);
+    g.AddEdgeList(4, 6);
+    g.AddEdgeList(5, 4);
+    g.AddEdgeList(5, 6);
+    g.AddEdgeList(5, 7);
+    g.AddEdgeList(6, 7);
+    g.AddEdgeList(7, 8);
+    g.AddEdgeList(8, 6);
+
+    g.FindSCCs();
+
+    return 0;
+}
+```
+
+執行結果
+```
+Strongly Connected Components: 
+0 2 1 3 
+5 4 
+6 8 7 
 ```
 
 
-# 利用 DFS 的 Topological Sort 找到 Cycle
+# 利用 DFS 尋找DAG -  Topological Sort 
+
+回到前面提到的，如果有像是學校課表先修後修這種需要保證vertex先後順序的問題，會用 Topological Sort
+
+{% note info %}
+Topological 的基本定理:
+- 在DAG(Directed Acyclic Graph)中如果存在 edge(X,Y) 則 vertex(X) 一定出現在 vertex(Y) 後面
+
+> 看起來像廢話，有向圖中當然如果存在X接到Y的邊，那走訪過程中 X 一定會出現在Y後面
+{% endnote %}
 
 
-# 利用 BFS 的 Topological Sort 找到 Cycle
+Topological Sort 只有在DAG 的狀況下才有意義，如果出現Cycle 則會違反上面提到的規定，舉例來說
+
+![](/img/LeetCode/graph/cycle2.png)
+
+若存在 `edge(YouTube, Dinner)` 則帶表 `YouTube` 存在於 `Dinner` 之前，要先看YouTube 再吃飯，整體序列會是 `YouTube Dinner LeetCode Exercises` 而 `edge(Dinner, LeetCode)` 的存在會出現這樣的序列 `Dinner LeetCode Exercises Youtube` 這就違反了要先看YouTUbe 再吃飯的原則。
+
+> 因此如果在 Directed Graph 中存在 Cycle 則 Topolocal Sort 將會無意義。
+
+
+回到我們的目標，想要保證走訪時的順序，根據上一章節的結論，如果一條路徑從 vertex(X) 走到 vertex(Y) 則vertex(X)的結束時間一定比vertex(Y) 來得久 (`finish[X] > finish[Y]`)  **因此只需要進行一次 DFS 並且按照 `finish` 時間由大到小印出，就是 Topological Sort**
+
+![](/img/LeetCode/graph/topo.png)
+
+### 程式碼
+
+> 其實只需要改動 `FindSCCs()` 的部分邏輯，因為拓撲排序的核心概念是 DFS 完成時將節點加入 Stack，所以我們只需輸出 `finishStack` 的內容，而不用執行第二次 DFS。
+
+
+```c++
+#include <iostream>
+#include <vector>
+#include <list>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+class Graph {
+private:
+    int num_vertex;
+    vector<list<int>> AdjList;
+    void DFSVisit(int v, vector<bool> &visited, stack<int> &finishStack);
+
+public:
+    Graph(int N) : num_vertex(N) {
+        AdjList.resize(num_vertex);
+    }
+    void AddEdgeList(int from, int to);
+    void FindTopologicalSort(); 
+};
+
+void Graph::AddEdgeList(int from, int to) {
+    AdjList[from].push_back(to);
+}
+
+void Graph::DFSVisit(int v, vector<bool> &visited, stack<int> &finishStack) {
+    visited[v] = true;
+    for (int neighbor : AdjList[v]) {
+        if (!visited[neighbor]) {
+            DFSVisit(neighbor, visited, finishStack);
+        }
+    }
+    finishStack.push(v); //Push to stack after DFS
+
+// Topological sort
+void Graph::FindTopologicalSort() {
+    stack<int> finishStack;
+    vector<bool> visited(num_vertex, false);
+
+    // Perform DFS, push the finished node to the stack
+    for (int i = 0; i < num_vertex; i++) {
+        if (!visited[i]) {
+            DFSVisit(i, visited, finishStack);
+        }
+    }
+
+    // Output Result
+    cout << "Topological Sort Order:\n";
+    while (!finishStack.empty()) {
+        cout << finishStack.top() << " ";
+        finishStack.pop();
+    }
+    cout << endl;
+}
+
+int main() {
+    Graph g(6);
+    g.AddEdgeList(5, 2);
+    g.AddEdgeList(5, 0);
+    g.AddEdgeList(4, 0);
+    g.AddEdgeList(4, 1);
+    g.AddEdgeList(2, 3);
+    g.AddEdgeList(3, 1);
+
+    g.FindTopologicalSort(); // Topological Sort
+
+    return 0;
+}
+```
+
+輸出結果
+```
+Topological Sort Order:
+5 4 2 3 1 0 
+```
+
+## 對應的 LeetCode 題目
+
+- [207. Course Schedule / Medium](https://leetcode.com/problems/course-schedule/description/?envType=study-plan-v2&envId=top-interview-150)
+- [210. Course Schedule II / Medium](https://leetcode.com/problems/course-schedule-ii/description/?envType=study-plan-v2&envId=top-interview-150)
+- [310. Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/description/?envType=problem-list-v2&envId=topological-sort)
+- [269. Alien Dictionary / Hard / Premium](https://leetcode.com/problems/alien-dictionary/description/?envType=problem-list-v2&envId=topological-sort)
+- [444. Sequence Reconstruction / Medium / Premium](https://leetcode.com/problems/sequence-reconstruction/description/?envType=company&envId=google&favoriteSlug=google-thirty-days)
+- [1462. Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/description/?envType=company&envId=google&favoriteSlug=google-thirty-days)
 
 # 參考
 https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html
