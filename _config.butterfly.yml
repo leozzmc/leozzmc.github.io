@@ -9,15 +9,15 @@ nav:
 
 # Menu 目錄
 menu:
-  Home: / || fas fa-home
-  Find Posts||fas fa-list:
-      Archives: /archives/ || fas fa-archive
-      Tags: /tags/ || fas fa-tags
-      Categories: /categories/ || fas fa-folder-open
-  Links: /link/ || fas fa-link
-  Languages:||fas fa-language:
-    English: / || fas fa-e
-    中文: https://leozzmc.github.io/ || fas fa-c
+  首頁: / || fas fa-home
+  找文章||fas fa-list:
+      歸檔: /archives/ || fas fa-archive
+      標籤: /tags/ || fas fa-tags
+      分類: /categories/ || fas fa-folder-open
+  鏈結: /link/ || fas fa-link
+  語言:||fas fa-language:
+    English: /en/ || fas fa-e
+    中文: / || fa-c
   # List||fas fa-list:
   #   Music: /music/ || fas fa-music
   #   Movie: /movies/ || fas fa-video
@@ -309,9 +309,9 @@ newest_comments:
 translate:
   enable: true
   # The text of a button
-  default: 繁
+  default: EN
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
-  defaultEncoding: 1
+  defaultEncoding: 3
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
@@ -747,13 +747,8 @@ beautify:
 
 # Global font settings
 # Don't modify the following settings unless you know how they work (非必要不要修改)
-# font:
-#   global-font-size: 15px
-#   code-font-size:
-#   font-family: LXGW WenKai TC, Georgia, Helvetica ,'PingFang TC', 'Heiti TC', "Noto Sans TC","Microsoft JhengHei", sans-serif
-#   code-font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
 font:
-  global-font-size:
+  global-font-size: 15px
   code-font-size:
   font-family: LXGW WenKai TC, Georgia, Helvetica ,'PingFang TC', 'Heiti TC', "Noto Sans TC","Microsoft JhengHei", sans-serif
   code-font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
@@ -787,8 +782,8 @@ subtitle:
   source: false
   # 如果關閉打字效果，subtitle 只會顯示 sub 的第一行文字
   sub:
-    - Deep dive into tech
-    - Breadth experience in life 
+    - 蹲的越低
+    - 腳就越酸 
 
 # Loading Animation (加載動畫)
 preloader:
@@ -929,10 +924,10 @@ css_prefix: true
 # 插入代码到头部 </head> 之前 和 底部 </body> 之前
 inject:
   head:
-    - <link rel="stylesheet" href="/en/css/style.css">
+    - <link rel="stylesheet" href="/css/style.css">
   bottom:
-    - <script data-pjax src="/en/self/btf.js"></script> 
-    - <script data-pjax src="/en/self/tw_en.js"></script>
+    - <script data-pjax src="/self/btf.js"></script> 
+    - <script data-pjax src="/self/tw_en.js"></script>
     - <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
     - <script data-pjax src="/self/calendar.js"></script>
     - <script data-pjax src="/self/languages.js"></script>
