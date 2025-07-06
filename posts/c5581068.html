@@ -1,0 +1,462 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="Proxmox VE 介紹Proxmox VE(PVE) 是一個開源的虛擬化環境，能夠同時支援基於 LXC (Linux Container) 的容器，抑或是基於Kernel 的VM，即為 KVM，也就是將 Linux Kernel 作為 Hypervisor 的虛擬化技術。  而 Proxmox 也透過介於 Host 與 Guest 的 QEMU 去處理 Guest 的硬體請求，將其轉譯">
+<meta property="og:type" content="article">
+<meta property="og:title" content="實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1">
+<meta property="og:url" content="https://leozzmc.github.io/posts/c5581068.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="Proxmox VE 介紹Proxmox VE(PVE) 是一個開源的虛擬化環境，能夠同時支援基於 LXC (Linux Container) 的容器，抑或是基於Kernel 的VM，即為 KVM，也就是將 Linux Kernel 作為 Hypervisor 的虛擬化技術。  而 Proxmox 也透過介於 Host 與 Guest 的 QEMU 去處理 Guest 的硬體請求，將其轉譯">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/PVE/cover.jpg">
+<meta property="article:published_time" content="2024-09-11T08:16:15.000Z">
+<meta property="article:modified_time" content="2024-09-28T06:15:51.690Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Proxmox VE">
+<meta property="article:tag" content="Virtual Machine">
+<meta property="article:tag" content="Infrastructure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/PVE/cover.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/c5581068.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-28 14:15:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">167</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">111</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/PVE/cover.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-09-11T08:16:15.000Z" title="發表於 2024-09-11 16:16:15">2024-09-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2024-09-28T06:15:51.690Z" title="更新於 2024-09-28 14:15:51">2024-09-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/">實作紀錄</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="實作 Proxmox VE VM 的 Live Migrations | PVE 系列-1"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><!-- ---
+Part3
+
+# High Availability (HA)
+
+# 設定 HA Group --> 
+
+
+<h1 id="Proxmox-VE-介紹"><a href="#Proxmox-VE-介紹" class="headerlink" title="Proxmox VE 介紹"></a>Proxmox VE 介紹</h1><p><strong>Proxmox VE(PVE) 是一個開源的虛擬化環境</strong>，能夠同時支援基於 LXC (Linux Container) 的容器，抑或是基於Kernel 的VM，即為 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9F%BA%E4%BA%8E%E5%86%85%E6%A0%B8%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA"><strong>KVM</strong></a>，也就是將 Linux Kernel 作為 Hypervisor 的虛擬化技術。</p>
+<p><img src="/img/PVE/Single_PVE.png"></p>
+<p>而 Proxmox 也透過介於 Host 與 Guest 的 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/QEMU">QEMU</a> 去處理 Guest 的硬體請求，將其轉譯給真正的硬體，搭配KVM 一起運作可帶來指令處理效能上的提升。因此可以以近乎本地環境的速度來去進行虛擬化。</p>
+<h1 id="實體節點設定"><a href="#實體節點設定" class="headerlink" title="實體節點設定"></a>實體節點設定</h1><h2 id="Proxmox-VE-images-燒錄"><a href="#Proxmox-VE-images-燒錄" class="headerlink" title="Proxmox VE images 燒錄"></a>Proxmox VE images 燒錄</h2><p><img src="/img/PVE/image.png"></p>
+<p>這裡準備好 USB　將 Proxmox VE 的 iso image 放置其中，我選擇  <strong>Proxmox VE 7.4 ISO Installer</strong></p>
+<blockquote>
+<p>PVE Image <a target="_blank" rel="noopener" href="https://www.proxmox.com/en/downloads/proxmox-virtual-environment/iso">官網下載處</a></p>
+</blockquote>
+<p>接著就是要準備節點，並且在個別主機上調整開機順序，進到 BIOS 後將 USB 調整成第一順位，<strong>接著可以順便檢查一下BIOS 中的 KVM 有沒有 Enable，一定要先去 Enable</strong>。我的環境下，可在 BIOS 設定中的 Advanced 中找到 <strong>Intel Virtualization Technology</strong> ，接著就 Enable</p>
+<p><img src="/img/PVE/bios.jpeg"></p>
+<p>之後正常開機後就會跳安裝導覽，就依序進行安裝就好。安裝完畢後透過網頁登入架設的節點後。就可以來建立 Cluster 了~</p>
+<h1 id="建立-Clusters"><a href="#建立-Clusters" class="headerlink" title="建立 Clusters"></a>建立 Clusters</h1><h2 id="確認節點資訊"><a href="#確認節點資訊" class="headerlink" title="確認節點資訊"></a>確認節點資訊</h2><p>目前有兩個節點，在建立 Cluster 之前會需要確認一下 <strong>&#x2F;etc&#x2F;hosts</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">節點 1</span><br><span class="line">172.25.166.68 pve.oplab.io pve</span><br><span class="line">節點 2</span><br><span class="line">172.25.166.42 pve2.oplab.io pve2</span><br></pre></td></tr></table></figure>
+
+<h2 id="開始建立"><a href="#開始建立" class="headerlink" title="開始建立"></a>開始建立</h2><p>首先進到節點1 <strong>Datacenter</strong> 的找到 <strong>Cluster</strong> 後就選擇 Create Cluster</p>
+<p><img src="/img/PVE/cluster1.png"></p>
+<p>接著幫 Cluster 取名，這裡叫做 <code>LabCluster</code>，並且選擇你的 Cluster Network，接著按下 Create。</p>
+<p><img src="/img/PVE/cluster2.png"></p>
+<p>建立完成後的畫面會是這樣，可以看到節點 1 <code>pve</code> 被加入 cluster 當中。</p>
+<p><img src="/img/PVE/cluster3.png"></p>
+<p>接著我們必須將其他節點 Join 到這個 Cluster 當中。可以在 <strong>Cluster</strong> 當中找到 <strong>Join Information</strong> 可以先將這 show 出來的資訊複製起來。</p>
+<p><img src="/img/PVE/join.png"></p>
+<p><img src="/img/PVE/join2.png"></p>
+<p>接著就會需要到第二個節點 <code>pve2</code> (我這裡是另一台主機) 來去加入 Cluster，這裡一樣在 <strong>Cluster</strong> 中找到 <strong>Join Information</strong>，接著填入剛才複製的 join 資訊。 <strong>加入完畢後，就可以在兩台節點都看見彼此了。</strong></p>
+<p><img src="/img/PVE/view1.png"></p>
+<p><img src="/img/PVE/view2.png"></p>
+<p>接著如果這時候心急去建立一個VM 然後就以為能 migrate 那就錯了，這時候你的 backup 節點就會因為找不到你VM 的 Config file 而報錯，像下面這樣</p>
+<p><img src="/img/PVE/fail.png"></p>
+<p>沒錯，要能夠進行 Migration 還有兩個條件：</p>
+<ul>
+<li>VM Config file 要在節點間 Shared 或者是更完整一點， <strong>VM Disk 要能夠 Shared</strong></li>
+<li><strong>另外還有一點，用於建立VM 的 iso image 也要是 shared 的</strong></li>
+</ul>
+<blockquote>
+<p>為了實現這兩項目的，就必須要能夠有 shared storage 的 solution</p>
+</blockquote>
+<h1 id="Migration-流程"><a href="#Migration-流程" class="headerlink" title="Migration 流程"></a>Migration 流程</h1><p><img src="/img/PVE/mg1.png"></p>
+<p>到這裡來補充一下我們這次進行 Migration 的流程，這一篇我們會手動用在PVE介面上進行 migration，主要就是兩台 PVE 節點，預先建立好共享儲存架構，並且基於這個架構去建立虛擬機，再將這個虛擬機從一個節點轉移到另一個節點。</p>
+<blockquote>
+<p>所以接著就要來透過 Ceph 來建立儲存的架構了。</p>
+</blockquote>
+<h1 id="Ceph-介紹"><a href="#Ceph-介紹" class="headerlink" title="Ceph 介紹"></a>Ceph 介紹</h1><blockquote>
+<p>Ceph的儲存叢集（Ceph Storage Cluster），又稱為<code>RADOS</code>（<strong>R</strong>eliable, <strong>A</strong>utonomic <strong>D</strong>istributed <strong>O</strong>bject <strong>S</strong>tore）它提供了一個可靠、能自我管理的分散式物件儲存區。採C++開發，這個叢集是居於Ceph架構底層的軟體儲存系統，整個環境的資料都放在這裡，具有自我修復與管理的能力，並且是以自動運作的OSD儲存節點，以及輕量的Monitor監控程式組成。</p>
+</blockquote>
+<h2 id="Ceph-的元件"><a href="#Ceph-的元件" class="headerlink" title="Ceph 的元件"></a>Ceph 的元件</h2><ul>
+<li>Ceph OSDs<ul>
+<li>Ceph 的daemon (<code>ceph-osd</code>)</li>
+<li>用於儲存資料，處理資料複製、恢復等</li>
+<li>通過檢查 ceph-osd 的 heartbeat 來向 Ceph Monitor 提供監控資訊</li>
+<li><strong>對於高可用性(High Availiablity, HA)  以及 冗餘(Redundancy) 目的:  至少需要 3 個 Ceph OSDs</strong></li>
+</ul>
+</li>
+<li>Monitors<ul>
+<li><code>ceph-mon</code></li>
+<li>維護展示集群狀態的圖表，包含監視圖、OSD圖</li>
+<li>負責管理 daemon 和 client 之間的身份驗證</li>
+<li><strong>對於高可用性(High Availiablity, HA)  以及 冗餘(Redundancy) 目的:  至少需要 3 個 Ceph Monitors</strong></li>
+</ul>
+</li>
+<li>Managers<ul>
+<li><code>ceph-mgr</code></li>
+<li>負責跟蹤 runtime 指標和 Ceph Cluster 當前狀態 Ex. 儲存利用率、當前系統負載</li>
+<li><strong>對於高可用性(High Availiablity, HA)  以及 冗餘(Redundancy) 目的:  至少需要 2 個 Ceph Managers</strong></li>
+</ul>
+</li>
+<li>MDSs:<ul>
+<li>Ceph Metadata Server (Ceph MDS) 為Ceph 檔案系統儲存 metadata<ul>
+<li>也就是說 如果是Ceph block device, Ceph object storage 則不使用 MDS</li>
+</ul>
+</li>
+<li><strong>如果要建立 Ceph Filesystem (Cephfs)，也需要事先建立 MSD</strong></li>
+<li>Ceph MDS 使 POSIX 文件系統使用者可在不對 Ceph 儲存 cluster 造成負擔的狀況下執行像是 <code>ls</code> 或者 <code>find</code> 命令</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p> Ceph 會是一種分散式儲存系統，它的底層由多臺伺服器組成的叢集環境支撐 (也就是我們剛才架設的 PVE Cluster)。如果你需要擴充儲存空間或提升系統規模，只要再加入更多的伺服器到叢集中即可，這讓擴展變得非常簡單。在這種架構下，Ceph 有很高的可靠性，系統會自動進行修復和管理。當資料寫入時，會自動複製到多個節點上，<strong>這樣即使某個節點出現故障，整個系統依然能正常運作，資料也不會損壞。</strong> 這樣的設計讓 Ceph 能夠提供穩定且安全的儲存解決方案。</p>
+</blockquote>
+<h2 id="安裝-Ceph"><a href="#安裝-Ceph" class="headerlink" title="安裝 Ceph"></a>安裝 Ceph</h2><p>先在每個節點中都安裝 Ceph，這裡有兩個節點，那就兩個節點都要安裝</p>
+<p><img src="/img/PVE/ceph1.png"></p>
+<p>點選 <strong>Start quincy installatio</strong>  (這裡沒特別指定版本，就用它給的)</p>
+<p><img src="/img/PVE/ceph2.png"></p>
+<p>下載過程，會提示是否繼續，就 <code>Y</code></p>
+<p><img src="/img/PVE/ceph3.png"></p>
+<p>完成後會接續要你指定網路介面</p>
+<p><img src="/img/PVE/ceph4.png"></p>
+<p>安裝成功後，會提示你接下來的步驟，而我們也會照這個步驟做:</p>
+<ul>
+<li>在每個節點都要安裝 Ceph</li>
+<li>添加額外的  Ceph Monitor</li>
+<li>為每個節點建立 Ceph OSD</li>
+<li>建立 Ceph Pool</li>
+</ul>
+<p><img src="/img/PVE/ceph5.png"></p>
+<blockquote>
+<p>在其他節點重複上面的安裝流程， 一旦每個節點都安裝好後，這時候去看 Health 應該會是 warning <code>OSD count 0 &lt; osd_pool_default_size 3</code> 這是正常的，因為還沒建立 OSD<br><img src="/img/PVE/warn.png"></p>
+</blockquote>
+<h2 id="建立-Ceph-OSD"><a href="#建立-Ceph-OSD" class="headerlink" title="建立 Ceph OSD"></a>建立 Ceph OSD</h2><p>為了建立 Ceph OSD，勢必先要有閒置的硬碟空間。所以這裡，要先在每個節點中找到硬碟進行設定。首先進入 <code>pve</code> 節點中的 <strong>Disk</strong>，將閒置硬碟格式化，如果沒有閒置硬碟也可以用USB外接。</p>
+<p><img src="/img/PVE/osd1.png"></p>
+<p>接著去 <strong>PVE</strong> &gt; <strong>Ceph</strong> &gt; <strong>OSD</strong> 底下點選 <strong>Create: OSD</strong> 然後選擇剛剛格式化的硬碟，接著就點選 <strong>Create</strong></p>
+<p><img src="/img/PVE/osd2.png"></p>
+<p>我們在其他節點也進行一樣的步驟來安裝OSD</p>
+<p><img src="/img/PVE/osd3.png"></p>
+<p>安裝好後，可以在兩個節點的 <strong>OSD</strong> 中都看到 osd 的種類跟狀態</p>
+<p><img src="/img/PVE/osd4.png"></p>
+<blockquote>
+<p>另外，為了冗餘和高可用性，可以額外建立兩個 Ceph Manager (Active-Standy)</p>
+</blockquote>
+<div class="note info flat"><p>根據 <a target="_blank" rel="noopener" href="https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/ceph-object-storage/ceph-xu-yao-da-liang-ji-yi-ti">這篇</a> 的建議:</p>
+<ul>
+<li><code>ceph-osd</code> Process 在執行過程中會消耗CPU資源，所以一般會為每一個 <code>ceph-osd</code> 程序繫結一個CPU核上。</li>
+<li><code>ceph-mon</code> Process 並不十分消耗CPU資源，所以不必為 <code>ceph-mon</code> Process預留過多的CPU資源。</li>
+<li><code>ceph-msd</code> 也是非常消耗CPU資源的，所以需要提供更多的CPU資源。</li>
+<li><code>ceph-mon</code> 和 <code>ceph-mds</code> 需要2G記憶體，每個 <code>ceph-osd</code> Process 需要1G記憶體，2G更好。</li>
+</ul>
+</div>
+
+<h2 id="建立-Ceph-Pool"><a href="#建立-Ceph-Pool" class="headerlink" title="建立 Ceph Pool"></a>建立 Ceph Pool</h2><p>Ceph Pool 會用來 Combined 不同節點之間的 OSD，這也會是我們後續 VM Disk 存放的地方。在 <code>pve</code> 節點中，我們進入 <strong>Ceph</strong> &gt; <strong>Pools</strong>，選擇 <strong>Create: Ceph Pool</strong>，這裡要給定pool名稱，這裡叫它 <code>syncbricks-ceph</code>。 另外也需要指定 Pool Size，正常來說 Min.Size 最低就是2，而 Size 預設會是 3，但由於我目前只有兩台主機，因此 size 先用2。讓兩個OSD加入倒Ceph Pool。</p>
+<p><img src="/img/PVE/pool1.png"></p>
+<p>建立好後應該會跳 warning，因為PVE預設會希望有 3個 OSD 但目前只有兩個</p>
+<p><img src="/img/PVE/pool2.png"><br><img src="/img/PVE/pool3.png"></p>
+<p>可以目前 online 的 OSD 有兩個，那目前為止就是正常。另外， Ceph Pool 建立好後，可以發現兩個節點底下多出了 <code>syncbricks-ceph</code>。這樣之後兩個節點就可以共享 VM Disk，以利後續的 VM Migration</p>
+<p><img src="/img/PVE/pool4.png"></p>
+<p><img src="/img/PVE/pool5.png"></p>
+<h2 id="建立-Ceph-File-System"><a href="#建立-Ceph-File-System" class="headerlink" title="建立 Ceph File System"></a>建立 Ceph File System</h2><p><img src="/img/PVE/cephfs.svg"></p>
+<blockquote>
+<p><strong>Ceph File System (CephFS)</strong> 是一個符合 POSIX 標準的檔案系統，構建在 <strong>Ceph 分散式物件存儲系統 RADOS</strong> 之上。CephFS 的目標是為各種應用提供高可用且具高效能的檔案儲存 Solution，可用於高效能計算 (HPC) 暫存區，以及分散式工作流程的共享存儲</p>
+</blockquote>
+<blockquote>
+<p>CephFS 的架構上，檔案的 metadata 被儲存在獨立於檔案資料的 RADOS 資料池中，並透過可彈性擴展的 MDS Cluster 提供服務，這樣就可以支援更高吞吐量的 workload。client <strong>可以直接存取 RADOS 讀寫檔案資料區塊</strong>，從而使 workload 能夠隨著底層 RADOS 物件存儲的規模來進行線性擴展，這個過程也不需要任何 gateway 或 agent 來中介資料 I&#x2F;O</p>
+</blockquote>
+<blockquote>
+<p>資料的存取由 MDS Cluster 負責協調，這些 MDS 管理分散式的 metadata cache，client端會和 MDS 會一起維護metadata的狀態。MDS 將metadata變更整合後，高效寫入 RADOS 的日誌中，不會在本地儲存任何metadata。這種設計讓客戶端在 POSIX 檔案系統下能快速且一致地協作</p>
+</blockquote>
+<p>介紹結束後就開始繼續實作，到目前為止，已經處理好共享 VM 硬碟的方式，接著要進行 VM ISO Image 的共享，如果沒有進行共享，後續再進行 migration 就會跳出下面的錯誤訊息， <code>Can&#39;t migrate VM with local CD/DVD</code> 這就代表需要用 shared 的方式進行</p>
+<p><img src="/img/PVE/warn2.png"></p>
+<blockquote>
+<p>根據<a target="_blank" rel="noopener" href="https://forum.proxmox.com/threads/ceph-mount-a-pg-pool-for-images-isos.134367/">這篇</a> 要能夠共享 iso image 至少需要進行下面步驟:</p>
+</blockquote>
+<ol>
+<li><strong>Create Ceph File System</strong>：<ul>
+<li>確保已經創建了Ceph FS，並且有至少兩個 MDS 待命</li>
+</ul>
+</li>
+<li><strong>Add Ceph FS</strong>：<ul>
+<li>在節點上掛載Ceph FS，這樣所有節點都可以共享相同的ISO image</li>
+</ul>
+</li>
+</ol>
+<h3 id="建立-MDS"><a href="#建立-MDS" class="headerlink" title="建立 MDS"></a>建立 MDS</h3><p>因此我們分別為兩個節點都建立 MDS</p>
+<p><img src="/img/PVE/meta1.png"></p>
+<p><img src="/img/PVE/meta2.png"></p>
+<p>接著我們在節點1 當中 <strong>Create: Ceph FS</strong>，取名為 <code>cephfs</code>。</p>
+<p><img src="/img/PVE/fs1.png"></p>
+<p>建立好後，兩邊節點就會出現 <code>cephdfs</code> ，接著就可以上傳 iso image 到 shared file system，我這裡上傳的是 Ubuntu 22.04 Desktop 的映像檔</p>
+<p><img src="/img/PVE/fs2.png"></p>
+<h1 id="建立-VM-進行測試"><a href="#建立-VM-進行測試" class="headerlink" title="建立 VM 進行測試"></a>建立 VM 進行測試</h1><p>這次選在 <code>pve</code> 節點中建立 Ubuntu VM，在建立過程中，在設定 <strong>OS</strong> 的時候，選擇 **Use CD&#x2F;DVD disc image file(iso)**，然後 <strong>Storage</strong> 選擇剛剛建立的 Ceph 檔案系統 <code>cephfs</code>，接著 Filesystem 中想要用的 image</p>
+<p><img src="/img/PVE/vm1.png"></p>
+<p>當建立流程進行到 <strong>Disks</strong> 的部分，記得要將 <strong>Storage</strong> 設定為剛剛建立的 <code>syncbricks-ceph</code> </p>
+<p><img src="/img/PVE/vm2.png"></p>
+<p>接著就是建立 VM</p>
+<p><img src="/img/PVE/vm3.png"></p>
+<blockquote>
+<p>建立好後，就需要進入 VM 當中去安裝 Ubuntu，這部分就不贅述了~</p>
+</blockquote>
+<h1 id="手動測試-Migration"><a href="#手動測試-Migration" class="headerlink" title="手動測試 Migration"></a>手動測試 Migration</h1><p>我們可以在 VM 建立好後，在 <code>pve</code> 底下選擇我們剛才建立的 VM，點右鍵應該可以出現 <strong>Migration</strong> 的選項，我們就可以手動進行 migration 了</p>
+<p><img src="/img/PVE/mi1.png"></p>
+<p>&#x3D;我們將 <code>VM 100</code> 從節點 <code>pve1</code> migrate 到節點 <code>pve2</code>，完成後可以觀察到左側的VM位置已經出現在 <code>pve2</code> 底下了，這就代表 Migration 進行成功。</p>
+<p><img src="/img/PVE/mi2.png"></p>
+<blockquote>
+<p>到這裡都還很okay，下一步，我會想根據條件像是 CPU 使用率或者是 CPU 功耗作為條件，用腳本進行自動 migration，這個過程中也會需要從節點1 去開啟關機的節點2，這個過程中就會用到 Wake On Lan(WOL) 這個有趣的功能，這裡就留到下一篇在紀錄。</p>
+</blockquote>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>Proxmox VE<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10338613">https://ithelp.ithome.com.tw/articles/10338613</a><br><a target="_blank" rel="noopener" href="https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/jian-li-cong-ji">https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/jian-li-cong-ji</a><br><a target="_blank" rel="noopener" href="https://www.linuxyes.com/blog/linuxyes-3/post/proxmox-ve-replication-ha-9">https://www.linuxyes.com/blog/linuxyes-3/post/proxmox-ve-replication-ha-9</a><br><a target="_blank" rel="noopener" href="https://blog.tenyi.com/2020/01/proxmox-ve-two-nodes-ha-cluster.html">https://blog.tenyi.com/2020/01/proxmox-ve-two-nodes-ha-cluster.html</a><br><a target="_blank" rel="noopener" href="https://medium.com/%E5%BD%BC%E5%BE%97%E6%BD%98%E7%9A%84-swift-ios-app-%E9%96%8B%E7%99%BC%E6%95%99%E5%AE%A4/%E5%B7%A5%E6%8E%A7%E6%A9%9F%E5%AE%89%E8%A3%9Dproxmox-ve-pve-94a09647d95f">https://medium.com/彼得潘的-swift-ios-app-開發教室/工控機安裝proxmox-ve-pve-94a09647d95f</a></p>
+<p>Ceph<br><a target="_blank" rel="noopener" href="https://www.linuxtek.ca/2023/01/27/ceph-clustering-with-proxmox/">https://www.linuxtek.ca/2023/01/27/ceph-clustering-with-proxmox/</a><br><a target="_blank" rel="noopener" href="https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/ceph-object-storage">https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/ceph-object-storage</a><br><a target="_blank" rel="noopener" href="https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/ceph-object-storage/ceph-xu-yao-da-liang-ji-yi-ti">https://kawsing.gitbook.io/opensystem/andoid-shou-ji/pomoxve/ceph-object-storage/ceph-xu-yao-da-liang-ji-yi-ti</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7BcSnUz_2zQ">https://www.youtube.com/watch?v=7BcSnUz_2zQ</a><br><a target="_blank" rel="noopener" href="https://forum.proxmox.com/threads/ceph-mount-a-pg-pool-for-images-isos.134367/">https://forum.proxmox.com/threads/ceph-mount-a-pg-pool-for-images-isos.134367/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/c5581068.html">https://leozzmc.github.io/posts/c5581068.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Proxmox-VE/">Proxmox VE</a><a class="post-meta__tags" href="/tags/Virtual-Machine/">Virtual Machine</a><a class="post-meta__tags" href="/tags/Infrastructure/">Infrastructure</a></div><div class="post_share"><div class="social-share" data-image="/img/PVE/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/c8b16daf.html" title="二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree"><img class="cover" src="/img/LeetCode/236/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">二元樹的最近共同祖先 | Medium | LeetCode#236. Lowest Common Ancestor of a Binary Tree</div></div></a></div><div class="next-post pull-right"><a href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"><img class="cover" src="/img/LeetCode/117/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><div><a href="/posts/8efb2cec.html" title="基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2"><img class="cover" src="/img/PVE/cover.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-13</div><div class="title">基於 CPU 功耗來進行 PVE 虛擬機的 Live Migrations | PVE 系列-2</div></div></a></div><div><a href="/posts/bd2c9140.html" title="手動 migration 的其他方式 | PVE 系列-3"><img class="cover" src="/img/PVE/cover.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-22</div><div class="title">手動 migration 的其他方式 | PVE 系列-3</div></div></a></div><div><a href="/posts/a6822388.html" title="Proxmox VE 叢集部署 Promethues 以及 Grafana"><img class="cover" src="/img/Prometheus/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-11</div><div class="title">Proxmox VE 叢集部署 Promethues 以及 Grafana</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">167</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">111</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Proxmox-VE-%E4%BB%8B%E7%B4%B9"><span class="toc-number">1.</span> <span class="toc-text">Proxmox VE 介紹</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%A6%E9%AB%94%E7%AF%80%E9%BB%9E%E8%A8%AD%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">實體節點設定</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Proxmox-VE-images-%E7%87%92%E9%8C%84"><span class="toc-number">2.1.</span> <span class="toc-text">Proxmox VE images 燒錄</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-Clusters"><span class="toc-number">3.</span> <span class="toc-text">建立 Clusters</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A2%BA%E8%AA%8D%E7%AF%80%E9%BB%9E%E8%B3%87%E8%A8%8A"><span class="toc-number">3.1.</span> <span class="toc-text">確認節點資訊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E5%A7%8B%E5%BB%BA%E7%AB%8B"><span class="toc-number">3.2.</span> <span class="toc-text">開始建立</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Migration-%E6%B5%81%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">Migration 流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ceph-%E4%BB%8B%E7%B4%B9"><span class="toc-number">5.</span> <span class="toc-text">Ceph 介紹</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ceph-%E7%9A%84%E5%85%83%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">Ceph 的元件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%9D-Ceph"><span class="toc-number">5.2.</span> <span class="toc-text">安裝 Ceph</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-Ceph-OSD"><span class="toc-number">5.3.</span> <span class="toc-text">建立 Ceph OSD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-Ceph-Pool"><span class="toc-number">5.4.</span> <span class="toc-text">建立 Ceph Pool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-Ceph-File-System"><span class="toc-number">5.5.</span> <span class="toc-text">建立 Ceph File System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-MDS"><span class="toc-number">5.5.1.</span> <span class="toc-text">建立 MDS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-VM-%E9%80%B2%E8%A1%8C%E6%B8%AC%E8%A9%A6"><span class="toc-number">6.</span> <span class="toc-text">建立 VM 進行測試</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%8B%E5%8B%95%E6%B8%AC%E8%A9%A6-Migration"><span class="toc-number">7.</span> <span class="toc-text">手動測試 Migration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9f0b74f6.html" title="排序陣列轉換成 BST | Easy | LeetCode#108. Convert Sorted Array to Binary Search Tree"><img src="/img/LeetCode/108/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="排序陣列轉換成 BST | Easy | LeetCode#108. Convert Sorted Array to Binary Search Tree"/></a><div class="content"><a class="title" href="/posts/9f0b74f6.html" title="排序陣列轉換成 BST | Easy | LeetCode#108. Convert Sorted Array to Binary Search Tree">排序陣列轉換成 BST | Easy | LeetCode#108. Convert Sorted Array to Binary Search Tree</a><time datetime="2025-07-06T07:11:00.000Z" title="發表於 2025-07-06 15:11:00">2025-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/6dcce06b.html" title="每日溫度 | Medium | LeetCode#739. Daily Temperatures"><img src="/img/LeetCode/739/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="每日溫度 | Medium | LeetCode#739. Daily Temperatures"/></a><div class="content"><a class="title" href="/posts/6dcce06b.html" title="每日溫度 | Medium | LeetCode#739. Daily Temperatures">每日溫度 | Medium | LeetCode#739. Daily Temperatures</a><time datetime="2025-04-11T14:13:55.000Z" title="發表於 2025-04-11 22:13:55">2025-04-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
