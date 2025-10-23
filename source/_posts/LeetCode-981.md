@@ -2,7 +2,7 @@
 title: 基於時間的鍵值對儲存 | Medium | LeetCode#981. Time Based Key-Value Store
 tags:
   - Hash Table
-  - Binary Saerch
+  - Binary Search
   - LeetCode
   - Medium
   - C++
