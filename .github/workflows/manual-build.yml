@@ -68,45 +68,59 @@ jobs:
           path: ${{ github.event.inputs.lang == 'en' && 'public-en' || 'public' }}
           retention-days: 7
 
-      # ===== deploy mode =====
-      # Step 1: set up git credentials depending on lang
-      - name: Configure git credential for deploy
-        if: ${{ github.event.inputs.mode == 'deploy' }}
+            # ========== deploy mode: zh ==========
+      - name: Configure git credential for zh deploy
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         run: |
-          # We'll configure credentials differently for zh vs en
-          if [ "${{ github.event.inputs.lang }}" = "zh" ]; then
-            echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # no extra credential needed as long as deploy.repo uses HTTPS URL
+          # and points back to this same repo (leozzmc.github.io.git)
 
-            # GITHUB_TOKEN already injected automatically for this repo push
-            # For hexo-deployer-git using HTTPS repo URL, this is enough.
-
-          else
-            echo "Deploying en -> external repo leozzmc/en using EN_REPO_TOKEN"
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-
-            # Set up credentials for pushing to leozzmc/en
-            git config credential.helper store
-            cat > ~/.git-credentials <<EOF
-            https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
-            EOF
-          fi
-
-      - name: Build & Deploy (hexo deploy)
-        if: ${{ github.event.inputs.mode == 'deploy' }}
+      - name: Build & Deploy zh (hexo deploy)
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Running npm run kk (clean + g + deploy)"
+          echo "Running zh deploy..."
           npm run kk
-          echo "Deploy done."
+          echo "ZH Deploy done."
 
-      - name: Upload deployed artifact
-        if: ${{ github.event.inputs.mode == 'deploy' }}
+      - name: Upload deployed zh artifact
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         uses: actions/upload-artifact@v4
         with:
-          name: "deployed-${{ github.event.inputs.lang }}"
-          path: ${{ github.event.inputs.lang == 'en' && 'public-en' || 'public' }}
+          name: "deployed-zh"
+          path: public
+          retention-days: 7
+
+      # ========== deploy mode: en ==========
+      - name: Configure git credential for en deploy
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
+        run: |
+          echo "Deploying en -> external repo leozzmc/en using EN_REPO_TOKEN"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git config credential.helper store
+          cat > ~/.git-credentials <<EOF
+https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
+EOF
+
+      - name: Build & Deploy en (hexo deploy)
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
+        env:
+          EN_REPO_TOKEN: ${{ secrets.EN_REPO_TOKEN }}
+        run: |
+          echo "Running en deploy..."
+          npm run kk
+          echo "EN Deploy done."
+
+      - name: Upload deployed en artifact
+        if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "deployed-en"
+          path: public-en
           retention-days: 7
