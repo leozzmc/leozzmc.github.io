@@ -124,8 +124,8 @@ jobs:
 
           git config credential.helper store
           cat > ~/.git-credentials <<EOF
-https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
-EOF
+          https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
+          EOF
 
           # IMPORTANT:
           # Make sure config-en.yml deploy.repo is HTTPS:
