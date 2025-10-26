@@ -2,68 +2,75 @@
  * Butterfly
  * galleryGroup and gallery
  * {% galleryGroup [name] [descr] [url] [img] %}
- * {% gallery [lazyload],[rowHeight],[limit] %}
- * {% gallery url,[url],[lazyload],[rowHeight],[limit] %}
+ *
+ * {% gallery [button],[limit],[firstLimit] %}
+ * {% gallery url,[url],[button] %}
  */
 
 'use strict'
 
 const urlFor = require('hexo-util').url_for.bind(hexo)
 
-function gallery (args, content) {
-  const { data, languages } = hexo.theme.i18n
-  args = args.join(' ').split(',')
-  let rowHeight, limit, lazyload, type, dataStr
+const DEFAULT_LIMIT = 10
+const DEFAULT_FIRST_LIMIT = 10
+const IMAGE_REGEX = /!\[(.*?)\]\(([^\s]*)\s*(?:["'](.*?)["']?)?\s*\)/g
 
-  if (args[0] === 'url') {
-    [type, dataStr, lazyload, rowHeight = 220, limit = 10] = args // url,[link],[lazyload],[rowHeight],[limit]
-  } else {
-    [lazyload, rowHeight = 220, limit = 10] = args // [lazyload],[rowHeight],[limit]
-    const regex = /!\[(.*?)\]\(([^\s]*)\s*(?:["'](.*?)["']?)?\s*\)/g
-    let m
-    const arr = []
-    while ((m = regex.exec(content)) !== null) {
-      if (m.index === regex.lastIndex) {
-        regex.lastIndex++
-      }
-      arr.push({
-        url: m[2],
-        alt: m[1],
-        title: m[3]
-      })
-    }
+// Helper functions
+const parseGalleryArgs = args => {
+  const [type, ...rest] = args.join(' ').split(',').map(arg => arg.trim())
+  return {
+    isUrl: type === 'url',
+    params: type === 'url' ? rest : [type, ...rest]
+  }
+}
 
-    dataStr = JSON.stringify(arr)
+const parseImageContent = content => {
+  const images = []
+  let match
+
+  while ((match = IMAGE_REGEX.exec(content)) !== null) {
+    images.push({
+      url: match[2],
+      alt: match[1] || '',
+      title: match[3] || ''
+    })
   }
 
-  type = type ? ' url' : ' data'
-  const lazyloadClass = lazyload === 'true' ? 'lazyload' : ''
-
-  return `<div class="gallery">
-    <div class="fj-gallery ${lazyloadClass + type}" data-rowHeight="${rowHeight}" data-limit="${limit}">
-    <span class="gallery-data">${dataStr}</span>
-    </div>
-    <button class="gallery-load-more"><span>${data[languages[0]].load_more}</span><i class="fa-solid fa-arrow-down"></i></button>
-    </div>`
+  return images
 }
 
-function galleryGroup (args) {
-  const name = args[0]
-  const descr = args[1]
-  const url = urlFor(args[2])
-  const img = urlFor(args[3])
-
-  return `
-  <figure class="gallery-group">
-  <img class="gallery-group-img no-lightbox" src='${img}' alt="Group Image Gallery">
-  <figcaption>
-  <div class="gallery-group-name">${name}</div>
-  <p>${descr}</p>
-  <a href='${url}'></a>
-  </figcaption>
-  </figure>
-  `
+const createGalleryHTML = (type, dataStr, button, limit, firstLimit) => {
+  return `<div class="gallery-container" data-type="${type}" data-button="${button}" data-limit="${limit}" data-first="${firstLimit}">
+    <div class="gallery-items">${dataStr}</div>
+  </div>`
 }
 
+const gallery = (args, content) => {
+  const { isUrl, params } = parseGalleryArgs(args)
+
+  if (isUrl) {
+    const [dataStr, button = false, limit = DEFAULT_LIMIT, firstLimit = DEFAULT_FIRST_LIMIT] = params
+    return createGalleryHTML('url', urlFor(dataStr), button, limit, firstLimit)
+  }
+
+  const [button = false, limit = DEFAULT_LIMIT, firstLimit = DEFAULT_FIRST_LIMIT] = params
+  const images = parseImageContent(content)
+  return createGalleryHTML('data', JSON.stringify(images), button, limit, firstLimit)
+}
+
+const galleryGroup = args => {
+  const [name = '', descr = '', url = '', img = ''] = args.map(arg => arg.trim())
+
+  return `<figure class="gallery-group">
+    <img class="gallery-group-img no-lightbox" src='${urlFor(img)}' alt="Group Image Gallery">
+    <figcaption>
+      <div class="gallery-group-name">${name}</div>
+      <p>${descr}</p>
+      <a href='${urlFor(url)}'></a>
+    </figcaption>
+  </figure>`
+}
+
+// Register tags
 hexo.extend.tag.register('gallery', gallery, { ends: true })
 hexo.extend.tag.register('galleryGroup', galleryGroup)
