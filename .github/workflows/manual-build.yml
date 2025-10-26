@@ -85,18 +85,20 @@ jobs:
 
       - name: Configure git credential for zh deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+          echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config credential.helper store
+          echo "https://${GITHUB_TOKEN}:@github.com/leozzmc/leozzmc.github.io.git" > ~/.git-credentials
 
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-            # config-zh.yml should use HTTPS repo:
-            # deploy:
-            #   type: git
-            #   repo: https://github.com/leozzmc/leozzmc.github.io.git
-            #   branch: deploy
-            #   message: "deployment"
+          # deploy:
+          #   type: git
+          #   repo: https://github.com/leozzmc/leozzmc.github.io.git
+          #   branch: deploy
+          #   message: "deployment"
 
       - name: Build & Deploy zh (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
