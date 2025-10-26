@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>子集問題ii | Medium | LeetCode#90. Subsets II | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="題目敘述  題目難度: Medium 題目敘述：給定一個整數陣列 nums， 回傳所有可能的子集，回傳的子集不能重複，但可以任意順序排序  這題是 78.Subsets 的延伸題型，可以看我這一篇解法，但是這題不同的是，對於 nums 陣列中 [2] 是不等於 [2,2] 的，但 [1,2] 是等於 [2,1] 的，也就是説對於個別子集來說，若相同元素但元素數量不同則看成不同子集   解法一開始的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="子集問題ii | Medium | LeetCode#90. Subsets II">
+<meta property="og:url" content="https://leozzmc.github.io/posts/80e799a5.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="題目敘述  題目難度: Medium 題目敘述：給定一個整數陣列 nums， 回傳所有可能的子集，回傳的子集不能重複，但可以任意順序排序  這題是 78.Subsets 的延伸題型，可以看我這一篇解法，但是這題不同的是，對於 nums 陣列中 [2] 是不等於 [2,2] 的，但 [1,2] 是等於 [2,1] 的，也就是説對於個別子集來說，若相同元素但元素數量不同則看成不同子集   解法一開始的">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/LeetCode/90/cover.jpeg">
+<meta property="article:published_time" content="2024-10-13T08:05:33.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.592Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Medium">
+<meta property="article:tag" content="backtracking">
+<meta property="article:tag" content="recursion">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/LeetCode/90/cover.jpeg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "子集問題ii | Medium | LeetCode#90. Subsets II",
+  "url": "https://leozzmc.github.io/posts/80e799a5.html",
+  "image": "https://leozzmc.github.io/img/LeetCode/90/cover.jpeg",
+  "datePublished": "2024-10-13T08:05:33.000Z",
+  "dateModified": "2025-10-26T12:28:30.592Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/80e799a5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '子集問題ii | Medium | LeetCode#90. Subsets II',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/LeetCode/90/cover.jpeg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">子集問題ii | Medium | LeetCode#90. Subsets II</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">子集問題ii | Medium | LeetCode#90. Subsets II</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-10-13T08:05:33.000Z" title="發表於 2024-10-13 16:05:33">2024-10-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.592Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>4分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="題目敘述"><a href="#題目敘述" class="headerlink" title="題目敘述"></a>題目敘述</h1><p><img src="/img/LeetCode/90/question.jpeg"></p>
+<ul>
+<li>題目難度: <code>Medium</code></li>
+<li>題目敘述：給定一個整數陣列 <code>nums</code>， 回傳所有可能的子集，回傳的子集不能重複，但可以任意順序排序</li>
+</ul>
+<div class="note info flat"><p>這題是 <a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets/description/">78.Subsets</a> 的延伸題型，可以看我<a href="https://leozzmc.github.io/posts/3e4bf679.html">這一篇解法</a>，但是這題不同的是，對於 <code>nums</code> 陣列中 <code>[2]</code> 是不等於 <code>[2,2]</code> 的，但 <code>[1,2]</code> 是等於 <code>[2,1]</code> 的，<strong>也就是説對於個別子集來說，若相同元素但元素數量不同則看成不同子集</strong></p>
+</div>
+
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><h2 id="一開始的想法"><a href="#一開始的想法" class="headerlink" title="一開始的想法"></a>一開始的想法</h2><p>我的想法就跟上一題差不多，只是想說在添加到回傳陣列時，額外進行檢查，踢除重複的子集。</p>
+<h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; result;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">subsetHelper</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp;nums, vector&lt;<span class="type">int</span>&gt; &amp;cur, <span class="type">int</span> depth)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(depth == nums.<span class="built_in">size</span>())&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt; result.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(cur == result[i]) <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            result.<span class="built_in">push_back</span>(cur);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//not pick</span></span><br><span class="line">        <span class="built_in">subsetHelper</span>(nums, cur, depth+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//pick</span></span><br><span class="line">        cur.<span class="built_in">push_back</span>(nums[depth]);</span><br><span class="line">        <span class="built_in">subsetHelper</span>(nums, cur, depth+<span class="number">1</span>);</span><br><span class="line">        cur.<span class="built_in">pop_back</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">subsetsWithDup</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums)&#123;</span><br><span class="line">        <span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>()); </span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; cur;</span><br><span class="line">        <span class="built_in">subsetHelper</span>(nums,cur,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這裡額外說明</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>()); </span><br></pre></td></tr></table></figure>
+
+<p>這段的作用是對輸入陣列進行排序，這對於處理重複元素非常重要，<strong>一旦將輸入陣列排序後，所有重複的元素會相鄰排列。我們就可在遞迴處理時能夠輕鬆跳過這些重複元素。</strong> 例如，如果輸入是 <code>[2,1,2]</code>，排序後會變成 <code>[1,2,2]</code>，這樣可以在遞迴中只選擇一組 <code>2</code>，而不會產生重複子集</p>
+<p>如果沒排序產生的子集可能會像是下面這樣</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[]</span><br><span class="line">[2]</span><br><span class="line">[1]</span><br><span class="line">[2]</span><br><span class="line">[2, 1]</span><br><span class="line">[2, 2]</span><br><span class="line">[1, 2]</span><br><span class="line">[2, 1, 2]</span><br></pre></td></tr></table></figure>
+
+<p>而這裡再將子集加入到回傳陣列前，進行重複檢查</p>
+<h3 id="執行結果"><a href="#執行結果" class="headerlink" title="執行結果"></a>執行結果</h3><p>這樣做的執行結果就很爛，畢竟每次產生一種子集前都需要進行 <code>result.size()</code> 次的運算 </p>
+<p><img src="/img/LeetCode/90/result1.jpeg"></p>
+<h2 id="更正後的解法"><a href="#更正後的解法" class="headerlink" title="更正後的解法"></a>更正後的解法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; result;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">subsetHelper</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp;nums, vector&lt;<span class="type">int</span>&gt; &amp;cur, <span class="type">int</span> depth)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        result.<span class="built_in">push_back</span>(cur);</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=depth; i&lt; nums.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (i &gt; depth &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            cur.<span class="built_in">push_back</span>(nums[i]);</span><br><span class="line">            <span class="built_in">subsetHelper</span>(nums, cur, i+<span class="number">1</span>);</span><br><span class="line">            cur.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">subsetsWithDup</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums)&#123;</span><br><span class="line">        <span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>()); </span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; cur;</span><br><span class="line">        <span class="built_in">subsetHelper</span>(nums,cur,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這裡更正的地方，這裡改成透過迴圈來控制嘗試組合，這裡 <code>int i=depth</code>  <strong>是為了確保生成的子集是從當前的遞迴層次開始，而不會重複處理之前已經包含在其他子集中的元素</strong> 若設成0 會導致每次遞迴都會從頭重新選擇元素，子集就會重複生成。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (i &gt; depth &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+<p>這行的邏輯是：如果當前元素 <code>nums[i]</code> 與前一個元素 <code>nums[i-1]</code> 相同，<strong>並且這是第一次出現重複，我們就跳過這個元素的處理，這樣避免生成相同的子集。</strong> 例如，對於 <code>[1, 2, 2]</code>：</p>
+<ul>
+<li>當 <code>i = 2</code> 且 <code>nums[2] == nums[1]</code>（它們都是 2），我們就會跳過這次</li>
+</ul>
+<blockquote>
+<p>上面這步驟也歸功於先前有先對 <code>nums</code> 進行排序</p>
+</blockquote>
+<p>如果通過檢查，則將當前元素加入子集並繼續進行遞迴，而若退回 backtrack 到當前層，則將目前的子集元素 pop出來嘗試下一種可能。</p>
+<h3 id="執行結果-1"><a href="#執行結果-1" class="headerlink" title="執行結果"></a>執行結果</h3><p><img src="/img/LeetCode/90/result2.jpeg"></p>
+<h1 id="複雜度"><a href="#複雜度" class="headerlink" title="複雜度"></a>複雜度</h1><p>這裡分析更正後的寫法</p>
+<h2 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h2><ul>
+<li>子集的產生： 對於每個元素都有選或不選的兩種可能，因此這裡的複雜度會是 $2^n$，其中$n$ 為 <code>nums</code> 長度</li>
+<li>判斷重複元素：<code>if (i &gt; depth &amp;&amp; nums[i] == nums[i - 1]) continue</code> 並不改變複雜度</li>
+<li>元素排序： $O(n Log n)$</li>
+</ul>
+<p>因此整題時間複雜度為 $O(nLogn + 2^n)$</p>
+<h2 id="空間複雜度"><a href="#空間複雜度" class="headerlink" title="空間複雜度"></a>空間複雜度</h2><ul>
+<li>遞迴的深度最大為 $n$，即所有元素都加入子集的情況，因此遞迴調用的空間複雜度為 $O(n)$</li>
+<li>一共可能有  $2^n$ 個子集 (選vs不選)</li>
+</ul>
+<p>因此整體空間複雜度會是 $O(n * 2^n)$</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/80e799a5.html">https://leozzmc.github.io/posts/80e799a5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Medium/">Medium</a><a class="post-meta__tags" href="/tags/backtracking/">backtracking</a><a class="post-meta__tags" href="/tags/recursion/">recursion</a></div><div class="post-share"><div class="social-share" data-image="/img/LeetCode/90/cover.jpeg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/3e4bf679.html" title="子集問題 | Medium | LeetCode#78. Subsets"><img class="cover" src="/img/LeetCode/78/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">子集問題 | Medium | LeetCode#78. Subsets</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述:  給定一個具有不重複元素的整數陣列 nums，回傳所有可能的子集合  子集會包含空集合，另外，若子集中的元素相同但順序不同，則視為相同子集。 123Ex. nums = &#123;1,2,3&#125;[1,2] = [2,1][1,3,2] = [3,1,2]  解法一開始的想法子集合問題也是典型的 backtracking 問題，它包含了在每個數字中選與不選，因此終止條件會是目前選擇的深度到達題目所給的長度上限就停止，而在每一層中要做的事就是選跟不選，首先是不選，那就會需要直接往往下一層去，到下一層在進行選以及不選，直到到達長度限制。 假設題目是 nums=&#123;1,2&#125; 則他的樹狀結構會如下： 123456         []      /      \   []         [1]  /  \       /    \[]   [2]  [1]    [1,2]  我的解法123456789101112131415161718192021222324class Solution &#123;publ...</div></div></div></a><a class="pagination-related" href="/posts/14d09d4a.html" title="字詞模式 | Easy | LeetCode#290. Word Pattern"><img class="cover" src="/img/LeetCode/290/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">字詞模式 | Easy | LeetCode#290. Word Pattern</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Easy 題目描述: 給定字串 pattern 以及 字串 s，檢查 s 是否遵循相同模式  題目有說明這裡 相同模式 的意思: pattern 中的任一字元與 s 中的非空字串完全匹配的 1對1映射關係，具體來說規則如下:  在 pattern 中的每個字母，都有明確的對應到 s 中的 unique 字串 在 s 中的 unique 字串，明確對應到 pattern 中的一個字母 沒有兩個字母映射到同一個單詞，也沒有兩個單詞映射到同一個字母     解法一開始的想法這裡想法很單純就是透過 Hash Table 來去建立並儲存映射關係。而在建立過程中可以去檢查當前的字母和對應字串是否已經存在映射關係於 hash table 中，如果有救回傳 false，如果整個 hash table都建立好後都沒有重複的映射關係那就回傳 true。 我的解法1234567891011121314151617181920212223242526272829303132333435class Solution &#123;public:    bool wordPatter...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/a97a6fae.html" title="回文分割 | Medium | LeetCode#131. Palindrome Partitioning"><img class="cover" src="/img/LeetCode/131/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-17</div><div class="info-item-2">回文分割 | Medium | LeetCode#131. Palindrome Partitioning</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目敘述：給定字串 s，分割字串使其所有子字串都是 回文(Palindrome) ，並回傳所有可能的分割結果  回文(Palindrome) 代表字串從左往右讀的結果跟從右往左讀的結果一樣。   解法一開始的想法這題的想法一樣會是 backtracking，主要會需要去分割每個字串，意思是將不同字串組合加入到某個字串變數中，接著需要檢查該字串組合是否是回文，如果不是，那就繼續嘗試其他字串組合，如果是回文，那就將該字串組合添加到子陣列中，並且進入下一層遞迴。  遞迴終止條件就是當前遞迴深度已經達到題目給的字串長度  到目前爲止的想法都蠻正確的，但這次主要會是在字串分割還有字串反轉，我其實還沒刷對應題目，因此要怎麼樣在Leetcode 中快速做到，是這題中學習的  我的解法123456789101112131415161718192021222324252627282930class Solution &#123;public:    vector&lt;vector&lt;string&gt;&gt; result;    bool check...</div></div></div></a><a class="pagination-related" href="/posts/aeee38d.html" title="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number"><img class="cover" src="/img/LeetCode/17/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-28</div><div class="info-item-2">電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給定一個包含由數字 2-9 組成的連續字串 digits， 回傳所有可能的字母組合，回傳的組合不限順序。  這裡的字母可能對應到的就是題目給的電話號碼圖片，數字 1 跟 0 沒有對應的字母   解法一開始的想法提到 所有可能的組合數 這種問題就會想到 backtracking，由於題目中的電話號碼數字跟字母有對應關係，因此我的想法是，可以透過雜湊表來去保存這個mapping關係，接著再去進行組合。首先思考遞迴終止條件，遞迴終止條件就是已經窮盡給定的 digits 中的數字。 接著在每一層中，應該要去嘗試數字對應的每一種字母，要取出來放入字串變數中，而這裡還需要注意針對雜湊表的存取。取出後接著就是遞迴呼叫下一層，實現backtracking來窮盡各種組合。  我的解法1234567891011121314151617181920212223242526272829303132class Solution &#123;public:    unordered_map&lt;string, vector&lt;string&gt;&...</div></div></div></a><a class="pagination-related" href="/posts/8c983568.html" title="產生括號 | Medium | LeetCode#22. Generate Parentheses"><img class="cover" src="/img/LeetCode/22/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-26</div><div class="info-item-2">產生括號 | Medium | LeetCode#22. Generate Parentheses</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定 n 組括號，請產生所有可能的閉合括號的組合  反正就是沒有 (() 或者是 )() 類似這樣的組合   解法一開始的想法這題求組合的所有可能性，所以想法上一定還是 backtracking，但今天的問題會是要怎麼樣 控制括號能夠閉合，以 backtracking 的解題架構來看，首先可以思考退回條件會是一旦每個組合中的長度到達了 2 * n 因為 會是 n 組括號，另外每一層中在選一定要先選左括號再選右括號，因此需要判斷當前右括號數量是否小於左括號，如果小於就代表一定至少有一組括號還沒閉合完畢。 我的解法12345678910111213141516171819202122class Solution &#123;public:    vector&lt;string&gt; parentheseList;    void generateParentheseshelper(int left, int right, vector&lt;string&gt; &amp;parenthese, string current, i...</div></div></div></a><a class="pagination-related" href="/posts/e650f909.html" title="組合之和問題 | Medium | LeetCode#39. Combination Sum"><img class="cover" src="/img/LeetCode/39/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-23</div><div class="info-item-2">組合之和問題 | Medium | LeetCode#39. Combination Sum</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Medium 題目敘述: 題目會給一個整數陣列叫做 candidates 和一個目標整數 target，回傳一系列candidates的unique組合，其中對於每種組合中數字的總和要等於 target，可以以任何順序回傳各種可能。  在這個問題中，每個candidates中的數字可以被選擇無限次。若至少有一個數字被選擇的次數不同，那麼兩個組合即被視為唯一的。Ex. [2,2,3] != [2,2,2,2,3]測試案例會保證在給定的輸入下，組成目標數字的唯一組合總數少於 150 個。   解法一開始的想法既然是組合問題，那就直接聯想到 Backtracking，另外由於這題與 77.Combinations 那篇 不同的是，這個沒有限制層數，因為題目也說了 candidates 中的數字可以被重複選擇無限多次，因此終止條件不會跟往常一樣是透過層數來做限制。 而可能會需要透過變數來在每次做選擇時儲存該值，並將變數值傳遞到下一層進行累加，最後在看是否與 target 相等。如果不相等就繼續選擇數字，另外與往常不同的是，由於可以重複選擇相同數字，因此進入每一層...</div></div></div></a><a class="pagination-related" href="/posts/713e66af.html" title="排列問題 | Medium | LeetCode#46. Permutations"><img class="cover" src="/img/LeetCode/46/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-19</div><div class="info-item-2">排列問題 | Medium | LeetCode#46. Permutations</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定一個整數陣列 nums 其中不包含重複數字，找到所有數字排列後的可能情況。  輸入: nums = [1,2,3]輸出: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]輸出結果為輸入陣列中元素的各種排列結果。   解法一開始的想法Permutations 其實就是經典的 backtracking 題目，也是典型的樹狀結構，在每一層都先選擇一個數字，並且透過遞迴進入下一層，而一但到達指定層數，就可想辦法 return，退回後原先占用在陣列的數字就可以 pop 出來的。但我按照這個想法時做的時候，起初的結果是有重複數字的，也就是 [1,1,1],[1,1,2] … [3,3,3] 像是這種的，後來才進行了修正。 我的解法12345678910111213141516171819202122232425262728class Solution &#123;public:    vector&lt;int&gt; numList;    vector&lt;vector&lt;int...</div></div></div></a><a class="pagination-related" href="/posts/3e4bf679.html" title="子集問題 | Medium | LeetCode#78. Subsets"><img class="cover" src="/img/LeetCode/78/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-11</div><div class="info-item-2">子集問題 | Medium | LeetCode#78. Subsets</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述:  給定一個具有不重複元素的整數陣列 nums，回傳所有可能的子集合  子集會包含空集合，另外，若子集中的元素相同但順序不同，則視為相同子集。 123Ex. nums = &#123;1,2,3&#125;[1,2] = [2,1][1,3,2] = [3,1,2]  解法一開始的想法子集合問題也是典型的 backtracking 問題，它包含了在每個數字中選與不選，因此終止條件會是目前選擇的深度到達題目所給的長度上限就停止，而在每一層中要做的事就是選跟不選，首先是不選，那就會需要直接往往下一層去，到下一層在進行選以及不選，直到到達長度限制。 假設題目是 nums=&#123;1,2&#125; 則他的樹狀結構會如下： 123456         []      /      \   []         [1]  /  \       /    \[]   [2]  [1]    [1,2]  我的解法123456789101112131415161718192021222324class Solution &#123;publ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%8C%E7%9B%AE%E6%95%98%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">題目敘述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E9%96%8B%E5%A7%8B%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">一開始的想法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">我的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E7%B5%90%E6%9E%9C"><span class="toc-number">2.2.1.</span> <span class="toc-text">執行結果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%AD%A3%E5%BE%8C%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">更正後的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E7%B5%90%E6%9E%9C-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">執行結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.</span> <span class="toc-text">複雜度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">時間複雜度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">空間複雜度</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

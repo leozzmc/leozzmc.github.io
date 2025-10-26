@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kevin Liu's 部落格 || Technical || Travel - Life Documentation</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="👍👍👍👍👍">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:url" content="https://leozzmc.github.io/page/13/index.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="👍👍👍👍👍">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:author" content="Kevin Liu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/page/13/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kevin Liu\'s 部落格 || Technical || Travel',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Kevin Liu's 部落格 || Technical || Travel</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/posts/federation-learning.html" title="從並行計算到聯邦式學習 | 學習筆記"><img class="post-bg" src="/img/Fed/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="從並行計算到聯邦式學習 | 學習筆記"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/federation-learning.html" title="從並行計算到聯邦式學習 | 學習筆記">從並行計算到聯邦式學習 | 學習筆記</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-30T08:01:57.000Z" title="發表於 2024-07-30 16:01:57">2024-07-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Federated-Learning/">Federated Learning</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Machine-Learning/">Machine Learning</a></span></div><div class="content">甚麼是並行計算?現在的深度神經網路模型具有大量的參數，模型大也意味著計算量變大  Big Model + Big Data -&gt; Huge computation cost !  單一GPU進行一年的計算量，可以透過20 個 GPU 一次進行計算來實現，來減少花費的時間成本 Linear Predictor未完待續 聯邦式學習最好先具備並行計算和分散式機器學習的基礎。可以參考下面這系列影片:https://www.youtube.com/watch?v=gVcnOe6_c6Q&amp;t=124s    背景 問題背景:  Google 想要透過使用者行動裝置上的資料來訓練模型。   可能的解決辦法: 蒐集使用者資料，上傳到某個集中式學習平台去訓練模型   面臨的挑戰: 使用者拒絕上傳資料，尤其是機敏資料到 Google 的伺服器   這樣的問題情境也發生在個人隱私保護很嚴格的歐美企業或是醫療環境中 分散式學習 以及 聯邦學習 一次迭代的過程:  worker node 向 parameter 索取parameter server 回傳 parameter worker n...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/tree_for_leetcode_2.html" title="刷題必會知識 | 樹 (Tree) | 進階實作篇 | LeetCode 筆記"><img class="post-bg" src="/img/LeetCode/tree/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="刷題必會知識 | 樹 (Tree) | 進階實作篇 | LeetCode 筆記"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/tree_for_leetcode_2.html" title="刷題必會知識 | 樹 (Tree) | 進階實作篇 | LeetCode 筆記">刷題必會知識 | 樹 (Tree) | 進階實作篇 | LeetCode 筆記</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-27T13:24:07.000Z" title="發表於 2024-07-27 21:24:07">2024-07-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree-Traversal/">Tree Traversal</a></span></div><div class="content">In-Order Traversal by Parent Field在前一篇介紹 Tree 的文章 中應該有發現，我們在實作 Binary Tree Node 的時候有宣告一個 TreeNode *parent 指標，但卻沒有使用。 我們在實踐 Inorder Traversal 也可以透過 Parent Field來去進行，若要善用 *parent 進行 Traversal 需要提及兩個重要函式:  InorderSuccessor() : 以 inorder 順序尋找 (LVR) 進行 Traversal 的 下一個 node InorderPredecessor(): 以 inorder 順序尋找 (LVR) 進行 Traversal 的 前一個 node    這裡提到的概念會與之後的 BST(Binary Search Tree) 有關聯  在實作這兩個函式來實踐 Inorder Traversal 之間還有幾項前置作業必須先完成:  在 main() 中將不同節點的 *parent 之間串接起來 在 class BinartTree 中定義六個成員函式  123456...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/tree_for_leetcode.html" title="刷題必會知識 | 樹 (Tree) | 基礎篇 | LeetCode 筆記"><img class="post-bg" src="/img/LeetCode/tree/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="刷題必會知識 | 樹 (Tree) | 基礎篇 | LeetCode 筆記"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/tree_for_leetcode.html" title="刷題必會知識 | 樹 (Tree) | 基礎篇 | LeetCode 筆記">刷題必會知識 | 樹 (Tree) | 基礎篇 | LeetCode 筆記</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-26T04:35:56.000Z" title="發表於 2024-07-26 12:35:56">2024-07-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree-Traversal/">Tree Traversal</a></span></div><div class="content">   甚麼是 Tree? Tree 是一種常見的資料結構，直觀上來看樹狀結構代表階層式結構，像是族譜或是不同語言，語系的直系表就很常用樹來表示。 基本介紹 節點(Node): 樹的基本單位 根(Root): 樹狀結構的初始節點 分支(Branch): 節點與節點之間的分支 子節點(child): Root以外的節點 葉子節點(leaf): 沒有連接到其他子節點的節點，即樹狀結構的末端節點  樹的定義Tree的定義: 由一個或是數個節點組成的有限集合 並且  存在一個特定節點為Root 其餘節點可以分割成 $n &gt;&#x3D; 0$ 個沒有交集的(disjoint)集合 $T_{1},T_{2},…,T_{n}$ 為此Root的子樹(subtree)   這是一個遞迴的定義，對於上面圖中的節點A(Root)，有兩個子樹，其樹根分別是節點B和節點C，樹中的每一個節點都是某個子樹的root，例如節點C 就包含了兩個子樹，它們的root分別是節點E 與節點F，而節點E與F為兩個沒有子樹的樹的樹根   A的子樹: $T_{1}(B,D)$, $T_{2}(C,E,F)$ B的子樹: ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/8cb54984.html" title="使用Stack來實現Queue | Easy | LeetCode#232. Implement Queue using Stacks"><img class="post-bg" src="/img/LeetCode/232/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Stack來實現Queue | Easy | LeetCode#232. Implement Queue using Stacks"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/8cb54984.html" title="使用Stack來實現Queue | Easy | LeetCode#232. Implement Queue using Stacks">使用Stack來實現Queue | Easy | LeetCode#232. Implement Queue using Stacks</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-25T05:07:24.000Z" title="發表於 2024-07-25 13:07:24">2024-07-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Stack/">Stack</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Queue/">Queue</a></span></div><div class="content">題目敘述  題目難度: Easy 題目敘述: 這題要求透過兩個 Stack 來實現一個Queue具有的基本操作，像是 push, peek, pop 以及 empty  題目也有提醒只可以使用標準 Stack 操作來實現 You must use only standard operations of a stack, which means only push to top, peek&#x2F;pop from top, size, and is empty operations are valid. 解法一開始的想法這題跟 225. Implement Stack using Queues 其實是很類似的:  Push 操作可以直接使用 &lt;stack&gt; 中的 push() STL 進行操作，重點會是實現 pop() 跟 peak()，由於Queue會是 FIFO，因此先進去Queue的會先出來，因此我們用Stack實作的時候等同於要優先將Stack的底部元素pop出來，這時候就需要第二個Stack進行暫存。 因此每當我們需要Pop時，都必須將最底部元素以外的資料...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/6dfa2271.html" title="使用Queue來實現Stack | Easy | LeetCode#225. Implement Stack using Queues"><img class="post-bg" src="/img/LeetCode/225/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Queue來實現Stack | Easy | LeetCode#225. Implement Stack using Queues"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/6dfa2271.html" title="使用Queue來實現Stack | Easy | LeetCode#225. Implement Stack using Queues">使用Queue來實現Stack | Easy | LeetCode#225. Implement Stack using Queues</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-24T05:07:30.000Z" title="發表於 2024-07-24 13:07:30">2024-07-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Stack/">Stack</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Queue/">Queue</a></span></div><div class="content">題目敘述  題目難度: Easy 題目敘述: 本題要求僅能使用兩個Queue來實現具有LIFO特性的Stack功能，需要能夠支援正常的Stack操作像是(push, pop, top, empty功能)，題目額外提醒，我們只能使用常規queue操作，像是push to back, peek/pop from the front, size, isEmpty。  解法一開始的想法由於 我覺得Stack 跟 Queue最大的不同就是 FIFO 以及 LIFO，因此只要有辦法調整pop出來的順序即可，因此push可以正常push，但pop需要能夠回傳queue的尾端元素，top的話就直接用&lt;queue&gt; 的 back() 即可。  題目有說可以用兩個Queue，因此一個正常push進去的queue，如果要對它進行 pop，我們就需要依序將queue內資料Pop出來直到找到最後一個資料，但這些被pop出來的資料從Stack角度來看應該還要存在於Stack中，所以我們需要另一個queue將原先pop出來的元素存放起來。一旦原先的queue清空後，這時候可能使用者又會再進行pus...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/22a8b30b.html" title="刷題必會知識 | 佇列 (Queue) | LeetCode 筆記"><img class="post-bg" src="/img/LeetCode/queue/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="刷題必會知識 | 佇列 (Queue) | LeetCode 筆記"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/22a8b30b.html" title="刷題必會知識 | 佇列 (Queue) | LeetCode 筆記">刷題必會知識 | 佇列 (Queue) | LeetCode 筆記</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-22T05:18:02.000Z" title="發表於 2024-07-22 13:18:02">2024-07-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Queue/">Queue</a></span></div><div class="content">甚麼是 Queue?Queue 也是一種資料結構，用於暫時儲存元素 ，它與 Stack 不同的是，它是屬於 FIFO (First-In-First-Out) 的特性，也就是先進入 Queue 的元素先出來，並且新元素會被加入到 Queue 的尾端。 通常 Queue 會被應用在需要具有順序一致性的系統中，像是網路封包處理、OS的 Process Schedule, BFS等等，反正就是想像是在排隊買票的感覺。 Queue 操作: 隊伍前方: front 隊伍後方: back 進入隊伍: push, 一定只能從 back 進入 離開隊伍: pop, 一定只能從 front 離開     Push(data): 將 data 從 back 放入Queue， 並更新成新的back，在Queue 中新增資料又稱 enqueue Pop: 把 front 指向的資料從Queue 中移除，並且更新front，從Queue中移除資料的行為又稱 dequeue getFront: 回傳 front 所指向的資料 getBack: 回傳 back 所指向的資料 IsEmpty: 檢查 Queue...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/f9156e74.html" title="攀登富士山 | 行前準備與規劃紀錄 | 山屋預約"><img class="post-bg" src="/img/Mountain/Mt.Fuji/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="攀登富士山 | 行前準備與規劃紀錄 | 山屋預約"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/f9156e74.html" title="攀登富士山 | 行前準備與規劃紀錄 | 山屋預約">攀登富士山 | 行前準備與規劃紀錄 | 山屋預約</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-12T06:31:03.000Z" title="發表於 2024-07-12 14:31:03">2024-07-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%88%AC%E5%B1%B1%E5%81%A5%E8%A1%8C/">爬山健行</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Travel/">Travel</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Mountain/">Mountain</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/hiking/">hiking</a></span></div><div class="content">富士山之旅由於搶到御來光館的日期是在 7&#x2F;16，因此這次攀登富士山的日期就選擇在今年(2024) 的 7&#x2F;16 -7&#x2F;17。 攀爬富士山大多都是呼籲預約山小屋，不要夜間單攻(彈丸登山) ，因此這次也是先以山屋預約日期為主，再去安排對應的爬山行程。另外富士山是一座活火山，隨時要注意火山活動相關的警報，這部分可以去富士山的官網查閱。  攀登路線吉田路線從富士山五合目出發，海拔為2300公尺，登山路線：5.8 公里。約耗時 5-7 個小時，也是山屋最多的路線，從7合目到9合目都有山屋，因此算是熱門的新手路線。也是我們這次的攀爬路線。   圖源:https://www.fujisan-climb.jp/trails/yoshida/index.html  除了吉田路線之外富士山還有其他攀登路線 須走路線吉田路線跟須走路線在本八合目後就會交會，因此人潮會開始便更多。這個路線最大的樂趣就是可以在下山途中體驗砂走，也就是在沙中滑行，實際上吉田路線的下山道也必須先從須走路線開始走，大概走道八合目才會又岔開   圖源: https://www.fujisan-clim...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/7abe6380.html" title="有效回文 | Easy | LeetCode#125. Valid Palindrome"><img class="post-bg" src="/img/LeetCode/125/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="有效回文 | Easy | LeetCode#125. Valid Palindrome"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/7abe6380.html" title="有效回文 | Easy | LeetCode#125. Valid Palindrome">有效回文 | Easy | LeetCode#125. Valid Palindrome</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-11T10:15:24.000Z" title="發表於 2024-07-11 18:15:24">2024-07-11</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Two-Pointers/">Two Pointers</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 題目給定字串 s，當你把字串中的大寫字母轉換成小寫字母，並且把所有非字母或數字類的符號去除，如果從頭讀到尾跟從尾讀到頭都是一樣的字串，那就是一個有效的 回文(Palindrome) ，若回文有效就返回 true，反之則 false，s 僅包含ASCII當中可印出的符號。  解法一開始的想法 先將題目字串 s 中的大寫字母轉為小寫，並且將其餘符號去除 這部分可以宣告一個新的空字串，並且分別處理數字、大寫字母以及小寫字母 接著就是判斷回文，可透過迴圈同時檢查字串的頭跟尾是否一樣，若有發現不一致則回傳false，反之則True 頭尾pointer僅需scan到字串的中間即可  我的解法12345678910111213141516171819202122232425262728293031323334353637class Solution &#123;public:    bool isPalindrome(string s) &#123;        bool isPalindrome = false;        string ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/49a7f4a8.html" title="計算逆波蘭表示法 | Medium | LeetCode#150. Evaluate Reverse Polish Notation"><img class="post-bg" src="/img/LeetCode/150/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="計算逆波蘭表示法 | Medium | LeetCode#150. Evaluate Reverse Polish Notation"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/49a7f4a8.html" title="計算逆波蘭表示法 | Medium | LeetCode#150. Evaluate Reverse Polish Notation">計算逆波蘭表示法 | Medium | LeetCode#150. Evaluate Reverse Polish Notation</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-08T14:25:55.000Z" title="發表於 2024-07-08 22:25:55">2024-07-08</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Stack/">Stack</a></span></div><div class="content">題目敘述  題目難度: Easy 題目描述: 本題要求給定一個字串陣列 tokens，當中是以 逆波蘭表示法 的算式運算式，需要回傳算術運算的結果，結果為整數型態。  注意:  有效的運算子只會有: +, -, *,/。 Operand 都會是整數 除法採無條件捨去法 不可除以0 中間運算的數字會是 32-bit 整數  解法一開始的想法如果看上面的範例 [&quot;4&quot;,&quot;13&quot;,&quot;5&quot;,&quot;/&quot;,&quot;+&quot;]，可以看出，如果碰到operator，碰到operator前的兩個數字就會透過該operator進行運算。 因此我的想法是:  建立一個stack 迭代 tokens 若遇到數字就push進stack 若遇到運算子，則將兩個元素pop出來進行四則運算 運算結果丟回 stack 迭代完畢後回傳 stacK 頂端元素  我的解法1234567891011121314151617181920class Solution &#123;public:    int evalRPN(vector&l...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path"><img class="post-bg" src="/img/LeetCode/71/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="簡化路徑 | Medium | LeetCode#71. Simplify Path"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/59f3a7b5.html" title="簡化路徑 | Medium | LeetCode#71. Simplify Path">簡化路徑 | Medium | LeetCode#71. Simplify Path</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-07-07T06:22:35.000Z" title="發表於 2024-07-07 14:22:35">2024-07-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Stack/">Stack</a></span></div><div class="content">題目敘述  題目難度: Easy 題目敘述: 題目會給定一個 Unix 系統的檔案路徑字串，這題需要簡化路徑，並輸出簡化後的路徑字串。簡化路徑有下面幾項規則: 字串始終由 / 開始 路徑中的目錄僅可由一個 / 分隔開 除了 Root Dir 之外，不可由 / 作為字串結尾 輸出需要排除 . 或者 ..    在 Unix 系統中 . 代表當前目錄，可忽略，.. 代表跳到上一層目錄，舉例來說 /home/kevin/../LeetCode &#x3D; /home/LeetCode   解法一開始的想法 獲取 / 與 / 中間的字串(即目錄)，如果滿足規則就 push 進 stack 中 如果 /與 / 中間會是 . 則跳過，如果是 .. 則將stack中元素 pop 出來 其餘的通通 push 到 stack 當中 之後就是依序將 stack 元素 pop 出來並串接在回傳字串當中  我的解法12345678910111213141516171819202122232425262728293031323334353637383940class Solution &#123;pub...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/12/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#content-inner">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/#content-inner">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/#content-inner">19</a><a class="extend next" rel="next" href="/page/14/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-comment-dots"></i><span>最新評論</span></div><div class="aside-list"><span>載入中...</span></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分類</span>
+            <a class="card-more-btn" href="/categories/" title="檢視更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Deep-Dive/"><span class="card-category-list-name">Deep Dive</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LeetCode%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">LeetCode筆記</span><span class="card-category-list-count">138</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">學習筆記</span><span class="card-category-list-count">17</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/Troubleshooting/"><span class="card-category-list-name">Troubleshooting</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/"><span class="card-category-list-name">實作紀錄</span><span class="card-category-list-count">18</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/"><span class="card-category-list-name">指令/工具用法整理</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%88%AC%E5%B1%B1%E5%81%A5%E8%A1%8C/"><span class="card-category-list-name">爬山健行</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/"><span class="card-category-list-name">論文導讀</span><span class="card-category-list-count">3</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>標籤</span></div><div class="card-tag-cloud"><a href="/tags/O-RAN/" style="font-size: 1.1em; color: #999">O-RAN</a> <a href="/tags/MQ/" style="font-size: 1.1em; color: #999">MQ</a> <a href="/tags/Two-Pointers/" style="font-size: 1.19em; color: #999da1">Two Pointers</a> <a href="/tags/Infrastructure/" style="font-size: 1.23em; color: #999ea6">Infrastructure</a> <a href="/tags/Binary-Tree/" style="font-size: 1.46em; color: #99a7bb">Binary Tree</a> <a href="/tags/Networking/" style="font-size: 1.1em; color: #999">Networking</a> <a href="/tags/Array/" style="font-size: 1.41em; color: #99a5b7">Array</a> <a href="/tags/matrix/" style="font-size: 1.1em; color: #999">matrix</a> <a href="/tags/Security/" style="font-size: 1.14em; color: #999b9d">Security</a> <a href="/tags/Merged-Sort/" style="font-size: 1.1em; color: #999">Merged Sort</a> <a href="/tags/Queue/" style="font-size: 1.23em; color: #999ea6">Queue</a> <a href="/tags/Web/" style="font-size: 1.1em; color: #999">Web</a> <a href="/tags/OS/" style="font-size: 1.1em; color: #999">OS</a> <a href="/tags/Linux/" style="font-size: 1.28em; color: #99a0aa">Linux</a> <a href="/tags/backtracking/" style="font-size: 1.37em; color: #99a4b2">backtracking</a> <a href="/tags/%E7%B6%B2%E9%A0%81%E7%88%AC%E8%9F%B2/" style="font-size: 1.1em; color: #999">網頁爬蟲</a> <a href="/tags/BFS/" style="font-size: 1.28em; color: #99a0aa">BFS</a> <a href="/tags/Cloud-Support/" style="font-size: 1.1em; color: #999">Cloud Support</a> <a href="/tags/SNS/" style="font-size: 1.1em; color: #999">SNS</a> <a href="/tags/Tree/" style="font-size: 1.41em; color: #99a5b7">Tree</a> <a href="/tags/Amazon/" style="font-size: 1.19em; color: #999da1">Amazon</a> <a href="/tags/Binary-Search/" style="font-size: 1.28em; color: #99a0aa">Binary Search</a> <a href="/tags/IoT/" style="font-size: 1.1em; color: #999">IoT</a> <a href="/tags/Linked-List/" style="font-size: 1.5em; color: #99a9bf">Linked List</a> <a href="/tags/Complete-Binary-Tree/" style="font-size: 1.1em; color: #999">Complete Binary Tree</a> <a href="/tags/Arduino/" style="font-size: 1.1em; color: #999">Arduino</a> <a href="/tags/Promethues/" style="font-size: 1.1em; color: #999">Promethues</a> <a href="/tags/Stack/" style="font-size: 1.37em; color: #99a4b2">Stack</a> <a href="/tags/Scaling/" style="font-size: 1.1em; color: #999">Scaling</a> <a href="/tags/Reverse/" style="font-size: 1.1em; color: #999">Reverse</a> <a href="/tags/Math/" style="font-size: 1.14em; color: #999b9d">Math</a> <a href="/tags/Gateway/" style="font-size: 1.1em; color: #999">Gateway</a> <a href="/tags/Machine-Learning/" style="font-size: 1.1em; color: #999">Machine Learning</a> <a href="/tags/Cycle/" style="font-size: 1.23em; color: #999ea6">Cycle</a> <a href="/tags/Certificate/" style="font-size: 1.14em; color: #999b9d">Certificate</a> <a href="/tags/Traversal/" style="font-size: 1.32em; color: #99a2ae">Traversal</a> <a href="/tags/STL/" style="font-size: 1.1em; color: #999">STL</a> <a href="/tags/In-Order-Traversal/" style="font-size: 1.1em; color: #999">In-Order Traversal</a> <a href="/tags/hash-table/" style="font-size: 1.19em; color: #999da1">hash table</a> <a href="/tags/Palindrome/" style="font-size: 1.1em; color: #999">Palindrome</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>歸檔</span>
+      <a class="card-more-btn" href="/archives/"
+            title="檢視更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2100/11/">
+            <span class="card-archive-list-date">
+              十一月 2100
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2060/11/">
+            <span class="card-archive-list-date">
+              十一月 2060
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/11/">
+            <span class="card-archive-list-date">
+              十一月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/10/">
+            <span class="card-archive-list-date">
+              十月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/09/">
+            <span class="card-archive-list-date">
+              九月 2025
+            </span>
+            <span class="card-archive-list-count">8</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/08/">
+            <span class="card-archive-list-date">
+              八月 2025
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/07/">
+            <span class="card-archive-list-date">
+              七月 2025
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/04/">
+            <span class="card-archive-list-date">
+              四月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>網站資訊</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章數量 :</div><div class="item-count">183</div></div><div class="webinfo-item"><div class="item-name">總字數 :</div><div class="item-count">264.8k</div></div><div class="webinfo-item"><div class="item-name">訪客數 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">總瀏覽量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最後更新時間 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-10-26T16:32:13.612Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[圖片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[連結]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[程式碼]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[程式碼]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '尚無評論'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'github-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const findTrueUrl = (array, ele) => {
+    Promise.all(array.map(item =>
+      fetch(item.url).then(resp => resp.json()).then(data => {
+        let urlArray = data.body ? data.body.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/ig) : []
+        if (!Array.isArray(urlArray) || urlArray.length === 0) {
+          urlArray = [`${data.html_url}`]
+        }
+        if (data.user.login === 'utterances-bot') {
+          return urlArray.pop()
+        } else {
+          return urlArray.shift()
+        }
+      })
+    )).then(res => {
+        array = array.map((i,index)=> {
+          return {
+            ...i,
+            url: res[index]
+          }
+        })
+
+        btf.saveToLocal.set(keyName, JSON.stringify(array), 10/(60*24))
+        generateHtml(array, ele)
+    });
+  }
+
+  const getComment = ele => {
+    fetch('https://api.github.com/repos/leozzmc/Blog_Reply/issues/comments?sort=updated&direction=desc&per_page=6&page=1',{
+      "headers": {
+        Accept: 'application/vnd.github.v3.html+json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const githubArray = data.map(item => {
+          return {
+            'avatar': item.user.avatar_url,
+            'content': changeContent(item.body_html || item.body),
+            'nick': item.user.login,
+            'url': item.issue_url,
+            'date': item.updated_at
+          }
+        })
+        findTrueUrl(githubArray, ele)
+      }).catch(e => {
+        console.error(e)
+        ele.textContent= "無法獲取評論，請確認相關配置是否正確"
+      })
+  }
+  run(keyName, getComment)
+})</script><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

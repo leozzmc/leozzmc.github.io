@@ -1,0 +1,401 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Pow(x, n) | Medium | LeetCode#50. Pow(x, n) | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="題目敘述  題目難度：Medium 題目描述：題目要求實現常見的 pow 函數，正常來說 pow(x, n) 就會回傳 x 的 n 次方的結果。  而題目有給下面限制:  -100.0 &lt; x &lt; 100.0 -231 &lt;&#x3D; n &lt;&#x3D; 231-1 n is an integer. Either x is not zero or n &gt; 0. -104 &lt;&#x3D; x^">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">
+<meta property="og:url" content="https://leozzmc.github.io/posts/8a835d3b.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="題目敘述  題目難度：Medium 題目描述：題目要求實現常見的 pow 函數，正常來說 pow(x, n) 就會回傳 x 的 n 次方的結果。  而題目有給下面限制:  -100.0 &lt; x &lt; 100.0 -231 &lt;&#x3D; n &lt;&#x3D; 231-1 n is an integer. Either x is not zero or n &gt; 0. -104 &lt;&#x3D; x^">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/LeetCode/50/cover.png">
+<meta property="article:published_time" content="2025-10-23T06:03:36.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.558Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Medium">
+<meta property="article:tag" content="Math">
+<meta property="article:tag" content="Exponentiation by Squaring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/LeetCode/50/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Pow(x, n) | Medium | LeetCode#50. Pow(x, n)",
+  "url": "https://leozzmc.github.io/posts/8a835d3b.html",
+  "image": "https://leozzmc.github.io/img/LeetCode/50/cover.png",
+  "datePublished": "2025-10-23T06:03:36.000Z",
+  "dateModified": "2025-10-26T12:28:30.558Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/8a835d3b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Pow(x, n) | Medium | LeetCode#50. Pow(x, n)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/LeetCode/50/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.558Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">823</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>3分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="題目敘述"><a href="#題目敘述" class="headerlink" title="題目敘述"></a>題目敘述</h1><p><img src="/img/LeetCode/50/question.png"></p>
+<ul>
+<li>題目難度：<code>Medium</code></li>
+<li>題目描述：題目要求實現常見的 <code>pow</code> 函數，正常來說 <code>pow(x, n)</code> 就會回傳 <code>x</code> 的 <code>n</code> 次方的結果。</li>
+</ul>
+<div class="note info flat"><p>而題目有給下面限制:</p>
+<ul>
+<li><code>-100.0 &lt; x &lt; 100.0</code></li>
+<li><code>-231 &lt;= n &lt;= 231-1</code></li>
+<li><code>n is an integer.</code></li>
+<li><code>Either x is not zero or n &gt; 0.</code></li>
+<li><code>-104 &lt;= x^n &lt;= 104</code></li>
+</ul>
+</div>
+
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><p>原先的方法會 TLE，原先這種逐項去乘會有溢位風險，如果次方給很大，Ex. <code>x = 2.0, n = -2147483648</code> &#x3D;&gt; 保證TLE</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">myPow</span><span class="params">(<span class="type">double</span> x, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="type">double</span> ans;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(x==<span class="number">1</span>) <span class="keyword">return</span> x;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(x==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n ==<span class="number">1</span>) <span class="keyword">return</span> x;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n &gt;<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="type">double</span> num = x;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">double</span> i=<span class="number">1</span>; i&lt;n; i++)&#123;</span><br><span class="line">                num = num* x ;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">double</span> num = x; </span><br><span class="line">            <span class="keyword">if</span>(n==<span class="number">-1</span>) <span class="keyword">return</span> <span class="number">1</span>/x;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">double</span> i=<span class="number">1</span>; i&lt; <span class="built_in">abs</span>((<span class="type">double</span>)n); i++)&#123;</span><br><span class="line">                num = num * x;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = <span class="number">1</span>/num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="快速冪次法"><a href="#快速冪次法" class="headerlink" title="快速冪次法"></a>快速冪次法</h2><p>另一種做法叫做 **快速冪次法(Exponentiation by Squaring)**，這是一種用於快速計算大整數乘冪的演算法，並且時間複雜度會是 $O(log n)$，其原理如下：</p>
+<ul>
+<li>二進位分解: 將指數 <code>n</code> 轉換為二進位表示，Ex. $a^13$ 則 <code>13</code> 的二進位會是 <code>1101</code></li>
+<li>平方跟累乘: <ul>
+<li>從底數 <code>a</code> 開始，依序計算 $a^1$,$a^2$,$a^4$,$a^8$, …. (不斷平方)</li>
+<li>將指數的二進位表示中為 <code>1</code> 的位元所對應的次方數相乘，舉例來說 $a^13$ (二進位 <code>1101</code>)，表示 <code>13=8+4+1</code>。 因此需要將 $a^{8},a^{4},a^{1}$ 相乘，即 $a^{13}&#x3D;a^{8}\times a^{4}\times a^{1}$</li>
+</ul>
+</li>
+</ul>
+<p>快速冪次過程只需進行約 $log _{2}n$ 次的平方和乘法，而不是傳統的 $n-1$ 次乘法。 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// use exponentiation by squaring</span></span><br><span class="line">    <span class="comment">// Example: x^13 = x^(8+4+1) = x^8 + x^4 + x^1 ( = x^(1011) binary) </span></span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">myPow</span><span class="params">(<span class="type">double</span> x, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1.0</span>;</span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> e = n;</span><br><span class="line">        <span class="keyword">if</span>(e&lt;<span class="number">0</span>)&#123;</span><br><span class="line">            x = <span class="number">1.0</span> / x;</span><br><span class="line">            e = -e;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">double</span> ans = <span class="number">1.0</span>;</span><br><span class="line">        <span class="keyword">while</span>(e&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// check if the LSB equal to 1, if its 1 then multiply it</span></span><br><span class="line">            <span class="keyword">if</span>(e &amp; <span class="number">1LL</span>) ans *= x;</span><br><span class="line">            x *= x;</span><br><span class="line">            e = e&gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>myPow</code> 中前半段先宣告一個 long long 型別的變數 <code>e</code> 用於存放指數 <code>n</code>。接著需要對負指數進行處理，如果指數為負，那 <code>myPow</code> 後的結果要是分數，因此 <code>x = 1.0/ x</code> 並且可以把負數搬回正數 <code>e = -e</code>。 揭著進行累乘，主要透過一個while迴圈，只要 <code>e</code> 還大於0就繼續計算：</p>
+<ol>
+<li>判斷做右邊那位元是否為 <code>1</code>:  <code>if(e &amp; 1LL) ams *= x;</code></li>
+<li>接下來，每一輪底數平方</li>
+<li><code>e</code> 右移一位（丟掉處理完的那一位）</li>
+</ol>
+<blockquote>
+<p>這邊的原理是：<br><code>x^13 = x^(8 + 4 + 1) = x^8 * x^4 * x^1</code></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| 位元          | 意義  | 要不要乘這個次方的 x |</span><br><span class="line">| ----------- | --- | ----------- |</span><br><span class="line">| 最右邊 bit (1) | x^1 | ✅ 要乘        |</span><br><span class="line">| 下一個 bit (0) | x^2 | ❌ 不乘        |</span><br><span class="line">| 下一個 bit (1) | x^4 | ✅ 要乘        |</span><br><span class="line">| 下一個 bit (1) | x^8 | ✅ 要乘        |</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>另外因為 <code>e</code> 的型別是 long long，所以判斷最右邊位元是否為 1 的方式就是乘上 <code>1LL</code> &#x3D;&gt; 就代表跟 64 bit 長的 1 (<code>0000000....0001</code>) 去進行 &amp; operation，如果最右邊位元是 <code>1</code> 才會為 true</p>
+</blockquote>
+<h3 id="執行結果"><a href="#執行結果" class="headerlink" title="執行結果"></a>執行結果</h3><p><img src="/img/LeetCode/50/result.png"></p>
+<h1 id="複雜度"><a href="#複雜度" class="headerlink" title="複雜度"></a>複雜度</h1><p>時間複雜度<br>$O(log n)$<br>空間複雜度<br>$O(1)$</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/8a835d3b.html">https://leozzmc.github.io/posts/8a835d3b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Medium/">Medium</a><a class="post-meta__tags" href="/tags/Math/">Math</a><a class="post-meta__tags" href="/tags/Exponentiation-by-Squaring/">Exponentiation by Squaring</a></div><div class="post-share"><div class="social-share" data-image="/img/LeetCode/50/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/5d887d47.html" title="基於時間的鍵值對儲存 | Medium | LeetCode#981. Time Based Key-Value Store"><img class="cover" src="/img/LeetCode/981/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">基於時間的鍵值對儲存 | Medium | LeetCode#981. Time Based Key-Value Store</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目描述： 題目要求設計一個 time-based 的 key-value 儲存結構，可以相同key可以儲存多種值並且對於相同Key可以有多個不同的timestamp，並且用戶可以透過特定 timestamp 獲取值  請實踐一個 TimeMap class:  TimeMap() 用於初始化物件 void set(String key, String value, int timestamp): 在給定 timestamp 條件下， 儲存 value 到對應到特定的 key 上 String get(String key, int timestamp): 回傳先前透過 set 函數儲存的值，並且請找出小於等於當前 timestamp 的timestamp。如果有多個值，請回傳具有最大但小於 timestamp 的 timestamp 值。若沒有值，則回傳 &quot;&quot;     解法我的解法123456789101112131415161718192021222324252627282930313233343536373839404...</div></div></div></a><a class="pagination-related" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img class="cover" src="/img/LeetCode/678/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給定一個字串 s 包含三種可能的字元: (, ) 以及 *，若 s 為Valid 請回傳 true 否則為 false  下面是判斷 s 是否合法的規則:  任何 ( 都需要有對應的 ) 才能閉合 任何 ) 都需要有對應的 ( 才能閉合 ( 需要出現在 ) 之前才可閉合 * 可以代表 (. ) 或者是空字串 &quot;&quot;  解法這題跟單純的括號閉合題型不太一樣的是，多了一個變因 * ，它可能是左括號也可能是右括號，因此我們會需要追蹤這種可能性 我的解法123456789101112131415161718192021222324252627282930class Solution &#123;public:    bool checkValidString(string s) &#123;        int leftMin = 0;        int leftMax = 0;        if(s.size()==1 &amp;&amp; s[0]!=&#x27;*&#x27;) return false...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/a68b0f6a.html" title="旋轉圖片 | Medium | LeetCode#48. Rotate Image"><img class="cover" src="/img/LeetCode/48/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-03</div><div class="info-item-2">旋轉圖片 | Medium | LeetCode#48. Rotate Image</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: medium  題目敘述: 題目給定一個 matrix 請將其順時針旋轉一次，並且必須 in-place修改，也就是不能宣告額外二元陣列去儲存元素  解法一開始的想法這題我是畫圖直接看矩陣關係  首先其實觀察 matrix 再經過一次順時針旋轉後的位置，然後比對原本的，可以發現一些關係。旋轉的過程也只是列元素變成行元素，可以觀察到  123- matrix[0][0] = matrix[0][2]- matrix[1][0] = matrix[0][1]- matrix[2][0]  = matrix[0][0]  透過上面關係可以發現， 順時鐘旋轉一次，其實只是先將 matrix 相同 column 元素全部 reversed 排列後，再去進行對稱的過程。 我的解法 不過實際在解的時候，如果要對每一個 column 元素進行反序排列，會橫跨不同子陣列的元素交換，處理上比較不直觀， 因此我發現其實也可以先反序排列同一列元素再進行對稱，只不過這樣的結果會是原本 matrix 逆時針轉一次，但是其實逆時針轉三次就等於順時針轉一次。  1234567891011...</div></div></div></a><a class="pagination-related" href="/posts/db053989.html" title="二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal"><img class="cover" src="/img/LeetCode/102/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-04</div><div class="info-item-2">二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定一個 Binary Tree 的 root，求 Level Order Traversal 的結果 (須將節點值存在一個二維list中)  解法一開始的想法就是先實踐經典的 Level Order Traversal，然後再嘗試存進 vector&lt;vector&lt;int&gt;&gt; result 返回。但我的想法在我剛實現完標準的 level_order_traversal 後就卡住了，由於我是用 queue 來去做實現，而每一次 push 進 queue後的節點會為同一層 (因為上一層已經被pop出來了) ，因此就可以處理在每一層的時候將節點值添加進 result 中，但我高估了我對 vector 的熟悉程度… 我的解法123456789101112131415161718192021222324252627282930313233343536373839404142434445/** * Definition for a binary tree node. * struct TreeNode &#123; *...</div></div></div></a><a class="pagination-related" href="/posts/60d71d58.html" title="二元樹Z字形走訪 | Medium | LeetCode#103. Binary Tree Zigzag Level Order Traversal"><img class="cover" src="/img/LeetCode/103/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-03</div><div class="info-item-2">二元樹Z字形走訪 | Medium | LeetCode#103. Binary Tree Zigzag Level Order Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目敘述：給定一個二元樹的 root ，回傳對這棵樹進行 Z 字走訪 (Zigzag Level Order Traversal)的結果  Zigzag Level Order Traversal 代表先從左走到右，下一層再從右走到左，每一層走訪方向交互替換   解法一開始的想法這題想法也很直觀，就BFS，然後宣告一個用來存放結果的 2D Vector，透過變數控制在每一層走訪的時候，按照順序或反向順序放入 vector 當中。 我的解法123456789101112131415161718192021222324252627282930313233343536373839/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;...</div></div></div></a><a class="pagination-related" href="/posts/13d1e5ab.html" title="透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal"><img class="cover" src="/img/LeetCode/105/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-10</div><div class="info-item-2">透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Medium 題目敘述: 給兩個整數陣列 preorder 以及 inorder， preorder 存放一棵二元樹進行 Pre-Order Traversal 的結果，inorder 存放相同二元樹進行 In-Order Traversal 的結果，題目要求透過這兩個陣列來建構出原本的Binary Tree，並回傳 root 節點。  解法一開始的想法這次的題目卡了很久，主要流程有嘗試寫下想法，但不知道該如何用遞迴去實作。    字有點醜，請見諒XD  首先第一個想法就是，Preorder Traversal 後的第一個元素必定會是Root，而再來就是 Inorder Traversal 後的第一個元素會是整棵樹的 leftmost node，也就是最左邊的節點，所以如果能夠迭題目給的 preorder list，從 Root 到 leftmost node 之間的元素都會是左子樹的 left child。在 Preorder Traversal 中，root 節點的下一個節點會是左子樹的Root，這時檢查　inorder list 中， 左子樹的ro...</div></div></div></a><a class="pagination-related" href="/posts/7af71e27.html" title="從 Inorder 和 Postorder Traversal 建構二元樹 | Medium | LeetCode#106. Construct Binary Tree from Inorder and Postorder Traversal"><img class="cover" src="/img/LeetCode/106/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-07</div><div class="info-item-2">從 Inorder 和 Postorder Traversal 建構二元樹 | Medium | LeetCode#106. Construct Binary Tree from Inorder and Postorder Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Medium 題目敘述: 給定兩個整數 inorder 和 postorder  分別代表對一個 binary tree 進行 inorder traversal 和 postorder traversal 的結果，請建構一棵二元樹，並回傳二元樹的  root。  解法一開始的想法這題算是 LeetCode 105 的延伸題目。  其實有想法很像:  Inorder 的第一個元素是 leftmost 元素 Preorder 的最後一個元素會是 root     因此每次迭代過程中，透過 postorder 中找到的 root 節點值，來去找到 inorder 中的 subTree 該怎麼切分左右子樹  我的解法1234567891011121314151617181920212223242526272829303132333435363738/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *    ...</div></div></div></a><a class="pagination-related" href="/posts/806bf38.html" title="裝最多水的容器 | Medium | LeetCode#11. Container With Most Water"><img class="cover" src="/img/LeetCode/11/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-17</div><div class="info-item-2">裝最多水的容器 | Medium | LeetCode#11. Container With Most Water</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給了一個整數陣列 height 並且長度為 n， n 代表有 n 條垂直的線，第 i 條線的長度範圍為座標 (i,0) 到 (i, height[i]) (反正 height 的值就會是線的長度)，請找到兩條線與X軸共同形成一個容器，可以裝最多的水，請回傳可能裝的最大面積。  解法一開始的想法總之面積會是由比較矮的直線乘上底邊 $Area &#x3D; \min(height[i], height[j]) \times (j-i)$ 暴力解12345678910111213141516class Solution &#123;public:    int maxArea(vector&lt;int&gt;&amp; height)&#123;        int maxArea = 0;        int n = height.size();        for(int i = 0; i &lt; n; i++)&#123;            for(int j=i+1; j &lt; n; j++)&#123; ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%8C%E7%9B%AE%E6%95%98%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">題目敘述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">我的解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%86%AA%E6%AC%A1%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">快速冪次法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E7%B5%90%E6%9E%9C"><span class="toc-number">2.2.1.</span> <span class="toc-text">執行結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.</span> <span class="toc-text">複雜度</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

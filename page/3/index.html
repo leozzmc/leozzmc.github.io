@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kevin Liu's 部落格 || Technical || Travel - Life Documentation</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="👍👍👍👍👍">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:url" content="https://leozzmc.github.io/page/3/index.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="👍👍👍👍👍">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:author" content="Kevin Liu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/page/3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kevin Liu\'s 部落格 || Technical || Travel',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Kevin Liu's 部落格 || Technical || Travel</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/posts/6dcce06b.html" title="每日溫度 | Medium | LeetCode#739. Daily Temperatures"><img class="post-bg" src="/img/LeetCode/739/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="每日溫度 | Medium | LeetCode#739. Daily Temperatures"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/6dcce06b.html" title="每日溫度 | Medium | LeetCode#739. Daily Temperatures">每日溫度 | Medium | LeetCode#739. Daily Temperatures</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-04-11T14:13:55.000Z" title="發表於 2025-04-11 22:13:55">2025-04-11</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Stack/">Stack</a></span></div><div class="content">題目敘述  題目難度：Medium 題目描述： 給定一個整數陣列 temperatures 代表每天的氣溫，請回傳一個陣列 answer，answer[i] 代表你必須再等 i-th 天才能夠獲得一個更溫暖的天氣，如果接下來幾天的天氣不可能變更溫暖，則 answer[i] == 0。  解法一開始的想法我一開始的想法會是，如果隔天溫度比今天溫度低，則將氣溫丟入 Stack 中，但是這樣會有問題，你要額外紀錄當初第一個push進入 stack 的 Index 這樣再回傳陣列的時候才能夠知道從哪個 index 會隔多少天才能夠溫度提升。 這樣不如直接用 Stack 紀錄 index 本身。 我的解法123456789101112131415161718class Solution &#123;public:    vector&lt;int&gt; dailyTemperatures(vector&lt;int&gt;&amp; temperatures)&#123;        if(temperatures.size()==1) return &#123;0&#125;;   ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/1025b1fe.html" title="冗餘的連線 | Medium | LeetCode#684. Redundant Connection"><img class="post-bg" src="/img/LeetCode/684/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="冗餘的連線 | Medium | LeetCode#684. Redundant Connection"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/1025b1fe.html" title="冗餘的連線 | Medium | LeetCode#684. Redundant Connection">冗餘的連線 | Medium | LeetCode#684. Redundant Connection</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-03-18T12:27:30.000Z" title="發表於 2025-03-18 20:27:30">2025-03-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Graph/">Graph</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/DFS/">DFS</a></span></div><div class="content">題目敘述  題目難度: medium 題目敘述: 在這個問題中，Tree是一個無向圖，它是Connected的且沒有環。給定一個圖，它最初是一棵包含 n 個節點（標記為 1 到 n）的樹，但後來新增了一條額外的邊。這條新增的邊連接了從 1 到 n 中選擇的兩個不同的節點，且這條邊之前並不存在於樹中。這個圖由一個長度為 n 的陣列 edges 表示，其中 edges[i] = [a_i, b_i] 表示在圖中節點 a_i 和 b_i 之間存在一條邊。題目要求 返回一條可以被移除的邊，使得剩下的圖仍然是一棵包含 n 個節點的樹。 如果有多個答案，請返回輸入中 最後出現的那條邊。  解法一開始的想法一開始的想法想說，只要按照原先找 Connected Components 的思路，在 Adjacency List 找鄰居的時候，如果找回到已經造訪過的點，那就會是有迴圈，則該edge 是可被移除的。  這樣的想法沒錯，但實際執行時卻會碰到 DFS 遍歷順序的問題，例如測資 [[1,2],[1,3],[2,3]]，當加入 edges[2] = &#123;2,3&#125; 時，會形成一個...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/ff5764dc.html" title="無向圖中連通元件的數量 | Medium | LeetCode#323. Number of Connected Components in an Undirected Graph"><img class="post-bg" src="/img/LeetCode/323/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="無向圖中連通元件的數量 | Medium | LeetCode#323. Number of Connected Components in an Undirected Graph"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/ff5764dc.html" title="無向圖中連通元件的數量 | Medium | LeetCode#323. Number of Connected Components in an Undirected Graph">無向圖中連通元件的數量 | Medium | LeetCode#323. Number of Connected Components in an Undirected Graph</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-03-15T05:20:36.000Z" title="發表於 2025-03-15 13:20:36">2025-03-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Graph/">Graph</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/DFS/">DFS</a></span></div><div class="content">題目敘述  題目難度：Medium 題目描述： 給定一張圖中有 n 個節點，以及一個陣列 edges 其中 edges[i] = [a_i, b_i] 代表從節點A到節點B存在 Edge，本題要求回傳這個圖紹 Connected Components 的數量。  解法一開始的想法由於題目給得是 edge 的陣列，可以由此陣列去建構出一個 n x n 的鄰接矩陣，如果矩陣中有值就為 true 開始針對已經有 true 的節點進行 DFS 然後每次返回到 Caller 時就讓某變數 sum 增加一，最後再回傳 sum 即可，就代表 Connected Components 的數量。  但 n x n 的鄰接矩陣，如果想要去選取出發點，勢必須要透過雙重迴圈來尋找，只要 n 夠大就會 Time Limit Excced，因此改良做法是改成鄰接串列（Adjacency List）  我的解法1234567891011121314151617181920212223242526272829303132333435class Solution &#123;    public:        ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/b8be61c6.html" title="找出重複數字| Medium | LeetCode#287. Find the Duplicate Number"><img class="post-bg" src="/img/LeetCode/287/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="找出重複數字| Medium | LeetCode#287. Find the Duplicate Number"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/b8be61c6.html" title="找出重複數字| Medium | LeetCode#287. Find the Duplicate Number">找出重複數字| Medium | LeetCode#287. Find the Duplicate Number</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-03-12T13:19:47.000Z" title="發表於 2025-03-12 21:19:47">2025-03-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Array/">Array</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Search/">Binary Search</a></span></div><div class="content">題目敘述  題目難度: medium 題目敘述: 題目給定一個整數陣列 nums 包含了 n+1 個數字，每個數字範圍為 [1,n] ，在 nums 只會有一種數字重複，請回傳是哪個數字重複。  這題要求只能使用常數空間，並且不能夠修改 nums 本身   解法一開始的想法這題規定只能使用常數空間，就代表要用時間換空間，基本上陣列或是 unordered_set 這種額外樣保存 n筆陣列資料的方式都不能用了，另外如果直接使用雙重回圈暴力解應該也會 TLE，因此這裡需要別的做法 解法1234567891011121314151617181920212223242526class Solution &#123;public:    int findDuplicate(vector&lt;int&gt;&amp; nums) &#123;        int left = 1;        int right = nums.size()-1;        while(left &lt; right)&#123;            int mid = left + (right...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/597eaffb.html" title="刷題知識整理 | 圖(Graph)-3"><img class="post-bg" src="/img/LeetCode/graph/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="刷題知識整理 | 圖(Graph)-3"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/597eaffb.html" title="刷題知識整理 | 圖(Graph)-3">刷題知識整理 | 圖(Graph)-3</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-02-20T03:32:23.000Z" title="發表於 2025-02-20 11:32:23">2025-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Graph/">Graph</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Cycle/">Cycle</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/DAG/">DAG</a></span></div><div class="content">前言要能夠確保像是有先修微積分，才能修工程數學，這種 有前後關係的圖論問題，通常會用 拓樸排序(Topological Sort)   利用 DFS 尋找 Strong Connected Components(SCC)Strong Connected Components (SCC) Vertex 之間有雙向的 Edge 相連，例如 從 vertex(A) 走到 vertex(B) 同時 vertex(B) 也要有 edge 連到 vertex(A)，就會說這兩個vertex 是 strongly connected 的。  通常可以透過多次的 DFS 來確定 Directed Graph 中有哪些 Strongly Connected Components ， 要進行多次DFS的原因在於，只有一次DFS 可能沒辦法識別出全部的 COnnected Components，根據搜尋起點的不同，有可能也會將不同。每次在查找 Connected Components 的時候都會各自有 Depth-First Search Tree，根據不同的搜尋起點選擇，可能會形成一個大棵的Dept...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/21c39498.html" title="用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree"><img class="post-bg" src="/img/LeetCode/261/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/21c39498.html" title="用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree">用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-02-20T01:42:26.000Z" title="發表於 2025-02-20 09:42:26">2025-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Graph/">Graph</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/DFS/">DFS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Cycle/">Cycle</a></span></div><div class="content">題目敘述  題目難度： Medium 題目描述：   You have a graph of n nodes labeled from 0 to n - 1. You are given an integer n and a list of edges where edges[i] = [ai, bi] indicates that there is an undirected edge between nodes ai and bi in the graph.Return true if the edges of the given graph make up a valid tree, and false otherwise.  解法一開始的想法這題會是一個無向圖要判斷有沒有 Cycle，由於是無向圖判斷Cycle，因此可以透過 DFS來去看能不能形成一個 DFS Tree，如果不行那就是會有Cycle。另外這題給的邊形成的陣列，也會需要額外處理變成鄰接串列進行處理。 我的解法12345678910111213141516171819202122232425262728293...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/975d3897.html" title="課程表 | Medium | LeetCode#210. Course Schedule II"><img class="post-bg" src="/img/LeetCode/210/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="課程表 | Medium | LeetCode#210. Course Schedule II"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/975d3897.html" title="課程表 | Medium | LeetCode#210. Course Schedule II">課程表 | Medium | LeetCode#210. Course Schedule II</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-02-18T03:26:53.000Z" title="發表於 2025-02-18 11:26:53">2025-02-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Graph/">Graph</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/DFS/">DFS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Cycle/">Cycle</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Topological-Sort/">Topological Sort</a></span></div><div class="content">題目敘述  題目難度： Medium 題目描述： 總共有 numCourses 課程需要上，他們被標注為 0 - numCourses-1，給定一個陣列 prerequisites 其中 prerequisites[i] = [a_i, b_i] 代表你需要先上過 b_i 課你才夠去上 a_i 課程。舉例來說，[0,1] 代表你需要先上課程 1 才能夠去上課程 0，請以陣列形式回傳上完所有課程的休課順序，如果沒辦法完成請回傳空陣列。   這題基本上是接續 LeetCode-207 Course Schedule，只不過上一題是判斷能否修完課，這題是要把修課順序印出來  解法一開始的想法不能修完課的狀況就是同時存在 [0,1], [1,0] 因為順序就反了，會在Graph中構成 Cycle， 因此如果這是有向無環圖(DAG) 則可透過 topological sort 印出依序走訪完全部課程的路徑，如果有cycle 就回傳空陣列。 我的解法123456789101112131415161718192021222324252627282930313233343536373839404...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/e21e131f.html" title="在 BST 中進行搜尋 | Easy | LeetCode#700. Search in a Binary Search Tree"><img class="post-bg" src="/img/LeetCode/700/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在 BST 中進行搜尋 | Easy | LeetCode#700. Search in a Binary Search Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/e21e131f.html" title="在 BST 中進行搜尋 | Easy | LeetCode#700. Search in a Binary Search Tree">在 BST 中進行搜尋 | Easy | LeetCode#700. Search in a Binary Search Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-02-14T03:03:14.000Z" title="發表於 2025-02-14 11:03:14">2025-02-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Search-Tree/">Binary Search Tree</a></span></div><div class="content">題目敘述  題目難度: Easy 題目描述: 題目給定一個Binary Search Tree，每個樹節點都有值 val，請在BST找到以該 val 作為值的節點，如果沒找到就回傳 null  解法BST 的特性就是左邊節點 &lt; 右邊節點，因此只要跟每個節點比較輸入的   val ，如果 val 大於當前節點就去查找其右子樹的 root，如果小於就給左子樹的root，就這樣遞迴查找，如果碰到 Leaf 後還是沒有找到就回傳 nullptr    但注意某些題目的定義會是 &lt;=  我的解法12345678910111213141516171819202122232425262728/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125; * ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/a6822388.html" title="Proxmox VE 叢集部署 Promethues 以及 Grafana"><img class="post-bg" src="/img/Prometheus/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Proxmox VE 叢集部署 Promethues 以及 Grafana"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/a6822388.html" title="Proxmox VE 叢集部署 Promethues 以及 Grafana">Proxmox VE 叢集部署 Promethues 以及 Grafana</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-02-11T02:33:03.000Z" title="發表於 2025-02-11 10:33:03">2025-02-11</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/">實作紀錄</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Proxmox-VE/">Proxmox VE</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Infrastructure/">Infrastructure</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Promethues/">Promethues</a></span></div><div class="content">前言在以前建立的 Proxmox VE 從集中，需要定期搜集GPU 功耗資訊作為腳本的判斷依據，因此需要 Promethues 進行資訊搜集。 節點背景資訊IP CIDR: 172.25.166.139/24CPU(s) 4 x Intel(R) Core(TM) i3-8100 CPU @ 3.60GHz (1 Socket)Kernel Version Linux 6.8.4-2-pve (2024-04-10T17:36Z)   安裝 Promethues建立 Promethues 使用者 12sudo groupadd --system prometheussudo useradd -s /sbin/nologin --system -g prometheus prometheus  建立 Promethues 必要目錄 12mkdir /var/lib/prometheusfor i in rules rules.d files_sd; do mkdir -p /etc/prometheus/$&#123;i&#125;; done   在 tmp 建立暫時用的目錄 p...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/bb246426.html" title="之字形轉換 | Medium | LeetCode#6. Zigzag Conversion"><img class="post-bg" src="/img/LeetCode/6/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="之字形轉換 | Medium | LeetCode#6. Zigzag Conversion"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/bb246426.html" title="之字形轉換 | Medium | LeetCode#6. Zigzag Conversion">之字形轉換 | Medium | LeetCode#6. Zigzag Conversion</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2025-01-29T14:30:28.000Z" title="發表於 2025-01-29 22:30:28">2025-01-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/String/">String</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a></span></div><div class="content">題目敘述  題目難度: Medium 題目描述: 題目給定一個字串 s 假設是 PAYPALISHIRING，需要根據給定的列數 numRows 來用之字形 (Zigzag) 形式來呈現，並且逐列讀取字元後輸出字串 PAHNAPLSIIGYIR  123P   A   H   NA P L S I I GY   I   R  解法一開始的想法這裡的之字形會是先往下，碰到底部後再往右上方移動，移動到頂部後再往下直到把所有的字元都寫完。之後再逐行輸出。一開始的想法就是用個2維陣列按照之字形來儲存字串值，然後按照跟題目一樣的規則來填充到2維陣列中， 我的解法但後來發現其實用一維度陣列就好，由於可以型態是字串，所以原先2為陣列的其他列都可以加入到對應行的後面，比較節省空間。 Ex. 123row 0 | &quot;P   A   H   N&quot;row 1 | &quot;A P L S I I G&quot;row 2 | &quot;Y   I   R&quot;  12345678910111213141516171819202122class Solution &#123...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#content-inner">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#content-inner">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/#content-inner">19</a><a class="extend next" rel="next" href="/page/4/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-comment-dots"></i><span>最新評論</span></div><div class="aside-list"><span>載入中...</span></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分類</span>
+            <a class="card-more-btn" href="/categories/" title="檢視更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Deep-Dive/"><span class="card-category-list-name">Deep Dive</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LeetCode%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">LeetCode筆記</span><span class="card-category-list-count">138</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">學習筆記</span><span class="card-category-list-count">17</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/Troubleshooting/"><span class="card-category-list-name">Troubleshooting</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/"><span class="card-category-list-name">實作紀錄</span><span class="card-category-list-count">18</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8C%87%E4%BB%A4-%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86/"><span class="card-category-list-name">指令/工具用法整理</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%88%AC%E5%B1%B1%E5%81%A5%E8%A1%8C/"><span class="card-category-list-name">爬山健行</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/"><span class="card-category-list-name">論文導讀</span><span class="card-category-list-count">3</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>標籤</span></div><div class="card-tag-cloud"><a href="/tags/O-RAN/" style="font-size: 1.1em; color: #999">O-RAN</a> <a href="/tags/MQ/" style="font-size: 1.1em; color: #999">MQ</a> <a href="/tags/Two-Pointers/" style="font-size: 1.19em; color: #999da1">Two Pointers</a> <a href="/tags/Infrastructure/" style="font-size: 1.23em; color: #999ea6">Infrastructure</a> <a href="/tags/Binary-Tree/" style="font-size: 1.46em; color: #99a7bb">Binary Tree</a> <a href="/tags/Networking/" style="font-size: 1.1em; color: #999">Networking</a> <a href="/tags/Array/" style="font-size: 1.41em; color: #99a5b7">Array</a> <a href="/tags/matrix/" style="font-size: 1.1em; color: #999">matrix</a> <a href="/tags/Security/" style="font-size: 1.14em; color: #999b9d">Security</a> <a href="/tags/Merged-Sort/" style="font-size: 1.1em; color: #999">Merged Sort</a> <a href="/tags/Queue/" style="font-size: 1.23em; color: #999ea6">Queue</a> <a href="/tags/Web/" style="font-size: 1.1em; color: #999">Web</a> <a href="/tags/OS/" style="font-size: 1.1em; color: #999">OS</a> <a href="/tags/Linux/" style="font-size: 1.28em; color: #99a0aa">Linux</a> <a href="/tags/backtracking/" style="font-size: 1.37em; color: #99a4b2">backtracking</a> <a href="/tags/%E7%B6%B2%E9%A0%81%E7%88%AC%E8%9F%B2/" style="font-size: 1.1em; color: #999">網頁爬蟲</a> <a href="/tags/BFS/" style="font-size: 1.28em; color: #99a0aa">BFS</a> <a href="/tags/Cloud-Support/" style="font-size: 1.1em; color: #999">Cloud Support</a> <a href="/tags/SNS/" style="font-size: 1.1em; color: #999">SNS</a> <a href="/tags/Tree/" style="font-size: 1.41em; color: #99a5b7">Tree</a> <a href="/tags/Amazon/" style="font-size: 1.19em; color: #999da1">Amazon</a> <a href="/tags/Binary-Search/" style="font-size: 1.28em; color: #99a0aa">Binary Search</a> <a href="/tags/IoT/" style="font-size: 1.1em; color: #999">IoT</a> <a href="/tags/Linked-List/" style="font-size: 1.5em; color: #99a9bf">Linked List</a> <a href="/tags/Complete-Binary-Tree/" style="font-size: 1.1em; color: #999">Complete Binary Tree</a> <a href="/tags/Arduino/" style="font-size: 1.1em; color: #999">Arduino</a> <a href="/tags/Promethues/" style="font-size: 1.1em; color: #999">Promethues</a> <a href="/tags/Stack/" style="font-size: 1.37em; color: #99a4b2">Stack</a> <a href="/tags/Scaling/" style="font-size: 1.1em; color: #999">Scaling</a> <a href="/tags/Reverse/" style="font-size: 1.1em; color: #999">Reverse</a> <a href="/tags/Math/" style="font-size: 1.14em; color: #999b9d">Math</a> <a href="/tags/Gateway/" style="font-size: 1.1em; color: #999">Gateway</a> <a href="/tags/Machine-Learning/" style="font-size: 1.1em; color: #999">Machine Learning</a> <a href="/tags/Cycle/" style="font-size: 1.23em; color: #999ea6">Cycle</a> <a href="/tags/Certificate/" style="font-size: 1.14em; color: #999b9d">Certificate</a> <a href="/tags/Traversal/" style="font-size: 1.32em; color: #99a2ae">Traversal</a> <a href="/tags/STL/" style="font-size: 1.1em; color: #999">STL</a> <a href="/tags/In-Order-Traversal/" style="font-size: 1.1em; color: #999">In-Order Traversal</a> <a href="/tags/hash-table/" style="font-size: 1.19em; color: #999da1">hash table</a> <a href="/tags/Palindrome/" style="font-size: 1.1em; color: #999">Palindrome</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>歸檔</span>
+      <a class="card-more-btn" href="/archives/"
+            title="檢視更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2100/11/">
+            <span class="card-archive-list-date">
+              十一月 2100
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2060/11/">
+            <span class="card-archive-list-date">
+              十一月 2060
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/11/">
+            <span class="card-archive-list-date">
+              十一月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/10/">
+            <span class="card-archive-list-date">
+              十月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/09/">
+            <span class="card-archive-list-date">
+              九月 2025
+            </span>
+            <span class="card-archive-list-count">8</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/08/">
+            <span class="card-archive-list-date">
+              八月 2025
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/07/">
+            <span class="card-archive-list-date">
+              七月 2025
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/04/">
+            <span class="card-archive-list-date">
+              四月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>網站資訊</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章數量 :</div><div class="item-count">183</div></div><div class="webinfo-item"><div class="item-name">總字數 :</div><div class="item-count">264.8k</div></div><div class="webinfo-item"><div class="item-name">訪客數 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">總瀏覽量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最後更新時間 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-10-26T16:32:13.612Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[圖片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[連結]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[程式碼]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[程式碼]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '尚無評論'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'github-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const findTrueUrl = (array, ele) => {
+    Promise.all(array.map(item =>
+      fetch(item.url).then(resp => resp.json()).then(data => {
+        let urlArray = data.body ? data.body.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/ig) : []
+        if (!Array.isArray(urlArray) || urlArray.length === 0) {
+          urlArray = [`${data.html_url}`]
+        }
+        if (data.user.login === 'utterances-bot') {
+          return urlArray.pop()
+        } else {
+          return urlArray.shift()
+        }
+      })
+    )).then(res => {
+        array = array.map((i,index)=> {
+          return {
+            ...i,
+            url: res[index]
+          }
+        })
+
+        btf.saveToLocal.set(keyName, JSON.stringify(array), 10/(60*24))
+        generateHtml(array, ele)
+    });
+  }
+
+  const getComment = ele => {
+    fetch('https://api.github.com/repos/leozzmc/Blog_Reply/issues/comments?sort=updated&direction=desc&per_page=6&page=1',{
+      "headers": {
+        Accept: 'application/vnd.github.v3.html+json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const githubArray = data.map(item => {
+          return {
+            'avatar': item.user.avatar_url,
+            'content': changeContent(item.body_html || item.body),
+            'nick': item.user.login,
+            'url': item.issue_url,
+            'date': item.updated_at
+          }
+        })
+        findTrueUrl(githubArray, ele)
+      }).catch(e => {
+        console.error(e)
+        ele.textContent= "無法獲取評論，請確認相關配置是否正確"
+      })
+  }
+  run(keyName, getComment)
+})</script><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

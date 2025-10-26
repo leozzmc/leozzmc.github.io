@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>兩鏈相加 | Medium |LeetCode#2. Add Two Numbers | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="題目敘述  題目難度： Medium 題目敘述：這題要求給定兩個非空的linked list來代表兩個非整數數字，兩個數字以反向排序，每一個digit被存在個別的node上，題目要求將兩個數字相加後同樣以反向存成一個linked list並回傳 舉例：可以看範例1，342 和 465 分別以反向排序儲存，並且相加後的值為 807，最後再反向初存成list，輸出 [7,0,8]  解法一開始的想法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="兩鏈相加 | Medium |LeetCode#2. Add Two Numbers">
+<meta property="og:url" content="https://leozzmc.github.io/posts/3864fd1b.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="題目敘述  題目難度： Medium 題目敘述：這題要求給定兩個非空的linked list來代表兩個非整數數字，兩個數字以反向排序，每一個digit被存在個別的node上，題目要求將兩個數字相加後同樣以反向存成一個linked list並回傳 舉例：可以看範例1，342 和 465 分別以反向排序儲存，並且相加後的值為 807，最後再反向初存成list，輸出 [7,0,8]  解法一開始的想法">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/LeetCode/2/cover.jpeg">
+<meta property="article:published_time" content="2024-06-26T00:46:57.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.514Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Medium">
+<meta property="article:tag" content="Linked List">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/LeetCode/2/cover.jpeg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "兩鏈相加 | Medium |LeetCode#2. Add Two Numbers",
+  "url": "https://leozzmc.github.io/posts/3864fd1b.html",
+  "image": "https://leozzmc.github.io/img/LeetCode/2/cover.jpeg",
+  "datePublished": "2024-06-26T00:46:57.000Z",
+  "dateModified": "2025-10-26T12:28:30.514Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/3864fd1b.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '兩鏈相加 | Medium |LeetCode#2. Add Two Numbers',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/LeetCode/2/cover.jpeg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">兩鏈相加 | Medium |LeetCode#2. Add Two Numbers</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">兩鏈相加 | Medium |LeetCode#2. Add Two Numbers</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-06-26T00:46:57.000Z" title="發表於 2024-06-26 08:46:57">2024-06-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.514Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>6分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="題目敘述"><a href="#題目敘述" class="headerlink" title="題目敘述"></a>題目敘述</h1><p><img src="/img/LeetCode/2/question1.png"><br><img src="/img/LeetCode/2/question2.png"></p>
+<ul>
+<li>題目難度： <code>Medium</code></li>
+<li>題目敘述：這題要求給定兩個非空的linked list來代表兩個非整數數字，兩個數字以反向排序，每一個digit被存在個別的node上，題目要求將兩個數字相加後同樣以反向存成一個linked list並回傳</li>
+<li>舉例：可以看範例1，342 和 465 分別以反向排序儲存，並且相加後的值為 807，最後再反向初存成list，輸出 [7,0,8]</li>
+</ul>
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><h2 id="一開始的想法"><a href="#一開始的想法" class="headerlink" title="一開始的想法"></a>一開始的想法</h2><blockquote>
+<p>最一開始的想法大概花費10分鐘定義好，但實際上較為複雜<br>我的想法是從個別List取得個別數字，相加後，再存成list</p>
+</blockquote>
+<ol>
+<li>宣告變數 a1, a2. sum</li>
+<li>Traverse List1 長度</li>
+<li>檢查 list1 的值，逐項相加，存入變數a1</li>
+<li>Traverse List2 長度</li>
+<li>檢查 list2 的值，逐項相加，存入變數a2</li>
+<li>sum &#x3D; a1 +a2;</li>
+<li>建立新list，反向存入sum 中的值</li>
+<li>回傳 new list head</li>
+</ol>
+<h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> len1=<span class="number">0</span>, len2=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> val1=<span class="number">0</span>, val2=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> sum;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; value1, value2;</span><br><span class="line">        ListNode * current = l1;</span><br><span class="line">        ListNode * previous;</span><br><span class="line">        ListNode * head;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Traverse through list1, derive the length of l1</span></span><br><span class="line">        <span class="keyword">while</span>(current != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            len1++;</span><br><span class="line">            current = current-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        current = l1;</span><br><span class="line">        <span class="comment">//Derive the value of list1</span></span><br><span class="line">        <span class="keyword">while</span> (current != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            value1.<span class="built_in">push_back</span>(current-&gt;val);</span><br><span class="line">            current = current -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        current = l2;</span><br><span class="line">        <span class="comment">//Traverse through list2, derive the length of l2</span></span><br><span class="line">        <span class="keyword">while</span>(current != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            len2++;</span><br><span class="line">            current = current -&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        current = l2;</span><br><span class="line">        <span class="comment">//Derive the value of list2</span></span><br><span class="line">        <span class="keyword">while</span>(current != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            value2.<span class="built_in">push_back</span>(current-&gt;val);</span><br><span class="line">            current = current-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//value1</span></span><br><span class="line">        <span class="type">int</span> factor = value1.<span class="built_in">size</span>() <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=value1.<span class="built_in">size</span>()<span class="number">-1</span>; i&gt;=<span class="number">0</span>; i--)&#123;</span><br><span class="line">            val1 += value1[i] * <span class="built_in">pow</span>(<span class="number">10</span>,factor);</span><br><span class="line">            factor--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//value2</span></span><br><span class="line">        factor = value2.<span class="built_in">size</span>() <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=value2.<span class="built_in">size</span>()<span class="number">-1</span>; i&gt;=<span class="number">0</span>; i--)&#123;</span><br><span class="line">            val2 += value2[i] * <span class="built_in">pow</span>(<span class="number">10</span>,factor);</span><br><span class="line">            factor--;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//sum</span></span><br><span class="line">        sum = val1 + val2;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// head</span></span><br><span class="line">        <span class="keyword">if</span>(sum %<span class="number">10</span> != <span class="number">0</span>)&#123; </span><br><span class="line">        ListNode* newHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">        sum = sum /<span class="number">10</span>;</span><br><span class="line">        current = newHead;</span><br><span class="line">        previous  = newHead;</span><br><span class="line">        head = newHead;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// 0 tail</span></span><br><span class="line">        ListNode* newHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        sum = sum /<span class="number">10</span>;</span><br><span class="line">        current = newHead;</span><br><span class="line">        previous  = newHead;</span><br><span class="line">        head = newHead;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// body</span></span><br><span class="line">        <span class="keyword">while</span> (sum  != <span class="number">0</span>)&#123;</span><br><span class="line">            ListNode* newNode = <span class="keyword">new</span> <span class="built_in">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">            current = newNode;</span><br><span class="line">            previous -&gt; next = newNode;</span><br><span class="line">            previous = newNode;</span><br><span class="line">            sum = sum /<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            head = <span class="keyword">new</span> <span class="built_in">ListNode</span>(sum);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h3><p>想法與剛剛一樣，但在sum 存成list的時候要下很多心思，要開始透過取餘數和除以10的方式來獲取每一個digit，再建立新節點，放入值。<strong>但最重要的問題是，這樣的作法容易發生Overflow</strong></p>
+<p><img src="/img/LeetCode/2/runtime_error.png"></p>
+<p>如果把變數改成 <code>long long</code>  或者 <code>unsigned long long</code> 在提交答案時還是會Overflow</p>
+<p><img src="/img/LeetCode/2/runtime_error2.png"></p>
+<p>因此這題的答案肯定不是要用我們轉成數字用加的</p>
+<h2 id="其他做法"><a href="#其他做法" class="headerlink" title="其他做法"></a>其他做法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> sum =<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> carry=<span class="number">0</span>;</span><br><span class="line">        ListNode *newHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">        ListNode *current = newHead;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>( l1 != <span class="literal">nullptr</span> || l2 != <span class="literal">nullptr</span> )&#123;</span><br><span class="line">            sum = carry;</span><br><span class="line">            <span class="keyword">if</span> (l1 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                sum += l1-&gt;val;</span><br><span class="line">                l1 = l1 -&gt; next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (l2 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                sum += l2-&gt;val;</span><br><span class="line">                l2 = l2-&gt;next;</span><br><span class="line">            &#125; </span><br><span class="line">            carry = sum /<span class="number">10</span>;</span><br><span class="line">            current-&gt;next = <span class="keyword">new</span> <span class="built_in">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">            current = current -&gt; next;       </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                current-&gt;next = <span class="keyword">new</span> <span class="built_in">ListNode</span>(carry);</span><br><span class="line">                current = current -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead-&gt;next;         </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>後來的想法改變成：<strong>直接在list中進行相加，而不轉成數字</strong></p>
+<p>需要額外處理的會是進位</p>
+<h3 id="說明-1"><a href="#說明-1" class="headerlink" title="說明"></a>說明</h3><ul>
+<li>首先宣告了一個新的head，但就是dummyHead</li>
+<li>然後宣告 <code>current</code>指標，指向dummyHead</li>
+<li>當 <code>l1</code> 或 <code>l2</code> 尚未走到最後節點時，會持續進行相加和計算進位</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (l1 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">    sum += l1-&gt;val;</span><br><span class="line">    l1 = l1 -&gt; next;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (l2 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">    sum += l2-&gt;val;</span><br><span class="line">    l2 = l2-&gt;next;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>兩個 list 個別處理，將節點的值加進 <code>sum</code> 中，並將個別list 移到下一個節點</li>
+<li>接著計算進位進位會是 <code>carry = sum /10</code></li>
+<li>接著就是在 dummyHead 後面新增一個新節點，節點值會是 <code>sum % 10</code> 也就是取sum的個位數數字</li>
+<li>更新 <code>current</code> 指標</li>
+<li>最後判斷如果到最後 <code>carry &gt; 0</code> 新增一個進位用的節點，並更新指標，最後回傳dummyHead的下一個節點位址</li>
+</ul>
+<h3 id="完整本地測試程式碼"><a href="#完整本地測試程式碼" class="headerlink" title="完整本地測試程式碼"></a>完整本地測試程式碼</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    <span class="built_in">ListNode</span>() : <span class="built_in">val</span>(<span class="number">0</span>), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x, ListNode *next) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(next) &#123;&#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">struct</span> <span class="title class_">ListNode</span> *current;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">PrintList</span><span class="params">(ListNode *first)</span></span>&#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">ListNode</span> *ptr = first;</span><br><span class="line">    <span class="keyword">if</span>(first != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>(ptr != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            cout &lt;&lt; ptr-&gt;val &lt;&lt; <span class="string">&quot;-&gt;&quot;</span>;</span><br><span class="line">            ptr = ptr -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;empty list&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;NULL&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> sum =<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> carry=<span class="number">0</span>;</span><br><span class="line">    ListNode *newHead = <span class="keyword">new</span> <span class="built_in">ListNode</span>(<span class="number">0</span>);</span><br><span class="line">    ListNode *current = newHead;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>( l1 != <span class="literal">nullptr</span> || l2 != <span class="literal">nullptr</span> )&#123;</span><br><span class="line">        sum = carry;</span><br><span class="line">        <span class="keyword">if</span> (l1 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            sum += l1-&gt;val;</span><br><span class="line">            l1 = l1 -&gt; next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (l2 != <span class="literal">nullptr</span>)&#123;</span><br><span class="line">            sum += l2-&gt;val;</span><br><span class="line">            l2 = l2-&gt;next;</span><br><span class="line">        &#125; </span><br><span class="line">        carry = sum /<span class="number">10</span>;</span><br><span class="line">        current-&gt;next = <span class="keyword">new</span> <span class="built_in">ListNode</span>(sum % <span class="number">10</span>);</span><br><span class="line">        current = current -&gt; next;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(carry &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            current-&gt;next = <span class="keyword">new</span> <span class="built_in">ListNode</span>(carry);</span><br><span class="line">            current = current -&gt; next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newHead-&gt;next;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//Create list 1</span></span><br><span class="line">    <span class="comment">// ListNode node1_3(9);</span></span><br><span class="line">    <span class="function">ListNode <span class="title">node1_2</span><span class="params">(<span class="number">9</span>)</span></span>;</span><br><span class="line">    <span class="function">ListNode <span class="title">node1_1</span><span class="params">(<span class="number">9</span>, &amp;node1_2)</span></span>;</span><br><span class="line">    <span class="comment">//Print List1</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;list1:&quot;</span>;</span><br><span class="line">    <span class="built_in">PrintList</span>(&amp;node1_1);</span><br><span class="line">    <span class="comment">//Create list 2</span></span><br><span class="line">    <span class="comment">//ListNode node2_2(9);</span></span><br><span class="line">    <span class="function">ListNode <span class="title">node2_1</span><span class="params">(<span class="number">9</span>)</span></span>;</span><br><span class="line">    <span class="comment">//Print List2</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;list2:&quot;</span>;</span><br><span class="line">    <span class="built_in">PrintList</span>(&amp;node2_1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Output</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Reverse output:&quot;</span>;</span><br><span class="line">    <span class="built_in">PrintList</span>(<span class="built_in">addTwoNumbers</span>(&amp;node1_1, &amp;node2_1));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="執行結果"><a href="#執行結果" class="headerlink" title="執行結果"></a>執行結果</h3><p><img src="/img/LeetCode/2/results.png"></p>
+<h1 id="複雜度分析"><a href="#複雜度分析" class="headerlink" title="複雜度分析"></a>複雜度分析</h1><h2 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h2><p>這個函數主要由一個 while 迴圈組成，迴圈會運行直到 <code>l1</code> 和 <code>l2</code> 都為 <code>nullptr</code>，在每次迭代中，我們至多只訪問 <code>l1</code> 和 <code>l2</code> 的每個節點一次。因此，時間複雜度取決於 <code>l1</code> 和 <code>l2</code> 的長度，假設 <code>l1</code> 和 <code>l2</code> 的長度分別為 $N$, $M$，則時間複雜度為 $O(max(N,M))$</p>
+<h2 id="空間複雜度"><a href="#空間複雜度" class="headerlink" title="空間複雜度"></a>空間複雜度</h2><p>除了輸入的list外，我們創建了一個新的list來存儲結果。新list的長度將等於較長的輸入鏈表的長度加上可能的一個額外節點（存儲最後的進位）。<br>因此，空間複雜度也是 $O(max(n,m))$</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/3864fd1b.html">https://leozzmc.github.io/posts/3864fd1b.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Medium/">Medium</a><a class="post-meta__tags" href="/tags/Linked-List/">Linked List</a></div><div class="post-share"><div class="social-share" data-image="/img/LeetCode/2/cover.jpeg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/c8064a2b.html" title="從排序鏈結串列刪除重複 | Easy | LeetCode#83. Remove Duplicates from Sorted List"><img class="cover" src="/img/LeetCode/83/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">從排序鏈結串列刪除重複 | Easy | LeetCode#83. Remove Duplicates from Sorted List</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Easy 題目敘述: 給定一個排序鍊結串列的 head, 刪除所有重複節點，每個節點元素僅能出現一次，回傳排列串列  解法 這是第一次改用 C++ 寫 Linked List 題目，但由於題目是 single linked list，因此沒能夠用到透過 double linked list 實作的 std:list STL Library，有點小可惜，所以思路上還是用到了慣用的 C  時間紀錄:  想解決辦法: 1min 實際撰寫程式碼: 15 minutes   大概 Run 兩次，第一次沒有考慮到結尾 Null Pointer 的狀況  一開始的想法  定義好兩個指標，分別指到前一個節點跟當前節點 遍歷整個list 每次都檢查當前節點值與前一個節點值是否一樣，結束後更新指標值 回傳head  我的解法1234567891011121314151617181920212223242526272829303132333435363738394041424344/** * Definition for singly-linked list. * struct...</div></div></div></a><a class="pagination-related" href="/posts/a27c9492.html" title="刷題必會知識 | 堆疊 (Stack) | LeetCode 筆記"><img class="cover" src="/img/LeetCode/stack/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">刷題必會知識 | 堆疊 (Stack) | LeetCode 筆記</div></div><div class="info-2"><div class="info-item-1">甚麼是 Stack?Stack 是一種資料結構，具有 後進先出(Last-In-First-Out, LIFO) 的特性，  Stack 實作 (C++)這裡我想透過 C++ 去時做一個完整的 Stack 功能，並且實踐常見的 push, pop, isEmpty 等等操作 用 Array 實作 Stack再透過C++ 實作Stack得時候，需要注意某些變數不能被外部存取，像是  top: 用於指向stack 的頂端，也就是最上面的index capacity: stack的記憶體大小 *stack:  指向stack的指標  因此與上面相關的變數需要作為 Private 的成員變數。另外再使用陣列實踐Stack的時候有時候會出現，記憶體不夠的狀況，因此可以透過建立一個自動擴展capacity的函數來解決。 另外，在實作Pop的時候，並不需要將資料實際移除，而是將 top 扣掉1，好像是我們真的把資料從stack刪除一樣，但實際上並沒有，而是在未來Push的時候再將現有資料蓋過去即可，這樣的做法可以節省記憶體操作成本   注意: 在進行Pop或者是 Top操作(回傳現在Stack...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/f15c47a9.html" title="將二元樹展平為Linked List| Medium | LeetCode#114. Flatten Binary Tree to Linked List"><img class="cover" src="/img/LeetCode/114/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-27</div><div class="info-item-2">將二元樹展平為Linked List| Medium | LeetCode#114. Flatten Binary Tree to Linked List</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目敘述：給定一棵 Binary Tree 的 root，將 Binary tree 展平成一個 Linked List   Linked List 要與題目的 TreeNode 是相同的 class，right child pointer 要指向list中的下一個節點，而 left child pointer 皆指向null Linked List 節點順序要與對這棵樹進行 Pre-order Traversal 的節點順序一樣     解法一開始的想法 這題的想法沒有花很久時間，算是解到目前最快的一題，大概從有想法到AC大概20min  這題的目的是要將一棵任意的二元樹轉換為一個往右側節點生長的Linked List (其實就是 skewed tree)。我一開始的想法如下：  首先宣告一個指標，用來指向 right subTree 的 root，走到任意節點時，如果他的左子樹存在，就將其左子樹嫁接到當前節點的右子樹位置，但這樣原先的右子樹怎辦？這就是剛剛要宣告一個新指標的原因。接著嫁接完畢後就將原本 right subTree 的 ro...</div></div></div></a><a class="pagination-related" href="/posts/d0f655d4.html" title="填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II"><img class="cover" src="/img/LeetCode/117/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-12</div><div class="info-item-2">填充每個節點的右側指標 II| Medium | LeetCode#117. Populating Next Right Pointers in Each Node II</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目敘述： 題目會給 Binary Tree 的節點，節點結構如下，除了 *left, *right pointer 之外，還多了一個 *next 指標，用於指向該層中右方的節點，而如果右方節點不存在，則 *next 指向 NULL  123456struct Node &#123;  int val;  Node *left;  Node *right;  Node *next;&#125;  上圖中的例子中，題目會依序給 Binary Tree 的節點 [1,2,3,4,5,null,7] 而輸出結果也如圖，節點 1 沒有右邊節點，所以它的 *next 指向 NULL。再來就是下一層，節點 2 的下一個是節點 3，而節點 3 沒有右邊節點，所以會是指向 NULL 123(1) -&gt; NULL(2) -&gt; (3) -&gt; NULL(4) -&gt; (5) -&gt; (7) -&gt; NULL  解法一開始的想法看到這個題目的第一想法就是 BFS，因為題目要求要找右邊節點，而這個操作都會在相同 level 去做，因此我在想...</div></div></div></a><a class="pagination-related" href="/posts/28674f4b.html" title="複製有 Random 指標的鏈結串列 | Medium | LeetCode#138. Copy List with Random Pointer"><img class="cover" src="/img/LeetCode/138/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-22</div><div class="info-item-2">複製有 Random 指標的鏈結串列 | Medium | LeetCode#138. Copy List with Random Pointer</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度：Medium 題目描述： 給定長度為 n 的 Linked List，每個節點都有一個額外的指標 random，可以指向相同list中的任意節點，以及 NULL，題目要求建立這個 List 的 Deep Copy  以下是節錄自維基百科對於 Deep Copy 的定義Deep copy involves copying the state of all subordinate objects – recursively dereferencing object references at each level of the tree that is the state of the original object and creating new objects and copying fields. A modification of either the original or copied object, including their inner objects, does not affect the other since they share...</div></div></div></a><a class="pagination-related" href="/posts/94b01956.html" title="重新排序鏈結 | Medium | LeetCode#143. Reorder List"><img class="cover" src="/img/LeetCode/143/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-18</div><div class="info-item-2">重新排序鏈結 | Medium | LeetCode#143. Reorder List</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Medium 題目敘述: 題目給定一個 single linked list，L0 → L1 → … → Ln - 1 → Ln 請將這個 list 重組成 L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → … 在這當中請不要改動節點值。  解法一開始的想法 由於排序看起來像是把一個 linked list 頭尾對折然後再交互連接，因此我的想法會是先找到鏈結的中間節點，再將其拆分成兩個 list，之後將後半部分的 list 進行反序排列，接著再跟前半部分的list交互排列。 我的解法12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152/** * Definition for singly-linked list. * struct ListNode &#123; *     int val; *     ListNode *next; *     ListNode() : val(0), ne...</div></div></div></a><a class="pagination-related" href="/posts/9c4eaa61.html" title="鏈結串列排序 | Medium | LeetCode#148. Sort List"><img class="cover" src="/img/LeetCode/148/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-09</div><div class="info-item-2">鏈結串列排序 | Medium | LeetCode#148. Sort List</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目描述：給定一個 Linked List 的 head 請將這個 list 進行升階排序 (由小排到大)  解法一開始的想法一開始有想到比較蠢的方法，就是把先在的節點對應到記憶體位址可能存到一個hasht table 之類的，然後把key額外存成陣列進行排序後再建立另一個 linked list。 但後來想要用題目的 follow up條件來做看看，也就是時間複雜度要 $O(nlogn)$ 然後空間複雜度要 $O(1)$ 但這空間複雜度 $O(1)$ 基本上就代表只能在原本的 list 上進行操作，然後時間複雜度 $O(nlogn)$ 就代表應該是要用 quick sort 或者 merge sort 之類的方式來對 linked list中的節點進行排序。 我原先想說可以用 quick sort 但 quick sort 比較適合對 Array 做排序，原因一：Linked Listed 不能夠 random access，存取第 n 個元素就真的要從頭走到第 n 個節點。第二個原因就是做partition 很困難，因為每次切完partit...</div></div></div></a><a class="pagination-related" href="/posts/d5aafc8e.html" title="LRU 快取 | Medium | LeetCode#146. LRU Cache"><img class="cover" src="/img/LeetCode/146/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-08</div><div class="info-item-2">LRU 快取 | Medium | LeetCode#146. LRU Cache</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述： 題目要求設計一套結構能夠滿足 [LRU(Least Recently Used) Cache])(https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU)  題目要求實踐 LRUCache class：  LRUCache(capacity): 使用 capacity 初始化 LRUCache 大小 int get(int key): 如果 key 存在，則返回對應的值，若不存在則返回 -1 void put(int key, int value): 如果 key 存在，則更新它的值，否則添加 key-value pair 到 cache。若 key 的數量車超出 capacity 大小，則逐出最近最少使用的Key     解法一開始的想法這題因為很偏系統設計，所以剛接觸的時候反而沒太多想法，可以知道的是大多做法都是使用 doubly linked list 搭配 Hash Table 去進行實作 ，而為什麼要是這樣做，主要是因為這個結構在搜尋特定的 key 是否存...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%8C%E7%9B%AE%E6%95%98%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">題目敘述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E9%96%8B%E5%A7%8B%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">一開始的想法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">我的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%AA%E6%98%8E"><span class="toc-number">2.2.1.</span> <span class="toc-text">說明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%81%9A%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">其他做法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AA%AA%E6%98%8E-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">說明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%9C%AC%E5%9C%B0%E6%B8%AC%E8%A9%A6%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="toc-number">2.3.2.</span> <span class="toc-text">完整本地測試程式碼</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E7%B5%90%E6%9E%9C"><span class="toc-number">2.3.3.</span> <span class="toc-text">執行結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">複雜度分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">時間複雜度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">空間複雜度</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>刷題知識整理 | 圖(Graph) | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="前言以前我們在儲存資料的時候，常見的資料結構有陣列、雜湊表、鏈結串列等。想像你今天你剛上大學然後有個修課表，用表格列出各種課程，但你並不知道哪些課程需要先修，哪些可能需要之後再修，或者某些課程可能會擋修，這時候用圖來表示課程之間的關係就很方便了。所以圖的重點之一 就是保存資料與資料之間的關係 。   這篇部落格主要參考 這篇 的講解  圖(Graph)的定義延續上面的課程圖，每個課程都代表一個 節">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷題知識整理 | 圖(Graph)">
+<meta property="og:url" content="https://leozzmc.github.io/posts/2009beb7.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="前言以前我們在儲存資料的時候，常見的資料結構有陣列、雜湊表、鏈結串列等。想像你今天你剛上大學然後有個修課表，用表格列出各種課程，但你並不知道哪些課程需要先修，哪些可能需要之後再修，或者某些課程可能會擋修，這時候用圖來表示課程之間的關係就很方便了。所以圖的重點之一 就是保存資料與資料之間的關係 。   這篇部落格主要參考 這篇 的講解  圖(Graph)的定義延續上面的課程圖，每個課程都代表一個 節">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/LeetCode/graph/cover.png">
+<meta property="article:published_time" content="2024-12-17T11:44:16.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.601Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Graph">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/LeetCode/graph/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "刷題知識整理 | 圖(Graph)",
+  "url": "https://leozzmc.github.io/posts/2009beb7.html",
+  "image": "https://leozzmc.github.io/img/LeetCode/graph/cover.png",
+  "datePublished": "2024-12-17T11:44:16.000Z",
+  "dateModified": "2025-10-26T12:28:30.601Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/2009beb7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '刷題知識整理 | 圖(Graph)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/LeetCode/graph/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">刷題知識整理 | 圖(Graph)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">刷題知識整理 | 圖(Graph)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-12-17T11:44:16.000Z" title="發表於 2024-12-17 19:44:16">2024-12-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.601Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>6分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以前我們在儲存資料的時候，常見的資料結構有陣列、雜湊表、鏈結串列等。想像你今天你剛上大學然後有個修課表，用表格列出各種課程，但你並不知道哪些課程需要先修，哪些可能需要之後再修，或者某些課程可能會擋修，這時候用圖來表示課程之間的關係就很方便了。所以圖的重點之一 <strong>就是保存資料與資料之間的關係</strong> 。</p>
+<p><img src="/img/LeetCode/graph/course.png"></p>
+<blockquote>
+<p>這篇部落格主要參考 <a target="_blank" rel="noopener" href="https://alrightchiu.github.io/SecondRound/graph-introjian-jie.html">這篇</a> 的講解</p>
+</blockquote>
+<h1 id="圖-Graph-的定義"><a href="#圖-Graph-的定義" class="headerlink" title="圖(Graph)的定義"></a>圖(Graph)的定義</h1><p>延續上面的課程圖，每個課程都代表一個 <strong>節點</strong>，節點是可用於存放資料，資料就是課程名稱。而課程與課程之間有箭頭相連，代表課程與課程之間的關係。</p>
+<p><strong>vertex</strong>: 每個節點在圖中被稱為vertex，或 node，並定義所有 vertex 的集合叫做 $V$ 或是  $V(G)$<br><strong>edge</strong>: 每個線段稱為 edge， <strong>在圖中通常會用一對vertex 來表示他們之間的edge</strong> ，$(V_{i}, V_{j})$ 就代表 $V_{i}$ 與 $V_{j}$ 之間的 edge，通常定義所有 edge 的集合為 $E$ 或者 $E(G)$</p>
+<blockquote>
+<p>有了 $V$ 和 $E$ 就可以定義什麼是圖， <strong>也就是節點與節點之間關係的集合</strong> $G(V, E)$</p>
+</blockquote>
+<h2 id="圖的分類"><a href="#圖的分類" class="headerlink" title="圖的分類"></a>圖的分類</h2><p>圖主要根據 edge 是否有方向性來分成 <strong>有向圖(Directed Graph)</strong> 跟 <strong>無向圖(Undirected Graph)</strong></p>
+<p><strong>有向圖(Directed Graph)</strong> ： vertex(A) 和 vertex(B) 之間的關係為單向的，則 edge具方向性，則所有vertex和有方向性edge 形成的集合為 directed graph<br><strong>無向圖(Undirected Graph)</strong> ： vertex(A) 和 vertex(B) 之間的關係為雙向的，則他們之間的 edge 不具有方向性，因此所形成的 vertex和 edge 的集合為 undirected graph</p>
+<p><img src="/img/LeetCode/graph/graph-1.png"></p>
+<h2 id="圖的表示法"><a href="#圖的表示法" class="headerlink" title="圖的表示法"></a>圖的表示法</h2><p>那如何用資料結構來表示圖呢，常見的表示法有 <strong>相鄰矩陣(Adjacency Matrix)</strong> 和 <strong>相鄰串列(Adjacency List)</strong> 。</p>
+<h3 id="相鄰矩陣"><a href="#相鄰矩陣" class="headerlink" title="相鄰矩陣"></a>相鄰矩陣</h3><p><img src="/img/LeetCode/graph/graph-2.png"></p>
+<p>可以先看無向圖中透過相鄰矩陣的表示法，vertex(A) 到 vertex(B) 之間有 edge，則對應 (A,B) 以及 (B,A) 的位置為 1，若無任意兩 vertex 間沒有 edge 則矩陣值為0。而對於有向圖來說，如果 vertex(A) 到 vertex(B) 有 edge，但是 vertex(B) 到 vertex(A) 沒有 edge 則對應 (A,B)為1 但 (B,A) 為 0。</p>
+<p><strong>從上面相鄰矩陣表示法中也可以發現，無向圖的相臨矩陣會是對稱的(Sysmetric)，而有向圖則否。另外這樣也可以推測出，將有向圖矩陣進行轉置後，重疊於原本的矩陣就會變成無向圖的表示法。</strong></p>
+<p>有向圖：$A[i][j]&#x3D;1$ 代表從節點 i 到節點j有邊<br>無向圖： $A[i][j]&#x3D; A[j][i] &#x3D; 1$ 代表從節點 i 到節點j存在無向邊</p>
+<p>將 $A^T &#x3D; A^{T}[i][j] &#x3D; A[j][i]$ 代表從節點 j 到節點 i 有邊。 因此 $A_{undirected}[i][j] &#x3D; A[i][j] V A[j][i]$</p>
+<h3 id="相鄰串列"><a href="#相鄰串列" class="headerlink" title="相鄰串列"></a>相鄰串列</h3><p><img src="/img/LeetCode/graph/graph-3.png"></p>
+<p>相鄰串列表示法必須先用一個一為陣列來表示所有的 vertex，對於每個陣列再用Linked List 來表示跟他相連的其他 vertex。 <strong>在這裡，接入 Linked List 的順序並不重要，因為 graph 是定義成 set</strong> 。在上面的無向圖中，以 vertex(D) 為例，他會連接到 vertex(C), vertex(B), vertex(E)，因此 <code>[3]</code> 也就是 vertex(D) 可以建立連接到 vertex(C), vertex(B), vertex(E) 的 linked list (不用按順序)。而有向圖則是， <strong>則 vertex(D) 的 linked list 只能接入由 vertex(D) 出發的節點，也就是 vertex(B) 和 vertex(E)。</strong></p>
+<h2 id="差異"><a href="#差異" class="headerlink" title="差異"></a>差異</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>相鄰矩陣</th>
+<th>相鄰串列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空間複雜度</td>
+<td>$O(\lvert V \rvert^{2})$</td>
+<td>$O( \lvert V \rvert + \lvert E  \rvert)$</td>
+</tr>
+<tr>
+<td>說明</td>
+<td>適合稠密的圖(vertex和edge數量多)</td>
+<td>適合稀疏的圖(edge數量少)</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>連續記憶體會比較快</td>
+<td>動態記憶體較慢</td>
+</tr>
+<tr>
+<td>Add edge</td>
+<td>新增edge只是把對應位置從 0 設成 1，所以是 $O(1)$</td>
+<td>添加 vertex到Linked List 的 front，會是 $O(1)$，但 worst case 會是 $O( \lvert E \rvert )$</td>
+</tr>
+<tr>
+<td>Delete edge</td>
+<td>刪除 edge 只是把對應位置從1改成0，所以是 $O(1)$</td>
+<td>如同在 Linked List刪除資料 $O( \lvert E  \rvert)$</td>
+</tr>
+</tbody></table>
+<h1 id="相關概念解釋"><a href="#相關概念解釋" class="headerlink" title="相關概念解釋"></a>相關概念解釋</h1><p><strong>Adjacent</strong>: vertex(A) 與 vertex(B) 之間只要有 edge 就算是相鄰(adjacent)<br><strong>Subgraph</strong>: 對於一個 $G’$ 來說若構成它的 Edge 和 Vertex 的集合滿足 $V(G’)\subseteq V(G)$, $E(G’) \subseteq E(G)$ 則 $G’$ 為 $G$ 的子圖<br><img src="/img/LeetCode/graph/subgraph.png"><br><strong>Path</strong>: 從 vertex(V1) 到 vertex(V2) 間，經過的一連串前後相接的 edge 被稱為 從vertex(v1) 到 vertex(v2) 的path<br><strong>Length&#x2F;Distance</strong>: path中的 edge數量<br><strong>Simple path</strong>: 若一條 path 中，除了起點 vertex和終點 vertex 之外，其餘的vertex都只經過一次，則這條path為 simple path<br><img src="/img/LeetCode/graph/path.png"><br><strong>Cycle</strong>:  若一條 simple path 的起點 vertex 和終點 vertex相同，則稱這條path 為 cycle，如果cycle 中的 edge 是無向的，那就是無向循環(undirected cycle) 若 cycle 中是按照方向依序經過，則該cycle 會是有向的 (directed cycle)<br><img src="/img/LeetCode/graph/cycle.png"><br><strong>Acyclic graph</strong>： 若 graph 中不存在 cycle 則稱該graph 為 acyclic graph，通常 tree 也是一種 graph， <strong>然而如果在 tree 中找不到一個 simple path 它的起點vertex 以及終點 vertex是相同的，則該 tree 一定會是 acyclic graph</strong></p>
+<p><strong>Weight</strong>：也就是權重，通常可以代表兩個地理位置之間的距離或是成本，可以在 edge 上加上權重，有權重的 graph 又稱 weighted graph</p>
+<p><strong>Connected</strong>: 怎樣算是兩個 vertex 是彼此connected 的呢？那就是從 vertex(A) 可以走到 vertex(B), 從vertex(B)也能走到 vertex(A)，所以對於無向圖來說，就是 vertex(A) 和 vertex(B)有edge相連，對於有向圖來說那就是存在 edge(A→B) 以及 edge(B→A)</p>
+<p><strong>Connected in undirected graph</strong>: 對於無向圖來說，任意vertex都存在一條 <strong>path</strong>連接彼此，那就會稱這個無向圖為connteced的<br><img src="/img/LeetCode/graph/connected.png"></p>
+<p><strong>Connected components</strong>：在無向圖中，存在某個 subgraph 是 connected 的，若加入其他vertex 或 edge 會破壞這個 connected 的特性，則稱為這個 subgraph 為 connected component。 上圖的下方的兩個 subgraph 都滿足這個特性。</p>
+<p><strong>strongly connected in directed graph</strong>: 在有向圖中，對於任意兩個 vertex(A) 和 vertex(B)，同時存在 (1) 從 vertex(A) 走到 vertex(B) 的 path  (2)  從 vertex(B) 走到 vertex(A) 的 path。則稱呼此有向圖為 strongly connected</p>
+<p><img src="/img/LeetCode/graph/connected-2.png"></p>
+<p><strong>strongly connected component</strong>: 在有向圖中，存在某個 subgraph 是 strongly connected 的，若加入其他vertex 或 edge 會破壞這個 strongly connected 的特性，則稱為這個 subgraph 為 strongly connected component。 (可以維持connected的最大集合)</p>
+<p><strong>Self-loop</strong>: 如果有 edge 從 vertex(A) 接到 vertex(A) 則為 self-loop</p>
+<h1 id="圖的應用場景"><a href="#圖的應用場景" class="headerlink" title="圖的應用場景"></a>圖的應用場景</h1><p>主要可以運用在 <strong>最小生成樹(Minimum Spanning Tree, MST)</strong>, <strong>網路流量</strong> 以及 <strong>最短路徑問題</strong> 等情景中，在套用情境前需要先知道 Graph 中搜尋vertex的方法。</p>
+<h1 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://hackmd.io/@meyr543/SJJ47oWoY">https://hackmd.io/@meyr543/SJJ47oWoY</a></li>
+<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10336847">https://ithelp.ithome.com.tw/articles/10336847</a></li>
+<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10268666?sc=rss.iron">https://ithelp.ithome.com.tw/articles/10268666?sc=rss.iron</a></li>
+<li><a target="_blank" rel="noopener" href="https://hackmd.io/@bangyewu/BknWuaVlT">https://hackmd.io/@bangyewu/BknWuaVlT</a></li>
+<li><a target="_blank" rel="noopener" href="https://alrightchiu.github.io/SecondRound/graph-introjian-jie.html">https://alrightchiu.github.io/SecondRound/graph-introjian-jie.html</a></li>
+</ul>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/2009beb7.html">https://leozzmc.github.io/posts/2009beb7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Graph/">Graph</a></div><div class="post-share"><div class="social-share" data-image="/img/LeetCode/graph/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/806bf38.html" title="裝最多水的容器 | Medium | LeetCode#11. Container With Most Water"><img class="cover" src="/img/LeetCode/11/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">裝最多水的容器 | Medium | LeetCode#11. Container With Most Water</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給了一個整數陣列 height 並且長度為 n， n 代表有 n 條垂直的線，第 i 條線的長度範圍為座標 (i,0) 到 (i, height[i]) (反正 height 的值就會是線的長度)，請找到兩條線與X軸共同形成一個容器，可以裝最多的水，請回傳可能裝的最大面積。  解法一開始的想法總之面積會是由比較矮的直線乘上底邊 $Area &#x3D; \min(height[i], height[j]) \times (j-i)$ 暴力解12345678910111213141516class Solution &#123;public:    int maxArea(vector&lt;int&gt;&amp; height)&#123;        int maxArea = 0;        int n = height.size();        for(int i = 0; i &lt; n; i++)&#123;            for(int j=i+1; j &lt; n; j++)&#123; ...</div></div></div></a><a class="pagination-related" href="/posts/975824a6.html" title="搜尋二維矩陣 | Medium | LeetCode#74. Search a 2D Matrix"><img class="cover" src="/img/LeetCode/74/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">搜尋二維矩陣 | Medium | LeetCode#74. Search a 2D Matrix</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium  題目敘述: 題目給定一個大小 m x n 的整數矩陣 matrix，並且遵循下面兩個特性：  每一行中元素都以非遞減排序 每一行的第一個元素都大於上一行的最後一個元素    此時題目給定一個整數 target 請回傳 target 是否存在於 matrix    題目額外限制實踐出的解法必須為 $O(log(m \times n))$   解法一開始的想法最直覺還是使用暴力解，就雙重迴圈迭代下去．但這樣複雜度會是 $O(m \times n)$，排序資料比大小正常來說會想到二元搜索，而現在題目是二維矩陣， 此時可以嘗試將二維陣列同樣用一維的方式進行二元搜索，只要注意最後 index 的計算即可 解法 - Binary Search12345678910111213141516171819202122class Solution &#123;public:    bool searchMatrix(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target)&#123;        int...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/8d1c6ed0.html" title="複製圖 | Medium | LeetCode#133. Clone Graph"><img class="cover" src="/img/LeetCode/133/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-31</div><div class="info-item-2">複製圖 | Medium | LeetCode#133. Clone Graph</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目描述： 題目給定了一個 connected undirect graph 中節點的參考設計，希望你回傳這個 graph 的 Deep Copy  1234class Node &#123;    public int val;    public List&lt;Node&gt; neighbors;&#125;   其實看到 Deep Copy 就可以想的是要用 Hash Table 了  這題還有說明，這題節點的 index 與節點的 value 相同，也就是第一個節點的 val 就會是 1 ，而第二個節點的 val 就會是 2 以此類推。 然後題目會給定一個 adjacency list 這個 list 中的每個 sublist 都描述了個別節點與其他節點的相鄰狀況，例如： 1adjList = [[2,4],[1,3],[2,4],[1,3]]  這代表第ㄧ個節點 (index=0) 的鄰接節點有 val==2 以及 val==4 的節點。 而這代表第二個節點 (index=1) 的鄰接節點有 val==1 以及 val==3 的節...</div></div></div></a><a class="pagination-related" href="/posts/51295e83.html" title="包圍的區域 | Medium | LeetCode#130. Surrounded Regions"><img class="cover" src="/img/LeetCode/130/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-06</div><div class="info-item-2">包圍的區域 | Medium | LeetCode#130. Surrounded Regions</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述： 給定一個 m x n 大小的 board，包含兩種字母 X 或者 O，目的是捕捉被包圍的區域：  Connected： 一個格子可以與相鄰的格子（水平或垂直）相連Region： 通過連接每個 O 格子來形成一個區域(Region)Surround： 如果一個區域的所有 O 格子都能被 X 格子連接，並且該區域中的 O 格子不在矩陣的邊緣上，則該區域被視為被包圍    題目要捕捉被包圍的區域， 將原始矩陣中所有被包圍的 O 替換為 X。  此操作應直接在原始矩陣上進行，無需返回任何值。  解法一開始的想法這題我一開始的想法有點偏掉，但這題的意思就是：  找出被包圍 Region 並將 Region 中的 O 換成 X 如果 Region 有接到矩陣邊緣，則不替換成 X  這樣依舊會需要先透過 DFS 或者是 BFS 來先去走訪 connected components (相連的 O) 這裡可以透過 先從邊緣查找是否有 O，如果有作爲起點進行 DFS， 找到的Connected components 這都代表是不能轉換成 X 的區域 ...</div></div></div></a><a class="pagination-related" href="/posts/b7e69c9.html" title="島的數量 | Medium | LeetCode#200. Number of Islands"><img class="cover" src="/img/LeetCode/200/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-27</div><div class="info-item-2">島的數量 | Medium | LeetCode#200. Number of Islands</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目描述： 題目給定一個 m x n 大小的二元陣列 grid，陣列中 1 代表陸地，0 代表水域，請回傳島嶼的數量。島嶼四面環水，相鄰的陸地會水平或垂直地連接而成。  解法一開始的想法這裡的想法就是這應該其實要找的是 這個 Grid 中的所有 connected components 的數量 ， 這可以透過對所有尚未訪問節點進行 BFS 或 DFS 並透過一個 counter 來紀錄就可實現。 我的解法123456789101112131415161718192021222324252627282930313233class Solution &#123;public:    int row, col;    vector&lt;vector&lt;int&gt;&gt; visited; //0:unvisited, 1:visited    void dfs(int r, int c, vector&lt;vector&lt;char&gt;&gt;&amp; grid)&#123;        if(r&lt;0 || r&gt;= ...</div></div></div></a><a class="pagination-related" href="/posts/55e11871.html" title="課程表 | Medium | LeetCode#207. Course Schedule"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-20</div><div class="info-item-2">課程表 | Medium | LeetCode#207. Course Schedule</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述：總共有 numCourses 課程需要上，他們被標注為 0 - numCourses-1，給定一個陣列 prerequisites 其中 prerequisites[i] = [a_i, b_i] 代表你需要先上過 b_i 課你才夠去上 a_i 課程。舉例來說，[0,1] 代表你需要先上課程 1 才能夠去上課程 0，如果可以完成所有課程就回傳 true 否則回傳 false。  解法一開始的想法一開始其實還沒有很懂題意，但在看了題目給的範例後才發現這題，其實是要在有向圖中找是否有 Cycle ， 如果看範例二就可以發現他其實就是一個Cycle，並且也會邏輯上不順，先修課程0再修課程1 跟先修課程1再修課程0 這兩個沒辦法同時成立   我這裡一樣是透過 DFS 去做，但還沒處理過找Cycle 的題目，因此有看了下Hint，這裡會需要額外的陣列來去保存DFS的呼叫路徑，一旦發現有走訪到走過的路，那就是有Cycle  我的解法123456789101112131415161718192021222324252627282930313233...</div></div></div></a><a class="pagination-related" href="/posts/975d3897.html" title="課程表 | Medium | LeetCode#210. Course Schedule II"><img class="cover" src="/img/LeetCode/210/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-18</div><div class="info-item-2">課程表 | Medium | LeetCode#210. Course Schedule II</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述： 總共有 numCourses 課程需要上，他們被標注為 0 - numCourses-1，給定一個陣列 prerequisites 其中 prerequisites[i] = [a_i, b_i] 代表你需要先上過 b_i 課你才夠去上 a_i 課程。舉例來說，[0,1] 代表你需要先上課程 1 才能夠去上課程 0，請以陣列形式回傳上完所有課程的休課順序，如果沒辦法完成請回傳空陣列。   這題基本上是接續 LeetCode-207 Course Schedule，只不過上一題是判斷能否修完課，這題是要把修課順序印出來  解法一開始的想法不能修完課的狀況就是同時存在 [0,1], [1,0] 因為順序就反了，會在Graph中構成 Cycle， 因此如果這是有向無環圖(DAG) 則可透過 topological sort 印出依序走訪完全部課程的路徑，如果有cycle 就回傳空陣列。 我的解法123456789101112131415161718192021222324252627282930313233343536373839404...</div></div></div></a><a class="pagination-related" href="/posts/21c39498.html" title="用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree"><img class="cover" src="/img/LeetCode/261/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-20</div><div class="info-item-2">用圖判斷有效的樹 | Medium | LeetCode#261. Graph Valid Tree</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述：   You have a graph of n nodes labeled from 0 to n - 1. You are given an integer n and a list of edges where edges[i] = [ai, bi] indicates that there is an undirected edge between nodes ai and bi in the graph.Return true if the edges of the given graph make up a valid tree, and false otherwise.  解法一開始的想法這題會是一個無向圖要判斷有沒有 Cycle，由於是無向圖判斷Cycle，因此可以透過 DFS來去看能不能形成一個 DFS Tree，如果不行那就是會有Cycle。另外這題給的邊形成的陣列，也會需要額外處理變成鄰接串列進行處理。 我的解法12345678910111213141516171819202122232425262728293...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%96-Graph-%E7%9A%84%E5%AE%9A%E7%BE%A9"><span class="toc-number">2.</span> <span class="toc-text">圖(Graph)的定義</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%96%E7%9A%84%E5%88%86%E9%A1%9E"><span class="toc-number">2.1.</span> <span class="toc-text">圖的分類</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%96%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">圖的表示法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E9%84%B0%E7%9F%A9%E9%99%A3"><span class="toc-number">2.2.1.</span> <span class="toc-text">相鄰矩陣</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E9%84%B0%E4%B8%B2%E5%88%97"><span class="toc-number">2.2.2.</span> <span class="toc-text">相鄰串列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E7%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">差異</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E9%97%9C%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8B"><span class="toc-number">3.</span> <span class="toc-text">相關概念解釋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%96%E7%9A%84%E6%87%89%E7%94%A8%E5%A0%B4%E6%99%AF"><span class="toc-number">4.</span> <span class="toc-text">圖的應用場景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">參考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
