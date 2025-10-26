@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>查找字詞 | Medium | LeetCode#79. Word Search | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="題目敘述    題目難度: Medium 題目敘述: 題目給定一個 m x n 大小的字母網格 board 以及一個字串 word，如果在網格中存在 word 則回傳 true。  Word 可以由字母的相鄰Cell中組合而成，相鄰可以是水平相鄰或者是垂直相鄰。相同的Cell不可重複使用。   解法一開始的想法首先由於也是要嘗試多種不同組合，因此想法上還是會偏向 backtracking，**我的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查找字詞 | Medium | LeetCode#79. Word Search">
+<meta property="og:url" content="https://leozzmc.github.io/posts/4b53ee93.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="題目敘述    題目難度: Medium 題目敘述: 題目給定一個 m x n 大小的字母網格 board 以及一個字串 word，如果在網格中存在 word 則回傳 true。  Word 可以由字母的相鄰Cell中組合而成，相鄰可以是水平相鄰或者是垂直相鄰。相同的Cell不可重複使用。   解法一開始的想法首先由於也是要嘗試多種不同組合，因此想法上還是會偏向 backtracking，**我的">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/LeetCode/79/cover.jpg">
+<meta property="article:published_time" content="2024-10-01T13:47:10.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.582Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Medium">
+<meta property="article:tag" content="backtracking">
+<meta property="article:tag" content="recursion">
+<meta property="article:tag" content="combinations">
+<meta property="article:tag" content="dfs">
+<meta property="article:tag" content="matrix">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/LeetCode/79/cover.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "查找字詞 | Medium | LeetCode#79. Word Search",
+  "url": "https://leozzmc.github.io/posts/4b53ee93.html",
+  "image": "https://leozzmc.github.io/img/LeetCode/79/cover.jpg",
+  "datePublished": "2024-10-01T13:47:10.000Z",
+  "dateModified": "2025-10-26T12:28:30.582Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/4b53ee93.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '查找字詞 | Medium | LeetCode#79. Word Search',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/LeetCode/79/cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">查找字詞 | Medium | LeetCode#79. Word Search</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">查找字詞 | Medium | LeetCode#79. Word Search</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-10-01T13:47:10.000Z" title="發表於 2024-10-01 21:47:10">2024-10-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.582Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="題目敘述"><a href="#題目敘述" class="headerlink" title="題目敘述"></a>題目敘述</h1><p><img src="/img/LeetCode/79/question1.jpeg"></p>
+<p><img src="/img/LeetCode/79/question2.jpeg"></p>
+<p><img src="/img/LeetCode/79/question3.jpeg"></p>
+<ul>
+<li>題目難度: <code>Medium</code></li>
+<li>題目敘述: 題目給定一個 <code>m x n</code> 大小的字母網格 <code>board</code> 以及一個字串 <code>word</code>，如果在網格中存在 <code>word</code> 則回傳 <code>true</code>。</li>
+</ul>
+<div class="note info flat"><p>Word 可以由字母的相鄰Cell中組合而成，相鄰可以是水平相鄰或者是垂直相鄰。相同的Cell不可重複使用。</p>
+</div>
+
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><h2 id="一開始的想法"><a href="#一開始的想法" class="headerlink" title="一開始的想法"></a>一開始的想法</h2><p>首先由於也是要嘗試<strong>多種不同組合</strong>，因此想法上還是會偏向 backtracking，**我的想法上覺得應該要先找出 <code>word</code> 中的第一個字是否存在於 <code>board</code> 之中，如果存在則可以先取得第一個字的座標 (在board上的位置)**，一旦有初始位置後，就可以去進行 backtracking嘗試看看各種鄰接組合。</p>
+<p><img src="/img/LeetCode/79/algo.png"></p>
+<p>組合方式可能會是上下左右，因此每次遞迴輸入時會有四種不同可能，分別是向左、向右、向上以及向下，而這個過程中應該也要確保沒有超出邊界。 而遞迴的中止條件，應該會是backtracking 樹狀結構深度 <code>depth</code> 與題目給定的<code>word</code> 長度一樣則停止，並回傳 <code>True</code>。</p>
+<h2 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">existhelper</span><span class="params">(<span class="type">int</span> depth ,vector&lt;vector&lt;<span class="type">char</span>&gt;&gt;&amp; board, string word, <span class="type">int</span> UpperIndex, <span class="type">int</span> InnerIndex)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( depth == word.<span class="built_in">length</span>()) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//boundary check</span></span><br><span class="line">        <span class="keyword">if</span>(UpperIndex &lt;<span class="number">0</span> || InnerIndex &lt;<span class="number">0</span> || UpperIndex &gt;= board.<span class="built_in">size</span>() || InnerIndex &gt;= board[<span class="number">0</span>].<span class="built_in">size</span>()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(board[UpperIndex][InnerIndex] != word[depth]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="type">char</span> temp = board[UpperIndex][InnerIndex];</span><br><span class="line">        board[UpperIndex][InnerIndex] = <span class="string">&#x27;#&#x27;</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//backtracking</span></span><br><span class="line">        <span class="type">bool</span> found = ( <span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex+<span class="number">1</span>, InnerIndex) || </span><br><span class="line">        <span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex, InnerIndex+<span class="number">1</span>) || </span><br><span class="line">        <span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex, InnerIndex<span class="number">-1</span>) || </span><br><span class="line">        <span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex<span class="number">-1</span>, InnerIndex));</span><br><span class="line">        </span><br><span class="line">        board[UpperIndex][InnerIndex] = temp;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> found;   </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">exist</span><span class="params">(vector&lt;vector&lt;<span class="type">char</span>&gt;&gt;&amp; board, string word)</span></span>&#123;</span><br><span class="line">        <span class="comment">//find the init value</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt; board.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>; j&lt; board[i].<span class="built_in">size</span>();j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(board[i][j] == word[<span class="number">0</span>])&#123;</span><br><span class="line">                    <span class="keyword">if</span>(<span class="built_in">existhelper</span>(<span class="number">0</span>,board, word , i, j)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這裡透過兩個函數來實現題目的要求，首先 <code>exist</code> 函數負責先在矩陣內找出 <code>word</code>的第一個字的位置，而如果都沒有找到則回傳 <code>false</code>。一旦找到後就呼叫 <code>existhelper</code>函數進行backtracking。在初次呼叫函數過程中，會去將剛才找到的初始值的index <code>i</code>, <code>j</code>傳遞到函數中。</p>
+<p><code>existhelper</code>函數主要負責回溯邏輯，以下是參數介紹:</p>
+<ul>
+<li><code>int depth</code>: 代表的組合數量</li>
+<li><code>vector&lt;vector&lt;char&gt;&gt;&amp; board</code>: 題目給的單字網格，是一個矩陣</li>
+<li><code>string word</code>: 為題目給予的字串，也是我們要找的目標</li>
+<li><code>int UpperIndex</code>: 為單字網格的列</li>
+<li><code>int InnerIndex</code>: 為單字網格的行</li>
+</ul>
+<p>首先判斷是否找到，也就是遞迴終止的條件就是當 <code>depth == word.length()</code>，一旦滿足就回傳 <code>true</code></p>
+<p>接著我們可以先看 backtracking 的邏輯，<strong>下面主要會針對當前cell 移動到下一個cell的一共四種可能(上、下、左、右)進行遞迴呼叫</strong> 一旦有其中一個回傳true，就代表在相鄰cell中找到我們下一個字了，回傳結果會放到 <code>found</code> 這個變數。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//backtracking</span></span><br><span class="line"><span class="type">bool</span> found = ( <span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex+<span class="number">1</span>, InnerIndex) || </span><br><span class="line"><span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex, InnerIndex+<span class="number">1</span>) || </span><br><span class="line"><span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex, InnerIndex<span class="number">-1</span>) || </span><br><span class="line"><span class="built_in">existhelper</span>(depth+<span class="number">1</span>, board, word, UpperIndex<span class="number">-1</span>, InnerIndex));</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+<p>而每次遞迴函數執行時，必須優先檢查當 index 是否有超出邊界，如果有就回傳 <code>false</code> ( <code>if(UpperIndex &lt;0 || InnerIndex &lt;0 || UpperIndex &gt;= board.size() || InnerIndex &gt;= board[0].size()) return false;</code>)。 接著就是每一層中需要判斷，你移動到的Cell中的字是否是你要的 <code>if (board[x][y] != word[depth]) return false;</code> 如果不是就回傳 <code>false</code>。</p>
+<p>接下來的部份是我在第一次實作過程中沒有注意到的，就是題目有說 <strong>The same letter cell may not be used more than once.</strong> 所以在每一層搜尋過程中，必須先把你所使用到的字先排除或進行替換，這裡就是先另外建一個變數 <code>temp</code> 來暫時存放走訪的cell值，<strong>然後將當前走訪的Cell當中的字暫時替換成 <code>&#39;#&#39;</code>，表示這個位置已經被訪問過，來避免重複使用</strong>，而在 backtracking 完畢後再將這個值復原回來。最後回傳　<code>found</code> 變數。</p>
+<h3 id="執行結果"><a href="#執行結果" class="headerlink" title="執行結果"></a>執行結果</h3><p><img src="/img/LeetCode/79/result.jpeg"></p>
+<h1 id="複雜度"><a href="#複雜度" class="headerlink" title="複雜度"></a>複雜度</h1><h2 id="時間複雜度"><a href="#時間複雜度" class="headerlink" title="時間複雜度"></a>時間複雜度</h2><ul>
+<li>在最壞的情況下，程式需要檢查 <code>board</code> 中的每個格子，<strong>並從每個格子出發進行深度優先搜索（DFS）</strong>。DFS的時間複雜度是 $O(4^L)$，其中 $L$ 是單詞的長度，因為每個位置最多有四個方向可以嘗試。</li>
+<li>考慮到整個網格有 <code>M x N</code> 個格子，所以整個演算法的最壞情況時間複雜度是 $O(M * N * 4^L)$</li>
+</ul>
+<h2 id="空間複雜度"><a href="#空間複雜度" class="headerlink" title="空間複雜度"></a>空間複雜度</h2><ul>
+<li>主要遞迴深度決定，最多會有 $L$ 層遞迴深度，因為單詞的長度為 $L$。此外，每次遞迴中會暫時改變 <code>board</code> 中的值，但這不會增加額外的空間需求，因為修改後還會還原原始值。因此空間複雜度為 $O(L)$</li>
+</ul>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>看了發現其實寫的跟解答區的差不多，看完才發現其實會是根據網格的初始位置去做DFS，自己都沒意識到這是一個DFS XD。 但這題還是嘗試許久，對於 matrix 相關的應用也還沒很熟練 (雖然這題是考backtracking)，可能也是之後要去熟悉的目標。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/4b53ee93.html">https://leozzmc.github.io/posts/4b53ee93.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Medium/">Medium</a><a class="post-meta__tags" href="/tags/backtracking/">backtracking</a><a class="post-meta__tags" href="/tags/recursion/">recursion</a><a class="post-meta__tags" href="/tags/combinations/">combinations</a><a class="post-meta__tags" href="/tags/dfs/">dfs</a><a class="post-meta__tags" href="/tags/matrix/">matrix</a></div><div class="post-share"><div class="social-share" data-image="/img/LeetCode/79/cover.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/aeee38d.html" title="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number"><img class="cover" src="/img/LeetCode/17/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給定一個包含由數字 2-9 組成的連續字串 digits， 回傳所有可能的字母組合，回傳的組合不限順序。  這裡的字母可能對應到的就是題目給的電話號碼圖片，數字 1 跟 0 沒有對應的字母   解法一開始的想法提到 所有可能的組合數 這種問題就會想到 backtracking，由於題目中的電話號碼數字跟字母有對應關係，因此我的想法是，可以透過雜湊表來去保存這個mapping關係，接著再去進行組合。首先思考遞迴終止條件，遞迴終止條件就是已經窮盡給定的 digits 中的數字。 接著在每一層中，應該要去嘗試數字對應的每一種字母，要取出來放入字串變數中，而這裡還需要注意針對雜湊表的存取。取出後接著就是遞迴呼叫下一層，實現backtracking來窮盡各種組合。  我的解法123456789101112131415161718192021...</div></div></div></a><a class="pagination-related" href="/posts/992d29db.html" title="鏈節串列循環 | Easy | LeetCode#141. Linked List Cycle"><img class="cover" src="/img/LeetCode/141/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">鏈節串列循環 | Easy | LeetCode#141. Linked List Cycle</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Easy 題目敘述: 這題給定一個linked list 的 head 要求，判斷這個linked list 當中是否存在 Cycle。  這裡的 Cycle 代表，你能夠透過持續跟隨next指標走訪list，而重複的訪問到曾經訪問過的節點，則代表有Cycle    另外，題目還說明了他們是用一個 pos 變數來去將一個linked list 讓Tail node接到特定index的節點上，這代表這題的cycle 只會從 tail node 往回接，而 pos 變數對我們而言不重要，因為它並不是這題能夠存取到的變數  解法一開始的想法我的想法是這題可以透過記錄節點是否有走訪過來判斷是否有 Cycle，因為這題會將Tail node 接回其他node，因此如果有Cycle 必定會有節點重複走訪，且無法抵達 NULL。而儲存方式比較快的應該是用 Hash Tab...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/aeee38d.html" title="電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number"><img class="cover" src="/img/LeetCode/17/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-28</div><div class="info-item-2">電話號碼的字母組合 | Medium | LeetCode#17. Letter Combinations of a Phone Number</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給定一個包含由數字 2-9 組成的連續字串 digits， 回傳所有可能的字母組合，回傳的組合不限順序。  這裡的字母可能對應到的就是題目給的電話號碼圖片，數字 1 跟 0 沒有對應的字母   解法一開始的想法提到 所有可能的組合數 這種問題就會想到 backtracking，由於題目中的電話號碼數字跟字母有對應關係，因此我的想法是，可以透過雜湊表來去保存這個mapping關係，接著再去進行組合。首先思考遞迴終止條件，遞迴終止條件就是已經窮盡給定的 digits 中的數字。 接著在每一層中，應該要去嘗試數字對應的每一種字母，要取出來放入字串變數中，而這裡還需要注意針對雜湊表的存取。取出後接著就是遞迴呼叫下一層，實現backtracking來窮盡各種組合。  我的解法123456789101112131415161718192021...</div></div></div></a><a class="pagination-related" href="/posts/8c983568.html" title="產生括號 | Medium | LeetCode#22. Generate Parentheses"><img class="cover" src="/img/LeetCode/22/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-26</div><div class="info-item-2">產生括號 | Medium | LeetCode#22. Generate Parentheses</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定 n 組括號，請產生所有可能的閉合括號的組合  反正就是沒有 (() 或者是 )() 類似這樣的組合   解法一開始的想法這題求組合的所有可能性，所以想法上一定還是 backtracking，但今天的問題會是要怎麼樣 控制括號能夠閉合，以 backtracking 的解題架構來看，首先可以思考退回條件會是一旦每個組合中的長度到達了 2 * n 因為 會是 n 組括號，另外每一層中在選一定要先選左括號再選右括號，因此需要判斷當前右括號數量是否小於左括號，如果小於就代表一定至少有一組括號還沒閉合完畢。 我的解法12345678910111213141516171819202122class Solution &#123;public:    vector&lt;string&gt; parentheseList;    void ge...</div></div></div></a><a class="pagination-related" href="/posts/e650f909.html" title="組合之和問題 | Medium | LeetCode#39. Combination Sum"><img class="cover" src="/img/LeetCode/39/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-23</div><div class="info-item-2">組合之和問題 | Medium | LeetCode#39. Combination Sum</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Medium 題目敘述: 題目會給一個整數陣列叫做 candidates 和一個目標整數 target，回傳一系列candidates的unique組合，其中對於每種組合中數字的總和要等於 target，可以以任何順序回傳各種可能。  在這個問題中，每個candidates中的數字可以被選擇無限次。若至少有一個數字被選擇的次數不同，那麼兩個組合即被視為唯一的。Ex. [2,2,3] != [2,2,2,2,3]測試案例會保證在給定的輸入下，組成目標數字的唯一組合總數少於 150 個。   解法一開始的想法既然是組合問題，那就直接聯想到 Backtracking，另外由於這題與 77.Combinations 那篇 不同的是，這個沒有限制層數，因為題目也說了 candidates 中的數字可以被重複選擇無限多次，因此終止條件不會跟往常一樣是透過層數來做限制。 ...</div></div></div></a><a class="pagination-related" href="/posts/eb632302.html" title="組合問題 | Medium | LeetCode#77. Combinations"><img class="cover" src="/img/LeetCode/77/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-21</div><div class="info-item-2">組合問題 | Medium | LeetCode#77. Combinations</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: medium 題目敘述: 給定兩個整數 n 和 k，求 [1,n] 範圍中，任意 k 個數字的所有組合可能，要用二維vector回傳。  其實數學意義就是要求 $C^{n}_{k} 的答案$    解法一開始的想法一開始的大方向也是 backtracking，並且思考方想跟 46.Permutations 很像，骨幹一樣是一個 for 迴圈，迴圈代表每一層中要組合的數字，會去從 [1,N] 去進行組合，而由於數字不能重複，因此我們迴圈的初始值會給定一個變數 start，並且會在每次進入下一層時，去更新傳入的 start參數。如果抵達給定的層這裡也就是題目的 N，那就會退回，而這裡為了輸出最終結果，會將陣列添加到儲存最終結果的二維陣列中。 之後如同其他 backtracking 題目一樣，會回退，將原先占用陣列的值pop 出來，以便進行其他選擇。 我的解法123...</div></div></div></a><a class="pagination-related" href="/posts/a97a6fae.html" title="回文分割 | Medium | LeetCode#131. Palindrome Partitioning"><img class="cover" src="/img/LeetCode/131/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-17</div><div class="info-item-2">回文分割 | Medium | LeetCode#131. Palindrome Partitioning</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目敘述：給定字串 s，分割字串使其所有子字串都是 回文(Palindrome) ，並回傳所有可能的分割結果  回文(Palindrome) 代表字串從左往右讀的結果跟從右往左讀的結果一樣。   解法一開始的想法這題的想法一樣會是 backtracking，主要會需要去分割每個字串，意思是將不同字串組合加入到某個字串變數中，接著需要檢查該字串組合是否是回文，如果不是，那就繼續嘗試其他字串組合，如果是回文，那就將該字串組合添加到子陣列中，並且進入下一層遞迴。  遞迴終止條件就是當前遞迴深度已經達到題目給的字串長度  到目前爲止的想法都蠻正確的，但這次主要會是在字串分割還有字串反轉，我其實還沒刷對應題目，因此要怎麼樣在Leetcode 中快速做到，是這題中學習的  我的解法123456789101112131415161718192021222324...</div></div></div></a><a class="pagination-related" href="/posts/713e66af.html" title="排列問題 | Medium | LeetCode#46. Permutations"><img class="cover" src="/img/LeetCode/46/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-19</div><div class="info-item-2">排列問題 | Medium | LeetCode#46. Permutations</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定一個整數陣列 nums 其中不包含重複數字，找到所有數字排列後的可能情況。  輸入: nums = [1,2,3]輸出: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]輸出結果為輸入陣列中元素的各種排列結果。   解法一開始的想法Permutations 其實就是經典的 backtracking 題目，也是典型的樹狀結構，在每一層都先選擇一個數字，並且透過遞迴進入下一層，而一但到達指定層數，就可想辦法 return，退回後原先占用在陣列的數字就可以 pop 出來的。但我按照這個想法時做的時候，起初的結果是有重複數字的，也就是 [1,1,1],[1,1,2] … [3,3,3] 像是這種的，後來才進行了修正。 我的解法12345678910111213141516171819202...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%8C%E7%9B%AE%E6%95%98%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">題目敘述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E9%96%8B%E5%A7%8B%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">一開始的想法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">我的解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E7%B5%90%E6%9E%9C"><span class="toc-number">2.2.1.</span> <span class="toc-text">執行結果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.</span> <span class="toc-text">複雜度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%82%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">時間複雜度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%96%93%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">空間複雜度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-number">4.</span> <span class="toc-text">結語</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="繁簡轉換">EN</button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

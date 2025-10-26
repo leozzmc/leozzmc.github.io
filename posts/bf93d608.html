@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>在 C/C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="函式指標 (Function Pointer) 當你透過 C&#x2F;C++ 中宣告一個函式時，就會分配一段起始記憶體位址，而 Function Pointer 就可以用來指向以及儲存函式位址。 所以我們可以直接透過 Function Pointer 1.來呼叫一個函式  2.或者將它傳遞給其他函式   用法宣告： 1[回傳值的data type] (* function pointer nam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 C&#x2F;C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化">
+<meta property="og:url" content="https://leozzmc.github.io/posts/bf93d608.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="函式指標 (Function Pointer) 當你透過 C&#x2F;C++ 中宣告一個函式時，就會分配一段起始記憶體位址，而 Function Pointer 就可以用來指向以及儲存函式位址。 所以我們可以直接透過 Function Pointer 1.來呼叫一個函式  2.或者將它傳遞給其他函式   用法宣告： 1[回傳值的data type] (* function pointer nam">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/c++/cover.jpg">
+<meta property="article:published_time" content="2024-08-30T01:52:21.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.624Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Pointer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/c++/cover.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "在 C/C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化",
+  "url": "https://leozzmc.github.io/posts/bf93d608.html",
+  "image": "https://leozzmc.github.io/img/c++/cover.jpg",
+  "datePublished": "2024-08-30T01:52:21.000Z",
+  "dateModified": "2025-10-26T12:28:30.624Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/bf93d608.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '在 C/C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/c++/cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">在 C/C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">在 C/C++ 中傳遞函式- 深入 Function Pointer 的記憶體位址變化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-08-30T01:52:21.000Z" title="發表於 2024-08-30 09:52:21">2024-08-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.624Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="函式指標-Function-Pointer"><a href="#函式指標-Function-Pointer" class="headerlink" title="函式指標 (Function Pointer)"></a>函式指標 (Function Pointer)</h1><blockquote>
+<p>當你透過 C&#x2F;C++ 中宣告一個函式時，就會分配一段起始記憶體位址，而 Function Pointer 就可以用來指向以及儲存函式位址。 所以我們可以直接透過 Function Pointer <strong>1.來呼叫一個函式</strong>  <strong>2.或者將它傳遞給其他函式</strong></p>
+</blockquote>
+<p><img src="/img/c++/func.png"></p>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>宣告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[回傳值的data type] (* function pointer name)(input parameter1, input parameter2, ...);</span><br></pre></td></tr></table></figure>
+
+<p><strong>記得需要將函數的位址 assign 給 function pointer</strong>，可以透過取位址運算子 <code>&amp;</code> 來進行，這裡看下方範例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">int</span> (*func_ptr)(<span class="type">int</span>,<span class="type">int</span>);</span><br><span class="line">	<span class="type">int</span> result;</span><br><span class="line">	func_ptr = &amp;add;</span><br><span class="line">	result = <span class="built_in">func_ptr</span>(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">	cout &lt;&lt; result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這段程式碼執行的輸出結果會是： <code>3</code>。這裡如果的拿先前建構 Binary Tree 的 Class 去整合使用看看，程式碼會像是下面這樣</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BT</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Declare of tree structure</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="type">int</span> val;</span><br><span class="line">        TreeNode *left, *right;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">TreeNode</span>():<span class="built_in">val</span>(<span class="number">0</span>),<span class="built_in">left</span>(<span class="literal">nullptr</span>),<span class="built_in">right</span>(<span class="literal">nullptr</span>)&#123;&#125;;</span><br><span class="line">        <span class="built_in">TreeNode</span>(<span class="type">int</span> x):<span class="built_in">val</span>(x),<span class="built_in">left</span>(<span class="literal">nullptr</span>),<span class="built_in">right</span>(<span class="literal">nullptr</span>)&#123;&#125;;</span><br><span class="line">        <span class="built_in">TreeNode</span>(<span class="type">int</span> x, TreeNode *leftNode, TreeNode *rightNode):<span class="built_in">val</span>(x),<span class="built_in">left</span>(leftNode),<span class="built_in">right</span>(rightNode)&#123;&#125;;</span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">BT</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Declare of binary tree class</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BT</span>&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode;</span><br><span class="line">        <span class="built_in">BT</span>():<span class="built_in">root</span>(<span class="literal">nullptr</span>)&#123;&#125;;</span><br><span class="line">        <span class="built_in">BT</span>(TreeNode *node):<span class="built_in">root</span>(node)&#123;&#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="function">TreeNode* <span class="title">returnRoot</span><span class="params">(TreeNode* root)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">TreeNode* <span class="title">BT::returnRoot</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//Declare tree node</span></span><br><span class="line">    TreeNode *nodeA = <span class="keyword">new</span> <span class="built_in">TreeNode</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="function">BT <span class="title">T</span><span class="params">(nodeA)</span></span>;</span><br><span class="line">    </span><br><span class="line">    TreeNode* (BT::*func_ptr)(TreeNode*);</span><br><span class="line">    func_ptr = &amp;BT::returnRoot;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; (T.*func_ptr)(T.root)-&gt;val &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前上半段的 <code>class TreeNode</code> 以及 <code>class BT</code>  定義了二元樹的架構，這裡先不理它。可以觀察到我們在BT class 底下宣告了一個函數 <code>returnRoot</code> 他做的事就是將輸入的節點回傳，沒什麼用途。接著看到 <code>main</code>，其中我們只定義了一個節點，其節點值為整數 <code>1</code> ，並且將改節點作為樹的 <code>root</code> ，接著才是使用 function pointer 的地方：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* (BT::func_ptr)(TreeNode*);</span><br></pre></td></tr></table></figure>
+
+<div class="note info flat"><p>這裡定義了一個指向 BT Class member function 的指標，其參數跟回傳值都是 <code>TreeNode*</code><br>參數跟回傳值其實都跟上面的 <code>returnRoot</code> 一樣</p>
+</div>
+
+<p>我們將BT的成員函數位址取出並交給 <code>func_ptr</code> 指標變數 </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func_ptr = &amp;BT::returnRoot;</span><br></pre></td></tr></table></figure>
+
+<p>接著印出結果，由於 <code>returnRoot</code> 的回傳值會是一個節點，因此這裡印出它的節點值</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; (T.*func_ptr)(T.root)-&gt;val &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<div class="note info flat"><p>這裡要特別注意，因為 <code>funct_ptr</code> 被宣告為指向任何 BT class 的成員函數的指標，因此在存取的時候需要透過初始化過的 BT class 的物件來存取，這裡會是 <code>T</code></p>
+</div>
+
+<p>輸出結果： <code>1</code></p>
+<h2 id="成員函數指標"><a href="#成員函數指標" class="headerlink" title="成員函數指標"></a>成員函數指標</h2><p>剛剛可以發現後 Function Pointer 宣告在 <code>main</code> 中去進行存取，<strong>那如果 Function Pointer 想要作為某個 class 內的成員會怎麼樣呢？</strong></p>
+<p>其實自己實驗下來體感上差異在於在 caller (<code>main</code>) 的存取方式:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BT</span>&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode;</span><br><span class="line">        <span class="comment">//Declare the member function pointer</span></span><br><span class="line">        TreeNode* (BT::*func_ptr)(TreeNode*);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">BT</span>():<span class="built_in">root</span>(<span class="literal">nullptr</span>)&#123;&#125;;</span><br><span class="line">        <span class="built_in">BT</span>(TreeNode *node):<span class="built_in">root</span>(node)&#123;&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function">TreeNode* <span class="title">returnRoot</span><span class="params">(TreeNode* root)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    TreeNode *nodeA = <span class="keyword">new</span> <span class="built_in">TreeNode</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="function">BT <span class="title">T</span><span class="params">(nodeA)</span></span>;</span><br><span class="line">    <span class="comment">// Assign function address to member function pointer</span></span><br><span class="line">    T.func_ptr = &amp;BT::returnRoot;</span><br><span class="line">    <span class="comment">// Calling member function through member function pointer</span></span><br><span class="line">    cout &lt;&lt; (T.*T.func_ptr)(T.root)-&gt;val &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 class 中，function pointer 的宣告還是一樣，一樣需要指定這個pointer 是要存取哪個class 的 member function，還是要說清楚。</p>
+</blockquote>
+<p>但在 <code>main</code> 的存取就要小心了，由於該 function pointer 一樣屬於 <code>BT</code> class 裡，因此在 assign function address 的時候一樣需要透過 class object <code>T</code> 來存取function pointer</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T.funt_ptr = &amp;BT::returnt_ptr;</span><br></pre></td></tr></table></figure>
+
+
+<div class="note warning flat"><p>而在呼叫的部分，需要更加注意，由於是透過成員函數指標來存取函數</p>
+<ul>
+<li><code>*T.funt_ptr</code> 指向目標成員函數，因此需要另一個物件來呼叫該指標</li>
+<li><code>T.*T.funt_ptr</code> 透過前面的 <code>T</code> 來存取後面用來指向目標函數的指標</li>
+</ul>
+</div>
+
+<h2 id="Function-Pointer-實際應用"><a href="#Function-Pointer-實際應用" class="headerlink" title="Function Pointer 實際應用"></a>Function Pointer 實際應用</h2><ul>
+<li><strong>Callback Function</strong>: Function Pointer 常常用在 Callback 方式的實踐，像是 Event-Driven 的架構或者 Interrupt Handling 都可以採用</li>
+<li><strong>Dynamic Dispatch</strong>: 在有多個具有相似介面但不同實作（多態, Polymorphism）的函數的情況下，可以使用 Function Pointer 在這些函數之間進行切換。</li>
+<li><strong>Function Table</strong>: Function pointers 可以被存放在 Array 或其他資料結構中，建立 Function Table，根據index 來選擇要呼叫哪個函式</li>
+</ul>
+<blockquote>
+<p>這裡我認為 Function Table 的實現非常強大，像是 Linux Kernel 中維護的 System Call Table 其實也是一個 Function Pointer Table，它將 syscall number mapping 到對應的 kernel 處理函數。每個 system call 都透過一個唯一的 syscall number 索引到這張表中對應的 function pointer<br>詳細原理也可以參考 <a target="_blank" rel="noopener" href="https://medium.com/@7FrogTW/powerpc-syscall-%E8%B8%A9%E9%9B%B7%E5%A4%A7%E5%85%A8-75b5d477ac0b">這篇</a></p>
+</blockquote>
+<h1 id="底層流程"><a href="#底層流程" class="headerlink" title="底層流程"></a>底層流程</h1><p>這裡我們換一個範例來實際看看使用 Function Pointer 時候的記憶體變化：</p>
+<p><em>exmaple.cpp</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">subtract</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">int</span> (*func_ptr)(<span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    func_ptr = &amp;add;</span><br><span class="line">    <span class="type">int</span> result1 = <span class="built_in">func_ptr</span>(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    func_ptr = &amp;subtract;</span><br><span class="line">    <span class="type">int</span> result2 = <span class="built_in">func_ptr</span>(<span class="number">10</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Result1: &quot;</span> &lt;&lt; result1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Result2: &quot;</span> &lt;&lt; result2 &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面定義了兩個函式，可以用 Function Pointer 去分別呼叫 <code>add</code> 和 <code>subtract</code> ，這裡我們在Linux 環境中編譯程式，接著啟動 gdb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g++ -g -o func_pointer_test func_pointer_test.cpp</span><br><span class="line">gdb ./func_pointer_test</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/c++/gdb1.png"></p>
+<blockquote>
+<p>那我自己是有裝 gdb-peda，畫面好看很多，安裝可以參考 <a target="_blank" rel="noopener" href="https://n0a110w.github.io/notes/security-stuff/peda.html">這篇</a></p>
+</blockquote>
+<p><img src="/img/c++/gdb2.png"></p>
+<p>當程式執行到 <code>func_ptr = &amp;add;</code> 時，GDB 暫停了執行，從上面的組合語言可以看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=&gt; 0x555555555203 &lt;main()+12&gt;:  lea    rax,[rip+0xffffffffffffffbf]        # 0x5555555551c9 &lt;_Z3addii&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>lea</code> 指令用來計算 memory位址。這裡 <code>RAX</code> 將被設為一個基於 <code>RIP</code> 的偏移地址。這個偏移量應該用來載入 add 函數的地址並存儲在 <code>RAX</code> 中，以後可以通過這個地址來 call add 函數。</p>
+<p>所以這時候可以檢查一下最上方的 <code>RAX</code> 暫存器放了甚麼。 <strong><code>RAX</code> 暫存器被給定 <code>add</code> 函數的位址，這就代表了 function pointer 正在被初始化。</strong></p>
+<p>我們可以看下一行要執行甚麼:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x55555555520a &lt;main()+19&gt;:  mov    QWORD PTR [rbp-0x8],rax</span><br></pre></td></tr></table></figure>
+
+<p>這行會做的事情就是，將 <code>rax</code> 中的值存入base pointer 位址減掉 <code>0X8</code> 偏移量的的位址，而這應該就是 function pointer 的所在位址 </p>
+<p>接著我們進入下一行指令，可以透過 <code>s</code> 指令來追蹤下一行 (17行)</p>
+<p><img src="/img/c++/GDB3.png"></p>
+<p>現在我們可以檢查看看 <code>func_ptr</code> 的值，看它是否指向了 <code>add</code> 函數的地址，<strong>而結果顯然是真的指向到  <code>add</code> 函數的記憶體位址</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print func_ptr</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$1 = (int (*)(int, int)) 0x5555555551c9 &lt;add(int, int)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>接著可以執行 <code>r</code> 繼續執行到下一個斷點，也就是將 function pointer 賦值給 subtract 函數的地方</p>
+<p>接著一路單步執行到 <code>func_ptr = &amp;subtract;</code> 那行，接著再 <code>print func_ptr</code></p>
+<p><img src="/img/c++/gdb4.png"></p>
+<p>一樣可以看到這行指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=&gt; 0x555555555221 &lt;main()+42&gt;:  lea    rax,[rip+0xffffffffffffffb9]        # 0x5555555551e1 &lt;_Z8subtractii&gt;</span><br></pre></td></tr></table></figure>
+<p>這裡也是將 <code>subtract</code> 函數位址載入到 <code>RAX</code> 中，我們可以輸入 <code>n</code> 看下一個指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=&gt; 0x55555555522c &lt;main()+53&gt;:  mov    rax,QWORD PTR [rbp-0x8]</span><br></pre></td></tr></table></figure>
+
+<p>這行會做的事情就是跟剛剛一樣，<strong>將 <code>rax</code> 中的值存入 function pointer 的所在位址</strong></p>
+<p>接著我們進入下一行指令，可以透過 <code>n</code> 指令來追蹤第22行，函數執行完並且輸出結果</p>
+<p>我們這時候也可以檢查 function pointer 是否指向 <code>subtract</code> 函數的記憶體位址</p>
+<p><img src="/img/c++/gdb5.png"></p>
+<p>而這個答案也是肯定的。而如果我們執行到 <code>int result1 = func_ptr(10, 5);</code> 這時也可以觀察一下暫存器的變化，如果覺得畫面太亂，可以用下面指令來查看暫存器的狀態， <code>RIP</code> 代表下一個要執行的CPU指令，而 <code>RSP</code> 則是 Stack Pointer 代表當前 stack frame 的上緣，可以透過這兩個 register 來了解 function call 時候的流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">info registers </span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/c++/gdb6.png"></p>
+<p>這是進入 <code>add</code> 之前的 <code>rip</code> 和 <code>rsp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rsp            0x7fffffffdfb0      0x7fffffffdfb0</span><br><span class="line">rip            0x55555555520e      0x55555555520e &lt;main()+23&gt;</span><br></pre></td></tr></table></figure>
+
+<p>而這是進入 <code>add</code> 之後的 <code>rip</code> 和 <code>rsp</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rsp            0x7fffffffdfa0      0x7fffffffdfa0</span><br><span class="line">rip            0x5555555551d7      0x5555555551d7 &lt;add(int, int)+14&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以觀察到，Stack 大概差了2 bytes，這兩byte 也可以從 stack 視圖中觀察到:</p>
+<p>這是進入 <code>add</code> 之前:</p>
+<p><img src="/img/c++/stack1.png"></p>
+<p>這是進入 <code>add</code> 之後:<br><img src="/img/c++/stack2.png"></p>
+<p>這之2 bytes 其中包含了 回到 <code>main</code> 的 return address  <code>0x55555555521e</code>。 這時我們繼續執行 <code>s</code> 直到跳回 <code>main</code> 函數，可以從 code section 看到我們正在剛剛函數 return address 的下一個指令位址 <code>0x555555555221</code>。</p>
+<p>最後執行 <code>print result1</code> 察看結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$1 = 0xf</span><br></pre></td></tr></table></figure>
+<p>也代表結果 15</p>
+<blockquote>
+<p>這時實驗也更了解 function pointer 還有function call 期間的記憶體變化</p>
+</blockquote>
+<h2 id="觀念澄清"><a href="#觀念澄清" class="headerlink" title="觀念澄清"></a>觀念澄清</h2><p><img src="/img/c++/memory.png"></p>
+<p>在 C&#x2F;C++ 中，pointer變數的記憶體位址存放在哪個地方取決於它是怎麼被宣告的，</p>
+<ul>
+<li>如果 pointer 是在函數內部宣告的local variable，像是 <code>int *ptr;</code> 那pointer本身會被存放在 Stack</li>
+<li>如果 pointer是一塊隨機的記憶體位址，如果你是用動態宣告 <code>int *ptr = new int</code>，那pointer本身還是會在 Stack 或global 但所指向的對象會是在 heap上</li>
+<li>如果宣告的 pointer 是global的，那他就會被存放在 global&#x2F;staic 區域中，如果是靜態變數一樣 <code>static int* ptr</code></li>
+<li>Pointer 本身不會被存放在 code 區域，但 Function Pointer 會指向 code 區域中的函數入口點<ul>
+<li><code>void (*func_ptr)() = &amp;myFunction;</code> 這個 pointer 儲存的值 (函數位址) 會是在 code section，而 pointer本身還是會是 stack 或是 gloal&#x2F;stack 區段。</li>
+</ul>
+</li>
+</ul>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>更加了解了 function pointer 對應到的記憶體變化，之後有機會再實際透過 Function Pointer來實現 Function Table。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] - <a target="_blank" rel="noopener" href="https://medium.com/@hatronix/function-pointers-in-c-unleashing-the-power-of-dynamic-dispatch-29672ffcf502">https://medium.com/@hatronix/function-pointers-in-c-unleashing-the-power-of-dynamic-dispatch-29672ffcf502</a><br>[2] - <a target="_blank" rel="noopener" href="https://www.boardinfinity.com/blog/function-pointers-in-c/">https://www.boardinfinity.com/blog/function-pointers-in-c/</a><br>[3] - <a target="_blank" rel="noopener" href="https://www.javatpoint.com/function-pointer-in-cpp">https://www.javatpoint.com/function-pointer-in-cpp</a><br>[4] - <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/function-pointer-in-cpp/">https://www.geeksforgeeks.org/function-pointer-in-cpp/</a><br>[5] - <a target="_blank" rel="noopener" href="https://kheresy.wordpress.com/2010/11/03/function_pointer/">https://kheresy.wordpress.com/2010/11/03/function_pointer/</a><br>[6] - <a target="_blank" rel="noopener" href="https://chenhh.gitbooks.io/parallel_processing/content/cython/function_pointer.html">https://chenhh.gitbooks.io/parallel_processing/content/cython/function_pointer.html</a><br>[7] - <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ynYtgGUNelE">https://www.youtube.com/watch?v=ynYtgGUNelE</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/bf93d608.html">https://leozzmc.github.io/posts/bf93d608.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Pointer/">Pointer</a></div><div class="post-share"><div class="social-share" data-image="/img/c++/cover.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/9f5948c3.html" title="BST 中的最小節點差值 | Easy| LeetCode#530. Minimum Absolute Difference in BST"><img class="cover" src="/img/LeetCode/530/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">BST 中的最小節點差值 | Easy| LeetCode#530. Minimum Absolute Difference in BST</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度： Easy 題目敘述： 給定一個 Binary Search Tree (BST) 的 root ，回傳樹中任意兩個節點的絕對值當中最小的。  解法一開始的想法首先 Binary Search Tree 的特性就是對於任意節點， 其左子樹必定 &lt; 當前節點 &lt; 右子樹。 因此可以判斷，在對這顆樹進行 Inorder Traversal 的過程中，相鄰節點的差值會是最小的，不存在跨一個節點之間差值更小的問題 所以基本上我的想法就是跑一遍 Inorder Traversal，將節點記錄到一個 list，在 list 中再計算差值．但這樣缺點就是 runtime 會增加。 我的解法123456789101112131415161718192021222324252627282930313233343536/** * Definition for a bi...</div></div></div></a><a class="pagination-related" href="/posts/5ebb4e47.html" title="Valid 的二元搜尋樹 | Medium| LeetCode#98. Validate Binary Search Tree"><img class="cover" src="/img/LeetCode/98/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Valid 的二元搜尋樹 | Medium| LeetCode#98. Validate Binary Search Tree</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度： Medium 題目敘述： 題目給定一個 Binary Tree 的 root ，我們需要確認這棵 Binary Tree 是否是 Binary Search Tree  一個 valid 的 Binary Search Tree(BST) 包含了：  對於任意節點，其 Left SubTree 的任意節點值一定小於當前節點值 對於任意節點，其節點值一定小於其 Right SubTree 的任意節點值 Left SubTree 和 Right SubTree 都要是 binary search tree    解法一開始的想法這題想法很簡單，這題的花費時間很少，首先可以知道的是： BST 從小到大走訪，其走訪順序會是對同一棵樹進行 inorder traversal。 所以只要能夠 在 Inorder 走訪過程中比較前一個節點值與當前節點值，看前一個節點是否比...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/cf1b9e8c.html" title="Q1. Make Array Elements Equal to Zero | Easy | LeetCode Weekly Contest"><img class="cover" src="/img/LeetCode/1117_q1/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-17</div><div class="info-item-2">Q1. Make Array Elements Equal to Zero | Easy | LeetCode Weekly Contest</div></div><div class="info-2"><div class="info-item-1">前言 這算是第一次做 LeetCode Weekly Contest 的紀錄，今天是心血來潮上來打，所以準備考的時候只剩下沒多少時間，但我還是菜雞，因此就專攻第一題試水溫，寫完後就停止   題目敘述  題目難度: Easy 題目敘述: 題目給定一個整數陣列 nums，並且需要先選定一個起始點 curr，其中 nums[curr] =0。從起始點可以選擇往左走或往右走，接著可以重複下面的步驟:   若 curr 超出範圍 [0, n-1] 則步驟停止 透過加減 curr 值來實現向左和向右移動，curr 增加: 向右移動，curr 減少: 向左移動 移動後一旦 nums[curr] &gt; 0 則 需要將 nums[curr] 值減一 反轉當前的移動方向 朝新方向前進一步    當移動結束時，所有元素值都歸零則被視為 Valid，請回傳總共有幾種 Valid 的走法 解法一開始的想法...</div></div></div></a><a class="pagination-related" href="/posts/efa232a7.html" title="C++ 刷題利器 - STL (Standard Template Library) | LeetCode"><img class="cover" src="/img/LeetCode/C++_STL/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-18</div><div class="info-item-2">C++ 刷題利器 - STL (Standard Template Library) | LeetCode</div></div><div class="info-2"><div class="info-item-1">這篇主要是來記錄學習STL，並且在刷題過程中方便查找好用的STL的筆記</div></div></div></a><a class="pagination-related" href="/posts/3dab679e.html" title="相同的二元樹 | Easy | LeetCode#100. Same Tree"><img class="cover" src="/img/LeetCode/100/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-03</div><div class="info-item-2">相同的二元樹 | Easy | LeetCode#100. Same Tree</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Easy 題目敘述: 給定兩個 Binary Tree 的 root，分別是 p 與 q，請寫一個函式檢查他們是否相同   相同的定義: 結構一樣，並且節點值一樣  解法一開始的想法我的想法一樣是遞迴，首先Traverse 到 Leaf，之後檢查節點值，如果不一樣就直接回傳 false，我們可以用一個變數值，將遞迴回傳的結果保存起來，再做為函式的返回值 我的解法12345678910111213141516171819202122232425262728/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), le...</div></div></div></a><a class="pagination-related" href="/posts/db053989.html" title="二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal"><img class="cover" src="/img/LeetCode/102/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-04</div><div class="info-item-2">二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 給定一個 Binary Tree 的 root，求 Level Order Traversal 的結果 (須將節點值存在一個二維list中)  解法一開始的想法就是先實踐經典的 Level Order Traversal，然後再嘗試存進 vector&lt;vector&lt;int&gt;&gt; result 返回。但我的想法在我剛實現完標準的 level_order_traversal 後就卡住了，由於我是用 queue 來去做實現，而每一次 push 進 queue後的節點會為同一層 (因為上一層已經被pop出來了) ，因此就可以處理在每一層的時候將節點值添加進 result 中，但我高估了我對 vector 的熟悉程度… 我的解法123456789101112131415161718192021222324252627282...</div></div></div></a><a class="pagination-related" href="/posts/60d71d58.html" title="二元樹Z字形走訪 | Medium | LeetCode#103. Binary Tree Zigzag Level Order Traversal"><img class="cover" src="/img/LeetCode/103/cover.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-03</div><div class="info-item-2">二元樹Z字形走訪 | Medium | LeetCode#103. Binary Tree Zigzag Level Order Traversal</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度：Medium 題目敘述：給定一個二元樹的 root ，回傳對這棵樹進行 Z 字走訪 (Zigzag Level Order Traversal)的結果  Zigzag Level Order Traversal 代表先從左走到右，下一層再從右走到左，每一層走訪方向交互替換   解法一開始的想法這題想法也很直觀，就BFS，然後宣告一個用來存放結果的 2D Vector，透過變數控制在每一層走訪的時候，按照順序或反向順序放入 vector 當中。 我的解法123456789101112131415161718192021222324252627282930313233343536373839/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     Tr...</div></div></div></a><a class="pagination-related" href="/posts/ac5f27c1.html" title="對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree"><img class="cover" src="/img/LeetCode/101/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-05</div><div class="info-item-2">對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree</div></div><div class="info-2"><div class="info-item-1">題目敘述   題目難度: Easy 題目敘述: 給定一個二元樹的 root，題目要我們檢查該二元樹是否是對稱的。  解法一開始的想法我一開始的想法就錯了，我一開始認為只要 Inorder Traversal 後的結果，只要反向過來也一樣那就是對稱的了 所以我一開始的解法是錯的: 123456789101112131415161718192021vector&lt;int&gt; result_inorder;void BT::inorder(TreeNode* node)&#123;    if(node==NULL) return;        cout &lt;&lt; node-&gt;val &lt;&lt; &quot; &quot;;    result_inorder.push_back(node-&gt;val);    inorder(node-&gt;left)...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%BD%E5%BC%8F%E6%8C%87%E6%A8%99-Function-Pointer"><span class="toc-number">1.</span> <span class="toc-text">函式指標 (Function Pointer)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%93%A1%E5%87%BD%E6%95%B8%E6%8C%87%E6%A8%99"><span class="toc-number">2.1.</span> <span class="toc-text">成員函數指標</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Pointer-%E5%AF%A6%E9%9A%9B%E6%87%89%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">Function Pointer 實際應用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%95%E5%B1%A4%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">底層流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%80%E5%BF%B5%E6%BE%84%E6%B8%85"><span class="toc-number">3.1.</span> <span class="toc-text">觀念澄清</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-number">4.</span> <span class="toc-text">結語</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">5.</span> <span class="toc-text">Reference</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="繁簡轉換">EN</button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

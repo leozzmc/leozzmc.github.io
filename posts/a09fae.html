@@ -1,0 +1,426 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AWS Lambda知識整理 | 佈建並行 | 預留並行 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="回顧前面有提及了 Lambda 的基本介紹、Lambda Runtime、權限配置 以及從日誌上觀察初始化時間以及函數執行時間。 最後我們有提到一個問題，那就是  如果我們用 AWS CLI 去調用 Lambda 函數，用 Terminal 一次開三個Tab同時調用我們的 Lambda 函數會發生什麼事？  實驗一 - 設置 Reserved Concurrency我們執行以下指令： 12345a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS Lambda知識整理 | 佈建並行 | 預留並行">
+<meta property="og:url" content="https://leozzmc.github.io/posts/a09fae.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="回顧前面有提及了 Lambda 的基本介紹、Lambda Runtime、權限配置 以及從日誌上觀察初始化時間以及函數執行時間。 最後我們有提到一個問題，那就是  如果我們用 AWS CLI 去調用 Lambda 函數，用 Terminal 一次開三個Tab同時調用我們的 Lambda 函數會發生什麼事？  實驗一 - 設置 Reserved Concurrency我們執行以下指令： 12345a">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/PEPE2.jpg">
+<meta property="article:published_time" content="2023-10-17T13:53:09.000Z">
+<meta property="article:modified_time" content="2023-11-19T09:04:07.204Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="Lambda">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/PEPE2.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AWS Lambda知識整理 | 佈建並行 | 預留並行",
+  "url": "https://leozzmc.github.io/posts/a09fae.html",
+  "image": "https://leozzmc.github.io/img/PEPE2.jpg",
+  "datePublished": "2023-10-17T13:53:09.000Z",
+  "dateModified": "2023-11-19T09:04:07.204Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/a09fae.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AWS Lambda知識整理 | 佈建並行 | 預留並行',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/PEPE2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">AWS Lambda知識整理 | 佈建並行 | 預留並行</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AWS Lambda知識整理 | 佈建並行 | 預留並行</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2023-10-17T13:53:09.000Z" title="發表於 2023-10-17 21:53:09">2023-10-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2023-11-19T09:04:07.204Z" title="更新於 2023-11-19 17:04:07">2023-11-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/">實作紀錄</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="回顧"><a href="#回顧" class="headerlink" title="回顧"></a>回顧</h2><p>前面有提及了 Lambda 的基本介紹、Lambda Runtime、權限配置 以及從日誌上觀察初始化時間以及函數執行時間。</p>
+<p>最後我們有提到一個問題，那就是</p>
+<blockquote>
+<p>如果我們用 AWS CLI 去調用 Lambda 函數，用 Terminal 一次開三個Tab同時調用我們的 Lambda 函數會發生什麼事？</p>
+</blockquote>
+<h2 id="實驗一-設置-Reserved-Concurrency"><a href="#實驗一-設置-Reserved-Concurrency" class="headerlink" title="實驗一 - 設置 Reserved Concurrency"></a>實驗一 - 設置 Reserved Concurrency</h2><p>我們執行以下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">aws lambda invoke \</span><br><span class="line">    --function-name TestInvocations \</span><br><span class="line">    --cli-binary-format raw-in-base64-out \</span><br><span class="line">    --payload &#x27;&#123; &quot;name&quot;: &quot;test&quot; &#125;&#x27; \</span><br><span class="line">    response.json</span><br></pre></td></tr></table></figure>
+<p><img src="https://hackmd.io/_uploads/ry_jkJsRn.png"></p>
+<p>事實上他都可以成功，並且會在 CloudWatch 上產生三筆Log Stream。 </p>
+<p><img src="https://hackmd.io/_uploads/SJ64-1iCn.png"></p>
+<p>但如果我們去設定動一點手腳，我們將某個叫做 <strong>Reserved Concurrency</strong> 的設定調整成1，並按下 saved。並且重新透過 CLI 執行調用的指令，看會發生什麼事。</p>
+<p><img src="https://hackmd.io/_uploads/Sk6GZJsCn.png"></p>
+<p>這時候會發現，只有一個請求成功回傳200，其他都被 Throttled。會回傳 <code>TooManyRequestsException</code> 的錯誤訓息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">An error occurred (TooManyRequestsException) when calling the Invoke operation</span><br></pre></td></tr></table></figure>
+<p>這必須提到 Lambda 應對同時間大量請求的處理機制。</p>
+<blockquote>
+<p>首先，什麼是 Reserved Concurrency? 什麼又是 Unresereved Concurrency?</p>
+</blockquote>
+<h2 id="預留並行-Reserved-Concurrency"><a href="#預留並行-Reserved-Concurrency" class="headerlink" title="預留並行(Reserved Concurrency)"></a>預留並行(Reserved Concurrency)</h2><p>談到 Concurrency，中文叫做並行或併發。這代表什麼？這代表同一時間的多個請求。為了應對這同時來臨的請求，Lambda 函數會去自動擴展。 Serverless 到好處就是，你不需要考量該如何為 Lambda 設置擴展，像是怎麼設定 auto-scaling 的功能。</p>
+<p>在 Lambda 當中，對於同一個函數，使用者只需要考量「<strong>對於這個Lambda 函數，你會需要隨時為它保留多少數量的執行個體？</strong></p>
+<p>這時，你就可以考慮為你的函數設定 Reserved Concurrency。</p>
+<p>預留並行是要分配給函數的並行執行個體數量上限。當某個函數具有預留並行時，其他函數都無法使用該並行。</p>
+<p><strong>如果你在 Lambda 主控台上設定 Reserved Concurrency為 1，就會從 Unreserved Concurrency 當中扣除掉 1</strong>。</p>
+<p>而這個設定是區域型的限制 (Regional)，若你為某個函數設定Resevered Concurrecny 為 100 那剩下的 900 就會是由區域內其他函數共用。</p>
+<blockquote>
+<p>可以為一個函數保留多少數量的 Concurrency?</p>
+</blockquote>
+<p>答案會是， <code>UnreservedConcurrency - 100</code> 數量的並行。<br>也就是說一個函數不可以獨佔所有的並行僅為這個函數來執行，起碼會留下 100 個並行數量給其他函數共用。</p>
+<blockquote>
+<p>你要如何決定你的函數改保留多少並行？</p>
+</blockquote>
+<p>你可以透鍋觀察 CloudWatch 指標 <code>ConcurrentExecutions</code> 來決定 [1]。 這個指標可以觀察到對於你的函數而言，一天下來不同時間段的並行請求數量，假設這個函數一天一次最多會有 30個請求進來，並且這個函數對你很重要，那就可以考慮保留 30 個 Lambda 執行個體來處理請求。</p>
+<blockquote>
+<p>另外值得一提的是，設定函數的預留並行不會收費</p>
+</blockquote>
+<h2 id="佈建並行-（Provision-Conccurency）"><a href="#佈建並行-（Provision-Conccurency）" class="headerlink" title="佈建並行 （Provision Conccurency）"></a>佈建並行 （Provision Conccurency）</h2><p>可能會有人好奇，如果函數會根據請求擴展，那啟動新的執行環境，這樣對於 time-sensitive 的請求來說，延遲不會很久嗎？</p>
+<p><img src="https://hackmd.io/_uploads/ByoYHrrkp.png"></p>
+<blockquote>
+<p>圖片來源： AWS 官網</p>
+</blockquote>
+<p>這個想法沒錯，可以看到上圖的數字4，就是這樣的狀況。</p>
+<p>這代表 3 個執行環境在處理 3 個請求，但第4個請求出來時，就必須初始化一個新的 Lambda 執行環境。 這樣就勢必有延遲，需要等待 Runtime 啟動，下載 Lambda code 和 dependency，以及去執行 Handler 以外的程式區塊（如果有的話）。</p>
+<p>佈建並行的意義在於 <strong>「為函數預先初始化多個環境執行個體，有助於縮短冷啟動延遲」</strong></p>
+<p><strong>冷啟動延遲 （Cold Start）</strong> 就是 Lambda 執行環境在啟動載入時，這段不可控的延遲時間（不包含 Function Init, 也就是執行 handler 程式外區段的初始化時間）。這部分我們會在後面提到。</p>
+<p>回到 Provision Concurrency，所以如果設定了 Provision Concurrency，圖片比較會類似下面。</p>
+<p>假設 Provision Concurrency 設成4。 那一開始就會有四個 Lambda 執行環境進行初始化。並且後續的請求都會重用那四個 Lambda 環境，也就是說當這裡就保證了一定會有 4個初始化過的 Lambda 環境存在，對於時間敏感度高的請求，就比較適合設定這個功能，才不用再度收到初始化的延遲影響。</p>
+<p><img src="https://hackmd.io/_uploads/rJ1GiHSJT.png"></p>
+<p>那要怎麼設定 Provision Concurrency 呢？[2]</p>
+<blockquote>
+<p>提醒：為函數設定 Provision Concurrency 是要收費的</p>
+</blockquote>
+<h2 id="實驗二-設置-Provision-Concurrency"><a href="#實驗二-設置-Provision-Concurrency" class="headerlink" title="實驗二 - 設置 Provision Concurrency"></a>實驗二 - 設置 Provision Concurrency</h2><p>在設定 Provision Concurrency之前有個前置作業要做，也就是<strong>發布你的函數版本</strong>。</p>
+<p>每個函數在發布版本之前的預設都是： <strong>$LATEST</strong>，但 Provision Concurrency 並不能設定在 $LATEST 版本的函數上面，這是一個限制。</p>
+<p>可以先在主頁中的 <strong>Version</strong> 找到 <strong>Publish new version</strong><br><img src="https://hackmd.io/_uploads/H1khZIrya.png"></p>
+<p>接著可以填入這個版本的敘述，然後按下 Publish<br><img src="https://hackmd.io/_uploads/By2C-UH1T.png"></p>
+<p>之後就會調轉到 Version 1 的 Lambda函數主控台 （與 $LATEST 函數主控台略微不同）。這時應該會看到 Provision Concurrency 的設定畫面，點選後就可以為 Version 1 的函數設定並行。</p>
+<p><img src="https://hackmd.io/_uploads/Bk4KM8r1T.png"></p>
+<p>下方可以填入你想要維持 warm start 狀態的 Lambda 並行數量。<br>底下可以注意到 “10 available”。這個數字是哪來的呢？</p>
+<p>其實這個數字就是你函數的 <strong>Reserved Concurrency 的數量</strong></p>
+<p>可以回到 $LATEST 版本的函數主控台畫面。</p>
+<p><img src="https://hackmd.io/_uploads/SJMrmLSyp.png"></p>
+<p>底下可以看到我們設定數量就是 10。<br><img src="https://hackmd.io/_uploads/B1OLmIBJp.png"></p>
+<blockquote>
+<p><strong>因此我們可以設定佈建並行的數量，是取決於你為該函數設定的保留並行數量</strong></p>
+</blockquote>
+<p>我們這裡將佈建並行數量設定成 5。</p>
+<p><img src="https://hackmd.io/_uploads/SkPZV8S1T.png"></p>
+<p>之後會需要點時間來建立並行。</p>
+<p>接著我們來測試設定的 Provision Concurrency。</p>
+<p>首先，以下是測試用的 code (在version1 函數當中的程式碼)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json, time</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lambda_handler</span>(<span class="params">event, context</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;sleep for 3 secs&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&#x27;statusCode&#x27;</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="string">&#x27;body&#x27;</span>: json.dumps(<span class="string">&#x27;Hello from Lambda!&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>我們通過 AWS CLI 來去觸發 Lambda 函數</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">aws lambda invoke \</span><br><span class="line">--function-name TestInvocations \</span><br><span class="line">--cli-binary-format raw-in-base64-out \</span><br><span class="line">--qualifier 1 \</span><br><span class="line">--payload &#x27;&#123; &quot;key&quot;: &quot;value&quot; &#125;&#x27; </span><br><span class="line">response.json</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>--qualifier</code> 參數後面接的是版本名稱或者是 Alias 名稱。</p>
+<p>可以先暫停，在實際觸發錢先去觀察 CloudWatch 上的觸發日誌</p>
+<p><img src="https://hackmd.io/_uploads/ryTU7dBJ6.png"></p>
+<p>會發現有多個執行環境已經先預熱完成了</p>
+<blockquote>
+<p>至於數量為何大於 Provision Concurrency 數量這點尚未確定<br>可能是為了可用性？</p>
+</blockquote>
+<p>在開多個終端送請求後，可以發現一樣，因為執行環境已經預熱好，因此不需要重新 Init，可以基於 Container-Reuse 的特性來在現有的執行環境執行請求。</p>
+<p><img src="https://hackmd.io/_uploads/rkdt4urya.png"></p>
+<h2 id="Reserved-Concurrency-vs-Provison-Concurrency"><a href="#Reserved-Concurrency-vs-Provison-Concurrency" class="headerlink" title="Reserved Concurrency vs. Provison Concurrency"></a>Reserved Concurrency vs. Provison Concurrency</h2><p><img src="https://hackmd.io/_uploads/B1BXrdB1a.png"></p>
+<blockquote>
+<p>圖片來源： <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/lambda-concurrency.html#reserved-and-provisioned">https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/lambda-concurrency.html#reserved-and-provisioned</a></p>
+</blockquote>
+<p>用官方展示一張對比圖來解釋這兩種並行的差異。</p>
+<p>以下是我整理這兩種並行的差異</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>RC(Reserved Concurrency)</th>
+<th>PC(Provision Concurrency)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>費用:</td>
+<td>不用收費</td>
+<td>要收費</td>
+</tr>
+<tr>
+<td>特性：</td>
+<td>確保一定數量的Lambda執行環境存在</td>
+<td>確保一定數量的Lambda執行環境存在且這當中有一定數量的執行環境已經初始化過了</td>
+</tr>
+<tr>
+<td>達到limit的反應</td>
+<td>Throtteld <code>TooManyRequest</code></td>
+<td>若還有RC額度，則會擴增執行環境個數，但一樣會有冷啟動，沒有額度則 Throttled</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>也請參考官方的差異表格 [3]</p>
+</blockquote>
+<h2 id="暴增並行"><a href="#暴增並行" class="headerlink" title="暴增並行"></a>暴增並行</h2><p>所謂的暴增並行（Burst Concurrency），目的也是為了能夠應付突然暴增的請求。</p>
+<p>但面對突然增加的大量請求，Lambda 可能也沒辦法立即擴展來處理，這是為了防止 Lambda 函數過度擴展消耗太多資源。</p>
+<p>所以在因應函數暴增的速度，可以通過設定暴增並行來去增加建立 Lambda 執行環境的最高速度。而這個設定是 Account-Level 的設定。</p>
+<p>但在不同 Region，暴增並行有上限的差異：</p>
+<ul>
+<li><code>us-west-2</code>, <code>us-east-1</code> 以及 <code>eu-west-1</code>的 Region 基本上是上限都是 3000</li>
+<li><code>ap-northeast-1</code>, <code>eu-central-1</code> 還有 <code>us-east-2</code> Region 上限是 1000</li>
+<li>其他 Region 都是 500</li>
+</ul>
+<p>以 us-east-1 為例，暴增並行每分鐘擴展 500 個單位的暴增擴展（額外的 Lambda 執行環境），直到達到需求或者是達到上限 3000個。</p>
+<p>超出上限的請求會被 Throttled (Status Code: 429)</p>
+<p>有興趣的可以直接看官方文件針對暴增並行的介紹 [5]。</p>
+<h2 id="冷啟動-（Cold-Start）"><a href="#冷啟動-（Cold-Start）" class="headerlink" title="冷啟動 （Cold Start）"></a>冷啟動 （Cold Start）</h2><blockquote>
+<p>Lambda 在 Init 階段做了哪些事情</p>
+</blockquote>
+<ul>
+<li>當 Lambda 服務透過 Lambda API 收到啟動 Lambda 函數的請求時服務本身會去下載函數程式碼。</li>
+<li>這個程式碼會存放在 Lambda 內部的 S3 bucket當中</li>
+<li>如果是用函數是用容器建立，則函數程式碼會放在 <strong>Amazon ECR</strong> 上</li>
+<li>接著會去建立具有指定記憶體大小以及指定 Runtime 的環境 </li>
+<li>接著會去執行 函數 Hander之外的初始化程式</li>
+</ul>
+<p>根據 [4]，可以知道上面的步驟除了執行函數初始化程式外，都屬於 Cold Start 的範圍。而執行函數 handler 外的程式碼就算是 warm start，也就是我們可以控制的範圍了。</p>
+<blockquote>
+<p>函數又是怎麼能夠一直保持是 “warm”的？</p>
+</blockquote>
+<p>官方文件說明是通過一種 <strong>pinging mechanism</strong>。主要實踐方式是透過設定 <strong>Eventbridge</strong> 的規則安排每分鐘調用一次函數來幫助函數執行環境保持活躍，</p>
+<p>減緩冷啟動的方式，目前推薦的還是藉由設定 Provision Concurrency。<br>另外還有 <strong>Snapstart</strong>，這個我們可以留到後面繼續介紹～</p>
+<h2 id="參考文件"><a href="#參考文件" class="headerlink" title="參考文件"></a>參考文件</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/configuration-concurrency.html#estimating-reserved-concurrency">https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/configuration-concurrency.html#estimating-reserved-concurrency</a><br>[2] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/provisioned-concurrency.html">https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/provisioned-concurrency.html</a><br>[3] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/lambda-concurrency.html#comparing-reserved-provisioned">https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/lambda-concurrency.html#comparing-reserved-provisioned</a><br>[4] <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/operatorguide/execution-environments.html#cold-start-latency">https://docs.aws.amazon.com/zh_tw/lambda/latest/operatorguide/execution-environments.html#cold-start-latency</a><br>[5]<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/burst-concurrency.html">https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/burst-concurrency.html</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/a09fae.html">https://leozzmc.github.io/posts/a09fae.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AWS/">AWS</a><a class="post-meta__tags" href="/tags/Lambda/">Lambda</a></div><div class="post-share"><div class="social-share" data-image="/img/PEPE2.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/c79cef2b.html" title="Lambda 基本認識 feat.容器重用小實驗"><img class="cover" src="/img/PEPE1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Lambda 基本認識 feat.容器重用小實驗</div></div><div class="info-2"><div class="info-item-1">前言首先，為什麼談到無伺服器總是會有人提到 Lambda ? 以下就開始來介紹這個服務 FaaS (Function as a Service)一旦談到無伺服器運算，就會提到他的核心概念，功能即服務(Function as a Service) ，這裡引用維基百科對於 FaaS 的解釋  FaaS 是雲端運算的一種模型。以平台即服務（PaaS）為基礎，無伺服器運算提供一個微型的架構，終端客戶不需要部署、配置或管理伺服器服務，程式碼運行所需要的伺服器服務皆由雲端平台來提供。  沒錯，這個概念的核心就是讓使用者專注在設計產品或業務邏輯，而不需費心在部署配置或是設定伺服器。 而最早實踐這個概念並推出服務的，就是 AWS 在 2014 年推出的 Lambda 服務。（當然後續也有 Microsoft 的 Azure Function） Lambda 函數 Lambda 在高可用性的運算基礎設...</div></div></div></a><a class="pagination-related" href="/posts/f40d2e89.html" title="Lambda_layer 概念和實作"><img class="cover" src="/img/pepe3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Lambda_layer 概念和實作</div></div><div class="info-2"><div class="info-item-1">前言針對 Lambda 設定，絕大多數人一定碰過 ImportModuleError  所以各位可以跟著以下的情境，開一個一樣的 Lambda 環境逐步操作。 情境 Region: IAD(us-east-1) Runtime: Python3.11 Lambda Name: “ITHomeLambdaFunction” Lambda code1234567891011import json requestsdef lambda_handler(event, context):    # TODO implement    x = requests.get(&#x27;https://www.ntust.edu.tw/&#x27;)    print(x.text)    return &#123;        &#x27;statusCode&#x27;: 200,       ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/c79cef2b.html" title="Lambda 基本認識 feat.容器重用小實驗"><img class="cover" src="/img/PEPE1.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-16</div><div class="info-item-2">Lambda 基本認識 feat.容器重用小實驗</div></div><div class="info-2"><div class="info-item-1">前言首先，為什麼談到無伺服器總是會有人提到 Lambda ? 以下就開始來介紹這個服務 FaaS (Function as a Service)一旦談到無伺服器運算，就會提到他的核心概念，功能即服務(Function as a Service) ，這裡引用維基百科對於 FaaS 的解釋  FaaS 是雲端運算的一種模型。以平台即服務（PaaS）為基礎，無伺服器運算提供一個微型的架構，終端客戶不需要部署、配置或管理伺服器服務，程式碼運行所需要的伺服器服務皆由雲端平台來提供。  沒錯，這個概念的核心就是讓使用者專注在設計產品或業務邏輯，而不需費心在部署配置或是設定伺服器。 而最早實踐這個概念並推出服務的，就是 AWS 在 2014 年推出的 Lambda 服務。（當然後續也有 Microsoft 的 Azure Function） Lambda 函數 Lambda 在高可用性的運算基礎設...</div></div></div></a><a class="pagination-related" href="/posts/f40d2e89.html" title="Lambda_layer 概念和實作"><img class="cover" src="/img/pepe3.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-20</div><div class="info-item-2">Lambda_layer 概念和實作</div></div><div class="info-2"><div class="info-item-1">前言針對 Lambda 設定，絕大多數人一定碰過 ImportModuleError  所以各位可以跟著以下的情境，開一個一樣的 Lambda 環境逐步操作。 情境 Region: IAD(us-east-1) Runtime: Python3.11 Lambda Name: “ITHomeLambdaFunction” Lambda code1234567891011import json requestsdef lambda_handler(event, context):    # TODO implement    x = requests.get(&#x27;https://www.ntust.edu.tw/&#x27;)    print(x.text)    return &#123;        &#x27;statusCode&#x27;: 200,       ...</div></div></div></a><a class="pagination-related" href="/posts/421a206a.html" title="建立 Lambda 函數 URL 的步驟"><img class="cover" src="/img/AWS/Lambda_URL/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-03</div><div class="info-item-2">建立 Lambda 函數 URL 的步驟</div></div><div class="info-2"><div class="info-item-1">甚麼是 Lambda URL ? 官方定義: 函數 URL 是 Lambda 函數專用的 HTTP(S) 端點。您可以透過 Lambda 主控台或 Lambda API 建立及設定函數 URL。當您建立函數 URL 時，Lambda 會自動為您產生不重複的 URL 端點。函數 URL 一旦建立，其 URL 端點便永遠不會變更。  函數 URL 端點的格式如下： 1https://&lt;url-id&gt;.lambda-url.&lt;region&gt;.on.aws  要特別注意的是，某些region並不支援使用 function URL，這時可能就要用老方法: API Gateway + Lambda Integration 存取控制在建立 function URL 的時候可以透過 AuthType 參數，來決定 Lambda 如何對 funcion URL 的請求執行身分驗...</div></div></div></a><a class="pagination-related" href="/posts/5db1b7e9.html" title="帶你從零開始整合 Lambda Function 到 Amazon Connect"><img class="cover" src="/img/Connect.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-01</div><div class="info-item-2">帶你從零開始整合 Lambda Function 到 Amazon Connect</div></div><div class="info-2"><div class="info-item-1">前言在現代的商業環境中，提供優質且高效的客戶服務是成功的關鍵之一。Amazon Connect 是一個強大的雲端客戶服務中心，它可以幫助企業輕鬆建立高度可靠的聯絡中心，並與客戶進行無縫的互動。本篇技術部落格文章將帶領您逐步了解如何整合 Lambda Function 到 Amazon Connect，以實現更多自定義的功能。 在這篇文章中，我們將遵循以下步驟來實現整合： 步驟一、建立 Connect Instance首先，我們將在 Amazon Connect Console 上建立一個 Connect Instance。 請至 Amazon Connect Console 上選擇 Add Instance。這個步驟會需要設定你的 instance-alias，這樣可以為你的connect instance 建立一個 unique的 Access URL  這個步驟是添加Admin，...</div></div></div></a><a class="pagination-related" href="/posts/c0ef3a5f.html" title="近一年半的 AWS Cloud Support Engineer 心得記錄"><img class="cover" src="/img/AWS/CSE/aws3.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-03</div><div class="info-item-2">近一年半的 AWS Cloud Support Engineer 心得記錄</div></div><div class="info-2"><div class="info-item-1">背景 目前在台灣亞馬遜網路服務公司 (Amazon Web Services) 擔任 雲端支援工程師 (Cloud Support Engineer) ，但兩天後就要離職了，因此想說趁離職前紀錄並回顧一下這一年半以來的工作以及生活。  我是在我碩二上的時候(2021年10月)投遞AWS Cloud Support 校園招聘的職缺，當時原本在找研發替代役，後來因為知道AWS有開缺，抱持著試試看的心情投遞了履歷。大概隔天就收到了Online Assessment 的通知。OA其實就是簡單的電腦基礎知識，應該只是拿來篩本科非本科的(?)，接著就是Phone Interview，當時的校招可以排志願序，我原本想去的是 Security 或者 Deployment Profile，但我在面試過程中，發現問題大多會跟 Troubleshooting 相關，因此Security Fail了，然後D...</div></div></div></a><a class="pagination-related" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img class="cover" src="/img/devops/cover3.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2060-11-05</div><div class="info-item-2">DevOps技能樹知識整理 |【筆記目錄】</div></div><div class="info-2"><div class="info-item-1">前言這裡紀錄 DevOps 面試常見的知識點，主要是參考了這個 github repository: DevOps Exercises 和 ByteByteGo 的 GitHub Repo 所做的筆記整理  可能會花很久時間才能夠全部整理完成~  DevOps GeneralPython Basic Data Types OOP &#x2F; Class Raise Exceptions Regex Async File Manipulation OS lambda decorator Flask   文章： Python for DevOps |【DevOps技能樹】  Networking TCP&#x2F;UDP OSI Model CIDR Mac Addr. CSMA&#x2F;CD NAT DNS ICMP TLS&#x2F;SSL Handshake Route Tab...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E9%A1%A7"><span class="toc-number">1.</span> <span class="toc-text">回顧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%A6%E9%A9%97%E4%B8%80-%E8%A8%AD%E7%BD%AE-Reserved-Concurrency"><span class="toc-number">2.</span> <span class="toc-text">實驗一 - 設置 Reserved Concurrency</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A0%90%E7%95%99%E4%B8%A6%E8%A1%8C-Reserved-Concurrency"><span class="toc-number">3.</span> <span class="toc-text">預留並行(Reserved Concurrency)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%88%E5%BB%BA%E4%B8%A6%E8%A1%8C-%EF%BC%88Provision-Conccurency%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">佈建並行 （Provision Conccurency）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%A6%E9%A9%97%E4%BA%8C-%E8%A8%AD%E7%BD%AE-Provision-Concurrency"><span class="toc-number">5.</span> <span class="toc-text">實驗二 - 設置 Provision Concurrency</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reserved-Concurrency-vs-Provison-Concurrency"><span class="toc-number">6.</span> <span class="toc-text">Reserved Concurrency vs. Provison Concurrency</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9A%B4%E5%A2%9E%E4%B8%A6%E8%A1%8C"><span class="toc-number">7.</span> <span class="toc-text">暴增並行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B7%E5%95%9F%E5%8B%95-%EF%BC%88Cold-Start%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">冷啟動 （Cold Start）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E4%BB%B6"><span class="toc-number">9.</span> <span class="toc-text">參考文件</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="繁簡轉換">EN</button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
