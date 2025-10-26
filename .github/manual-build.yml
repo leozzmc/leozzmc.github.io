@@ -1,0 +1,112 @@
+name: manual-hexo-build
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run test build (no publish) or deploy?"
+        required: true
+        default: "test"
+        type: choice
+        options:
+          - test
+          - deploy
+      lang:
+        description: "Which language site?"
+        required: true
+        default: "zh"
+        type: choice
+        options:
+          - zh
+          - en
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.16.1"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Select config for chosen lang
+        run: |
+          cp "config-${{ github.event.inputs.lang }}.yml" _config.yml
+          cp "config-butterfly-${{ github.event.inputs.lang }}.yml" "_config.butterfly.yml"
+          echo "Using language=${{ github.event.inputs.lang }}"
+          echo "Final _config.yml:"
+          head -n 40 _config.yml
+
+      # ===== test mode =====
+      - name: Generate static site (test mode)
+        if: ${{ github.event.inputs.mode == 'test' }}
+        run: |
+          npx hexo clean
+          npx hexo g
+          echo "Hexo generate complete."
+          ls -al
+
+      - name: Upload preview artifact
+        if: ${{ github.event.inputs.mode == 'test' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "preview-${{ github.event.inputs.lang }}"
+          # zh build goes to public/
+          # en build goes to public-en/
+          path: ${{ github.event.inputs.lang == 'en' && 'public-en' || 'public' }}
+          retention-days: 7
+
+      # ===== deploy mode =====
+      # Step 1: set up git credentials depending on lang
+      - name: Configure git credential for deploy
+        if: ${{ github.event.inputs.mode == 'deploy' }}
+        run: |
+          # We'll configure credentials differently for zh vs en
+          if [ "${{ github.event.inputs.lang }}" = "zh" ]; then
+            echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            # GITHUB_TOKEN already injected automatically for this repo push
+            # For hexo-deployer-git using HTTPS repo URL, this is enough.
+
+          else
+            echo "Deploying en -> external repo leozzmc/en using EN_REPO_TOKEN"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            # Set up credentials for pushing to leozzmc/en
+            git config credential.helper store
+            cat > ~/.git-credentials <<EOF
+            https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
+            EOF
+          fi
+
+      - name: Build & Deploy (hexo deploy)
+        if: ${{ github.event.inputs.mode == 'deploy' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Running npm run kk (clean + g + deploy)"
+          npm run kk
+          echo "Deploy done."
+
+      - name: Upload deployed artifact
+        if: ${{ github.event.inputs.mode == 'deploy' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "deployed-${{ github.event.inputs.lang }}"
+          path: ${{ github.event.inputs.lang == 'en' && 'public-en' || 'public' }}
+          retention-days: 7
