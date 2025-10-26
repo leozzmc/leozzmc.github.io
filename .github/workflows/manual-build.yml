@@ -84,20 +84,20 @@ jobs:
       - name: Configure git credential for zh deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ZH_REPO_TOKEN: ${{ secrets.ZH_REPO_TOKEN }}
         run: |
-          echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+          echo "Deploying zh -> same repo branch 'deploy' using ZH_REPO_TOKEN (PAT)"
 
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git config --global credential.helper store
+          #   repo: https://<token>@github.com/leozzmc/leozzmc.github.io.git
+          sed -i "s#repo: https://github.com/leozzmc/leozzmc.github.io.git#repo: https://${ZH_REPO_TOKEN}@github.com/leozzmc/leozzmc.github.io.git#g" _config.yml
 
-          echo "https://github-actions:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
-
-          echo "---- deploy section from _config.yml ----"
+          echo "---- deploy section from _config.yml AFTER PATCH ----"
           grep -A4 "^deploy" _config.yml || true
-          echo "-----------------------------------------"
+          echo "-----------------------------------------------------"
+
 
       - name: Build & Deploy zh (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
@@ -130,8 +130,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git config --global credential.helper store
-          echo "https://${EN_REPO_TOKEN}:@github.com/leozzmc/en.git" > ~/.git-credentials
+          sed -i "s#repo: https://github.com/leozzmc/en.git#repo: https://${EN_REPO_TOKEN}@github.com/leozzmc/en.git#g" _config.yml
 
           echo "---- deploy section from _config.yml ----"
           grep -A4 "^deploy" _config.yml || true
