@@ -18,13 +18,13 @@ nav:
   fixed: false
 
 menu:
-  Home: / || fas fa-home
-  Find Posts||fas fa-list:
-      Archives: /archives/ || fas fa-archive
-      Tags: /tags/ || fas fa-tags
-      Categories: /categories/ || fas fa-folder-open
-  Links: /link/ || fas fa-link
-  Languages:||fas fa-language:
+  首頁: / || fas fa-home
+  找文章||fas fa-list:
+      歸檔: /archives/ || fas fa-archive
+      標籤: /tags/ || fas fa-tags
+      分類: /categories/ || fas fa-folder-open
+  鏈結: /link/ || fas fa-link
+  語言:||fas fa-language:
     English: / || fas fa-e
     中文: https://leozzmc.github.io/ || fas fa-c
   # List||fas fa-list:
@@ -176,8 +176,8 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
-    - Deep dive into tech
-    - Breadth experience in life
+    - 蹲的越低
+    - 腳就越酸 
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -187,7 +187,7 @@ subtitle:
 # 5: Info displayed on the cover
 # 6: Masonry layout - Cover on top, info on the bottom
 # 7: Masonry layout - Info displayed on the cover
-index_layout: 2
+index_layout: 3
 
 # Display the article introduction on homepage
 # 1: description
@@ -364,7 +364,7 @@ aside:
     # Time difference between publish date and now
     # Formal: Month/Day/Year Time or Year/Month/Day Time
     # Leave it empty if you don't enable this feature
-    runtime_date: 2023/06/18 09:00:00 +0800
+    runtime_date:
 
 # --------------------------------------
 # Bottom right button
@@ -377,9 +377,9 @@ rightside_bottom:
 translate:
   enable: false
   # The text of a button
-  default: 繁
+  default: EN
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
-  defaultEncoding: 1
+  defaultEncoding: 3
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
@@ -411,7 +411,7 @@ rightside_scroll_percent: false
 # Choose: readmode,translate,darkmode,hideAside,toc,chat,comment
 # Don't repeat the same value
 rightside_item_order:
-  enable: true
+  enable: false
   # Default: readmode,translate,darkmode,hideAside
   hide:
   # Default: toc,chat,comment
@@ -1053,6 +1053,7 @@ inject:
     - <script data-pjax src="/self/btf.js"></script> 
     - <script data-pjax src="/self/tw_en.js"></script>
     - <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+    - <script data-pjax src="/self/calendar.js"></script>
     - <script data-pjax src="/self/languages.js"></script>
 
 # CDN Settings
