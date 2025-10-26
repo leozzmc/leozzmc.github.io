@@ -86,13 +86,17 @@ jobs:
       - name: Configure git credential for zh deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         run: |
-          echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # IMPORTANT:
-          # Make sure config-zh.yml deploy.repo is HTTPS:
-          #   repo: https://github.com/leozzmc/leozzmc.github.io.git
-          #   branch: deploy
+            echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+            # config-zh.yml should use HTTPS repo:
+            # deploy:
+            #   type: git
+            #   repo: https://github.com/leozzmc/leozzmc.github.io.git
+            #   branch: deploy
+            #   message: "deployment"
 
       - name: Build & Deploy zh (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
@@ -119,18 +123,19 @@ jobs:
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
         run: |
           echo "Deploying en -> external repo leozzmc/en using EN_REPO_TOKEN"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           git config credential.helper store
-          cat > ~/.git-credentials <<EOF
-          https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
-          EOF
+          echo "https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git" > ~/.git-credentials
 
-          # IMPORTANT:
-          # Make sure config-en.yml deploy.repo is HTTPS:
+          # config-en.yml should use HTTPS repo:
+          # deploy:
+          #   type: git
           #   repo: https://github.com/leozzmc/en.git
           #   branch: main
+          #   message: "en-deployment"
 
       - name: Build & Deploy en (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
