@@ -46,10 +46,13 @@ jobs:
           cp "config-${{ github.event.inputs.lang }}.yml" _config.yml
           cp "config-butterfly-${{ github.event.inputs.lang }}.yml" "_config.butterfly.yml"
           echo "Using language=${{ github.event.inputs.lang }}"
-          echo "Final _config.yml:"
+          echo "Final _config.yml (first 40 lines):"
           head -n 40 _config.yml
 
-      # ===== test mode =====
+      #######################################################
+      # TEST MODE
+      #######################################################
+
       - name: Generate static site (test mode)
         if: ${{ github.event.inputs.mode == 'test' }}
         run: |
@@ -58,25 +61,38 @@ jobs:
           echo "Hexo generate complete."
           ls -al
 
-      - name: Upload preview artifact
-        if: ${{ github.event.inputs.mode == 'test' }}
+      # upload zh preview
+      - name: Upload preview artifact (zh)
+        if: ${{ github.event.inputs.mode == 'test' && github.event.inputs.lang == 'zh' }}
         uses: actions/upload-artifact@v4
         with:
-          name: "preview-${{ github.event.inputs.lang }}"
-          # zh build goes to public/
-          # en build goes to public-en/
-          path: ${{ github.event.inputs.lang == 'en' && 'public-en' || 'public' }}
+          name: "preview-zh"
+          path: public
           retention-days: 7
 
-            # ========== deploy mode: zh ==========
+      # upload en preview
+      - name: Upload preview artifact (en)
+        if: ${{ github.event.inputs.mode == 'test' && github.event.inputs.lang == 'en' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "preview-en"
+          path: public-en
+          retention-days: 7
+
+      #######################################################
+      # DEPLOY MODE: ZH
+      #######################################################
+
       - name: Configure git credential for zh deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
         run: |
           echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # no extra credential needed as long as deploy.repo uses HTTPS URL
-          # and points back to this same repo (leozzmc.github.io.git)
+          # IMPORTANT:
+          # Make sure config-zh.yml deploy.repo is HTTPS:
+          #   repo: https://github.com/leozzmc/leozzmc.github.io.git
+          #   branch: deploy
 
       - name: Build & Deploy zh (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
@@ -95,7 +111,10 @@ jobs:
           path: public
           retention-days: 7
 
-      # ========== deploy mode: en ==========
+      #######################################################
+      # DEPLOY MODE: EN
+      #######################################################
+
       - name: Configure git credential for en deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
         run: |
@@ -107,6 +126,11 @@ jobs:
           cat > ~/.git-credentials <<EOF
 https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git
 EOF
+
+          # IMPORTANT:
+          # Make sure config-en.yml deploy.repo is HTTPS:
+          #   repo: https://github.com/leozzmc/en.git
+          #   branch: main
 
       - name: Build & Deploy en (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
