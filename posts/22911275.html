@@ -1,0 +1,653 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Git for DevOps 筆記 |【DevOps技能樹】 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="Basic Q:你要如何確認一個目錄是一個 git repository?  檢查是否有 .git 文件  Q:請解釋什麼是 git directory, working directory, staging area  Git目錄:適用於儲存項目歷史紀錄的地方。包含所有 commit history, branch, label 等資料，存放於專案目錄中的 .git 資料夾內。 Git 目錄其實">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git for DevOps 筆記 |【DevOps技能樹】">
+<meta property="og:url" content="https://leozzmc.github.io/posts/22911275.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="Basic Q:你要如何確認一個目錄是一個 git repository?  檢查是否有 .git 文件  Q:請解釋什麼是 git directory, working directory, staging area  Git目錄:適用於儲存項目歷史紀錄的地方。包含所有 commit history, branch, label 等資料，存放於專案目錄中的 .git 資料夾內。 Git 目錄其實">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/devops/git/cover.png">
+<meta property="article:published_time" content="2025-11-11T03:45:46.000Z">
+<meta property="article:modified_time" content="2025-10-26T12:28:30.625Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/devops/git/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Git for DevOps 筆記 |【DevOps技能樹】",
+  "url": "https://leozzmc.github.io/posts/22911275.html",
+  "image": "https://leozzmc.github.io/img/devops/git/cover.png",
+  "datePublished": "2025-11-11T03:45:46.000Z",
+  "dateModified": "2025-10-26T12:28:30.625Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/22911275.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Git for DevOps 筆記 |【DevOps技能樹】',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/devops/git/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">Git for DevOps 筆記 |【DevOps技能樹】</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Git for DevOps 筆記 |【DevOps技能樹】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2025-10-26T12:28:30.625Z" title="更新於 2025-10-26 20:28:30">2025-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">4.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>14分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h1><blockquote>
+<p><em><strong>Q:你要如何確認一個目錄是一個 git repository?</strong></em></p>
+</blockquote>
+<p>檢查是否有 <code>.git</code> 文件</p>
+<blockquote>
+<p><em><strong>Q:請解釋什麼是 <code>git directory</code>, <code>working directory</code>, <code>staging area</code></strong></em></p>
+</blockquote>
+<p><strong>Git目錄</strong>:<br>適用於儲存項目歷史紀錄的地方。包含所有 commit history, branch, label 等資料，存放於專案目錄中的 <code>.git</code> 資料夾內。</p>
+<p>Git 目錄其實就是負責管理版本的主要資料存放地，可以透過 <code>git log</code> 命令查看資訊</p>
+<p><strong>工作目錄</strong><br>目前正在操作的專案目錄。在工作目錄中，git 會去提取 Git 目錄中的某個特定版本(正常會是最新版本)，並將檔案提取出來，讓使用者可以直接編輯跟修改。</p>
+<p>使用者對於工作目錄的變更並不會自動被 git 偵測，需要手動進行 <code>add</code> 以及 <code>commit</code> 進行更新。</p>
+<p><strong>Staging Area(暫存區)</strong><br>是一個臨時空間，可以讓你暫時將工作目錄的變更添加到暫存區，等待進一步提交，所以當你進行 <code>git add</code> 的時候，檔案就會從工作目錄轉移到暫存區。最終當使用 <code>git commit</code> 的時候，Git 就會將暫存區內容提交到 Git 目錄中 (<code>.git</code>)，形成新的提交。 </p>
+<blockquote>
+<p><em><strong>Q:<code>git pull</code> 以及 <code>git fetch</code> 之間有什麼差異？</strong></em></p>
+</blockquote>
+<p>簡單來說 <code>git pull</code> &#x3D;  <code>git fetch</code> + <code>git merge</code></p>
+<p><strong><code>git fetch</code></strong> 就是單純從遠端倉庫下載最新的變更到本地端，並更新本地的remote branch 紀錄 (<code>orgin/main</code>) 但並不會將這些變合併到當前的工作分支，因此在 <code>git fecth</code> 後需要手動使用 <code>git merge</code> 或 <code>git rebase</code></p>
+<p><strong><code>git pull</code></strong> 就是 <code>git fetch</code> 和 <code>git merge</code> 的組合指令。</p>
+<p><strong>如果在進行 <code>git pull</code> 時，若遠端或本地都有修改，就可以遇到合併衝突</strong></p>
+<blockquote>
+<p><em><strong>Q:要如何確定一個檔案是否是 tracked的？若沒有則track</strong></em></p>
+</blockquote>
+<ol>
+<li>檢查檔案是否被追蹤</li>
+</ol>
+<p>使用 <code>git status</code> 來檢查當前檔案狀態，如果檔案出現在 <code>Untracked files</code> 中則代表該檔案未被追蹤，而如果檔案在 <code>Changes not stagged for commit</code> 則代表已經被追蹤，但修改尚未提交</p>
+<p>以本篇部落格為例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">On branch en</span><br><span class="line">Your branch is up to date with &#x27;origin/en&#x27;.</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line">        modified:   source/_posts/k8s-devops.md</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)</span><br><span class="line">        source/_posts/git-dveops.md</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>將未被追蹤的檔案加入追蹤</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>Q: 請解釋 gitignore 用途是什麼?</strong></em></p>
+</blockquote>
+<p>用於確保特定檔案不會被 Git 追蹤。 當你新增或修改    <code>.gitignore</code>，希望讓 Git 忽略某些檔案或資料夾，但發現它們已經被 Git 追蹤時，可以先使用 <code>git rm --cached</code> 將這些檔案從追蹤中移除，然後 Git 就會依據<code>gitignore</code> 忽略它們。</p>
+<p>Example</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached -r node_modules/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>Q: 當你在 Commit 之前可以透過哪些方法得知做了哪些變更?</strong></em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+<p>如果是要看最新的commit 以及 staging area 之間的差異，可以加上 <code>cached</code> 參數</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
+<p>若要查看工作目錄與最新commit之間的差異</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff HEAD</span><br></pre></td></tr></table></figure>
+
+<h1 id="情境題"><a href="#情境題" class="headerlink" title="情境題"></a>情境題</h1><blockquote>
+<p><em><strong>Q: 你有個檔案在遠端倉庫中，但你不希望Git追蹤他，你做什麼來讓後續Git 都不追蹤該檔案</strong></em></p>
+</blockquote>
+<p>將改檔案添加到 <code>gitignore</code> 當中，使該檔案不會被添加到 staging area</p>
+<blockquote>
+<p><em><strong>Q: 在你們組織中，有個開發團隊使用單體式遠端倉庫，該repo十分巨大，包含上千份檔案，開發團隊發現他們進行一般 git 操作變得十分緩慢，像是 git status，請問這是什麼原因導致，你該如何幫助他們？</strong></em></p>
+</blockquote>
+<p>問題分析：</p>
+<ol>
+<li>檔案數量太大根複雜目錄結構會導致像是 <code>git diff</code>, <code>git status</code> 操作進行比對時增加負擔</li>
+<li>大量歷史紀錄會讓讀取時效能降低</li>
+<li>如果文件本身也很大，也會導致修改檔案時速度變慢</li>
+</ol>
+<p>解決辦法：</p>
+<ol>
+<li>架構調整，使用 git submodule 或者 git subtree 將單體式架構拆分成多個小倉庫，將不同部分移到各自獨立的倉庫中。</li>
+<li>如果是要 clone 專案，如果開發者只需要最新的版本，不需要完整記錄，則可以使用 <code>--depth</code> 參數進行淺層的 clone</li>
+<li>而如果開發者只需要專案中的某些特定資料夾或檔案，可以使用 <strong>Sparse Checkout</strong>  來 checkout 所需要的部分</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git sparse-checkout init --cone</span><br><span class="line">git sparse-checkout <span class="built_in">set</span> &lt;PATH_TO_FOLDER&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用 <strong>GIT LFS</strong> 來管理大文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git lfs install</span><br><span class="line">git lfs track <span class="string">&quot;*.c&quot;</span> <span class="comment"># track all big .c files</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Branches"><a href="#Branches" class="headerlink" title="Branches"></a>Branches</h1><p>Branch 是在 git 中程式碼的平行開發線，可以讓開發者在不影響主線程式碼的情況下進行變更。</p>
+<blockquote>
+<p><em><strong>什麼是 branch strategy (flow)? 舉例一下有哪些 branch strategy</strong></em></p>
+</blockquote>
+<p><strong>Git Flow</strong></p>
+<p><img src="/img/devops/git/gitflow.png"><br><em>Image Source: <a target="_blank" rel="noopener" href="https://medium.com/@sreekanth.thummala/choosing-the-right-git-branching-strategy-a-comparative-analysis-f5e635443423">https:&#x2F;&#x2F;medium.com&#x2F;@sreekanth.thummala</a></em></p>
+<p>適合 release 週期長，有穩定版本需求的專案。</p>
+<ul>
+<li>main branch: 主分支，用於儲存穩定且發佈的版本</li>
+<li>develop branch: 開發分支，所有新功能會在本分支合併</li>
+<li>feature branch: 功能分支，用於開發新功能，每個新功能會應該基於 devlop branch 去建立，並且需要在開發完成後合併回 develop</li>
+<li>release branch: 發布分支，當 develop 分支的程式碼達到可發布的階段時，會從develop branch 去建立 release branch 進行最後測試和修正</li>
+<li>hotfix branch: 熱修復分支，用於緊急修復已發布版本的問題，需要從 main branch 建立，修復完畢後合併回 main 跟 develop</li>
+</ul>
+<blockquote>
+<p>缺點: 頻繁建立分支再合併可能會增加git hostory的複雜度</p>
+</blockquote>
+<p><strong>GitHub Flow</strong></p>
+<p><img src="/img/devops/git/githubflow.png"></p>
+<p>GitHub Flow 較為輕量化，適合快速迭代跟持續部署的專案，只有兩個主要分支，通常比較適合小型團隊</p>
+<ul>
+<li>main branch: 主分支，包含穩定且隨時可部署的程式碼</li>
+<li>feature branches: 功能分支，開發人員會從 main branch 建立新的 branch 來開發新功能或修復bug。在功能完成並測試後，會發Pull Request(PR) 並合併回 main branch</li>
+</ul>
+<blockquote>
+<p>缺點: 不適合生命週期長的專案</p>
+</blockquote>
+<p><strong>GitLab Flow</strong></p>
+<p><img src="/img/devops/git/gitlab.png"></p>
+<p>結合了 Git Flow 跟 GitHub Flow 的特色，適合複雜度介於兩者之間的專案，允許在不同環境進行測試和部署，適合有多個測試環境、且需要穩定發布的專案。</p>
+<ul>
+<li>main branch: 主分支，儲存穩定版本</li>
+<li>feature branch: 功能分支，用於開發新功能跟修正錯誤，會從 main branch 開始建立，完成後會合併回 main branch</li>
+<li>environment branches: 環境分支，Ex. pre-production, staging 等。對應不同的部署環境，可以再進行測試與驗證</li>
+<li>relase branch: 發布分支，用於特定版本的發布管理</li>
+</ul>
+<blockquote>
+<p>缺點：多版本管理時複雜度一樣會提升</p>
+</blockquote>
+<p><strong>Trunk Based Development</strong></p>
+<p><img src="/img/devops/git/trunk.png"></p>
+<p>這種Flow 更加極端，主要強調快速開發跟持續整合。</p>
+<ul>
+<li>main branch: 唯一的主要分支，所以開發活動都直接合併到主分支</li>
+<li>短暫的 feature branches: 功能分支存在時間非常短暫，通常在幾天內完成並合併回 main，或直接在 main 上進行開發。</li>
+</ul>
+<blockquote>
+<p>缺點: 對自動化測試和CI&#x2F;CD 系統高度仰賴。團隊技術和協作能力要求高</p>
+</blockquote>
+<blockquote>
+<p><em><strong>現在你有兩個 branch，分別是 main 和 dev，你要如何確保兩個 branch 是同步的？</strong></em></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git pull</span><br><span class="line">git checkout dev</span><br><span class="line">git merge main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>當我執行 git branch 命令執行時，他的工作原理，實際會發生什麼事情?</strong></em></p>
+</blockquote>
+<p>Git 此時在背後會做的事情會是 <strong>1. 建立一個新的分支指標</strong>，git 會在 <code>.git/refs/heads</code> 資料夾中建立新的檔案，檔案名稱會是你設定的分支名稱。接著會 <strong>指向到當前的 commit</strong>，剛剛所說的新檔案，檔案內容會是一個指向當前commit 的 SHA-1 hash 值，代表新分支從當前 commit 開始</p>
+<blockquote>
+<p><em><strong>當你跑 <code>git branch</code> 命令時，Git 要怎麼知道最新commit 的 SHA-1 值？</strong></em></p>
+</blockquote>
+<p>會去 <code>.git/refs/heads</code> 找到對應的 branch 名稱後輸出對應的SHA-1 值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~/leozzmc.github.io/.git/refs/heads</span><br><span class="line">❯ cat en </span><br><span class="line">fc58a8885d29bc422d8089e08eaf826d41a2b5c8</span><br></pre></td></tr></table></figure>
+
+<p>當你 checkout 到其他 branch 的時候，Git 同時也會去更新 <code>.git/HEAD</code> 為 <code>refs/heads/&lt;Branch Name&gt;</code></p>
+<h1 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h1><blockquote>
+<p><em><strong>你現在有兩個 branch: main 和 dev，要如何將 dev merge到 main?</strong></em></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git merge dev</span><br><span class="line">git push origin main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>要如何解決合併衝突(Merge Conflicts)?</strong></em></p>
+</blockquote>
+<p>首先要確認有衝突的檔案是哪個? 可以透過 <code>git status</code> 查看，這些檔案會 <code>unmerged</code>。接著打開有衝突的檔案，git 應該會標記有衝突的區域，像是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">// 來自當前分支（HEAD）的變更</span><br><span class="line">=======</span><br><span class="line"> // 來自要合併分支的變更</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</span><br></pre></td></tr></table></figure>
+
+<p>接著可能就是要跟其他開發者或團隊溝通，看要保留哪些部分。檔案編輯完畢後保存檔案，就可以透過 <code>git add &lt;filename&gt;</code> 來標記衝突已解決。之後就可以 commmit 了。</p>
+<blockquote>
+<p><em><strong>你熟悉哪些 merge strategies嗎?</strong></em></p>
+</blockquote>
+<p>Git 中有好幾種常見的 Merge 策略，像是</p>
+<p><strong>Fast-Forward</strong></p>
+<p>如果合併的 branch 和 main branch 沒有新的commit時，可以使用 Fast-Forward merge。 Git 會將 main branch 的指標直接 fast-forward 到 branch 的最新commit，並且不會建立新的 merge commit。這種方式適合線性開發的情況，讓git history 保持清晰。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch_name&gt; --ff</span><br></pre></td></tr></table></figure>
+
+<p><strong>Recursive</strong><br>這是Git 預設的merge策略，如果要合併有共同祖先的的分支時，會先從共同的 base commit 開始計算雙方分支的差異，然後自動生成 merge commit。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Squash</strong></p>
+<p>Squash Commit 會將所有的commit 壓縮成一個 commit，並且合併到目標 branch，這樣主要分支上就只會出現一個commit 紀錄。</p>
+<p>這種做法適合用在完成功能開發後，將零碎的commit 打包成一個乾淨的commit</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --squash &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Octopus</strong></p>
+<p>適合多個 branch 同時合併的情況，通常會是將多個feature branches 合併到 main branch。git 會同時將多個分支上的變更合併成一個 commit。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch1&gt; &lt;branch2&gt; &lt;branch3&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Ours Merge</strong></p>
+<p>特殊的合併策略，<strong>當 merge conflicts 無法解決或不希望保留其他分支的變更時，可以使用 Ours Merge。</strong></p>
+<p>這種策略就是即使有衝突，Git 也會選擇保留當前branch的內容，而捨棄被合併分支的變更。這種策略通常用於臨時的緊急合併或無法協調的衝突狀況。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge -s ours &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong><code>git reset</code>以及<code>git revert</code>之間的差異是什麼？</strong></em></p>
+</blockquote>
+<p><code>git revert</code> 用來提交一個新的 commit 來抵銷之前的 commit</p>
+<p>假設今天有 commit A, commit B, commit C，若現在想要撤銷對 B 的變更，則可以藉由命令 <code>git revert B</code> 來去建立一個新的 commit D，這個 commit 得內容會跟 B 的相反，這樣最終得commit history 會是 A-&gt;B-&gt;C-&gt;D</p>
+<p><code>git reset</code> 則用於重置當前 branch 的指標(HEAD) 到指定的commit上，並且可以選擇是否保留對於工作目錄的變更。 <strong>這就代表 <code>git reset</code> 可以變更 branch 的 commit history</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft &lt;commit-hash&gt; #僅移動HEAD</span><br><span class="line">git reset --mixed &lt;commit-hash&gt;</span><br><span class="line">git reset --hard &lt;commit-hash&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Rebase"><a href="#Rebase" class="headerlink" title="Rebase"></a>Rebase</h1><blockquote>
+<p><em><strong>什麼情況下你會使用 <code>git rebase</code>?</strong></em></p>
+</blockquote>
+<p>當今天個團隊正在一個 feature branch 上開發新功能，這個 feature branch 是從 main branch 長出來的。當 feature 的開發完成了，團隊希望將功能 merge 到 main branch 並且不希望保留 feature branch上的任何commit 則可以使用 git rebase。</p>
+<p>(但其實有更好的做法就是用 <code>git merge --squash</code>，先將 feature branch 上的所有提交壓縮成一個commit)</p>
+<blockquote>
+<p><em><strong>要如何將一個特定檔案反轉成先前的commit?</strong></em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD~1 -- /path/to/the/file</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git restore --source-&lt;commit-hash&gt; -- &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p><code>git restore</code> 是較新的指令，功能與 checkout 類似，這樣會把檔案恢復到指定的提交內容</p>
+<blockquote>
+<p><em><strong>要如何 squash 最後兩個 commit?</strong></em></p>
+</blockquote>
+<p>若這兩個 commit 還沒push，則可以 revert回前兩個commit然後再一次提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft HEAD~2</span><br><span class="line">git commit -m &quot;new combined commit message&quot;</span><br></pre></td></tr></table></figure>
+
+<p>但如果這兩個 commit 已經 push到 repo了，那就要用 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git rebase -i HEAD~2</span><br></pre></td></tr></table></figure>
+
+<p>這會打開編輯器，會顯示提交歷史，可能會像是下面這樣</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pick &lt;commit-hash-1&gt; Commit message for the second-to-last commit</span><br><span class="line">pick &lt;commit-hash-2&gt; Commit message for the last commit</span><br></pre></td></tr></table></figure>
+
+<p>只要將第二行的pick變更為 <code>squash</code>，這就代表將最後一個提交壓縮到倒數第二個提交中 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pick &lt;commit-hash-1&gt; Commit message for the second-to-last commit</span><br><span class="line">squash &lt;commit-hash-2&gt; Commit message for the last commit</span><br></pre></td></tr></table></figure>
+
+<p>保存退出後，並且修改新的commit訊息，就可以看見兩個commit合併成同一個了</p>
+<blockquote>
+<p><em><strong>如何刪除一個 remote branch?</strong></em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push orgin --delete &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<div class="note warning flat"><p>刪除遠端分支後，其他協作成員將無法再從遠端倉庫中拉取該分支!</p>
+</div>
+
+
+<blockquote>
+<p><em><strong>什麼是 gitattributes ?</strong></em></p>
+</blockquote>
+<p><code>.gitattributes</code> 是Git 中的一種設定檔， <strong>用於設定檔案的屬性和處理方式</strong>，可以讓使用這在 Git 操作過程中 (Ex. merge, commit) 時對檔案進行處理</p>
+<p>主要用途像是</p>
+<ul>
+<li>管理檔案的行尾(Line Ending): 這也是最常見的用途之一，通常不同OS下對於檔案中的每一行結尾會使用不同的結尾符號 (Windows: CRLF, Linux: LF )，而這也可能導致不必要的變更衝突，可以透過設定 <code>.gitattributes</code> 來統一行尾符號的處理方式。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* text=auto</span><br></pre></td></tr></table></figure>
+
+<p>上面命令可以讓Git 自動根據系統來設定行尾符號，並在 commit 時將行尾符號轉換成 LF(Unix&#x2F;Linux)</p>
+<blockquote>
+<p><em><strong>在 Commit 前要如何刪除local changes</strong></em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>那又要如何刪除local commit?</strong></em></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD~1</span><br></pre></td></tr></table></figure>
+
+<p>這樣可以移除最近一次的 local commit，如果也需要移除local change 可以加上 <code>--hard</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD~1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Git-Diff"><a href="#Git-Diff" class="headerlink" title="Git Diff"></a>Git Diff</h1><blockquote>
+<p><em><strong>git diff 會做什麼事情?</strong></em></p>
+</blockquote>
+<p>會去查看工作目錄和staging area之間的變更，會顯示所有已修改但未被加入 staging area 的檔案變更。</p>
+<p>若想看 staging area 以及最新commit 之間得變更，則是使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
+<p>若想看工作目錄以及最新commit之間的變更</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff HEAD</span><br></pre></td></tr></table></figure>
+
+<p>另外也可以查看任意檔案，兩commits，兩branch 之間的差異</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;commit1&gt; &lt;commit2&gt;</span><br><span class="line">git diff &lt;filename&gt;</span><br><span class="line">git diff &lt;branch1&gt; &lt;branch2&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em><strong>哪個命令比較快?<code>git diff-index HEAD</code>以及 <code>git diff HEAD</code></strong></em></p>
+</blockquote>
+<p><code>git diff-index HEAD</code> &gt; <code>git diff HEAD</code></p>
+<p><code>git diff-index HEAD</code> 是直接比較索引(staging area) 與特定commit (<code>HEAD</code>) 之間的差異，因此不需要掃描整個工作目錄的檔案，所以速度較快</p>
+<p>然而 <code>git diff HEAD</code> 則是比較整個工作目錄和特定commit 之間的差異，因此會去掃描整個工作目錄並且計算文件的差異，一旦檔案量大時，速度會變慢。</p>
+<h1 id="Git-Internal"><a href="#Git-Internal" class="headerlink" title="Git Internal"></a>Git Internal</h1><blockquote>
+<p><em><strong>解釋一下 <code>git status</code> 的運作原理</strong></em></p>
+</blockquote>
+<p><code>git status</code> 會去進行一系列檢查和比較，</p>
+<ol>
+<li>首先會檢查工作目錄跟Staging Area之間的差異，看哪些檔案有修改但未被staged</li>
+</ol>
+<p>git 會為每個檔案計算 SHA-1 Hash，查看該hash是否存在於 staging area，如果紀錄不匹配則被視為沒被加入staging area</p>
+<ol start="2">
+<li>接著會比較 staging area 跟最新的commit（HEAD）的狀態，來確定哪些檔案已經被加入 staging area 但尚未commit</li>
+</ol>
+<p>git 會檢查staging area中的hash 和 HEAD 中提交的 hash值是否一樣</p>
+<ol start="3">
+<li>檢查未追蹤檔案</li>
+</ol>
+<p>git 會為掃描工作目錄中所有未在staging area 中的檔案，標記成untracked files，但同時 git 也會去檢查 <code>.gitignore</code> 的設定，過濾掉那些不應該track的檔案</p>
+<ol start="4">
+<li>更新工作狀態</li>
+</ol>
+<p>Git 對大型儲存庫執行 <code>git status</code> 時，<strong>會使用增量掃描和快取來加快速度</strong></p>
+<ul>
+<li>Git 有時會啟用 <code>core.untrackedCache</code> 來記錄未追蹤檔案的狀態，以避免每次都重新掃描</li>
+<li>若啟用了 <code>core.preloadIndex</code>，Git 會預加載索引，減少磁碟 I&#x2F;O 操作，從而提高檢查文件狀態的速度</li>
+</ul>
+<p>這兩個設定都可以透過 <code>git config</code> 來去啟用</p>
+<blockquote>
+<p>Ref: <a target="_blank" rel="noopener" href="https://deepinout.com/git/git-questions/218_git_why_is_git_corepreloadindex_default_value_false.html">https://deepinout.com/git/git-questions/218_git_why_is_git_corepreloadindex_default_value_false.html</a></p>
+</blockquote>
+<ol start="5">
+<li>輸出結果</li>
+</ol>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/22911275.html">https://leozzmc.github.io/posts/22911275.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DevOps/">DevOps</a><a class="post-meta__tags" href="/tags/Git/">Git</a></div><div class="post-share"><div class="social-share" data-image="/img/devops/git/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img class="cover" src="/img/LeetCode/678/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Medium 題目敘述: 題目給定一個字串 s 包含三種可能的字元: (, ) 以及 *，若 s 為Valid 請回傳 true 否則為 false  下面是判斷 s 是否合法的規則:  任何 ( 都需要有對應的 ) 才能閉合 任何 ) 都需要有對應的 ( 才能閉合 ( 需要出現在 ) 之前才可閉合 * 可以代表 (. ) 或者是空字串 &quot;&quot;  解法這題跟單純的括號閉合題型不太一樣的是，多了一個變因 * ，它可能是左括號也可能是右括號，因此我們會需要追蹤這種可能性 我的解法123456789101112131415161718192021222324252627282930class Solution &#123;public:    bool checkValidString(string s) &#123;        int leftMin = 0;        int leftMax = 0;        if(s.size()==1 &amp;&amp; s[0]!=&#x27;*&#x27;) return false...</div></div></div></a><a class="pagination-related" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img class="cover" src="/img/devops/cover3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">DevOps技能樹知識整理 |【筆記目錄】</div></div><div class="info-2"><div class="info-item-1">前言這裡紀錄 DevOps 面試常見的知識點，主要是參考了這個 github repository: DevOps Exercises 和 ByteByteGo 的 GitHub Repo 所做的筆記整理  可能會花很久時間才能夠全部整理完成~  DevOps GeneralPython Basic Data Types OOP &#x2F; Class Raise Exceptions Regex Async File Manipulation OS lambda decorator Flask   文章： Python for DevOps |【DevOps技能樹】  Networking TCP&#x2F;UDP OSI Model CIDR Mac Addr. CSMA&#x2F;CD NAT DNS ICMP TLS&#x2F;SSL Handshake Route Table ARP DHCP VLAN  SDN  Configuration ..etc  Linux Basic Commands Filesystem Hierarchy Standard Permi...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img class="cover" src="/img/devops/cover3.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2060-11-05</div><div class="info-item-2">DevOps技能樹知識整理 |【筆記目錄】</div></div><div class="info-2"><div class="info-item-1">前言這裡紀錄 DevOps 面試常見的知識點，主要是參考了這個 github repository: DevOps Exercises 和 ByteByteGo 的 GitHub Repo 所做的筆記整理  可能會花很久時間才能夠全部整理完成~  DevOps GeneralPython Basic Data Types OOP &#x2F; Class Raise Exceptions Regex Async File Manipulation OS lambda decorator Flask   文章： Python for DevOps |【DevOps技能樹】  Networking TCP&#x2F;UDP OSI Model CIDR Mac Addr. CSMA&#x2F;CD NAT DNS ICMP TLS&#x2F;SSL Handshake Route Table ARP DHCP VLAN  SDN  Configuration ..etc  Linux Basic Commands Filesystem Hierarchy Standard Permi...</div></div></div></a><a class="pagination-related" href="/posts/100cc6b6.html" title="AWS for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/AWS/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="info-item-2">AWS for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1">Regions &amp; AZsRegion: 一群橫跨多個不同地理位置的資料中心 Ex. us-east-1 Avaiable Zone(AZ): 每個 Region 下都有多個相互隔離的位置叫做AZ，一個AZ中可能會有一個或多個資料中心，具有獨立的網路系統以及供電。 us-east-1a, us-east-1b….etc Local Zone: 沒有實體的資料中心，通常會連接到某個AZ, Ex.台灣Local Zone 就是接到 ap-northeast-1，旨在提供服務給 edge location 以降低延遲。 AWS Outposts: 部署在客戶 On Premises 的實體伺服器，提供本地存取AWS服務 IAM在 AWS 環境中用於進行存取控制的服務。可以管理哪些使用者可以有權限存取哪些資源。 Security Best Practices: 不要用 Root User 來進行日常業務，請建立對應的 User 給與適當權限再進行業務   在 IAM 中下面是常見得術語和關係圖：IAM User, IAM Group, IAM Role, Permission p...</div></div></div></a><a class="pagination-related" href="/posts/c7f5f41c.html" title="Kubernetes for DevOps 筆記 |【DevOps技能樹】"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="info-item-2">Kubernetes for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1">Basic解釋一下什麼是 Kubernetes 用於進行 容器編排和管理的平台，可用於容器的自動化部署和擴展 Kubernetes 的主要功能有哪些?  Self-Healing: 使用 Health check 來檢查運行中的容器，並且做出對應行為 Ex.重啟容器 Load Balancing: 將請求分散給 cluster中不同的應用 Operations: Kubernetes 打包的應用程式可以使用Cluster的 API 來更新其狀態並根據 Event 和應用程式狀態變更觸發操作 Automated Rollout: 逐步對應用更新，並且在出現問題時可以Rollout Scaling: 基於自定義的條件進行水平擴展 Secrets：可用一種以私有方式儲存使用者名稱、密碼和服務端點的機制，而且並非每個使用Cluster的使用者都可以查看  可以用哪些方式來去跟 Kubernetes 的資源互動 可以用 kubectl 命令列工具去與 Kubernetes Cluster 進行互動。 在部署應用到 Kubernetes的時候，哪些 Kubernetes 物件最常使用到  D...</div></div></div></a><a class="pagination-related" href="/posts/70fcdd32.html" title="Python for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/python/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-06</div><div class="info-item-2">Python for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1">Basic Data Typesdata type 可以透過 type() 來獲取物件或變數的 data type  123&gt;&gt;&gt; var = &quot;This is a string&quot;&gt;&gt;&gt; print(type(var))&lt;class &#x27;str&#x27;&gt;  Variables x valid x_y valid x-y invalid Python 變數並非 Case Sensitive VAR 不等於 var   當你在輸入 x=1 的時候會發生什麼事？ 其實就是創造一個整數物件其value為1 因此會在記憶體中分配一個固定大小的位址用來存放 1 而 x 這個名稱會指向用於該物件的 reference    123456&gt;&gt;&gt; x =123&gt;&gt;&gt; y =x&gt;&gt;&gt; print(id(x))4298889392&gt;&gt;&gt; print(id(y))4298889392  在 Python 中，變數是對物件的引用，這意味著變數名稱指向記憶體...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">👍👍👍👍👍</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新中</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Basic"><span class="toc-number">1.</span> <span class="toc-text">Basic</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%83%85%E5%A2%83%E9%A1%8C"><span class="toc-number">2.</span> <span class="toc-text">情境題</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Branches"><span class="toc-number">3.</span> <span class="toc-text">Branches</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Merge"><span class="toc-number">4.</span> <span class="toc-text">Merge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rebase"><span class="toc-number">5.</span> <span class="toc-text">Rebase</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-Diff"><span class="toc-number">6.</span> <span class="toc-text">Git Diff</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-Internal"><span class="toc-number">7.</span> <span class="toc-text">Git Internal</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2025 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
