@@ -88,15 +88,12 @@ jobs:
         run: |
           echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
 
-          # 全域 user name / email，給 .deploy_git 裡的 commit 用
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # 全域 credential helper，讓任何新 init 的 repo 也能讀到
           git config --global credential.helper store
 
-          # 在 runner 建立憑證：push https://github.com/leozzmc/leozzmc.github.io.git 時用 GITHUB_TOKEN
-          echo "https://${GITHUB_TOKEN}:@github.com/leozzmc/leozzmc.github.io.git" > ~/.git-credentials
+          echo "https://github-actions:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
 
           echo "---- deploy section from _config.yml ----"
           grep -A4 "^deploy" _config.yml || true
