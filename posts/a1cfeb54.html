@@ -1,0 +1,615 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🗂️論文賞析:O-RAN 以及虛擬化 5G 網路 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="O-RAN 論文導讀">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🗂️論文賞析:O-RAN 以及虛擬化 5G 網路">
+<meta property="og:url" content="https://leozzmc.github.io/posts/a1cfeb54.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="O-RAN 論文導讀">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:published_time" content="2021-08-10T17:17:57.000Z">
+<meta property="article:modified_time" content="2023-07-02T14:13:30.393Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="5G">
+<meta property="article:tag" content="O-RAN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/a1cfeb54.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-T4SFRRLLZ0');
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":3,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🗂️論文賞析:O-RAN 以及虛擬化 5G 網路',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-02 22:13:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/cover7.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Kevin Liu's 部落格 || Technical || Travel"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png"/><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="/"><i class="fa-fw fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">🗂️論文賞析:O-RAN 以及虛擬化 5G 網路</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2021-08-10T17:17:57.000Z" title="發表於 2021-08-11 01:17:57">2021-08-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2023-07-02T14:13:30.393Z" title="更新於 2023-07-02 22:13:30">2023-07-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AB%96%E6%96%87%E5%B0%8E%E8%AE%80/">論文導讀</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="🗂️論文賞析:O-RAN 以及虛擬化 5G 網路"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="note primary no-icon flat"><p>這是篇survey paper<br><strong>Title</strong>: “Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead”<br><strong>College</strong>: Institute for the Wireless Internet of Things, Northeastern University<br><strong>Authors</strong>: Leonardo Bonati,Michele Polese,Salvatore D’Oro,Stefano Basagni,Tommaso Melodia<br><strong>Citation</strong>: 24</p>
+</div>
+
+
+<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>5G很多好處，Software-defined cellular networks 也帶來很多變化，目前也許多5G開源專案，本篇會介紹非常多當前的開源5G專案以及其內部細節，並介紹其框架跟相應的硬體環境與Testbeds。</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>5G應用多元 - VR、遠程手術、高解析串流影像、私有(private)蜂窩網路，而傳統行動網路架構則相對不靈活、不彈性，無法滿足實現5G應用所具備的條件，現行行動網路的黑箱做法帶來許多限制，像是軟硬體隨插即用(plug and play)，但卻缺乏了重新設定的能力，並且無法控制大量可用資源，使其難以使網路操作達到即時流量控制這件事，並難以進行資源管理，效能也沒有最佳化，難以實現<strong>Connectivity-as-a-Service (CAAS)</strong> 技術，例如專用蜂窩網路(private cellular network)。</p>
+<p>業界與學界皆認為5G應該改變這種Plug and play的作法，應該要採用可程式化、開放、資源共享、邊緣化的網路解決方案，例如 SDN、網路虛擬化、MEC(Multi-access Edge Computing)，這些方案使得動態網路控制與敏捷管理成為可能。同樣的，<strong>網路切片(Netwrok Slicing)</strong> 與  <strong>C-RAN(Cloud RAN)</strong> 也證實了 共享基礎架構(infrastrucutre sharing) 不僅能夠使資源利用最大化也能帶來新市場機會。傳統封閉的的電信網路一般人難以接觸到，現今由GNU Radio Libraries 定義的軟體範例被納入<strong>OpenAirInterface(OAI)</strong> 和<strong>srsLTE</strong> 之中，並可在商用SDR設備上快速部屬。軟體框架上像是O-RAN，運行在white-box 伺服器上，可供重新設定與優化網路和收發器功能。</p>
+<h1 id="Architectural-enablers-of-5G-cellular-networks"><a href="#Architectural-enablers-of-5G-cellular-networks" class="headerlink" title="Architectural enablers of 5G cellular networks"></a>Architectural enablers of 5G cellular networks</h1><h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>行動網路已改變整體架構，從以往黑箱硬體配有專用軟韌體的架構變成基於運行在SDR或其他硬體的開元軟體，但這其實從4G時代就一直討論到現在。5G從spec上就極有敏捷部署的彈性在，在早期階段也在弄軟體化的服務，這種  <strong>flexibility-by-design</strong> 讓5G一開始就比較屌。此章節介紹從4G到5G的網路架構、RAN、核網、部屬範例、SDN、NFV、網路切片、MEC、智能(Intelligent)網路<br><img src="https://i.imgur.com/5fc7spi.png"></p>
+<p>這張圖來看，4G部屬與5G似乎沒有差別，但其實在Core Network內部組成與設定卻差很多，</p>
+<table>
+<thead>
+<tr>
+<th>組成</th>
+<th>4G</th>
+<th>5G</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RAN</td>
+<td>LTE</td>
+<td>NR</td>
+</tr>
+<tr>
+<td>Core</td>
+<td>EPC</td>
+<td>5GC</td>
+</tr>
+</tbody></table>
+<p>4G EPC中有許多組成以往執行在專有硬體上的，最近才開始部署在軟體上的，<br>而5GC則是一開始就根據 基於服務的方法來設計的 EPC Server 被分成許多 <strong>虛擬網路功能(Virtual network functions)</strong> 來提供特定功能，彼此之間也透過開放標準界面來溝通；5G RAN中也有相似的拆分原則，(CU&#x2F;RU)…etc</p>
+<h3 id="NR"><a href="#NR" class="headerlink" title="NR"></a>NR</h3><ul>
+<li>wider range of carrier frequencies (mmWave Spectrum)</li>
+<li>frame structure: OFDM-based，更具彈性、每個sub-frame中傳遞的可變數量的symbol，並可使用比LTE更大的頻寬(400Mhz per carrier)</li>
+<li>訊號與程序的整合，用以管理mmWave的定向傳輸</li>
+<li><strong>5G RAN可以接到4G EPC (non-standalone config) 與5G 5GC(standalone config)</strong></li>
+<li>NR 基站 &#x3D; gNodeBs 允許分散式部屬: protocol stack的不同part可以分散在不同硬體組件中</li>
+<li>NR的protocol stack中，在PDCP上在疊了一<strong>SDAP(Service Data Adaptation Protocol) layer</strong> ，它管理點對點流量之間的QoS，並將其mapping到gNodeB- UE link之間的本地資源，其他層皆有更新達到NR功能</li>
+</ul>
+<h3 id="CU-x2F-DU-split-and-the-virtualized-RAN-architecture"><a href="#CU-x2F-DU-split-and-the-virtualized-RAN-architecture" class="headerlink" title="CU&#x2F;DU split and the virtualized RAN architecture"></a>CU&#x2F;DU split and the virtualized RAN architecture</h3><p>NR中最創新的事就是將3GPP Stack 中的較高層(PDCP、SDAP、RRC)於較低層(RLC、MAC、PHY)分成兩個不同的logical units，也就是 CU(Control unit)與DU(Distributed Unit)，並可部屬在不同地方。而physical layer中的較低層可以與DU分開，獨立成一個RU(Radio Unit)；CU、DU、RU彼此可以藉由定義好的界面以不同的data rate跟latency來相互溝通。</p>
+<p>這種架構出現在3GPP中，並使vRAN成(virtualized RAN)為可能:<br><code>attenna 元件</code> $\longrightarrow$ <code>RU</code><br><code>baseband、signal processing 單元</code> $\longrightarrow$ <code>CU、DU</code><br>以上皆可跑在通用或多廠商的平台或硬體元件上，若不同不同RAN components之間的介面是開放的，則部署上按照 O-RAN model走。</p>
+<h3 id="The-5G-Core"><a href="#The-5G-Core" class="headerlink" title="The 5G Core"></a>The 5G Core</h3><p>service-based approach 控制與用戶平面核心功能被拆分成多個網路功能，3GPP中有定義這些網路功能的API，可實現彈性網路部屬與網路切片。</p>
+<ul>
+<li><strong>UPF(User Plane Function)</strong>: User到網路之間的gateway，作為移動性的錨(anchor)以及<strong>QoS分類器</strong></li>
+<li><strong>CPF(Control Plane Function)</strong>:4G時的MME，大多被分配進了<strong>AMF(Access and Mobility Management Function)<strong>；</strong>SMF(Session Management Function)</strong> 負責分配IP地址到UE，並編排(orchestrates)用戶平面服務(例如:哪個UPF是UE該使用的)</li>
+</ul>
+<h2 id="Enabling-technologies-for-softwarized-5G-cellular-networks"><a href="#Enabling-technologies-for-softwarized-5G-cellular-networks" class="headerlink" title="Enabling technologies for softwarized 5G cellular networks"></a>Enabling technologies for softwarized 5G cellular networks</h2><p>5R整合不同功能組件、架構將會十分龐大，要管理將會是難題。5G網路參考了雲端計算生態圈中廣泛而完整的流程與架構，將虛擬化、軟體化整合在一起，使服務與辜能從原有硬體中抽離出來。</p>
+<h3 id="Softwarization-and-software-defined-networking"><a href="#Softwarization-and-software-defined-networking" class="headerlink" title="Softwarization and software-defined networking"></a><code>Softwarization and software-defined networking</code></h3><p>為了整合不同廠商硬體元件之間的功能與設定參數，5G系統仰賴<strong>軟體化(Softwarization)</strong></p>
+<ol>
+<li>SDN </li>
+<li>Openflow protocol</li>
+</ol>
+<blockquote>
+<p>SDN: 將網路控制從data plane中解耦出來，將routing與controlling程序從原有的基於硬體的轉發操作中分離出來。5G中則是將RAN、邊緣硬體元件從它們的網路和服務功能中分離出來。</p>
+</blockquote>
+<p>RAN架構中只有RU維持基本transmit receive功能，其餘控制與處理則以藉由開放介面與API來用軟體操控。</p>
+<h3 id="Network-function-virtualization-NFV"><a href="#Network-function-virtualization-NFV" class="headerlink" title="Network function virtualization(NFV)"></a><code>Network function virtualization(NFV)</code></h3><p>每項網路功能藉由VNF(Virtual Network Function)以軟體實踐，並執行在VM上(建立在通用硬體上)，NFV其中一項優點是每個VNF都提供原子級別的功能，<strong>因此多個VNFs可以結合在一起</strong> 創造出更複雜、特定的網路功能。</p>
+<p><img src="https://i.imgur.com/H0J0R7K.png"></p>
+<ol>
+<li>The Network Orchestrator: 管理物件基礎架構上的VM，和其運行的服務</li>
+<li>VNF:跑在VM上並執行網路功能</li>
+<li>NFVI(Network Function Virtualization Infrastructure):由多種通用硬體組成</li>
+</ol>
+<blockquote>
+<p>　open source network virtualization project:  <strong>Open Platform for NFV (OPNFV)</strong><br>　提供測試工具、驗證程式來加速企業和服務商網路轉換成NFV</p>
+</blockquote>
+<h2 id="RAN-and-Core-Network-slicing"><a href="#RAN-and-Core-Network-slicing" class="headerlink" title="RAN and Core Network slicing"></a>RAN and Core Network slicing</h2><p>Network Slicing是一種multi-tenancy虛擬化技術，其中網路功能從硬體和軟體中提取出來，並作為切片來提供給所謂的 <code>tenant</code> (租戶，房客)。物理基礎架構(基站、光纖、)會在多個租戶之間共享，一個租戶可能會收到一個或多個切片。 每個切片會分配特定的物理資源，並基於該物理資源上建立獨立的虛擬網路的<a target="_blank" rel="noopener" href="https://www.ibm.com/docs/zh-tw/spss-modeler/SaaS?topic=node-what-is-instantiation"><strong>實例化(instantiate)</strong></a>，雖然租戶對自己的切片具有資源控制權，但卻無法與其他切片互動，這又被稱為<strong>slice isolation&#x2F;orthogonality</strong></p>
+<p>每個切片涵蓋RAN與Core的部分的特定網路功能，租戶可在選定基站上透過RAN切片實例化提供 CaaS (for private cellular networking) 給行動用戶。也可分配RAN切片給特定的服務、用戶、應用上 Ex. 分配切片給資源需求高的應用(AR&#x2F;VR)<br><img src="https://i.imgur.com/EguDz3w.png"></p>
+<p>這張圖在講切片技術怎樣使infra資源共享以及支援多切片嵌入在infra components的實例化並列出相關的開源軟體專案，他們各自對這個架構上的哪些部分做控制與設定和實體化。</p>
+<h3 id="網路切片優點"><a href="#網路切片優點" class="headerlink" title="網路切片優點:"></a>網路切片優點:</h3><ol>
+<li>每個切片都可以保留來處理具有不同安全要求的特定流量類別，並分配不同數量的資源，從而實現基礎設施級別的<strong>服務差異化(Service differentiation)</strong></li>
+<li>切片由軟體控制，可實現對網路切片的即時、根據需求的實例化、重新設定與撤銷以適應時間變化的流量需求並符合<strong>SLAs(Service Level Aggrements)</strong></li>
+<li>未充分利用資源以網路切片形式可出租給 <code>MVNO(Mobile Virtual Network Operators)</code>，來實現資源的最大利用程度，並給予infra提供者新的營利商機</li>
+</ol>
+<p>網路切片需要被動態編排、實例化、撤銷，並符合SLAs，並對於故障或中斷有強大的容忍性。</p>
+<p><strong>OSSs(Operations Support Systems)</strong><br>OSS可透過對網路切片的閉路控制與管理來，作為保證履行服務的工具<br>同時，為垂直行業提供切片服務的運營商和基礎設施所有者必須通過專門用於反映垂直行業需求的服務的切片來生成多樣化的報價。<br><strong>BSSs(Business Support Systems)</strong><br>BSS 將需要控制這個多樣化的環境並為每個切片實施動態計費和定價機制</p>
+<h2 id="Multi-access-edge-computing"><a href="#Multi-access-edge-computing" class="headerlink" title="Multi-access edge computing"></a>Multi-access edge computing</h2><p>5G高效能的訊號處理、傳輸機制、資料傳輸率仍無法滿足其吞吐量和對低延遲的要求，像是處理VR&#x2F;AR等這種即時性高的應用，而<strong>MEC</strong>能解決這問題。</p>
+<p>MEC將架構的基本組件移到更靠近使用者的位置，通過建立在邊緣計算、內容緩存、NFV 和 SDN 的基礎上，MEC為 5G 應用的延遲和吞吐量需求提供了有效的解決方案。</p>
+<ol>
+<li>由於內容與資料在邊緣被處理，因此資料僅需偶而傳輸至CN，進而使傳輸延遲時間降低，也使CN負擔降低。</li>
+<li>支持本地化服務供應，提供蜂窩網路專網，用於健康、環境監測、邊緣IOT運算…etc</li>
+</ol>
+<h2 id="Intelligence-in-the-network"><a href="#Intelligence-in-the-network" class="headerlink" title="Intelligence in the network"></a>Intelligence in the network</h2><p><code>ML/AI</code><br>資料驅動、自動化的5G網路變成可能，可用不同的use case去訓練並最佳化RAN<br>用例範圍從預測流量需求以擴展 CN 資源 到減少超可靠和低延遲通信 (URLLC) 中的延遲</p>
+<p>而實現這種方案的框架即為O-RAN，透過與gNB,eNB互動的RIC來監控資料、學習與執行閉路驅動。</p>
+<h1 id="The-radio-access-network"><a href="#The-radio-access-network" class="headerlink" title="The radio access network"></a>The radio access network</h1><blockquote>
+<p>這章描述用於部屬4G&#x2F;5G的開源函式庫和框架，細節都可以在專案官網找到，故不贅述</p>
+</blockquote>
+<h3 id="OpenAirInterface"><a href="#OpenAirInterface" class="headerlink" title="OpenAirInterface"></a>OpenAirInterface</h3><p><a target="_blank" rel="noopener" href="https://openairinterface.org/">https://openairinterface.org/</a></p>
+<h3 id="srsLTE"><a href="#srsLTE" class="headerlink" title="srsLTE"></a>srsLTE</h3><p><a target="_blank" rel="noopener" href="https://www.srslte.com/">https://www.srslte.com/</a></p>
+<h3 id="Radysis-open-source-RAN-contributions"><a href="#Radysis-open-source-RAN-contributions" class="headerlink" title="Radysis open source RAN contributions"></a>Radysis open source RAN contributions</h3><p><a target="_blank" rel="noopener" href="https://www.radisys.com/solutions/openran">https://www.radisys.com/solutions/openran</a></p>
+<h1 id="Core-Network"><a href="#Core-Network" class="headerlink" title="Core Network"></a>Core Network</h1><p>此章節闡述針對4、5G的主流開源方案 i.e. EPC, 5G Core</p>
+<h2 id="Evolved-Packet-Core-EPC"><a href="#Evolved-Packet-Core-EPC" class="headerlink" title="Evolved Packet Core (EPC)"></a>Evolved Packet Core (EPC)</h2><p>4G EPC的實現已在 2.1節討論過，通常包含</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- MME(Mobile Management Entity)</span><br><span class="line">- Home Subscription Server(HSS)</span><br><span class="line">- Service Gateway(SGW)</span><br><span class="line">- Packet Gateway(PGW)</span><br></pre></td></tr></table></figure>
+
+<p><strong>MME(Mobile Management Gateway)</strong></p>
+<ul>
+<li>與UE建立連接的控制訊息</li>
+<li>尋呼與移動性程序</li>
+<li>NAS信令(signalling)</li>
+<li>安全功能像是追蹤區域列表管理</li>
+<li>PGW&#x2F;SGW選擇</li>
+<li>UE身分認證</li>
+<li>可達性程序</li>
+<li>承載管理(bearer management)<br>i.e. EPC情況下為UE與PGW之間的通道，5GC情況下為UE與UPF之間的通道</li>
+<li>支援EPC與E-UTRAN之間的控制平面信令協定</li>
+<li>可靠的訊息傳輸服務</li>
+<li>支援用於UDP控制訊息的通道協定</li>
+<li>支援用於對UE進行認證、授權、計費的協定</li>
+</ul>
+<p><strong>HSS(Home Subscription Server)</strong></p>
+<ul>
+<li>User Database: 儲存subscriber資料(id 與 key)</li>
+<li>User Authentication</li>
+<li>提供User與MME之間的介面</li>
+</ul>
+<p>SGW與PGW組件通過 <strong><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-tw/GPRS%E9%9A%A7%E9%81%93%E5%8D%8F%E8%AE%AE">GTP</a></strong> 為用戶與控制平面傳送資料<br>i.e. GRPS Tunneling Protocol User Plane(GTP-U)、GRPS Tunneling Protocol Control Plane(GTP-C) 並使用UDP作為傳輸層協定</p>
+<div class="note info flat"><p>GTP 5G也有實作，去年被爆出洞<br>　<a target="_blank" rel="noopener" href="https://www.ithome.com.tw/news/138340">https://www.ithome.com.tw/news/138340</a><br>　<a target="_blank" rel="noopener" href="https://itw01.com/8JS4VEH.html">https://itw01.com/8JS4VEH.html</a></p>
+</div>
+
+<p>支援Packet Routing和Forwarding，分配IP位址給UE，Paging機制，支援LTE EPC的開源專案有:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- OpenAirInterface(with OAI-CN)</span><br><span class="line">- srsLTE(with srsEPC)</span><br><span class="line">- Open5GS</span><br><span class="line">- Open Mobile Evolved Core(OMEC)</span><br></pre></td></tr></table></figure>
+
+<p>各開源專案對於EPC各介面實作情況<br><img src="https://i.imgur.com/671qK43.png"></p>
+<h2 id="5G-Core"><a href="#5G-Core" class="headerlink" title="5G Core"></a>5G Core</h2><p><img src="https://i.imgur.com/pZoXlQI.png"></p>
+<p>目前實踐5G核網的開源專案是<strong>Free5GC</strong>，是基於NextEPC(現在的Open5GS)去實作的，<br>提供</p>
+<ul>
+<li>使用者存取、移動性、會話(AMF與SMF)管理</li>
+<li>由其他NF提供的服務發現(Service Discovery)功能  (NRF)</li>
+<li>提供NFs來選擇分配UE的切片 (Network Slice Selection Function)</li>
+<li>管理、儲存、取得使用者資料 (UDM、UDR)</li>
+<li>UE的認證 (AUSF)</li>
+<li>核網的運營與管理 (Operations, Administration and Maintenance (OAM))</li>
+<li>網路編排 …etc</li>
+</ul>
+<p>有被free5gc實作出的3GPP介面:</p>
+<ul>
+<li><strong>N1&#x2F;N2</strong>: 分別連接AMF到UE與RAN，用來進行會話與移動性管理</li>
+<li><strong>N3&#x2F;N4&#x2F;N6</strong>: 分別連接UPF到RAN,SMF,與網路(data network)</li>
+<li><strong>N8</strong>: 連接UDM 與 AMF，進行使用者認證程序</li>
+<li><strong>N10&#x2F;N11</strong>: 分別連接SMF到UDM與AMF，負責處理訂閱及會話管理請求</li>
+<li><strong>N12&#x2F;N13</strong>: 分別連接AUSF到AMF與UDM，它們啟用認證服務</li>
+</ul>
+<h1 id="RAN-and-core-frameworks"><a href="#RAN-and-core-frameworks" class="headerlink" title="RAN and core frameworks"></a>RAN and core frameworks</h1><p>這章描述了多個運用在RAN與核網的<strong>開放框架</strong><br>雖然第三、四章所講的軟體可以執行特定功能，但以下段落所介紹的框架更通用且範圍更廣，並與RAN、CN用於管理、控制與協調</p>
+<p><em>開放框架與架構整理</em><br><img src="https://i.imgur.com/qE16Kyt.png"></p>
+<h2 id="O-RAN"><a href="#O-RAN" class="headerlink" title="O-RAN"></a>O-RAN</h2><p>由O-RAN聯盟所提倡的針對vRAN的開放標準定義，並有兩大目標。<br>第一個是藉由部屬在edge的智慧控制器來整合ML,AI技術<br>第二個是對於開放與敏捷的定義，由RAN的不同元件之間定義明確的介面來實現，<br><strong>由於O-RAN必須公開相同的API，因此很容易將組件替換為其他相同功能的替代組件</strong> 這種作法使5G O-RAN可以整合不同廠商的元件。</p>
+<p><img src="https://i.imgur.com/LP2jmRl.png"></p>
+<h3 id="O-RAN-architecture"><a href="#O-RAN-architecture" class="headerlink" title="O-RAN architecture"></a>O-RAN architecture</h3><p>最頂部的SMO運行著一個non-RT RIC，它以高於1秒的粒度(granularity)執行<strong>控制決定</strong>(control decisions)，它可以提供O-RAN不同功能，例如說可以針對RAN所提供的資料來訓練不同的演算法。</p>
+<p>然而 near-RT RIC，運行著一個<strong>控制迴圈</strong>，並且有著比較密集的時間區間(decision &lt; 10 ms)，會依賴RAN不同的start,stop,override或control 的型別而有所不同 e.g. radio resource management</p>
+<p><strong>這些API可被安裝在near-RT RIC上的應用程式(又稱xApps)來使用</strong><br>而這些xApps可由第三方實體所開發並從公共商店(marketplace)中取得。<br>舉例來說，藉由near-RT RIC和它的xApps，營運商可以控制用戶移動過程(user mobility processes，即 handovers)，根據預測的聯網車輛和無人機的路徑來分配網路資源，執行負載平衡和交通轉向並優化排程策略。near-RT RIC也可以使用在non-RT RIC中所訓練的演算法來做點事。</p>
+<p>O-RAN的其他組件像是CU&#x2F;DU&#x2F;RU，像是5G gNB被拆分成CU&#x2F;DU&#x2F;RU和4G eNB。CU又被進一步拆分成，控制面CU跟用戶面CU。根據3GPP對於不同拆分的定義，O-RAN選擇 <strong>split 7-2x</strong> 作為DU&#x2F;RU的拆分；因此在編碼、調變、和mapping資源都是由DU做的；然和解調變、cyclic prefix addition和digital to analog則是在RU中實現，而precoding則是在兩者中都行。</p>
+<h3 id="O-RAN-interfaces"><a href="#O-RAN-interfaces" class="headerlink" title="O-RAN interfaces"></a>O-RAN interfaces</h3><p>兩個RIC之間的介面為A1介面，而non-RT RIC使用 O1介面與RIC和4G eNB互動</p>
+<ul>
+<li><p>A1介面讓near-RT RIC可提供:</p>
+<ul>
+<li>policy-based guidance to near-RT RIC(以防它偵測到其掏做未實現RAN的效能目標)</li>
+<li>管理ML Model</li>
+<li>向near-RT RIC提供豐富資訊，例如從RAN外部來源，來更進一步精細RAN的優化</li>
+</ul>
+</li>
+<li><p>O1介面，則是具備操作與管理功能，並努力與現有標準兼容來實現與現有框架的完美整合，例如說他仰賴NETCONF或其他3GPP所定義的API。</p>
+</li>
+<li><p>non-RT RIC使用O1介面來:</p>
+<ul>
+<li>供應管理(provision management)</li>
+<li>故障監督(fault supervision)</li>
+<li>效能保證服務 (performance assurance services)</li>
+<li>啟動、註冊和更新實體設備</li>
+<li>管理通訊監控設備</li>
+</ul>
+</li>
+<li><p>near-RT RIC也暴露了E2介面到其他不同元件上(CU,DU,eNB)；這個介面只專注部屬</p>
+<ol>
+<li>near-RT RIC對於E2介面終端節點的控制操作</li>
+<li>管理RIC和這些節點互動行為</li>
+</ol>
+</li>
+<li><p>E1與F1介面符合3GPP的規範。</p>
+</li>
+</ul>
+<p>E1介面跑在控制與用戶面CU之間，它的主要功能是特定UE的trace蒐集與承載建立(bearer setup)和管裡<br>F1介面則是跑在CU與DU之間，它有兩個不同的版本，一個是連接到控制面CU另一個則是用戶面CU；F1負責在CU與DU之間傳送信令(signaling)和資料，以執行<strong>RPC程序</strong> 和<strong>PDCP-RLC交換</strong>。</p>
+<p>最後，與RU之間的介面，則是由O-RAN內部的Open Fronthaul工作組來制定，這個介面攜帶用於data plane的<strong>compressed IQ samples</strong>和用於beamforming和其他物理層程序的控制消息。</p>
+<h3 id="O-RAN-Deployment-Options"><a href="#O-RAN-Deployment-Options" class="headerlink" title="O-RAN Deployment Options"></a>O-RAN Deployment Options</h3><p>O-RAN設想了不同的部屬策略，分別是在區域(regional)或邊緣雲(edge cloud)或者是在營運商擁有的蜂窩基站。每個設施都可以運行O-Cloud，即容器和虛擬機，使用開放介面執行O-RAN程式，<br>或是有個專用的站點使用O-RAN的開放API但可以運行閉源程式碼(closed source code)，兩種情況下圖皆有描述，其描述了6種不同的O-RAN部屬組合</p>
+<p><img src="https://i.imgur.com/dxigwNb.png"></p>
+<p>在 Scenario A，所有元件除了RU以外，都部屬在網路邊緣，共同位於<strong>與fronthaul光纖連接的</strong> 相同的資料中心。</p>
+<p>其他部屬策略是 RIC與CU共同部屬在區域雲設施中，而DU與RU位於網路邊緣或是蜂窩基站上，而首選的部屬策略是 <strong>Scenario B</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RIC在區域雲上</span><br><span class="line">CUs,DUs在edge</span><br><span class="line">只有RU是在營運商的蜂窩基站上</span><br></pre></td></tr></table></figure>
+
+<h3 id="The-O-RAN-Software-Community"><a href="#The-O-RAN-Software-Community" class="headerlink" title="The O-RAN Software Community"></a>The O-RAN Software Community</h3><p>除了標準化活動，O-RAN也有軟體社群(OSC)，與Linux Foundation合作，貢獻符合O-RAN規範的5G軟體</p>
+<p>第一個版本的釋出是2019的Amber release<br>第二個版本是2020的Bronze release</p>
+<p>這些 release包含了Docker容器和多個O-ran組件的開源軟體:</p>
+<ul>
+<li>non-RT RIC :具有A1介面控制器和管理AI模型的能力</li>
+<li>near-RT RIC 平台: 具有多個應用程序，像是:<ul>
+<li>admission control</li>
+<li>UE manager</li>
+<li>performance and measurement monitor<br>  可藉由E2介面與DU溝通</li>
+</ul>
+</li>
+<li>DU:<ul>
+<li>一個初始版本的fronthaul函式庫</li>
+</ul>
+</li>
+<li>一個用於操作、管理、維護以及虛擬化架構的框架</li>
+<li>simulator:<ul>
+<li>用於測試各個介面</li>
+</ul>
+</li>
+</ul>
+<p>而 cherry release 則是嘗試透過RIC完成不同RAN Component之間的整合。</p>
+<blockquote>
+<p>目前最新發行版為<a target="_blank" rel="noopener" href="https://wiki.o-ran-sc.org/display/REL/F+Release">F-Release</a></p>
+</blockquote>
+<p>而 <strong>SD-RAN</strong> 專案也正在領導、開發一項開發工作，目標是實現與O-RAN RIC介面整合的開源規、符合3GPP的RAN。</p>
+<h2 id="Open-Networking-Foundation-frameworks"><a href="#Open-Networking-Foundation-frameworks" class="headerlink" title="Open Networking Foundation frameworks"></a>Open Networking Foundation frameworks</h2><p>由多家電信營運商組成的聯盟，這些運營商提供用於部屬其網路開源程式以及框架<br>包含: OMEC、SD-RAN、ONOS<br>Components Projects 為了特定目的框架與軟體，而Exemplar包含了許多的 Components Projects。</p>
+<h2 id="Other-frameworks-and-projects"><a href="#Other-frameworks-and-projects" class="headerlink" title="Other frameworks and projects"></a>Other frameworks and projects</h2><p>除了O-RAN與ONF方案，許多開源社群也釋出了針對連通性、切片和核心的框架與專案</p>
+<h3 id="5G-EmPOWER"><a href="#5G-EmPOWER" class="headerlink" title="5G-EmPOWER"></a>5G-EmPOWER</h3><p>是一套用於<strong>異構(heterogenous)</strong> RAN架構的作業系統，它由一個開源、可重新程式化的軟體平台組成，該平台將物理基礎設施抽象化，並提供高階API來操控RAN功能。</p>
+<p>5G-EmPOWER 也將控制平面和用戶平面分開，這種分離實際上是由兩個主要組件組成: 一個中央控制器與一組代理。<br><strong>中央控制器:</strong></p>
+<ol>
+<li>作為OS，並且完全了解物理基礎設施功能</li>
+<li>透過OpenEmpower協定來發送控制指令以編排代理的行為</li>
+</ol>
+<p><strong>代理:</strong></p>
+<ol>
+<li>運行在每個網路單元上</li>
+<li>將底層RAN特定的協定(LTE、Wifi)實作 抽象化到控制器</li>
+<li>根據控制器的指令來修改底層協定參數</li>
+</ol>
+<p>5G-EmPOWER目前支援多種無線電存取技術(Radio Access Technologies, RAT)<br>包含LTE、Wifi、LoRa  (5G NR尚未支援)</p>
+<p>此外還有以下專案:</p>
+<ul>
+<li>FlexRAN</li>
+<li>Magma</li>
+<li>LL-MEC</li>
+<li>LightEdge</li>
+<li>OpenRAN (不等於O-RAN Projects)</li>
+<li>Akraino REC</li>
+<li>NVIDIA Aerial</li>
+</ul>
+<h2 id="Open-virtualization-and-management-frameworks"><a href="#Open-virtualization-and-management-frameworks" class="headerlink" title="Open virtualization and management frameworks"></a>Open virtualization and management frameworks</h2><p>除了RAN與CN軟體，虛擬化與管理框架也扮演重要的角色。</p>
+<blockquote>
+<p>ETSI定義了一個NFV MANO框架(Management and Orchestration)應有的共同特徵，主要是為了編排(Orchestrating)網路功能(NF)</p>
+</blockquote>
+<p><img src="https://i.imgur.com/IjG4wat.png"><br><em>上圖指出這些NFV對應在5G生態圈中的哪個部分</em></p>
+<p><strong>NFV Orchestrators</strong> 負責提供網路服務，i.e. 實體及虛擬網路功能(PNF&#x2F;VNF)的結合能夠經由特定的拓樸來連接在一起，來管理它們的生命週期。</p>
+<p>根據 ETSI架構:<br>一個NFV Orchestrator 由下列組成:</p>
+<ol>
+<li>一個管理虛擬化基礎設施(e.g. VIM(Virtualization Infra. Manager)框架，例如OpenStack,Kubernetes,Docker等)的子系統以及與物理硬體的連接</li>
+<li>一個實際的MANO框架</li>
+<li>它所管理的VNFs的集合<br>這些框架有著Northbound、Southbound API來與其它蜂窩網路組件互動<br>本章將會討論虛擬化技術、VIMs，討論受歡迎的 MANO框架像是ONAP、OSM、Open Baton</li>
+</ol>
+<h2 id="Virtualization-techniques"><a href="#Virtualization-techniques" class="headerlink" title="Virtualization techniques"></a>Virtualization techniques</h2><p>NFV將部署在網路中的服務與其運行的硬體基礎設施分離，而應用程式都被包進與硬體分隔虛擬機中，NFV消除了對每個NF對特定硬體的需求，實現網路的可擴增性</p>
+<p><img src="https://i.imgur.com/QBfrv68.png"><br><em>此圖為NFV的高階架構圖，並展示多種實現方式</em></p>
+<h2 id="Traditional-Virtual-Machine"><a href="#Traditional-Virtual-Machine" class="headerlink" title="Traditional Virtual Machine"></a>Traditional Virtual Machine</h2><p>硬體層級虛擬化、提供機器節級別的隔離，透過guest OS與kernel來模擬電腦系統<br>由於VNF有許多硬體虛擬化要求，因此傳統VM被認為是一種資源密集型的作法</p>
+<h2 id="Bare-metal-hypervisors"><a href="#Bare-metal-hypervisors" class="headerlink" title="Bare-metal hypervisors"></a>Bare-metal hypervisors</h2><p>bare-metal hypervisor VM做法與傳統VM做法相近，但這種做法是Hypervisor直接run在主機的硬體上而不需要主機的作業系統，也可用於管理+運行容器或unikernel，而不是整個虛擬機</p>
+<h2 id="Containers"><a href="#Containers" class="headerlink" title="Containers"></a>Containers</h2><p>打包特定程式以及它的dependencies，以虛擬化的方式來run應用程式和服務的虛擬環境<br>容器間彼此分隔，並共享host OS以及對kernel的存取，比起VM，不需要將底部硬體虛擬化，相比來說輕便許多，而容器可被透過與Host OS相接的<strong>容器管理員(container manager)</strong> 來維護<br>或透過Hypervisoer直接跑在裸機Host機器中</p>
+<p>開源容器系統:</p>
+<ul>
+<li><strong>LXC</strong>: 現代容器的主要實踐辦法，透過cgroup與namespaces隔離以創造有獨立網路和process空間的虛擬環境</li>
+<li><strong>Docker</strong>: 允許創造容器，使用OS級別的虛擬化來將他們部屬在機器上，與lxc不同點它將服務、應用、依賴項分解成每個容器內的模組化的單元跟分層，而這些分層可多個容器共享，增加容器映像檔的效率。</li>
+</ul>
+<h3 id="Unikernels"><a href="#Unikernels" class="headerlink" title="Unikernels"></a>Unikernels</h3><p>Unikels是微小、輕量，特製的image，唯一目的是為了run特定的應用程式，他們會將應用服務和其依賴編譯成可執行的虛擬映像檔，過程中不會去包含不必要的組件，因此unikernel能比起傳統容器和VM達到更好的效能；因為unikernel只會包含運行目標應用所必需的軟體元件因此暴露了比較少可能被惡意攻擊的功能，來提高系統的安全性。</p>
+<p>目前已知Unikernel系統: <strong>ClickOS</strong>, <strong>IncludeOS</strong>, <strong>OSv</strong>,<strong>MirageOS</strong>, <strong>Unik</strong></p>
+<p>蜂窩網路相關的Unikernel應用如下:(論文)</p>
+<ul>
+<li>整合Android的函式庫到OSv以降低MCC(Mobile Cloud Computer),MFC(Mobile Fog Computing)行動運算負擔</li>
+<li>基於unikernel的5G網路CDN，如ClickOS,OSv,MirageOS</li>
+<li>其中一篇論文對5g應用實例化為 VNF的IncludeOS unikernel和Docker做效能比較</li>
+</ul>
+<h2 id="Hypervisors"><a href="#Hypervisors" class="headerlink" title="Hypervisors"></a>Hypervisors</h2><p>是一套軟體用來跑虛擬機(guest machines)在實體機器上的(Host Machine)<br>Hypervisor的的關鍵任務是</p>
+<ol>
+<li>在主客體機器間提供虛擬化</li>
+<li>管理客體機器資源的分配與重新分配(CPU,Memory,Storage)</li>
+<li>主客體機器之間的資源調度</li>
+</ol>
+<p>有兩種類別的Hypervisor: Type1 ,Type2<br><strong>Type 1 :</strong>  Hypervioser直接跑在裸機(bare-metal)host機器上，並在host上作為OS<br>Example: Xen, Vmware ESXi<br><strong>Type 2 :</strong>  作為軟體層跑在host OS上<br>Example: Linux Kernel-based VM (KVM),BSD bhyve, Oracle Virtual Box</p>
+<h3 id="Virtualization-infrastrucutre-managers-VIM"><a href="#Virtualization-infrastrucutre-managers-VIM" class="headerlink" title="Virtualization infrastrucutre managers(VIM)"></a>Virtualization infrastrucutre managers(VIM)</h3><p>VIM負責控制與管理NFV基礎設施架構和其資源，像是儲存、計算、網路資源、並在Host硬體上協調客體機器的實例化。<strong>VIM屬於MANO框架的一部分</strong>，框架部分前面提過了</p>
+<p>VIMs的範例有: <strong>OpenStack</strong>、<strong>Kubernetes</strong></p>
+<ul>
+<li><strong>OpenStack</strong>: 一個雲端計算平台，能夠控制大量異構(heterogeneous)資源，像是計算、儲存、網路資源等。在它的眾多功能之中，它可像是VIM一樣，管理網路基礎設施、虛擬機、容器、unikernel、VNF服務和應用</li>
+<li><strong>Kubernetes</strong>: 提供自動化部屬、擴充、管理VM、容器、unikernel、和其應用；透過一系列的物件來抽象化和表達系統的狀態，這些持久性實體描述了在K8S管理的cluster上跑的VNF和應用程式、它們的可用資源以及有關其預期行為的策略。<br>  經過數年也有數個與k8s互動來處理協定層Layer2,Layer3複雜問題的專案，像是<strong>Istio</strong>、<strong>NSM(Network Service Mesh)</strong> 等<ul>
+<li>Istio mesh service: 實作流量管理、策略執行、和遙測收集(telemetry collection)等任務</li>
+<li>NSM:NSM透過Kubernetes API以支援進階使用案例並促進採用新的cloud native方案，並且它也能夠允許網路管理員執行無縫執行任務，像是請求網路介面、添加無線電服務等等</li>
+</ul>
+</li>
+</ul>
+<h2 id="The-Open-Network-Automation-Platform"><a href="#The-Open-Network-Automation-Platform" class="headerlink" title="The Open Network Automation Platform"></a>The Open Network Automation Platform</h2><p>主要是由Linux Foundation開發的一套NFV框架，有許多支援的營運商。<br>OAN被部屬在多個商業蜂窩網路之中，其廠商像是Ericsson,Nokia,Huawai,ZTE這些公司，他們提供ONAP支援並整合進他們的產品。</p>
+<p>ONAP對於商業蜂窩網路中最讚的基於軟體的解決方式。<br>ONAP負責處理大量網路服務的設計、創造和生命週期管理</p>
+<p>網路營運商可用ONAP編排部屬在他們網路中的PNF與VNF。除了NFV orchestrator共同擁有的功能(對於虛擬基礎設施或網路服務使用自動化且基於policy的管理)，ONAP還提供一個<strong>設計框架</strong>來模擬網路應用和服務，以一個<strong>資料分析框架</strong>來監控服務的修復和擴增</p>
+<p>ONAP還提供了許多的參考設計(i.e. blueprint)，可用來為特定場景(5G Networks,VoLTE…etc)部屬部屬ONAP架構，</p>
+<p><img src="https://i.imgur.com/gaDoMDa.png"></p>
+<p>ONAP架構的主要components:</p>
+<ul>
+<li><strong>Management Framework:</strong> 又被稱為<strong>OOM</strong> (ONAP Operations Manager)，負責編排與監控ONAP組件的生命週期，OOM利用K8S和<strong>Consul</strong>來支援服務控制、發現、設定和分段。在它的功能中最值得注意的是<ul>
+<li>Component deployment,dependency manager and configuration</li>
+<li>real-time health monitoring</li>
+<li>service clusteromg and scaling</li>
+<li>component upgrade,restart and deletion</li>
+</ul>
+</li>
+<li><strong>Design Framework</strong>: <ul>
+<li>允許使用宣告式的<strong>模型語言</strong> 來建立網路服務，使得可以指定每個服務的要求和功能。</li>
+<li>它允許通過一組通用規範和策略來對資源、服務、產品及其管理和控制功能進行<strong>建模</strong>。</li>
+<li>它還包括用於系統資產、流程和策略的定義、模擬和認證的服務設計和創建模組。</li>
+<li>模組也提供現有服務的資料庫和用於驗證網路功能的API</li>
+</ul>
+</li>
+<li><strong>Run-time Framework</strong><ul>
+<li>由許多軟體框架組成，用於大多數的管理與編排功能</li>
+<li>當在run-time階段，Micorservices Bus允許由ONAP管理的不同網路功能(NF)之間的訊息與資料通訊及路由</li>
+<li>run-time框架使用自動化的control loop來調度終止微服務，並從平台收集資料和分析資料</li>
+<li>run-time component有公開API、dashboard和cmdline工具，透過一個統一的介面來控制網路基礎施設施</li>
+</ul>
+</li>
+</ul>
+<p>在這些框架底層可以用來與外部控制器、作業系統、雲端環境整合；nothboud API則提供給OSS&#x2F;BSS，大數據及相關服務。</p>
+<h2 id="Integration-with-5G-networks"><a href="#Integration-with-5G-networks" class="headerlink" title="Integration with 5G networks"></a>Integration with 5G networks</h2><p>除了一般的行動網路編排與管理框架，ONAP提供了與5G部屬相關的重要功能<br>通常營運商的主要要求會是需支援hybrid infra</p>
+<ul>
+<li>須包含軟硬體設備</li>
+<li>邊緣自動化，雲須分布在地理位置上不同的邊緣位置</li>
+<li>real-time 分析(須使用自動化的control loop)</li>
+</ul>
+<p>The Frankfurt release (June 2020)與O-RAN整合</p>
+<h2 id="Open-Source-NFV-Management-and-Orchestration"><a href="#Open-Source-NFV-Management-and-Orchestration" class="headerlink" title="Open Source NFV Management and Orchestration"></a>Open Source NFV Management and Orchestration</h2><p>Open Source NFV Management and Orchestration(OSM)是由一堆網路營運商開發的一個MANO框架。<br>與ONAP相似，也被開發及部屬在蜂窩網路之中。</p>
+<p><img src="https://i.imgur.com/rPRGyRL.png"><br><em>OSM的架構圖</em></p>
+<ul>
+<li><strong>The information model</strong>:<br>  將為NF,切片建模為模板，稱為packages，這是由ETSI MANO框架所提供的定義明確的資訊模型來實現的。與ONAP的design components類似，它使電信營運商能夠分析網路需求，並對需要為功能、服務、切片部屬的資源進行建模。</li>
+<li><strong>The OSM Automation Framework</strong>:<br>  它自動化了NF的生命週期，從初始化到擴增到刪除，而這由應用資訊模型到實際部屬的infra上<br>  ，來完成的(可看上圖)，透過自動化框架向不同建模組件公開northbound interface</li>
+</ul>
+<p>與ONAP一樣，OSM southbound norhtbound APIs可公開給外部服務，像是其他編排器和OSS&#x2F;BSS等</p>
+<h1 id="Software-defined-radio-support-for-open-source-radio-units"><a href="#Software-defined-radio-support-for-open-source-radio-units" class="headerlink" title="Software-defined radio support for open source radio units"></a>Software-defined radio support for open source radio units</h1><p>SDR設備<br>USRP、BladeRF、LimeSDR、Iris</p>
+<h1 id="Testbeds"><a href="#Testbeds" class="headerlink" title="Testbeds"></a>Testbeds</h1><p>介紹開源應用、框架、硬體元件用來實例化及軟體化5G網路的測試平台</p>
+<p><img src="https://i.imgur.com/QvOZnqY.png"></p>
+<h1 id="Softwarized-5G-Limitations-and-road-ahead"><a href="#Softwarized-5G-Limitations-and-road-ahead" class="headerlink" title="Softwarized 5G: Limitations and road ahead"></a>Softwarized 5G: Limitations and road ahead</h1><ul>
+<li>Keep pace with the standards</li>
+<li>Latency and scalability issues.</li>
+<li>Limited contributions for RAN open source software</li>
+</ul>
+<div class="note info flat"><p>論文連結: <a target="_blank" rel="noopener" href="https://ece.northeastern.edu/wineslab/papers/bonati2020open.pdf">https://ece.northeastern.edu/wineslab/papers/bonati2020open.pdf</a></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/a1cfeb54.html">https://leozzmc.github.io/posts/a1cfeb54.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明來自 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/5G/">5G</a><a class="post-meta__tags" href="/tags/O-RAN/">O-RAN</a></div><div class="post_share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/a05f1769.html" title="🧪筆記- 5G 核心網路-移動性管理(Mobile Management)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">🧪筆記- 5G 核心網路-移動性管理(Mobile Management)</div></div></a></div><div class="next-post pull-right"><a href="/posts/dd26b396.html" title="🧪筆記-5G開源資源整理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🧪筆記-5G開源資源整理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><div><a href="/posts/dd26b396.html" title="🧪筆記-5G開源資源整理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-20</div><div class="title">🧪筆記-5G開源資源整理</div></div></a></div><div><a href="/posts/3d68fc76.html" title="🧪筆記- 5G 網路功能介面與協定堆疊"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-10</div><div class="title">🧪筆記- 5G 網路功能介面與協定堆疊</div></div></a></div><div><a href="/posts/a05f1769.html" title="🧪筆記- 5G 核心網路-移動性管理(Mobile Management)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-10</div><div class="title">🧪筆記- 5G 核心網路-移動性管理(Mobile Management)</div></div></a></div><div><a href="/posts/de3933f9.html" title="Security policies definition and enforcement utilizing policy control function framework in 5G"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-01</div><div class="title">Security policies definition and enforcement utilizing policy control function framework in 5G</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Kevin Liu</div><div class="author-info__description">👍👍👍👍👍</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">183</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">119</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🛫🛬</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Abstract"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">2.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Architectural-enablers-of-5G-cellular-networks"><span class="toc-number">3.</span> <span class="toc-text">Architectural enablers of 5G cellular networks</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Architecture"><span class="toc-number">3.1.</span> <span class="toc-text">Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NR"><span class="toc-number">3.1.1.</span> <span class="toc-text">NR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CU-x2F-DU-split-and-the-virtualized-RAN-architecture"><span class="toc-number">3.1.2.</span> <span class="toc-text">CU&#x2F;DU split and the virtualized RAN architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-5G-Core"><span class="toc-number">3.1.3.</span> <span class="toc-text">The 5G Core</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enabling-technologies-for-softwarized-5G-cellular-networks"><span class="toc-number">3.2.</span> <span class="toc-text">Enabling technologies for softwarized 5G cellular networks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Softwarization-and-software-defined-networking"><span class="toc-number">3.2.1.</span> <span class="toc-text">Softwarization and software-defined networking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Network-function-virtualization-NFV"><span class="toc-number">3.2.2.</span> <span class="toc-text">Network function virtualization(NFV)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAN-and-Core-Network-slicing"><span class="toc-number">3.3.</span> <span class="toc-text">RAN and Core Network slicing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B6%B2%E8%B7%AF%E5%88%87%E7%89%87%E5%84%AA%E9%BB%9E"><span class="toc-number">3.3.1.</span> <span class="toc-text">網路切片優點:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multi-access-edge-computing"><span class="toc-number">3.4.</span> <span class="toc-text">Multi-access edge computing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intelligence-in-the-network"><span class="toc-number">3.5.</span> <span class="toc-text">Intelligence in the network</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-radio-access-network"><span class="toc-number">4.</span> <span class="toc-text">The radio access network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenAirInterface"><span class="toc-number">4.0.1.</span> <span class="toc-text">OpenAirInterface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#srsLTE"><span class="toc-number">4.0.2.</span> <span class="toc-text">srsLTE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Radysis-open-source-RAN-contributions"><span class="toc-number">4.0.3.</span> <span class="toc-text">Radysis open source RAN contributions</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Core-Network"><span class="toc-number">5.</span> <span class="toc-text">Core Network</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Evolved-Packet-Core-EPC"><span class="toc-number">5.1.</span> <span class="toc-text">Evolved Packet Core (EPC)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5G-Core"><span class="toc-number">5.2.</span> <span class="toc-text">5G Core</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RAN-and-core-frameworks"><span class="toc-number">6.</span> <span class="toc-text">RAN and core frameworks</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#O-RAN"><span class="toc-number">6.1.</span> <span class="toc-text">O-RAN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#O-RAN-architecture"><span class="toc-number">6.1.1.</span> <span class="toc-text">O-RAN architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O-RAN-interfaces"><span class="toc-number">6.1.2.</span> <span class="toc-text">O-RAN interfaces</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O-RAN-Deployment-Options"><span class="toc-number">6.1.3.</span> <span class="toc-text">O-RAN Deployment Options</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-O-RAN-Software-Community"><span class="toc-number">6.1.4.</span> <span class="toc-text">The O-RAN Software Community</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-Networking-Foundation-frameworks"><span class="toc-number">6.2.</span> <span class="toc-text">Open Networking Foundation frameworks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Other-frameworks-and-projects"><span class="toc-number">6.3.</span> <span class="toc-text">Other frameworks and projects</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5G-EmPOWER"><span class="toc-number">6.3.1.</span> <span class="toc-text">5G-EmPOWER</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-virtualization-and-management-frameworks"><span class="toc-number">6.4.</span> <span class="toc-text">Open virtualization and management frameworks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtualization-techniques"><span class="toc-number">6.5.</span> <span class="toc-text">Virtualization techniques</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Traditional-Virtual-Machine"><span class="toc-number">6.6.</span> <span class="toc-text">Traditional Virtual Machine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bare-metal-hypervisors"><span class="toc-number">6.7.</span> <span class="toc-text">Bare-metal hypervisors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Containers"><span class="toc-number">6.8.</span> <span class="toc-text">Containers</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unikernels"><span class="toc-number">6.8.1.</span> <span class="toc-text">Unikernels</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hypervisors"><span class="toc-number">6.9.</span> <span class="toc-text">Hypervisors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Virtualization-infrastrucutre-managers-VIM"><span class="toc-number">6.9.1.</span> <span class="toc-text">Virtualization infrastrucutre managers(VIM)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Open-Network-Automation-Platform"><span class="toc-number">6.10.</span> <span class="toc-text">The Open Network Automation Platform</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Integration-with-5G-networks"><span class="toc-number">6.11.</span> <span class="toc-text">Integration with 5G networks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-Source-NFV-Management-and-Orchestration"><span class="toc-number">6.12.</span> <span class="toc-text">Open Source NFV Management and Orchestration</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Software-defined-radio-support-for-open-source-radio-units"><span class="toc-number">7.</span> <span class="toc-text">Software-defined radio support for open source radio units</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Testbeds"><span class="toc-number">8.</span> <span class="toc-text">Testbeds</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Softwarized-5G-Limitations-and-road-ahead"><span class="toc-number">9.</span> <span class="toc-text">Softwarized 5G: Limitations and road ahead</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img src="/img/devops/git/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git for DevOps 筆記 |【DevOps技能樹】"/></a><div class="content"><a class="title" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】">Git for DevOps 筆記 |【DevOps技能樹】</a><time datetime="2025-11-11T03:45:46.000Z" title="發表於 2025-11-11 11:45:46">2025-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"><img src="/img/LeetCode/678/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String"/></a><div class="content"><a class="title" href="/posts/85addf17.html" title="合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String">合法括號字串 | Medium | LeetCode#678. Valid Parenthesis String</a><time datetime="2025-10-26T07:05:24.000Z" title="發表於 2025-10-26 15:05:24">2025-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"><img src="/img/LeetCode/50/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)"/></a><div class="content"><a class="title" href="/posts/8a835d3b.html" title="Pow(x, n) | Medium | LeetCode#50. Pow(x, n)">Pow(x, n) | Medium | LeetCode#50. Pow(x, n)</a><time datetime="2025-10-23T06:03:36.000Z" title="發表於 2025-10-23 14:03:36">2025-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Kevin Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡繁轉換">EN</button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>function loadUtterances () {
+  let ele = document.createElement('script')
+  ele.setAttribute('id', 'utterances_comment')
+  ele.setAttribute('src', 'https://utteranc.es/client.js')
+  ele.setAttribute('repo', 'leozzmc/Blog_Reply')
+  ele.setAttribute('issue-term', 'pathname')
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'photon-dark' : 'github-light'
+  ele.setAttribute('theme', nowTheme)
+  ele.setAttribute('crossorigin', 'anonymous')
+  ele.setAttribute('async', 'true')
+  document.getElementById('utterances-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function utterancesTheme (theme) {
+  const iframe = document.querySelector('.utterances-frame')
+  if (iframe) {
+    const theme = theme === 'dark' ? 'photon-dark' : 'github-light'
+    const message = {
+      type: 'set-theme',
+      theme: theme
+    };
+    iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+}
+
+btf.addModeChange('utterances', utterancesTheme)
+
+if ('Utterances' === 'Utterances' || !false) {
+  if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+  else loadUtterances()
+} else {
+  function loadOtherComment () {
+    loadUtterances()
+  }
+}</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script id="canvas_nest" defer="defer" color="34,34,34" opacity="0.8" zIndex="-1" count="350" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料庫載入中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜尋文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
