@@ -61,7 +61,6 @@ jobs:
           echo "Hexo generate complete."
           ls -al
 
-      # upload zh preview
       - name: Upload preview artifact (zh)
         if: ${{ github.event.inputs.mode == 'test' && github.event.inputs.lang == 'zh' }}
         uses: actions/upload-artifact@v4
@@ -70,7 +69,6 @@ jobs:
           path: public
           retention-days: 7
 
-      # upload en preview
       - name: Upload preview artifact (en)
         if: ${{ github.event.inputs.mode == 'test' && github.event.inputs.lang == 'en' }}
         uses: actions/upload-artifact@v4
@@ -89,16 +87,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Deploying zh -> same repo branch 'deploy' using GITHUB_TOKEN"
+
+          # 全域 user name / email，給 .deploy_git 裡的 commit 用
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config credential.helper store
+
+          # 全域 credential helper，讓任何新 init 的 repo 也能讀到
+          git config --global credential.helper store
+
+          # 在 runner 建立憑證：push https://github.com/leozzmc/leozzmc.github.io.git 時用 GITHUB_TOKEN
           echo "https://${GITHUB_TOKEN}:@github.com/leozzmc/leozzmc.github.io.git" > ~/.git-credentials
 
-          # deploy:
-          #   type: git
-          #   repo: https://github.com/leozzmc/leozzmc.github.io.git
-          #   branch: deploy
-          #   message: "deployment"
+          echo "---- deploy section from _config.yml ----"
+          grep -A4 "^deploy" _config.yml || true
+          echo "-----------------------------------------"
 
       - name: Build & Deploy zh (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'zh' }}
@@ -123,21 +125,20 @@ jobs:
 
       - name: Configure git credential for en deploy
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
+        env:
+          EN_REPO_TOKEN: ${{ secrets.EN_REPO_TOKEN }}
         run: |
           echo "Deploying en -> external repo leozzmc/en using EN_REPO_TOKEN"
 
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git config credential.helper store
-          echo "https://${{ secrets.EN_REPO_TOKEN }}:@github.com/leozzmc/en.git" > ~/.git-credentials
+          git config --global credential.helper store
+          echo "https://${EN_REPO_TOKEN}:@github.com/leozzmc/en.git" > ~/.git-credentials
 
-          # config-en.yml should use HTTPS repo:
-          # deploy:
-          #   type: git
-          #   repo: https://github.com/leozzmc/en.git
-          #   branch: main
-          #   message: "en-deployment"
+          echo "---- deploy section from _config.yml ----"
+          grep -A4 "^deploy" _config.yml || true
+          echo "-----------------------------------------"
 
       - name: Build & Deploy en (hexo deploy)
         if: ${{ github.event.inputs.mode == 'deploy' && github.event.inputs.lang == 'en' }}
