@@ -1,0 +1,11 @@
+- class_name: 推薦鏈結
+  class_desc: 我推的鏈結
+  link_list:
+    - name: Shannon's Blog
+      link: https://shannonhung.github.io/
+      avatar: https://i.imgur.com/wolwN6m.png
+      descr: Shannon 的部落格
+    - name: Youtube
+      link: https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg
+      avatar: https://i.imgur.com/01hg2gE.jpg
+      descr: 我的 Youtube 頻道
