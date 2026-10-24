@@ -347,43 +347,359 @@ kubectl run some-pod --image=python --command sleep 20 --restart=Never --dry-run
 
 ***What is a label?***
 
+A label is a key-value tag attached to a Kubernetes object to mark its characteristics (e.g. `app=nginx`, `env=prod`). A label itself doesn't affect how an object runs, but it lets a **selector** filter objects by these tags.
+
+```bash
+kubectl get pods -l app=nginx          # list pods with app=nginx
+kubectl label pod my-pod tier=frontend # add a label to a pod
+```
+
+***What's the difference between a label and an annotation?***
+
+Both are key-value, but their purposes differ:
+- **Label**: for filtering and grouping, queried by selectors, with length and character restrictions on values
+- **Annotation**: for storing non-identifying metadata (e.g. build info, hints), not used by selectors, able to hold longer, more complex data
+
+***What is a selector?***
+
+A selector selects a group of objects by label, commonly used when a Service finds which Pods to route to, or a Deployment decides which Pods to manage. Types:
+- **Equality-based**: `app=nginx`, `env!=prod`
+- **Set-based**: `env in (prod, staging)`, `tier notin (frontend)`
+
 # Deployment
+
+***What is a Deployment?***
+
+A Deployment declaratively manages a group of stateless Pods. You describe the "desired state" (how many replicas, which image), and the Deployment uses a ReplicaSet underneath to ensure the actual state matches, supporting rolling updates and rollback.
+
+```bash
+kubectl create deployment nginx --image=nginx --replicas=3
+kubectl scale deployment nginx --replicas=5
+kubectl set image deployment/nginx nginx=nginx:1.25   # rolling update
+kubectl rollout status deployment/nginx
+kubectl rollout undo deployment/nginx                 # rollback
+```
+
+***What's the relationship between a Deployment, ReplicaSet, and Pod?***
+
+A Deployment manages a ReplicaSet, and a ReplicaSet manages Pods. Each time you update the image, the Deployment creates a new ReplicaSet and gradually replaces the old ReplicaSet's Pods with new ones. That's a rolling update.
+
+***How do you control how many Pods are replaced at once during a rolling update?***
+
+Via `strategy.rollingUpdate`'s `maxSurge` (how many extra Pods beyond the desired count) and `maxUnavailable` (how many Pods can be unavailable).
+
+```yaml
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+```
 
 # Services
 
+***What is a Service? Why do you need it?***
+
+A Pod's IP changes when it's recreated. A Service provides a stable virtual IP (ClusterIP) and DNS name, and load-balances traffic to a group of Pods via a label selector.
+
+***What Service types are there?***
+
+| Type | Purpose |
+| --- | --- |
+| **ClusterIP** | default, accessible only within the cluster |
+| **NodePort** | opens a fixed port (30000-32767) on every node, accessible from outside via `<NodeIP>:<NodePort>` |
+| **LoadBalancer** | requests an external load balancer from the cloud provider |
+| **ExternalName** | maps the Service to an external DNS name (CNAME) |
+
+```bash
+kubectl expose deployment nginx --port=80 --target-port=80 --type=ClusterIP
+```
+
+***How does a Service know which Pods to send traffic to?***
+
+It matches Pods' labels via a selector, and the matching Pods' IPs are recorded in the corresponding **Endpoints** (or EndpointSlice) object, which kube-proxy then uses to set iptables/IPVS rules for load balancing.
+
 # Ingress
+
+***A Service's LoadBalancer already exposes things externally, so why do you need Ingress?***
+
+Opening a LoadBalancer per service is expensive and hard to manage. Ingress provides a "layer-7 (HTTP/HTTPS) entry point" that routes traffic to different Services from a single entry by host or path, and can handle TLS termination centrally.
+
+***Does Ingress work on its own?***
+
+No. An Ingress object is just a "declaration of routing rules"; what actually executes them is an **Ingress Controller** (e.g. nginx-ingress, Traefik, AWS ALB Controller), which must be deployed first for the rules to take effect.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-svc
+            port:
+              number: 80
+```
 
 # ReplicaSets
 
+***What is a ReplicaSet?***
+
+A ReplicaSet ensures a specified number of Pod replicas are "always running." If a Pod dies, it automatically creates a new one; if there are too many, it deletes the extras.
+
+***So should I use a ReplicaSet directly?***
+
+Usually not. A ReplicaSet is almost always created and managed by a Deployment, since a Deployment adds rolling-update and rollback capabilities. Operating a ReplicaSet directly is rare.
+
 # DaemonSets
+
+***What is a DaemonSet? When do you use it?***
+
+A DaemonSet ensures "exactly one Pod runs on every (or every matching) node." It's commonly used for node-level system services, such as:
+- Log-collection agents (Fluent Bit, Filebeat)
+- Monitoring agents (node-exporter)
+- Network plugins (CNI), kube-proxy
+
+When a new node joins the cluster, the DaemonSet automatically creates the corresponding Pod on it.
 
 # StatefulSet
 
+***How is a StatefulSet different from a Deployment?***
+
+A Deployment suits "stateless" apps (Pods are interchangeable). A StatefulSet suits "stateful" apps, providing:
+- **Stable, fixed network identity**: Pod names are `<name>-0`, `<name>-1`, which don't change
+- **Stable persistent storage**: each Pod binds its own dedicated PVC and remounts the same data after recreation
+- **Ordered deployment and scaling**: created in order (0→1→2), deleted in order
+
+***What scenarios use a StatefulSet?***
+
+Databases (MySQL, PostgreSQL) and distributed systems (Kafka, Zookeeper, Elasticsearch), where each node has a distinct identity and needs to keep its own data.
+
 # Storage
+
+***What are PV and PVC?***
+
+- **PersistentVolume (PV)**: an actual storage resource in the cluster (NFS, cloud disk, Ceph, etc.), provided by an admin or a StorageClass
+- **PersistentVolumeClaim (PVC)**: a user's "request" for storage, describing how much is needed and what access mode, which Kubernetes binds to a suitable PV
+
+This design decouples "storage provisioning" from "storage consumption."
+
+***What is a StorageClass?***
+
+A StorageClass defines the method for "dynamic provisioning." When a PVC specifies a StorageClass, Kubernetes automatically creates the corresponding PV (e.g. automatically provisioning an EBS disk), without an admin pre-creating it manually.
+
+***What access modes are there?***
+
+- **ReadWriteOnce (RWO)**: can be mounted read-write by a single node
+- **ReadOnlyMany (ROX)**: can be mounted read-only by multiple nodes
+- **ReadWriteMany (RWX)**: can be mounted read-write by multiple nodes (requires underlying storage support, like NFS)
 
 # Networking
 
+***What are the basic principles of Kubernetes networking?***
+
+Kubernetes requires:
+1. Every Pod has its own IP
+2. All Pods can communicate directly without NAT
+3. An agent on a node (like the kubelet) can communicate with the Pods on that node
+
+These are implemented by **CNI (Container Network Interface) plugins** (Calico, Flannel, Cilium, etc.).
+
+***How does in-cluster DNS work?***
+
+CoreDNS provides in-cluster DNS. A Service has a DNS name `<service>.<namespace>.svc.cluster.local`, so Pods can access each other by name instead of IP.
 
 > https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471
 
 # Policies
 
+***What is a NetworkPolicy?***
+
+By default, all Pods can communicate with each other. A NetworkPolicy lets you use label selectors to define "which Pods can communicate with which Pods (or namespaces, IP ranges)," acting like a Pod-level firewall. Note: a NetworkPolicy requires CNI plugin support (e.g. Calico, Cilium) to take effect.
+
+***What are ResourceQuota and LimitRange?***
+
+- **ResourceQuota**: limits the total resources available in a namespace (e.g. total CPU, memory, Pod count)
+- **LimitRange**: sets default and min/max resource values for individual Pods/containers in a namespace
+
 # Etcd
+
+***What role does etcd play in Kubernetes?***
+
+etcd is a distributed key-value database, the "single source of truth" for the whole cluster. All object state (Pods, Services, ConfigMaps, Secrets…) lives in etcd, and the API Server is the only component that talks to etcd directly.
+
+***Why is backing up etcd important?***
+
+If etcd data is lost, the entire cluster's state is gone, so production usually backs up etcd snapshots regularly.
+
+```bash
+ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=... --cert=... --key=...
+```
 
 # Namespaces
 
+***What is a Namespace?***
+
+A Namespace lets you carve multiple "virtual clusters" out of one physical cluster, to isolate the resources of different teams, environments, or projects. Combined with ResourceQuota and RBAC, it achieves resource and permission isolation.
+
+```bash
+kubectl create namespace dev
+kubectl get pods -n dev
+```
+
+***Which resources are cluster-scoped and don't belong to any namespace?***
+
+Most resources (Pod, Service, Deployment) belong to a namespace, but some are cluster-level and don't belong to any namespace, such as **Node, PersistentVolume, Namespace itself, and ClusterRole**.
+
 # Operators
+
+***What is an Operator?***
+
+An Operator is a pattern for encoding "the operational expertise of running an application" as code. It extends the Kubernetes API with **Custom Resource Definitions (CRDs)**, paired with a **Controller** that continuously watches these custom resources and reconciles the actual state to the desired state.
+
+***Can you give an example?***
+
+For example, to run a PostgreSQL cluster on K8s, after installing a PostgreSQL Operator, you just create a `kind: PostgresCluster` custom resource, and the Operator automatically handles creation, backup, failover, version upgrades, and other operational work.
 
 # Secrets
 
+***What's the difference between a Secret and a ConfigMap?***
+
+Both separate config from the image; the difference is:
+- **ConfigMap**: stores general, non-sensitive config (config files, environment variables)
+- **Secret**: stores sensitive data (passwords, tokens, certificates)
+
+***Is a Secret really secure?***
+
+Note: **a default Secret is just base64-encoded, not encrypted**, so anyone who can read the Secret can decode its contents. For real protection, you need to additionally enable **etcd encryption at rest** and strictly limit who can read Secrets via RBAC.
+
+```bash
+kubectl create secret generic db-cred \
+  --from-literal=username=admin --from-literal=password=p@ss
+```
+
 # Volumes
+
+***What's the difference between a Volume and a PersistentVolume?***
+
+- An ordinary **Volume**'s lifecycle is tied to the Pod; once the Pod is deleted, data in a volume like `emptyDir` is gone
+- A **PersistentVolume**'s lifecycle is independent of the Pod, so the data survives Pod deletion
+
+***What are common Volume types?***
+
+- `emptyDir`: scratch space for the Pod's lifetime, often used to share data between containers in the same Pod
+- `hostPath`: mounts a path on the node (be careful, it couples to the node)
+- `configMap` / `secret`: mounts a ConfigMap/Secret into the container as files
+- `persistentVolumeClaim`: mounts a PVC (real persistent storage)
 
 # Access Control
 
+***How does Kubernetes do permission control?***
+
+Mainly through **RBAC (Role-Based Access Control)**. The four core objects:
+- **Role / ClusterRole**: define "what actions on which resources are allowed" (Role is namespace-scoped, ClusterRole is cluster-wide)
+- **RoleBinding / ClusterRoleBinding**: bind a Role to a User, Group, or ServiceAccount
+
+```bash
+kubectl create role pod-reader --verb=get,list,watch --resource=pods
+kubectl create rolebinding read-pods --role=pod-reader --user=kevin
+```
+
+***What is a ServiceAccount?***
+
+A ServiceAccount is an identity for "programs inside a Pod" (as opposed to a User for people). A Pod can use its ServiceAccount's token to call the API Server, governed by RBAC.
+
+***What checks does a request to the API Server go through?***
+
+Authentication (who you are) → Authorization (RBAC, whether you can do it) → Admission Control (extra admission control, e.g. validating or mutating the request).
+
 # CronJob
+
+***What's the difference between a Job and a CronJob?***
+
+- **Job**: runs a one-off task that "finishes" (e.g. data migration, batch computation), ensuring it completes successfully the specified number of times
+- **CronJob**: adds scheduling on top of a Job, creating Jobs on a schedule via cron syntax (e.g. a backup every night)
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup
+spec:
+  schedule: "0 2 * * *"   # daily at 02:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: backup-tool:latest
+          restartPolicy: OnFailure
+```
 
 # Helm
 
+***What is Helm?***
+
+Helm is Kubernetes's "package manager," similar to apt/yum. It packages a set of K8s manifests into a **Chart**, supporting parameterization via `values.yaml`, version management, and one-command install/upgrade/rollback.
+
+```bash
+helm install my-release bitnami/nginx
+helm upgrade my-release bitnami/nginx --set replicaCount=3
+helm rollback my-release 1
+helm uninstall my-release
+```
+
+***Why use Helm instead of just kubectl apply?***
+
+When an application is made of many manifests and deployed to multiple environments (dev/staging/prod with different parameters), Helm's templating and version management are far more convenient than hand-maintaining a pile of YAML.
+
 # Security
 
+***What are some common Kubernetes security practices?***
+
+- **Principle of least privilege**: strictly limit ServiceAccount and user permissions with RBAC
+- **Don't run containers as root**: set `securityContext.runAsNonRoot: true`
+- **Encrypt Secrets**: enable etcd encryption at rest and restrict Secret access
+- **NetworkPolicy**: default deny, open only necessary Pod-to-Pod communication
+- **Image scanning**: scan images for vulnerabilities, use only trusted sources
+- **Pod Security Admission**: use the built-in Pod Security Standards (privileged / baseline / restricted) to limit Pod privileges
+
+***What is a securityContext?***
+
+A securityContext sets security-related attributes for a Pod or container, such as which UID to run as, whether privileged mode is allowed, and whether the root filesystem is read-only.
+
+```yaml
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+```
+
 # Misc
+
+***What are some handy kubectl debugging commands?***
+
+```bash
+kubectl describe <resource> <name>   # see detailed status and events
+kubectl logs <pod> [-c container]    # see container logs
+kubectl logs <pod> --previous        # see the previous crashed container's logs
+kubectl exec -it <pod> -- sh         # enter the container
+kubectl get events --sort-by=.lastTimestamp
+kubectl top pod / kubectl top node   # see resource usage (needs metrics-server)
+```
+
+***What's the difference between kubectl's imperative and declarative styles?***
+
+- **Imperative**: directly issue commands to change state, e.g. `kubectl create`, `kubectl run`
+- **Declarative**: write the desired state as YAML and let Kubernetes reconcile it with `kubectl apply -f`. Production usually uses the declarative style with GitOps (version-controlling all manifests).

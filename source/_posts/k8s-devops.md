@@ -359,44 +359,360 @@ kubectl run some-pod --image=python --command sleep 20 --restart=Never --dry-run
 
 ***什麼是 Label?***
 
+Label 是附加在 Kubernetes 物件上的 key-value 標籤，用來標示物件的特性（例如 `app=nginx`、`env=prod`）。Label 本身不影響物件運作，但可以讓 **Selector** 根據這些標籤來篩選物件。
+
+```bash
+kubectl get pods -l app=nginx          # 列出帶有 app=nginx 的 pod
+kubectl label pod my-pod tier=frontend # 為 pod 加上 label
+```
+
+***Label 跟 Annotation 有什麼差別?***
+
+兩者都是 key-value，但用途不同：
+- **Label** 用於「篩選與分組」，會被 selector 查詢，值有長度與字元限制
+- **Annotation** 用於存放「非識別性的 metadata」（例如建置資訊、提示訊息），不會被 selector 使用，可以存放較長、較複雜的資料
+
+***什麼是 Selector?***
+
+Selector 用來根據 label 選出一組物件，常見於 Service 要找出要路由的 Pod、Deployment 要管理哪些 Pod。分成：
+- **Equality-based**: `app=nginx`、`env!=prod`
+- **Set-based**: `env in (prod, staging)`、`tier notin (frontend)`
+
 # Deployment
+
+***什麼是 Deployment?***
+
+Deployment 是用來宣告式管理一組無狀態 Pod 的物件。你描述「期望狀態」（像是要幾個副本、用哪個 image），Deployment 底層會透過 ReplicaSet 來確保實際狀態符合期望，並支援滾動更新與回滾。
+
+```bash
+kubectl create deployment nginx --image=nginx --replicas=3
+kubectl scale deployment nginx --replicas=5
+kubectl set image deployment/nginx nginx=nginx:1.25   # 滾動更新
+kubectl rollout status deployment/nginx
+kubectl rollout undo deployment/nginx                 # 回滾
+```
+
+***Deployment、ReplicaSet、Pod 之間的關係？***
+
+Deployment 管理 ReplicaSet，ReplicaSet 管理 Pod。每次更新 image，Deployment 會建立一個新的 ReplicaSet，逐步把舊 ReplicaSet 的 Pod 換成新的，這就是滾動更新。
+
+***滾動更新時如何控制一次換多少?***
+
+透過 `strategy.rollingUpdate` 的 `maxSurge`（最多可以多出幾個 Pod）與 `maxUnavailable`（最多可以有幾個 Pod 不可用）。
+
+```yaml
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+```
 
 # Services
 
+***什麼是 Service? 為什麼需要它?***
+
+Pod 的 IP 會隨著重建而改變，Service 提供一個穩定的虛擬 IP（ClusterIP）與 DNS 名稱，並透過 label selector 把流量負載平衡到一組 Pod 上。
+
+***有哪些 Service 類型?***
+
+| 類型 | 用途 |
+| --- | --- |
+| **ClusterIP** | 預設，只在叢集內部可存取 |
+| **NodePort** | 在每個節點開一個固定 port（30000-32767），叢集外可透過 `<NodeIP>:<NodePort>` 存取 |
+| **LoadBalancer** | 向雲端供應商申請一個外部負載平衡器 |
+| **ExternalName** | 把 Service 映射到一個外部 DNS 名稱（CNAME） |
+
+```bash
+kubectl expose deployment nginx --port=80 --target-port=80 --type=ClusterIP
+```
+
+***Service 怎麼知道要把流量送到哪些 Pod?***
+
+透過 selector 比對 Pod 的 label，符合的 Pod IP 會被記錄在對應的 **Endpoints**（或 EndpointSlice）物件中，kube-proxy 再據此設定 iptables/IPVS 規則做負載平衡。
+
 # Ingress
+
+***Service 的 LoadBalancer 已經可以對外，為什麼還需要 Ingress?***
+
+如果每個服務都開一個 LoadBalancer 會很貴且難管理。Ingress 提供一個「七層（HTTP/HTTPS）的入口」，可以用同一個進入點、依照 host 或 path 把流量路由到不同的 Service，並且能統一處理 TLS 終止。
+
+***Ingress 自己會運作嗎?***
+
+不會。Ingress 物件只是「路由規則的宣告」，真正執行的是 **Ingress Controller**（例如 nginx-ingress、Traefik、AWS ALB Controller），必須先部署一個 Controller 規則才會生效。
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-svc
+            port:
+              number: 80
+```
 
 # ReplicaSets
 
+***什麼是 ReplicaSet?***
+
+ReplicaSet 確保指定數量的 Pod 副本「隨時都在運行」。如果有 Pod 掛掉，它會自動補一個新的；如果多了，它會刪掉多的。
+
+***那我該直接用 ReplicaSet 嗎?***
+
+通常不會。ReplicaSet 幾乎總是由 Deployment 來建立與管理，因為 Deployment 多了滾動更新與回滾的能力，直接操作 ReplicaSet 的情況很少。
+
 # DaemonSets
+
+***什麼是 DaemonSet? 什麼時候用?***
+
+DaemonSet 確保「每個（或符合條件的）節點上都剛好跑一個 Pod」。常用於節點層級的系統服務，例如：
+- 日誌收集 agent（Fluent Bit、Filebeat）
+- 監控 agent（node-exporter）
+- 網路外掛（CNI）、kube-proxy
+
+當有新節點加入叢集，DaemonSet 會自動在新節點上建立對應的 Pod。
 
 # StatefulSet
 
+***StatefulSet 跟 Deployment 有什麼不同?***
+
+Deployment 適合「無狀態」應用（每個 Pod 可互換）。StatefulSet 則適合「有狀態」應用，提供：
+- **穩定且固定的網路身分**：Pod 名稱是 `<name>-0`、`<name>-1`，不會變
+- **穩定的持久化儲存**：每個 Pod 會綁定自己專屬的 PVC，重建後仍掛回同一份資料
+- **有序的部署與擴縮**：依序建立（0→1→2）、依序刪除
+
+***什麼情境會用 StatefulSet?***
+
+資料庫（MySQL、PostgreSQL）、分散式系統（Kafka、Zookeeper、Elasticsearch）這類每個節點身分不同、需要保留自己資料的應用。
+
 # Storage
+
+***什麼是 PV 跟 PVC?***
+
+- **PersistentVolume (PV)**：叢集中一塊實際的儲存資源（NFS、雲端磁碟、Ceph 等），由管理員或 StorageClass 提供
+- **PersistentVolumeClaim (PVC)**：使用者對儲存的「請求」，描述需要多大、什麼存取模式，Kubernetes 會把 PVC 綁定到合適的 PV
+
+這種設計把「儲存的供給」跟「儲存的使用」解耦。
+
+***什麼是 StorageClass?***
+
+StorageClass 定義了「動態供給」的方式。當 PVC 指定某個 StorageClass，Kubernetes 會自動建立對應的 PV（例如自動開一顆 EBS 磁碟），不需要管理員手動預先建立。
+
+***存取模式 (Access Mode) 有哪些?***
+
+- **ReadWriteOnce (RWO)**: 只能被單一節點掛載讀寫
+- **ReadOnlyMany (ROX)**: 可被多個節點唯讀掛載
+- **ReadWriteMany (RWX)**: 可被多個節點讀寫掛載（需底層儲存支援，如 NFS）
 
 # Networking
 
+***Kubernetes 網路的基本原則是什麼?***
+
+Kubernetes 要求：
+1. 每個 Pod 有自己的 IP
+2. 所有 Pod 之間可以不經 NAT 直接互通
+3. 節點上的 agent（如 kubelet）可以跟該節點上的 Pod 溝通
+
+這些由 **CNI（Container Network Interface）外掛**（Calico、Flannel、Cilium 等）實作。
+
+***叢集內的 DNS 怎麼運作?***
+
+CoreDNS 提供叢集內部 DNS。Service 會有一個 DNS 名稱 `<service>.<namespace>.svc.cluster.local`，Pod 之間就能用名稱而不是 IP 互相存取。
 
 > https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471
 
 # Policies
 
+***什麼是 NetworkPolicy?***
+
+預設情況下所有 Pod 之間都可以互通。NetworkPolicy 讓你用 label selector 定義「哪些 Pod 可以跟哪些 Pod（或 namespace、IP 區段）通訊」，相當於 Pod 層級的防火牆。注意：NetworkPolicy 需要 CNI 外掛支援（例如 Calico、Cilium）才會生效。
+
+***什麼是 ResourceQuota 跟 LimitRange?***
+
+- **ResourceQuota**: 限制一個 namespace 內可用的資源總量（例如總 CPU、記憶體、Pod 數量）
+- **LimitRange**: 為 namespace 內的個別 Pod/容器設定預設與上下限的資源值
+
 # Etcd
+
+***etcd 在 Kubernetes 中扮演什麼角色?***
+
+etcd 是一個分散式的 key-value 資料庫，是整個叢集的「唯一真實來源（single source of truth）」。所有物件狀態（Pod、Service、ConfigMap、Secret…）都存在 etcd 裡，而 API Server 是唯一直接跟 etcd 溝通的元件。
+
+***為什麼 etcd 的備份很重要?***
+
+如果 etcd 資料遺失，等於整個叢集的狀態都不見了，所以正式環境通常會定期備份 etcd 快照。
+
+```bash
+ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=... --cert=... --key=...
+```
 
 # Namespaces
 
+***什麼是 Namespace?***
+
+Namespace 讓你在同一個實體叢集中切出多個「虛擬叢集」，用來隔離不同團隊、環境或專案的資源。配合 ResourceQuota 與 RBAC 可以做到資源與權限的隔離。
+
+```bash
+kubectl create namespace dev
+kubectl get pods -n dev
+```
+
+***哪些資源是叢集層級（cluster-scoped）、不屬於任何 namespace 的?***
+
+大部分資源（Pod、Service、Deployment）屬於某個 namespace，但有些是叢集層級、不屬於任何 namespace，例如 **Node、PersistentVolume、Namespace 本身、ClusterRole**。
+
 # Operators
+
+***什麼是 Operator?***
+
+Operator 是一種把「維運某個應用的專業知識」寫成程式碼的模式。它用 **自定義資源（CRD, Custom Resource Definition）** 擴充 Kubernetes API，再搭配一個 **Controller** 持續監控這些自定義資源、把實際狀態調整到期望狀態。
+
+***舉個例子?***
+
+例如你想在 K8s 上跑一套 PostgreSQL 叢集，裝一個 PostgreSQL Operator 後，你只要建立一個 `kind: PostgresCluster` 的自定義資源，Operator 就會自動幫你處理建立、備份、故障轉移、版本升級等維運工作。
 
 # Secrets
 
+***Secret 跟 ConfigMap 有什麼不同?***
+
+兩者都用來把設定從 image 中抽離，差別在：
+- **ConfigMap**: 存放一般的、非敏感的設定（設定檔、環境變數）
+- **Secret**: 存放敏感資料（密碼、token、憑證）
+
+***Secret 真的安全嗎?***
+
+要注意：**預設的 Secret 只是用 base64 編碼，不是加密**，任何能讀取 Secret 的人都能解出內容。要真正保護，需要額外啟用 **etcd encryption at rest**，並用 RBAC 嚴格限制誰能讀 Secret。
+
+```bash
+kubectl create secret generic db-cred \
+  --from-literal=username=admin --from-literal=password=p@ss
+```
+
 # Volumes
+
+***Volume 跟 PersistentVolume 有什麼不同?***
+
+- 一般 **Volume** 的生命週期跟 Pod 綁在一起，Pod 一刪，像 `emptyDir` 這種 volume 的資料就沒了
+- **PersistentVolume** 的生命週期獨立於 Pod，Pod 刪了資料還在
+
+***常見的 Volume 類型?***
+
+- `emptyDir`: Pod 生命週期內的暫存空間，常用於同一 Pod 內容器間共享資料
+- `hostPath`: 掛載節點上的某個路徑（要小心，會跟節點耦合）
+- `configMap` / `secret`: 把 ConfigMap/Secret 以檔案形式掛進容器
+- `persistentVolumeClaim`: 掛載一個 PVC（真正的持久化儲存）
 
 # Access Control
 
+***Kubernetes 怎麼做權限控制?***
+
+主要透過 **RBAC（Role-Based Access Control）**。核心四個物件：
+- **Role / ClusterRole**: 定義「可以對哪些資源做哪些動作」（Role 限 namespace，ClusterRole 跨叢集）
+- **RoleBinding / ClusterRoleBinding**: 把 Role 綁定給某個 User、Group 或 ServiceAccount
+
+```bash
+kubectl create role pod-reader --verb=get,list,watch --resource=pods
+kubectl create rolebinding read-pods --role=pod-reader --user=kevin
+```
+
+***什麼是 ServiceAccount?***
+
+ServiceAccount 是給「Pod 內的程式」用的身分（相對於給人用的 User）。Pod 可以用 ServiceAccount 的 token 去呼叫 API Server，並受 RBAC 控制。
+
+***一個請求到 API Server 會經過哪些檢查?***
+
+Authentication（你是誰）→ Authorization（RBAC，你能不能做）→ Admission Control（額外的准入控制，例如驗證或修改請求）。
+
 # CronJob
+
+***Job 跟 CronJob 有什麼不同?***
+
+- **Job**: 跑一個「會結束」的一次性任務（例如資料遷移、批次運算），確保它成功完成指定次數
+- **CronJob**: 在 Job 之上加排程，依照 cron 語法「定時」建立 Job（例如每天凌晨備份）
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup
+spec:
+  schedule: "0 2 * * *"   # 每天 02:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: backup-tool:latest
+          restartPolicy: OnFailure
+```
 
 # Helm
 
+***什麼是 Helm?***
+
+Helm 是 Kubernetes 的「套件管理器」，類似 apt/yum。它把一組 K8s manifest 打包成 **Chart**，支援用 `values.yaml` 做參數化、版本管理與一鍵安裝/升級/回滾。
+
+```bash
+helm install my-release bitnami/nginx
+helm upgrade my-release bitnami/nginx --set replicaCount=3
+helm rollback my-release 1
+helm uninstall my-release
+```
+
+***為什麼要用 Helm 而不是直接 kubectl apply?***
+
+當應用由很多 manifest 組成、又要部署到多個環境（dev/staging/prod 參數不同）時，Helm 的樣板化與版本管理比手動維護一堆 YAML 方便很多。
+
 # Security
 
+***有哪些常見的 Kubernetes 安全實務?***
+
+- **最小權限原則**: 用 RBAC 嚴格限制 ServiceAccount 與使用者的權限
+- **不要用 root 跑容器**: 設定 `securityContext.runAsNonRoot: true`
+- **Secret 加密**: 啟用 etcd encryption at rest，限制 Secret 的存取
+- **NetworkPolicy**: 預設拒絕，只開必要的 Pod 間通訊
+- **Image 掃描**: 掃描 image 漏洞，只用可信來源
+- **Pod Security Admission**: 用內建的 Pod Security Standards（privileged / baseline / restricted）限制 Pod 的權限
+
+***什麼是 securityContext?***
+
+securityContext 可以為 Pod 或容器設定安全相關的屬性，例如以哪個 UID 執行、是否允許特權模式、是否唯讀根檔案系統等。
+
+```yaml
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+```
+
 # Misc
+
+***kubectl 有哪些好用的除錯指令?***
+
+```bash
+kubectl describe <resource> <name>   # 看詳細狀態與事件
+kubectl logs <pod> [-c container]    # 看容器日誌
+kubectl logs <pod> --previous        # 看上一個崩潰容器的日誌
+kubectl exec -it <pod> -- sh         # 進入容器
+kubectl get events --sort-by=.lastTimestamp
+kubectl top pod / kubectl top node   # 看資源用量（需 metrics-server）
+```
+
+***什麼是 kubectl 的 imperative 跟 declarative?***
+
+- **Imperative（命令式）**: 直接下指令改變狀態，例如 `kubectl create`、`kubectl run`
+- **Declarative（宣告式）**: 把期望狀態寫成 YAML，用 `kubectl apply -f` 讓 Kubernetes 自己去達成。正式環境通常用宣告式搭配 GitOps（版本控管所有 manifest）。
 
