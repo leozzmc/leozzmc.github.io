@@ -6,7 +6,7 @@ tags:
   - IoT
   - OTA
   - Firmware
-categories: 學習筆記
+categories: Study Notes
 aside: true
 abbrlink: 752506ab
 date: 2023-12-14 07:01:50

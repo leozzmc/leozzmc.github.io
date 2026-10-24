@@ -5,7 +5,7 @@ tags:
   - AWS
   - Lambda
 aside: true
-categories: Hands-On Notes
+categories: Hands-On Practices
 cover: /img/PEPE1.jpg
 abbrlink: "c79cef2b"
 date: 2023-10-16 21:59:49

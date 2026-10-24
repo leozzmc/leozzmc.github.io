@@ -10,6 +10,9 @@ date: 2024-01-03 20:41:05
 cover: /img/AWS/Lambda_URL/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/421a206a.html)
+
+
 # 甚麼是 Lambda URL ?
 
 > 官方定義: 函數 URL 是 Lambda 函數專用的 HTTP(S) 端點。您可以透過 Lambda 主控台或 Lambda API 建立及設定函數 URL。當您建立函數 URL 時，Lambda 會自動為您產生不重複的 URL 端點。函數 URL 一旦建立，其 URL 端點便永遠不會變更。

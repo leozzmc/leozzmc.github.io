@@ -12,6 +12,9 @@ abbrlink: 24be9e02
 date: 2022-11-10 05:27:45
 ---
 
+> 🌐 English version: [English](/en/posts/24be9e02.html)
+
+
 ![](https://i.imgur.com/zn0lCzN.png)
 
 我以前其實沒有CI/CD的經驗，所以現有常見的CI/CD平台其實都沒有太過了解，但近期因專案需求，需要透過Github Action　來建立一個用於Azure認知服務中的**斷句API (BreakSentence API)** 的CI/CD Pipeline，在被交付的需求還很模糊的狀況下😭，還是先來了解這項功能，並且做個紀錄。

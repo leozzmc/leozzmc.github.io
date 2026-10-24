@@ -11,6 +11,9 @@ abbrlink: d400aff3
 date: 2023-07-24 20:36:15
 description:
 ---
+
+> 🌐 English version: [English](/en/posts/d400aff3.html)
+
 ## 前言
 
 一樣是解 case 碰到的問題，但我也沒真的在 Lambda 設定過重試 (Retry)，這次就秉持著實驗精神來在自己的環境實驗看看。

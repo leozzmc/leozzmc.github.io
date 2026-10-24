@@ -11,6 +11,9 @@ date: 2023-10-20 21:10:11
 cover: /img/pepe3.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/f40d2e89.html)
+
+
 ## 前言
 
 針對 Lambda 設定，絕大多數人一定碰過 `ImportModuleError`  所以各位可以跟著以下的情境，開一個一樣的 Lambda 環境逐步操作。
