@@ -11,6 +11,9 @@ aside: true
 cover: /img/PVE/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/8efb2cec.html)
+
+
 # 前言
 
 [上一篇文章](https://leozzmc.github.io/posts/c5581068.html)中我們介紹了如何在 Proxmox VE 中對虛擬機進行 Live Migrations，現在我們要加入條件來去對虛擬機進行 Migrations，由於我目前需求會是功耗，因此會需要知道在如何獲取  CPU 功耗的資訊。

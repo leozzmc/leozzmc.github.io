@@ -11,6 +11,9 @@ date: 2024-09-11 16:16:15
 cover: /img/PVE/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/c5581068.html)
+
+
 
 <!-- ---
 Part3

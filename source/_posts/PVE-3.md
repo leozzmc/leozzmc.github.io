@@ -11,6 +11,9 @@ abbrlink: bd2c9140
 date: 2024-09-22 14:24:48
 ---
 
+> 🌐 English version: [English](/en/posts/bd2c9140.html)
+
+
 # 前言
 
 在 [**PVE 系列文章的第一篇**](https://leozzmc.github.io/posts/c5581068.html) 有示範在PVE的控制台上面進行 migration，而這裡紀錄另一種可以進行 Migration 的方式

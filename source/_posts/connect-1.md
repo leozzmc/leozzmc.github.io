@@ -13,6 +13,9 @@ description:
 cover: /img/Connect.png
 ---
 
+> 🌐 English version: [English](/en/posts/5db1b7e9.html)
+
+
 ## 前言
 
 在現代的商業環境中，提供優質且高效的客戶服務是成功的關鍵之一。**Amazon Connect** 是一個強大的雲端客戶服務中心，它可以幫助企業輕鬆建立高度可靠的聯絡中心，並與客戶進行無縫的互動。本篇技術部落格文章將帶領您逐步了解如何整合 Lambda Function 到 Amazon Connect，以實現更多自定義的功能。
