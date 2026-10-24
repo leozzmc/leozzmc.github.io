@@ -16,6 +16,9 @@ date: 2026-09-21 21:17:27
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/a7cc743e.html)
+
+
 > 這題是〈[Strange Holos 1](/posts/e9d90ba.html)〉的接續題目，場景、架構完全一樣。這次認出是克林貢文其實不難，真正絆住我的是最後一步——克林貢的**羅馬拼音**，跟它當英文替代密碼時代表的字母，是兩回事。
 
 <!-- more -->

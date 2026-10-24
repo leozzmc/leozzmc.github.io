@@ -35,7 +35,7 @@ top_img:
 
 At the county agriculture office, the area-payment claim for Babb's north parcel was rejected: "parcel already declared as pasture, satellite check passed." Someone filed a claim using Babb's corn field, and the office's satellite check actually sided with them.
 
-A clerk lets something slip: this year the office's classification stats **left out one class** — because "nobody around here declares that crop, and field surveys are expensive." Separately, at 12:05 the shared SDR recorded a stranger transmitting this batch of claims on "yet another channel."
+A clerk lets something slip: this year the office's classification stats **left out one class**, because "nobody around here declares that crop, and field surveys are expensive." Separately, at 12:05 the shared SDR recorded a stranger transmitting this batch of claims on "yet another channel."
 
 {% endnote %}
 
@@ -55,11 +55,11 @@ Each claim has the format `<seq>;<parcel>;<declared crop>;<area>;<claim code>`, 
 
 ## The key: the class that got deleted
 
-The office's `.sta` file uses Gaussian maximum-likelihood classification with equal priors, but it has **only four classes**: pasture, stubble, cropland, settlement. You can see that **corn (kukorica) was removed** — only its training field is still there.
+The office's `.sta` file uses Gaussian maximum-likelihood classification with equal priors, but it has **only four classes**: pasture, stubble, cropland, settlement. You can see that **corn (kukorica) was removed**, and only its training field is still there.
 
 A supervised classifier **can only output classes it was trained on**, so with no corn statistics, a corn field gets forced into the most similar class (pasture), and the check "passes." That's the core vulnerability of the whole challenge.
 
-I first rasterized the training-field polygons onto the image grid and recomputed each class's mean and covariance — they matched the `.sta` file byte for byte, confirming my coordinate and sampling conventions were correct.
+I first rasterized the training-field polygons onto the image grid and recomputed each class's mean and covariance. They matched the `.sta` file byte for byte, confirming my coordinate and sampling conventions were correct.
 
 Then I used training field T-01 to restore corn's statistics, ran a 5-class classification, and compared record by record:
 
@@ -67,7 +67,7 @@ Then I used training field T-01 to restore corn's statistics, ran a 5-class clas
 
 Under the office's 4-class classification, all 30 records "pass."
 
-After restoring corn, only **3 records** don't match — and all three are **"declared pasture, actually corn"**:
+After restoring corn, only **3 records** don't match, and all three are **"declared pasture, actually corn"**:
 
 | # | Parcel | Declared | After restoring corn | Code |
 |---|---|---|---|---|
@@ -83,9 +83,9 @@ GAIANSPACE{CUVE-UKEJ-TRP6}
 
 ## Takeaways
 
-1. **"One class is missing" is the whole key.** A supervised classifier can only output classes it was trained on; with no corn statistics it crams corn into the most similar class, pasture — so "check passed" doesn't mean the claim is honest. It's a very realistic remote-sensing fraud scenario.
-2. **Validate your own pipeline against known data first.** Only after the training-field pixel counts and the `.sta` means and covariances matched byte for byte did I go restore the missing class — that's what makes the conclusion hold up.
+1. **"One class is missing" is the whole key.** A supervised classifier can only output classes it was trained on; with no corn statistics it crams corn into the most similar class, pasture, so "check passed" doesn't mean the claim is honest. It's a very realistic remote-sensing fraud scenario.
+2. **Validate your own pipeline against known data first.** Only after the training-field pixel counts and the `.sta` means and covariances matched byte for byte did I go restore the missing class, which is what makes the conclusion hold up.
 3. **Make use of the re-send when decoding SDR batches.** The two transmissions are identical, so you can cross-confirm every character instead of guessing.
-4. By this point the farm arc's LoRa demodulator is quite mature. Next the series jumps to a different storyline — [a night shift, a hijacked satellite](/en/posts/ec3d267b.html) — where the same demodulator meets trickier situations.
+4. By this point the farm arc's LoRa demodulator is quite mature. Next the series jumps to a different storyline, [a night shift, a hijacked satellite](/en/posts/ec3d267b.html), where the same demodulator meets trickier situations.
 
 ---

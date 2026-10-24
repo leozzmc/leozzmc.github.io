@@ -33,7 +33,7 @@ top_img:
 
 On the night shift, GAIAN-723 dropped off the telemetry terminal at 01:12, yet the schedule says it's overhead right now. David Aroz is alone in the SOC; the ground-station modem reports nothing, but the station's raw recorder has been running the whole time, and he pulls out the last 40 seconds of the band.
 
-The waterfall isn't empty — there are **two voices** in it: one is GAIAN-723, and the other isn't on any GaianSpace frequency plan, and it's talking to the satellite. The old frequency sheet on the desk still says 433.000 MHz.
+The waterfall isn't empty. There are **two voices** in it: one is GAIAN-723, and the other isn't on any GaianSpace frequency plan, and it's talking to the satellite. The old frequency sheet on the desk still says 433.000 MHz.
 
 Goal: find what GAIAN-723 answered when the stranger made its **first call**.
 
@@ -45,7 +45,7 @@ Flag format: `GAIANSPACE{...}`
 
 The 433.000 MHz on the old sheet isn't where any signal actually is (the note itself says "might be wrong"). Looking at the waterfall and the per-band energy, there are two transmitters, repeating a cycle about every 12 seconds:
 
-![45 seconds of waterfall — A (the satellite) packet clusters on the left, B's strong pulses as horizontal lines on the right](waterfall.png)
+![45 seconds of waterfall: A (the satellite) packet clusters on the left, B's strong pulses as horizontal lines on the right](waterfall.png)
 
 | | A (satellite) | B (stranger) |
 |---|---|---|
@@ -54,7 +54,7 @@ The 433.000 MHz on the old sheet isn't where any signal actually is (the note it
 | Sync word | 0x12 (public) | 0x34 (LoRaWAN) |
 | Preamble | 12 symbols | 8 symbols |
 
-This is the "different accents" the challenge mentions — the sync word, SF, and bandwidth are all different. So you **can't decode both sides with the same parameters**; the demodulator has to run against each parameter set separately. Zoom into one cycle and the order is: A long packet → B strong pulse → A short packet:
+This is the "different accents" the challenge mentions: the sync word, SF, and bandwidth are all different. So you **can't decode both sides with the same parameters**; the demodulator has to run against each parameter set separately. Zoom into one cycle and the order is: A long packet → B strong pulse → A short packet:
 
 ![One cycle in time-frequency: A long packet, B pulse, A short packet](one-cycle.png)
 
@@ -72,9 +72,9 @@ The conversation (TC = telecommand, TM = telemetry response):
 | 28.25 s | B | `TC GET CFG`; A replies `NAK` |
 | 39.08 s | B | `TC SET DLCFG B`; A replies `OK,DLCFG=B` |
 
-B is the stranger: it says hello, queries status and config, and finally switches the satellite's downlink config to B — which explains why the ground-station modem, stuck on the old config, stopped receiving anything.
+B is the stranger: it says hello, queries status and config, and finally switches the satellite's downlink config to B, which explains why the ground-station modem, stuck on the old config, stopped receiving anything.
 
-The challenge asks what the satellite answered on the stranger's "first call," which is the ACK at 4.224 s — and it coughs up the flag directly.
+The challenge asks what the satellite answered on the stranger's "first call," which is the ACK at 4.224 s, and it coughs up the flag directly.
 
 ## Flag
 
@@ -85,8 +85,8 @@ GAIANSPACE{tw0_v01c3s_0B0EFE1A}
 ## Takeaways
 
 1. **"Two voices" means compare modulation parameters.** Here the two sides differ in SF, BW, sync word, and preamble length; building out all the transmitters and a timeline first, then decoding each, is more efficient than trying parameters one at a time.
-2. **The old frequency sheet is wrong — trust the recorded data, not the documents.** Very common in SDR challenges.
+2. **The old frequency sheet is wrong, so trust the recorded data, not the documents.** Very common in SDR challenges.
 3. **Pair commands with responses using the sequence number.** TC/TM looks like a protocol, and the seq in `TM,ACK,<seq>,...` lets you pin down the "first call" answer exactly.
-4. Here the satellite side used SF9 and the stranger SF7 — both fairly standard. In the next post, [No Name on the Door](/en/posts/7a436e8c.html), the satellite switches to **no header, with every packet looking different**, and the demodulator has to evolve again.
+4. Here the satellite side used SF9 and the stranger SF7, both fairly standard. In the next post, [No Name on the Door](/en/posts/7a436e8c.html), the satellite switches to **no header, with every packet looking different**, and the demodulator has to evolve again.
 
 ---

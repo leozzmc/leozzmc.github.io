@@ -16,6 +16,9 @@ date: 2026-09-21 21:15:55
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/e9d90ba.html)
+
+
 > 這題只給一張圖，什麼提示都沒有，整個解題過程完全不需要寫什麼複雜的程式，就是分析圖片
 
 <!-- more -->

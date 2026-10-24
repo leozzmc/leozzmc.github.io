@@ -16,6 +16,9 @@ top_img:
 cover:
 ---
 
+> 🌐 English version: [English](/en/posts/7f658d39.html)
+
+
 > 這題跟〈[Time to Intercept](/posts/114d2ca.html)〉一樣是互動式的軌道力學計算題，用 `nc` 連上去跟伺服器對話。不一樣的地方是，這題伺服器幾乎把公式直接寫在提示裡給你了，真正卡關的反而是一個很無聊、但每個工程師都遇過的東西：浮點數精度
 
 <!-- more -->

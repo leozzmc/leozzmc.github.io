@@ -20,7 +20,7 @@ top_img:
 
 > 🌐 中文版：[繁體中文](/posts/9633ca0c.html)
 >
-> Seventh and final post in the series. Over the previous six posts the LoRa demodulator grew from single-frequency, fixed-parameter all the way to implicit header, different-SF-per-packet, and drift correction. Here the satellite does one last thing: **it hops across multiple frequencies (FHSS)**, and the demodulator has to reassemble the symbols — scattered across different frequencies — back into time order before it can decode.
+> Seventh and final post in the series. Over the previous six posts the LoRa demodulator grew from single-frequency, fixed-parameter all the way to implicit header, different-SF-per-packet, and drift correction. Here the satellite does one last thing: **it hops across multiple frequencies (FHSS)**, and the demodulator has to reassemble the symbols, scattered across different frequencies, back into time order before it can decode.
 >
 > Rest of the series: [Channel Hop](/en/posts/bbd322cb.html)、[True Color Is a Lie](/en/posts/f90bdeae.html)、[Isodata Seven](/en/posts/907c1e5f.html)、[Subsidy Claim](/en/posts/1279e916.html)、[Two Voices](/en/posts/ec3d267b.html)、[No Name on the Door](/en/posts/7a436e8c.html)
 
@@ -38,9 +38,9 @@ Flag format: `GAIANSPACE{...}`
 
 ## First, spot that it's hopping
 
-Make a wideband waterfall of the whole segment and you can see at a glance that the signal doesn't stay on one frequency — it **hops regularly between a few frequency slots**. That's FHSS (frequency-hopping spread spectrum):
+Make a wideband waterfall of the whole segment and you can see at a glance that the signal doesn't stay on one frequency. It **hops regularly between a few frequency slots**. That's FHSS (frequency-hopping spread spectrum):
 
-![Wideband waterfall — the signal hops across several frequency slots](waterfall.png)
+![Wideband waterfall: the signal hops across several frequency slots](waterfall.png)
 
 Measure it: the carrier switches among a fixed set of channels, each **dwell** is roughly a fixed number of symbols, then it jumps to the next channel.
 
@@ -69,8 +69,8 @@ GAIANSPACE{h0p_sc0tch_AF44A6}
 ## Takeaways
 
 1. **The first step of FHSS is always "estimate the hopping plan."** A wideband waterfall plus a per-window FFT for the dominant frequency lets you plot "time → channel"; hopping is usually a periodic pseudo-random sequence, and once you spot the period the whole table is fixed.
-2. **Hopping just scatters the symbols across frequencies — the decoding core is unchanged.** After bringing each dwell back to baseband, it's still the same LoRa demodulator — which is exactly why the earlier posts spent the effort getting the skeleton solid.
+2. **Hopping just scatters the symbols across frequencies; the decoding core is unchanged.** After bringing each dwell back to baseband, it's still the same LoRa demodulator, which is exactly why the earlier posts spent the effort getting the skeleton solid.
 3. **Watch the dwell boundaries.** There's a transition at the moment of a hop, so leave a little margin at each end and align the phase before joining, or the symbols misalign at the seams.
-4. By this point, the LoRa demodulator hand-built since [True Color Is a Lie](/en/posts/f90bdeae.html) can handle everything thrown at it: two transmitters, implicit headers, a different SF per packet, Doppler drift, and frequency hopping. One demodulator, seven challenges — that's the most satisfying part of this whole series.
+4. By this point, the LoRa demodulator hand-built since [True Color Is a Lie](/en/posts/f90bdeae.html) can handle everything thrown at it: two transmitters, implicit headers, a different SF per packet, Doppler drift, and frequency hopping. One demodulator, seven challenges. That's the most satisfying part of this whole series.
 
 ---

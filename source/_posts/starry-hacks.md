@@ -16,6 +16,9 @@ top_img:
 cover:
 ---
 
+> 🌐 English version: [English](/en/posts/bdb3b555.html)
+
+
 這篇跟之前幾篇無人機/軌道力學系列不一樣，是一題貨真價實的 **Web / Supply Chain** 題目，只是場景換成了地面控制軟體，玩法是經典的 **dependency confusion** [（依賴混淆）供應鏈攻擊](https://www.imperva.com/learn/application-security/dependency-confusion/) ，最後靠著把伺服器的錯誤訊息當成資料外洩通道，才把 flag 從環境變數裡挖出來
 
 <!-- more -->
