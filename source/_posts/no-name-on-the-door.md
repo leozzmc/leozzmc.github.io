@@ -17,6 +17,9 @@ date: 2026-10-24 21:00:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/7a436e8c.html)
+
+
 > 系列第六篇。上一篇〈[Two Voices](/posts/ec3d267b.html)〉衛星還用標準的 SF9，這題它則是被陌生人改了下行設定，變成**隱式標頭 + 每個封包不同的 SF**，而且高 SF 的符號很長、都卜勒/時鐘漂移會讓解碼在中段開始出錯，這是解調器被逼到要加漂移修正的一篇
 
 > 系列其他篇：[Channel Hop](/posts/bbd322cb.html)、[True Color Is a Lie](/posts/f90bdeae.html)、[Isodata Seven](/posts/907c1e5f.html)、[Subsidy Claim](/posts/1279e916.html)、[Hopscotch](/posts/9633ca0c.html)

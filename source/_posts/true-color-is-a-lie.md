@@ -17,6 +17,9 @@ date: 2026-10-24 20:20:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/f90bdeae.html)
+
+
 > 系列第二篇，也是**真正開始手刻 LoRa 解調器**的一篇。上一題〈[Channel Hop](/posts/bbd322cb.html)〉只是讀已經解好的封包日誌，但這題開始，拿到的是原始的 IQ 訊號，什麼都得自己來
 
 

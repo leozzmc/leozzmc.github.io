@@ -17,6 +17,9 @@ date: 2026-10-23 20:40:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/603a4422.html)
+
+
 {% note info %}
 GaianSpace CTF 2026「05-rad-hard-rampage」系列最後一篇
 {% endnote %}

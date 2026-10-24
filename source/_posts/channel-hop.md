@@ -17,6 +17,9 @@ date: 2026-10-24 20:10:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/bbd322cb.html)
+
+
 > 這是 GaianSpace CTF 2026 裡我最喜歡的一條主線的第一篇，因為整個系列的核心技能就是要你去 **自己手刻一個 LoRa 解調器**，然後一路把它養大，從單一參數、到隱式標頭、到都卜勒漂移、最後到跳頻
 
 

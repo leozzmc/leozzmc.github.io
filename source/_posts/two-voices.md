@@ -17,6 +17,9 @@ date: 2026-10-24 20:50:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/ec3d267b.html)
+
+
 > 系列第五篇，故事線換到「深夜值班」GaianSpace 任務控制中心的 GAIAN-723 衛星被人劫持。前四篇（農場篇）把 LoRa 解調器練熟了，這三篇（[本篇](/posts/ec3d267b.html)、[No Name on the Door](/posts/7a436e8c.html)、[Hopscotch](/posts/9633ca0c.html)）會讓同一支解調器遇到越來越刁鑽的狀況。
 
 > 這一篇的主題：同一段錄波裡，有兩個參數完全不同的 LoRa 發射源在對話。

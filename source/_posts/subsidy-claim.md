@@ -17,6 +17,9 @@ date: 2026-10-24 20:40:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/1279e916.html)
+
+
 > 系列第四篇，也是「農場篇」（Babb 的 AgriLink 世界觀）的收尾。前三篇把 LoRa 解調器練起來了，這篇在解調之外多了一層 GIS 與分類器重現
 
 > 某種程度上是前面所有技能的綜合應用

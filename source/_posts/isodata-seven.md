@@ -17,6 +17,9 @@ date: 2026-10-24 20:30:00
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/907c1e5f.html)
+
+
 > 系列第三篇
 > LoRa 解調器在上一篇〈[True Color Is a Lie](/posts/f90bdeae.html)〉打好骨架後，這篇換了新參數（隱式標頭），順便把隱寫的手法從 **兩份相減** 升級成 **多頻道分群**
 
