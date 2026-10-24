@@ -13,6 +13,9 @@ abbrlink: 85fe9be3
 date: 2021-06-25 08:51:54
 ---
 
+> 🌐 English version: [English](/en/posts/85fe9be3.html)
+
+
 
 
 ## Abstract

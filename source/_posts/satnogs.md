@@ -11,6 +11,9 @@ date: 2025-12-11 15:57:18
 cover: /img/satnogs/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/a43171ae.html)
+
+
 # Introduction
 
 過去我對一直衛星是如何與地面站通訊這件事充滿興趣，包含，衛星如何被追蹤、地面站如何取得軌道資料(Ex. TLE 還有就是 SDR 接收到的訊號) 如何轉換成可解碼的 IF Frequency等等。

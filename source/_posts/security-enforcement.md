@@ -17,6 +17,9 @@ date: 2021-09-01 05:02:34
 featuredVideo:
 ---
 
+> 🌐 English version: [English](/en/posts/de3933f9.html)
+
+
 <style>
     :root{
     --maincolor: #50fa7b;

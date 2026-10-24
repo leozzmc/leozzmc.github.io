@@ -12,6 +12,9 @@ abbrlink: a1cfeb54
 date: 2021-08-11 01:17:57
 ---
 
+> 🌐 English version: [English](/en/posts/a1cfeb54.html)
+
+
 {% note primary no-icon%}
 這是篇survey paper
 **Title**: "Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead"
