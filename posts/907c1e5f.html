@@ -222,7 +222,7 @@ btf.addGlobalFn('pjaxComplete', () => {
 </blockquote>
 <span id="more"></span>
 
-<h2 id="What-the-challenge-is-about"><a href="#What-the-challenge-is-about" class="headerlink" title="What the challenge is about"></a>What the challenge is about</h2><p><img src="/en/challenge.jpg" alt="Challenge page"></p>
+<h2 id="What-the-challenge-is-about"><a href="#What-the-challenge-is-about" class="headerlink" title="What the challenge is about"></a>What the challenge is about</h2><p><img src="/en/posts/907c1e5f/challenge.jpg" alt="Challenge page"></p>
 <div class="note info flat"><p>Since dawn the tractor has stopped listening to the mast and started listening to a different, unknown transmitter. The Johnripper terminal receives tiles under the dealer’s proprietary settings, and the dealer won’t publish those settings. Babb only has photocopies of pages 14 and 16 of the service manual — page 15, in between, is missing.</p>
 <p>The shared SDR was moved into the tractor shed and recorded that channel. What the stranger sends to the tractor is a whole tile (all channels), and it looks real — except for <strong>one patch in the north field that Babb can’t explain</strong>.</p>
 <p>In the margin of the course notes, double-underlined: “count what actually grows here.”</p>
@@ -234,7 +234,7 @@ btf.addGlobalFn('pjaxComplete', () => {
 <p>The missing page 15 holds the frame-length table — we’ll have to infer it from the data.</p>
 <p>Reusing the demodulator skeleton from <a href="/en/posts/f90bdeae.html">the last post</a>, the difference here is the <strong>implicit header</strong>: the first 8 symbols are a low-rate block (CR4&#x2F;8), after which every 5 symbols form a block; the length is inferred from how many symbols the packet spans in the air.</p>
 <p>Once all 779 frames pass the CRC-16 check from manual page 16, they reconstruct into five 128×128 grayscale images:</p>
-<p><img src="/en/five-layers.png" alt="The five reconstructed channels — each has a noisy patch over the north field"></p>
+<p><img src="/en/posts/907c1e5f/five-layers.png" alt="The five reconstructed channels — each has a noisy patch over the north field"></p>
 <p>Looked at one channel at a time, that patch looks like random noise in every one — unlike the previous challenge. That’s probably exactly what the challenge means by “no band leaks anything.”</p>
 <h2 id="First-understand-what-this-“image”-is"><a href="#First-understand-what-this-“image”-is" class="headerlink" title="First, understand what this “image” is"></a>First, understand what this “image” is</h2><p>A satellite doesn’t take an ordinary RGB camera photo. It records different wavelengths of light separately, storing each wavelength as its own channel (band).</p>
 <p>This challenge uses three kinds:</p>
@@ -293,9 +293,9 @@ btf.addGlobalFn('pjaxComplete', () => {
 <li>Only by comparing “<strong>whether A and B agree</strong>“ does the text appear. In digital terms, you <strong>XOR</strong> the two switches: agree &#x3D; 0, disagree &#x3D; 1, and <strong>the text is painted exactly on the pixels where XOR &#x3D; 1</strong>.</li>
 </ul>
 <p>That’s why you <em>must</em> cluster rather than look at a single channel: clustering considers all channels’ fingerprints at once, so it naturally groups the <strong>self-contradictory</strong> pixels (“A says vegetation but B is flipped”) into their own small classes — and those small classes are the text. Running k&#x3D;7 clustering over the whole image, those two “contradictory” small classes each show part of the text:</p>
-<p><img src="/en/kmeans7.png" alt="Class distribution for k=7 clustering — two small classes together form the text"></p>
+<p><img src="/en/posts/907c1e5f/kmeans7.png" alt="Class distribution for k=7 clustering — two small classes together form the text"></p>
 <p>Merge those two classes and draw them, and three lines of text clearly emerge:</p>
-<p><img src="/en/hidden-text.png" alt="The mask after merging the two text classes"></p>
+<p><img src="/en/posts/907c1e5f/hidden-text.png" alt="The mask after merging the two text classes"></p>
 <h2 id="Reading-the-last-line"><a href="#Reading-the-last-line" class="headerlink" title="Reading the last line"></a>Reading the last line</h2><p>The font is a “bold” variant — each character is a 5×6 base glyph plus a copy shifted 1 pixel to the right.</p>
 <p>I used the already-known letters in the first two lines (<code>GAIANSPACE&#123;</code>, <code>7TH-CLASS-</code>) as a reference and confirmed the last line cell by cell. I hesitated between <code>W</code>&#x2F;<code>V</code> here; <code>W</code> turned out to be correct.</p>
 <h2 id="Flag"><a href="#Flag" class="headerlink" title="Flag"></a>Flag</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GAIANSPACE&#123;7TH-CLASS-XHTXWX&#125;</span><br></pre></td></tr></table></figure>

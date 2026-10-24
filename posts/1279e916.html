@@ -223,7 +223,7 @@ btf.addGlobalFn('pjaxComplete', () => {
 </blockquote>
 <span id="more"></span>
 
-<h2 id="What-the-challenge-is-about"><a href="#What-the-challenge-is-about" class="headerlink" title="What the challenge is about"></a>What the challenge is about</h2><p><img src="/en/challenge.jpg" alt="Challenge page"></p>
+<h2 id="What-the-challenge-is-about"><a href="#What-the-challenge-is-about" class="headerlink" title="What the challenge is about"></a>What the challenge is about</h2><p><img src="/en/posts/1279e916/challenge.jpg" alt="Challenge page"></p>
 <div class="note info flat"><p>At the county agriculture office, the area-payment claim for Babb’s north parcel was rejected: “parcel already declared as pasture, satellite check passed.” Someone filed a claim using Babb’s corn field, and the office’s satellite check actually sided with them.</p>
 <p>A clerk lets something slip: this year the office’s classification stats <strong>left out one class</strong> — because “nobody around here declares that crop, and field surveys are expensive.” Separately, at 12:05 the shared SDR recorded a stranger transmitting this batch of claims on “yet another channel.”</p>
 </div>
@@ -232,13 +232,13 @@ btf.addGlobalFn('pjaxComplete', () => {
 <p>The files given are the SDR recording, the office’s check imagery (5-channel GeoTIFF), the class statistics, the training-field and parcel registry, and the rejection letter.</p>
 <h2 id="First-demodulate-the-claim-batch-from-the-SDR"><a href="#First-demodulate-the-claim-batch-from-the-SDR" class="headerlink" title="First, demodulate the claim batch from the SDR"></a>First, demodulate the claim batch from the SDR</h2><p>The radio this time is 434.65 MHz, SF9, BW125k, preamble 8, <strong>explicit header</strong>, CR4&#x2F;5.</p>
 <p>Reusing the demodulator, 64 bursts decode to: one batch header + 30 claims + one short packet, and then the whole batch is <strong>sent again</strong> (so every record has two copies to cross-check).</p>
-<p><img src="/en/sdr-bursts.png" alt="The SDR spectrum, the spectrogram of a single burst, and the structure of the 64 bursts (header + 30 records + re-send)"></p>
+<p><img src="/en/posts/1279e916/sdr-bursts.png" alt="The SDR spectrum, the spectrogram of a single burst, and the structure of the 64 bursts (header + 30 records + re-send)"></p>
 <p>Each claim has the format <code>&lt;seq&gt;;&lt;parcel&gt;;&lt;declared crop&gt;;&lt;area&gt;;&lt;claim code&gt;</code>, e.g. <code>01;MZH-8140;legelo;44.67;CUVE</code> (legelo &#x3D; pasture).</p>
 <h2 id="The-key-the-class-that-got-deleted"><a href="#The-key-the-class-that-got-deleted" class="headerlink" title="The key: the class that got deleted"></a>The key: the class that got deleted</h2><p>The office’s <code>.sta</code> file uses Gaussian maximum-likelihood classification with equal priors, but it has <strong>only four classes</strong>: pasture, stubble, cropland, settlement. You can see that <strong>corn (kukorica) was removed</strong> — only its training field is still there.</p>
 <p>A supervised classifier <strong>can only output classes it was trained on</strong>, so with no corn statistics, a corn field gets forced into the most similar class (pasture), and the check “passes.” That’s the core vulnerability of the whole challenge.</p>
 <p>I first rasterized the training-field polygons onto the image grid and recomputed each class’s mean and covariance — they matched the <code>.sta</code> file byte for byte, confirming my coordinate and sampling conventions were correct.</p>
 <p>Then I used training field T-01 to restore corn’s statistics, ran a 5-class classification, and compared record by record:</p>
-<p><img src="/en/classification.png" alt="Left: true colour. Middle: the office&#39;s 4-class classification (corn fields lumped into pasture). Right: after restoring corn (yellow), with false claims marked in red"></p>
+<p><img src="/en/posts/1279e916/classification.png" alt="Left: true colour. Middle: the office&#39;s 4-class classification (corn fields lumped into pasture). Right: after restoring corn (yellow), with false claims marked in red"></p>
 <p>Under the office’s 4-class classification, all 30 records “pass.”</p>
 <p>After restoring corn, only <strong>3 records</strong> don’t match — and all three are <strong>“declared pasture, actually corn”</strong>:</p>
 <table>
