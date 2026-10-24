@@ -17,6 +17,9 @@ date: 2026-09-21 15:14:29
 top_img:
 ---
 
+> 🌐 English version: [English](/en/posts/9f8dacd3.html)
+
+
 > 這題跟前一篇〈[One to Rule Them All](/posts/77798b75.html)〉是同一個 Prismantir 無人機蜂群世界觀的續作
 > 
 > 但玩法完全不同——上一題是協定安全，這題是純粹的訊號定位問題，而且老實說，我在這題submit了兩次錯誤答案，繞了一圈才想起國中學過的外心怎麼算

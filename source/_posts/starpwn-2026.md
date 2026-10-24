@@ -15,6 +15,9 @@ top_img:
 cover:
 ---
 
+> 🌐 English version: [English](/en/posts/5439deff.html)
+
+
 > 這篇想先記錄一下這次 STARPWN 2026 的整體參賽過程，個別題目的 writeup 我會另外拆開寫～
 > 這篇比較像是總覽：這場比賽到底在玩什麼、我遇到了哪些很有意思的題目，以及打完之後留下了什麼
 
