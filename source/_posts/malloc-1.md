@@ -8,6 +8,9 @@ tags: ['Linux','OS']
 categories: Deep Dive
 aside: true
 ---
+
+> 🌐 English version: [English](/en/posts/78d9b0c6.html)
+
 # Deep Dive: malloc 函式如何進行記憶體分配?
 
 ## 前言

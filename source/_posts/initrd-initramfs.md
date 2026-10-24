@@ -11,6 +11,9 @@ date: 2025-11-19 14:32:14
 cover: /img/linux/boot/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/ad71f05.html)
+
+
 # Introduction
 
 在開機早期，會需要一個暫時的檔案系統，來在開機初期進行初始化跟組態設定，有兩種機制來去使用暫時的檔案系統，分別是 **Initrd (Initial RAM Disk)** 以及 **Initramfs (Initial RAM Filesystem)** 。 其中 initrd 會是比較早期的作法，現今大多開機流程都使用 initramfs 居多。

@@ -19,6 +19,9 @@ date: 2026-06-07 20:51:10
 cover: /img/DTN/cover-2.png
 ---
 
+> 🌐 English version: [English](/en/posts/25763fe7.html)
+
+
 # 前言：從 DTN 的概念，走向真正可以運作的太空網路
 
 在上一篇文章 [〈為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路〉](https://leozzmc.github.io/posts/7d41a775.html) 中，我整理了太空網路和地面 Internet 之間最根本的差異。 在地球上，我們通常預期來源與目的地之間存在一條可以立即使用的完整路徑。即即便途中偶爾發生遺失封包，TCP 也能透過 ACK、Timeout 與 Retransmission 等一大堆機制處理問題～

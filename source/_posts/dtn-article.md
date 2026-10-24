@@ -19,6 +19,9 @@ abbrlink: 7d41a775
 date: 2026-05-05 18:56:21
 ---
 
+> 🌐 English version: [English](/en/posts/7d41a775.html)
+
+
 # 前言：在太空中，我們還能順暢地上網嗎？
 
 > 前陣子看了 [NASA Artemis II 繞月行動的直播](https://youtu.be/_eeZQw9PBc0)，看著火箭升空，算是見證了人類的另一個里程碑。 
