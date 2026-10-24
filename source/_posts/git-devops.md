@@ -11,6 +11,9 @@ date: 2025-11-11 11:45:46
 cover: /img/devops/git/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/22911275.html)
+
+
 
 # Basic
 

@@ -13,6 +13,9 @@ date: 2024-11-07 08:54:09
 cover: /img/devops/AWS/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/100cc6b6.html)
+
+
 
 # Regions & AZs
 

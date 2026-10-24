@@ -12,6 +12,9 @@ date: 2024-11-06 09:20:47
 cover: /img/devops/python/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/70fcdd32.html)
+
+
 # Basic Data Types
 
 ## data type

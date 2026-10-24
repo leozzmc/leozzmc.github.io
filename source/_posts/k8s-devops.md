@@ -13,6 +13,9 @@ date: 2024-11-07 19:14:09
 cover:
 ---
 
+> 🌐 English version: [English](/en/posts/c7f5f41c.html)
+
+
 # Basic
 
 ***解釋一下什麼是 Kubernetes***
