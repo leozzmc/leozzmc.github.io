@@ -9,6 +9,9 @@ date: 2025-07-13 14:52:52
 cover: /img/mesh/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/34e84285.html)
+
+
 ![](/img/mesh/banner.png)
 
 {% note info %}

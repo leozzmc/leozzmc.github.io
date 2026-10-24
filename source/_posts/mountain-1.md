@@ -12,6 +12,9 @@ description:
 cover: /img/Mountain1.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/22f14c54.html)
+
+
 ## 簡介
 
 由於生長在台北多年還沒去七星山主峰的三角點，趁著難得的好天氣出遊踩點

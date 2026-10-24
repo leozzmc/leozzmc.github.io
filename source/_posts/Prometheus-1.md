@@ -11,6 +11,9 @@ date: 2025-02-11 10:33:03
 cover: /img/Prometheus/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/a6822388.html)
+
+
 
 # 前言
 

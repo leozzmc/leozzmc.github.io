@@ -13,6 +13,9 @@ date: 2023-12-13 12:32:05
 cover: /img/OTA/OIG.jpeg
 ---
 
+> 🌐 English version: [English](/en/posts/613d9ed0.html)
+
+
 
 ## 什麼是 OTA Update (Over The Air Updtae)?
 
