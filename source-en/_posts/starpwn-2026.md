@@ -1,5 +1,5 @@
 ---
-title: STARPWN 2026 Writeup Index: My First Aerospace CTF
+title: "STARPWN 2026 Writeup Index: My First Aerospace CTF"
 tags:
   - STARPWN
   - CTF

@@ -2,7 +2,7 @@
 title: >-
   Security policies definition and enforcement utilizing policy control function
   framework in 5G
-description: Paper reading: how to realize security-policy definition and enforcement via 5G's PCF network-function framework
+description: "Paper reading: how to realize security-policy definition and enforcement via 5G's PCF network-function framework"
 toc: true
 tags:
   - 5G

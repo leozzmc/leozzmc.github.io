@@ -1,6 +1,6 @@
 ---
 title: VNF Deployment and Flow Scheduling in Geo-distributed Data Centers
-description: Paper reading: understanding VNF deployment and network-traffic problems across geographically distributed data centers
+description: "Paper reading: understanding VNF deployment and network-traffic problems across geographically distributed data centers"
 toc: true
 tags:
   - VNF
