@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kevin Liu's 部落格 || Technical || Travel - Life Documentation</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="ex-AWS | cloud engineer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:url" content="https://leozzmc.github.io/page/15/index.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
+<meta property="og:description" content="ex-AWS | cloud engineer">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="article:author" content="Kevin Liu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/page/15/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '複製成功',
+    error: '複製失敗',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '載入更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kevin Liu\'s 部落格 || Technical || Travel',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="/css/style.css"><style>
+  .bobame-aside-card {
+    text-align: center;
+  }
+
+  .bobame-aside-text {
+    margin: 0 0 0.8rem;
+    line-height: 1.7;
+    font-size: 0.92rem;
+  }
+
+  .bobame-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 210px;
+    height: 44px;
+    padding: 8px 18px;
+    margin: 0 auto;
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    color: #F8E0BE !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .bobame-button:hover {
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+
+  .bobame-button img {
+    height: 100%;
+    margin-right: 8px;
+  }
+
+  .bobame-button span {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+</style>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Kevin Liu's 部落格 || Technical || Travel</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/posts/4a669d62.html" title="二元搜尋樹迭代器 | Medium | LeetCode#173. Binary Search Tree Iterator"><img class="post-bg" src="/img/LeetCode/173/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元搜尋樹迭代器 | Medium | LeetCode#173. Binary Search Tree Iterator"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/4a669d62.html" title="二元搜尋樹迭代器 | Medium | LeetCode#173. Binary Search Tree Iterator">二元搜尋樹迭代器 | Medium | LeetCode#173. Binary Search Tree Iterator</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-21T01:12:54.000Z" title="發表於 2024-08-21 09:12:54">2024-08-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Search-Tree/">Binary Search Tree</a></span></div><div class="content">題目敘述  題目難度： Easy  題目敘述： 題目要求你實作一個 BSTIterator 作為二元樹的 Iterator，可以對一個 Binary Search Tree 進行 in-order traversal  BSTIterator(TreeNode root) 為 BSTIterator class 的 constructor，整個 BST 的 root 會作為 constructor 的初始參數  boolean hasNext() 會去檢查當前 pointer 的右側是否有值存在，如果有就回傳 true 否則則是 false  int next() 則會將指標移動到下一個指標，並且回傳其指向的資料值   注意：第一次呼叫 next() 會需要回傳 null，可假設每次呼叫 next() 都會 valid，也就是每次呼叫都會至少有一個值可被回傳 （以 in-order traversal順序）    解法一開始的想法一開始有點被我的這篇文章誤導，我原先的想法也是要找到 leftmost 元素，接下來去找 successor (即下一個節點)，但下一個節點可能會是右子...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/e51c6896.html" title="計算完整二元術節點 | Easy | LeetCode#222. Count Complete Tree Nodes"><img class="post-bg" src="/img/LeetCode/222/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="計算完整二元術節點 | Easy | LeetCode#222. Count Complete Tree Nodes"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/e51c6896.html" title="計算完整二元術節點 | Easy | LeetCode#222. Count Complete Tree Nodes">計算完整二元術節點 | Easy | LeetCode#222. Count Complete Tree Nodes</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-16T00:12:22.000Z" title="發表於 2024-08-16 08:12:22">2024-08-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Complete-Binary-Tree/">Complete Binary Tree</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 題目要求給定一個 Complete Binary Tree 的 root，需要計算 Tree 中的所有節點   根據維基百科定義，在一顆二元樹中，若除最後一層外的其餘層都是滿的，並且最後一層要麼是滿的，要麼在右邊缺少連續若干節點，則此二元樹為完全二元樹（Complete Binary Tree）。深度為k的完全二元樹，至少有 $\displaystyle 2^{\begin{aligned}k-1\end{aligned}}$ 個節點，至多有 $\displaystyle 2^{\begin{aligned}k\end{aligned}}-1$　個節點。  最後題目有個要求是，請設計一套演算法其時間複雜度小於 $O(n)$  解法一開始的想法這題我一開始的想法其實都是 $O(N)$ 的做法 (各種 Traversal 算節點)，到後面是想說，首先可以瘋狂往樹的左子樹走就可以知道整顆 Tree 的 leftmost 節點，這樣也就能夠知道這個Tree 的高度。 接下來只要能夠知道 leaf 數量就能夠得到節點總數了。 但為了找到 le...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/74aa4179.html" title="二元樹路徑總和 | Easy | LeetCode#112. Path Sum"><img class="post-bg" src="/img/LeetCode/112/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元樹路徑總和 | Easy | LeetCode#112. Path Sum"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/74aa4179.html" title="二元樹路徑總和 | Easy | LeetCode#112. Path Sum">二元樹路徑總和 | Easy | LeetCode#112. Path Sum</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-13T15:19:38.000Z" title="發表於 2024-08-13 23:19:38">2024-08-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 給定一個二元樹的 root 以及一個整數 targetSum，若從 root 到 任意leaf 之間節點值的加總等於 targetSum 則回傳 true  解法一開始的想法 這題一開始的想法就是用 DFS，去找到 root，途中運用變數來儲存節點值，邊traverse 邊累加節點值，走到leaf就能夠知道是否等於 targetSum 錯誤寫法1234567891011121314151617181920212223242526272829303132333435363738394041424344/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125; *     TreeNode(int x) : v...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/13d1e5ab.html" title="透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal"><img class="post-bg" src="/img/LeetCode/105/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/13d1e5ab.html" title="透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal">透過 Preorder Traversal 和 Inorder Traversal 建構二元樹 | Medium | LeetCode#105. Construct Binary Tree from Preorder and Inorder Traversal</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-10T03:38:14.000Z" title="發表於 2024-08-10 11:38:14">2024-08-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/In-Order-Traversal/">In-Order Traversal</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Pre-Order-Traversal/">Pre-Order Traversal</a></span></div><div class="content">題目敘述   題目難度: Medium 題目敘述: 給兩個整數陣列 preorder 以及 inorder， preorder 存放一棵二元樹進行 Pre-Order Traversal 的結果，inorder 存放相同二元樹進行 In-Order Traversal 的結果，題目要求透過這兩個陣列來建構出原本的Binary Tree，並回傳 root 節點。  解法一開始的想法這次的題目卡了很久，主要流程有嘗試寫下想法，但不知道該如何用遞迴去實作。    字有點醜，請見諒XD  首先第一個想法就是，Preorder Traversal 後的第一個元素必定會是Root，而再來就是 Inorder Traversal 後的第一個元素會是整棵樹的 leftmost node，也就是最左邊的節點，所以如果能夠迭題目給的 preorder list，從 Root 到 leftmost node 之間的元素都會是左子樹的 left child。在 Preorder Traversal 中，root 節點的下一個節點會是左子樹的Root，這時檢查　inorder list 中， 左子樹的ro...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/c75ae7a5.html" title="二元樹各層的平均值 | Easy | LeetCode#637. Average of Levels in Binary Tree"><img class="post-bg" src="/img/LeetCode/637/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元樹各層的平均值 | Easy | LeetCode#637. Average of Levels in Binary Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/c75ae7a5.html" title="二元樹各層的平均值 | Easy | LeetCode#637. Average of Levels in Binary Tree">二元樹各層的平均值 | Easy | LeetCode#637. Average of Levels in Binary Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-06T14:31:12.000Z" title="發表於 2024-08-06 22:31:12">2024-08-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/BFS/">BFS</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Level-Order-Traversal/">Level-Order Traversal</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 題目給定一個 Binary Tree 的 root，求各層level 節點值的平均值，結果以陣列回傳  解法一開始的想法這題與之前碰過的題目很像，**首先想法一樣會是先BFS (Level-Order Traversal)**。 如果能夠在各層加入某個變數，在各層結束時加入回傳陣列即可。 我的解法這是我一開始的解法，但這是錯的 123456789101112131415161718192021222324252627282930313233343536373839404142434445/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125; *     TreeNode(int x) : val(x),...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/ac5f27c1.html" title="對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree"><img class="post-bg" src="/img/LeetCode/101/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/ac5f27c1.html" title="對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree">對稱的二元樹 | Easy | LeetCode#101. Symmetric Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-05T14:51:02.000Z" title="發表於 2024-08-05 22:51:02">2024-08-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 給定一個二元樹的 root，題目要我們檢查該二元樹是否是對稱的。  解法一開始的想法我一開始的想法就錯了，我一開始認為只要 Inorder Traversal 後的結果，只要反向過來也一樣那就是對稱的了 所以我一開始的解法是錯的: 123456789101112131415161718192021vector&lt;int&gt; result_inorder;void BT::inorder(TreeNode* node)&#123;    if(node==NULL) return;        cout &lt;&lt; node-&gt;val &lt;&lt; &quot; &quot;;    result_inorder.push_back(node-&gt;val);    inorder(node-&gt;left);    inorder(node-&gt;right);&#125;;bool BT::isSymmetric(TreeNode* root)&#123;    bool result = fals...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/db053989.html" title="二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal"><img class="post-bg" src="/img/LeetCode/102/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/db053989.html" title="二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal">二元樹 Level Order Traversal | Medium | LeetCode#102. Binary Tree Level Order Traversal</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-04T05:28:54.000Z" title="發表於 2024-08-04 13:28:54">2024-08-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Medium/">Medium</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述  題目難度: Medium 題目敘述: 給定一個 Binary Tree 的 root，求 Level Order Traversal 的結果 (須將節點值存在一個二維list中)  解法一開始的想法就是先實踐經典的 Level Order Traversal，然後再嘗試存進 vector&lt;vector&lt;int&gt;&gt; result 返回。但我的想法在我剛實現完標準的 level_order_traversal 後就卡住了，由於我是用 queue 來去做實現，而每一次 push 進 queue後的節點會為同一層 (因為上一層已經被pop出來了) ，因此就可以處理在每一層的時候將節點值添加進 result 中，但我高估了我對 vector 的熟悉程度… 我的解法123456789101112131415161718192021222324252627282930313233343536373839404142434445/** * Definition for a binary tree node. * struct TreeNode &#123; *...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/3dab679e.html" title="相同的二元樹 | Easy | LeetCode#100. Same Tree"><img class="post-bg" src="/img/LeetCode/100/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="相同的二元樹 | Easy | LeetCode#100. Same Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/3dab679e.html" title="相同的二元樹 | Easy | LeetCode#100. Same Tree">相同的二元樹 | Easy | LeetCode#100. Same Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-03T04:48:08.000Z" title="發表於 2024-08-03 12:48:08">2024-08-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述   題目難度: Easy 題目敘述: 給定兩個 Binary Tree 的 root，分別是 p 與 q，請寫一個函式檢查他們是否相同   相同的定義: 結構一樣，並且節點值一樣  解法一開始的想法我的想法一樣是遞迴，首先Traverse 到 Leaf，之後檢查節點值，如果不一樣就直接回傳 false，我們可以用一個變數值，將遞迴回傳的結果保存起來，再做為函式的返回值 我的解法12345678910111213141516171819202122232425262728/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125; *     TreeNode(int x) : val(x), left(nullptr), right(nullpt...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/posts/5371066e.html" title="反轉二元樹 | Easy | LeetCode#226. Invert Binary Tree"><img class="post-bg" src="/img/LeetCode/226/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="反轉二元樹 | Easy | LeetCode#226. Invert Binary Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/5371066e.html" title="反轉二元樹 | Easy | LeetCode#226. Invert Binary Tree">反轉二元樹 | Easy | LeetCode#226. Invert Binary Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-02T14:50:53.000Z" title="發表於 2024-08-02 22:50:53">2024-08-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述  題目難度: Easy 題目敘述: 給定一個 Binary Tree 的root，反轉他以後，回傳它的 root  解法一開始的想法 題目敘述很簡短，但基本上就是除了root以外，左葉子樹的成員都對調   但學會了上一題遞迴的概念後，這題幾乎是秒解，但還是有考慮不周到的地方  我一開始的想法，就是一樣透過遞迴的方式，一開始就 traverse 到樹葉，碰到樹葉後，再將他們的左右child進行對調，之後一路fuction return 回去，然後回傳一開始原先的root即可 我一開始的思路會是下面這樣 123456789101112131415161718TreeNode *BT::invertTree(TreeNode* root)&#123;    TreeNode *tmp = 0;    TreeNode *current = root;    if (root == nullptr) &#123;            return nullptr;    &#125;    if(current-&gt;left != NULL &amp;&amp; curr...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/posts/4cd60718.html" title="二元樹的最大深度 | Easy | LeetCode#104. Maximum Depth of Binary Tree"><img class="post-bg" src="/img/LeetCode/104/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二元樹的最大深度 | Easy | LeetCode#104. Maximum Depth of Binary Tree"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/4cd60718.html" title="二元樹的最大深度 | Easy | LeetCode#104. Maximum Depth of Binary Tree">二元樹的最大深度 | Easy | LeetCode#104. Maximum Depth of Binary Tree</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">發表於</span><time datetime="2024-08-01T14:33:24.000Z" title="發表於 2024-08-01 22:33:24">2024-08-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/LeetCode%E7%AD%86%E8%A8%98/">LeetCode筆記</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/LeetCode/">LeetCode</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Easy/">Easy</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Binary-Tree/">Binary Tree</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Tree/">Tree</a></span></div><div class="content">題目敘述  題目難度: Easy 題目敘述: 題目給定一個Binary Tree 的 Root，要求這棵二元樹的最大深度  最大深度即 root 到樹葉的最遠距離   解法一開始的想法一開始的想法只有停留在 Traversal 本身，所以寫了 Inorder, Preorder, Postorder 甚至是 Level-order，都還是沒有太多想法… 這次是看了提示後才寫出來，並且了解到我自己對Recursive 的不熟練 我的解法123456789101112131415161718192021/** * Definition for a binary tree node. * struct TreeNode &#123; *     int val; *     TreeNode *left; *     TreeNode *right; *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125; *     TreeNode(int x) : val(x), left(nullptr), ri...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/14/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/#content-inner">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/#content-inner">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/#content-inner">22</a><a class="extend next" rel="next" href="/page/16/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><div class="bobame-aside-card">
+  <p class="bobame-aside-text">如果覺得我的文章有幫助，歡迎拯救Kevin免於吃土.</p>
+  <a class="bobame-button"
+     style="background-color:#A0ADA6;color:#F8E0BE;border:none"
+     href="https://kevinneck87.bobaboba.me?utm_source=blog&utm_medium=aside_button&utm_campaign=support"
+     target="_blank"
+     rel="noopener noreferrer nofollow">
+    <img height="100%"
+         src="https://s3.ap-southeast-1.amazonaws.com/media.anyonelab.com/images/boba/boba-embed-icon.png"
+         alt="boba-icon">
+    <span>Use boba to safe Kevin!</span>
+  </a>
+</div>
+</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026">跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="發表於 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026">被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="發表於 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026">深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="發表於 2026-10-24 20:50:00">2026-10-24</time></div></div></div></div><div class="card-widget" id="card-newest-comments"><div class="item-headline"><i class="fas fa-comment-dots"></i><span>最新評論</span></div><div class="aside-list"><span>載入中...</span></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分類</span>
+            <a class="card-more-btn" href="/categories/" title="檢視更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF-Writeup/"><span class="card-category-list-name">CTF Writeup</span><span class="card-category-list-count">20</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Deep-Dive/"><span class="card-category-list-name">Deep Dive</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Kernel%E5%AD%B8%E7%BF%92/"><span class="card-category-list-name">Kernel學習</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LeetCode%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">LeetCode筆記</span><span class="card-category-list-count">144</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Space-Infrastructure/"><span class="card-category-list-name">Space Infrastructure</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/"><span class="card-category-list-name">學習筆記</span><span class="card-category-list-count">17</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/Troubleshooting/"><span class="card-category-list-name">Troubleshooting</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AF%A6%E4%BD%9C%E7%B4%80%E9%8C%84/"><span class="card-category-list-name">實作紀錄</span><span class="card-category-list-count">18</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>標籤</span></div><div class="card-tag-cloud"><a href="/tags/AES/" style="font-size: 1.15em; color: #999b9e">AES</a> <a href="/tags/Total-Ionizing-Dose/" style="font-size: 1.1em; color: #999">Total Ionizing Dose</a> <a href="/tags/Displacement-Damage/" style="font-size: 1.1em; color: #999">Displacement Damage</a> <a href="/tags/Exponentiation-by-Squaring/" style="font-size: 1.1em; color: #999">Exponentiation by Squaring</a> <a href="/tags/DAG/" style="font-size: 1.1em; color: #999">DAG</a> <a href="/tags/Reverse/" style="font-size: 1.1em; color: #999">Reverse</a> <a href="/tags/Dependency-Confusion/" style="font-size: 1.1em; color: #999">Dependency Confusion</a> <a href="/tags/permutation/" style="font-size: 1.1em; color: #999">permutation</a> <a href="/tags/NASA/" style="font-size: 1.15em; color: #999b9e">NASA</a> <a href="/tags/Pre-Order-Traversal/" style="font-size: 1.1em; color: #999">Pre-Order Traversal</a> <a href="/tags/%E5%B0%8F%E7%99%BE%E5%B2%B3/" style="font-size: 1.1em; color: #999">小百岳</a> <a href="/tags/Travel/" style="font-size: 1.1em; color: #999">Travel</a> <a href="/tags/Network/" style="font-size: 1.3em; color: #99a1ac">Network</a> <a href="/tags/combinations/" style="font-size: 1.3em; color: #99a1ac">combinations</a> <a href="/tags/C/" style="font-size: 1.4em; color: #99a5b6">C</a> <a href="/tags/Cloud-Support/" style="font-size: 1.1em; color: #999">Cloud Support</a> <a href="/tags/hash-table/" style="font-size: 1.2em; color: #999da3">hash table</a> <a href="/tags/Remote-Sensing/" style="font-size: 1.25em; color: #999fa7">Remote Sensing</a> <a href="/tags/Binary-Search/" style="font-size: 1.35em; color: #99a3b1">Binary Search</a> <a href="/tags/Geolocation/" style="font-size: 1.1em; color: #999">Geolocation</a> <a href="/tags/SQS/" style="font-size: 1.1em; color: #999">SQS</a> <a href="/tags/Greedy/" style="font-size: 1.15em; color: #999b9e">Greedy</a> <a href="/tags/Radiation/" style="font-size: 1.25em; color: #999fa7">Radiation</a> <a href="/tags/IoT-Shadow/" style="font-size: 1.1em; color: #999">IoT Shadow</a> <a href="/tags/Security/" style="font-size: 1.15em; color: #999b9e">Security</a> <a href="/tags/Git/" style="font-size: 1.1em; color: #999">Git</a> <a href="/tags/System-Design/" style="font-size: 1.1em; color: #999">System Design</a> <a href="/tags/3GPP/" style="font-size: 1.1em; color: #999">3GPP</a> <a href="/tags/backtracking/" style="font-size: 1.45em; color: #99a7ba">backtracking</a> <a href="/tags/Math/" style="font-size: 1.15em; color: #999b9e">Math</a> <a href="/tags/Buffer-Overflow/" style="font-size: 1.1em; color: #999">Buffer Overflow</a> <a href="/tags/Palindrome/" style="font-size: 1.1em; color: #999">Palindrome</a> <a href="/tags/Crypto/" style="font-size: 1.15em; color: #999b9e">Crypto</a> <a href="/tags/Satellites/" style="font-size: 1.1em; color: #999">Satellites</a> <a href="/tags/Binary-Tree/" style="font-size: 1.5em; color: #99a9bf">Binary Tree</a> <a href="/tags/Image-Forensics/" style="font-size: 1.15em; color: #999b9e">Image Forensics</a> <a href="/tags/Single-Event-Latchup/" style="font-size: 1.1em; color: #999">Single Event Latchup</a> <a href="/tags/Logic/" style="font-size: 1.1em; color: #999">Logic</a> <a href="/tags/Firmware/" style="font-size: 1.1em; color: #999">Firmware</a> <a href="/tags/matrix/" style="font-size: 1.1em; color: #999">matrix</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>歸檔</span>
+      <a class="card-more-btn" href="/archives/"
+            title="檢視更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2100/11/">
+            <span class="card-archive-list-date">
+              十一月 2100
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2060/11/">
+            <span class="card-archive-list-date">
+              十一月 2060
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/10/">
+            <span class="card-archive-list-date">
+              十月 2026
+            </span>
+            <span class="card-archive-list-count">11</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/09/">
+            <span class="card-archive-list-date">
+              九月 2026
+            </span>
+            <span class="card-archive-list-count">9</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/05/">
+            <span class="card-archive-list-date">
+              五月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/12/">
+            <span class="card-archive-list-date">
+              十二月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/11/">
+            <span class="card-archive-list-date">
+              十一月 2025
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>網站資訊</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章數量 :</div><div class="item-count">213</div></div><div class="webinfo-item"><div class="item-name">總字數 :</div><div class="item-count">323.9k</div></div><div class="webinfo-item"><div class="item-name">訪客數 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">總瀏覽量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最後更新時間 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-10-24T06:51:05.254Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[圖片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[連結]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[程式碼]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[程式碼]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '尚無評論'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'github-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const findTrueUrl = (array, ele) => {
+    Promise.all(array.map(item =>
+      fetch(item.url).then(resp => resp.json()).then(data => {
+        let urlArray = data.body ? data.body.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?/ig) : []
+        if (!Array.isArray(urlArray) || urlArray.length === 0) {
+          urlArray = [`${data.html_url}`]
+        }
+        if (data.user.login === 'utterances-bot') {
+          return urlArray.pop()
+        } else {
+          return urlArray.shift()
+        }
+      })
+    )).then(res => {
+        array = array.map((i,index)=> {
+          return {
+            ...i,
+            url: res[index]
+          }
+        })
+
+        btf.saveToLocal.set(keyName, JSON.stringify(array), 10/(60*24))
+        generateHtml(array, ele)
+    });
+  }
+
+  const getComment = ele => {
+    fetch('https://api.github.com/repos/leozzmc/Blog_Reply/issues/comments?sort=updated&direction=desc&per_page=6&page=1',{
+      "headers": {
+        Accept: 'application/vnd.github.v3.html+json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        const githubArray = data.map(item => {
+          return {
+            'avatar': item.user.avatar_url,
+            'content': changeContent(item.body_html || item.body),
+            'nick': item.user.login,
+            'url': item.issue_url,
+            'date': item.updated_at
+          }
+        })
+        findTrueUrl(githubArray, ele)
+      }).catch(e => {
+        console.error(e)
+        ele.textContent= "無法獲取評論，請確認相關配置是否正確"
+      })
+  }
+  run(keyName, getComment)
+})</script><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
