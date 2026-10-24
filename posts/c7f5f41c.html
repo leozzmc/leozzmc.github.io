@@ -1,34 +1,34 @@
-<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kubernetes for DevOps 筆記 |【DevOps技能樹】 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="(尚未完成)">
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kubernetes for DevOps Notes |【DevOps Skill Tree】 | Kevin Liu's Blog || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="(not yet finished)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kubernetes for DevOps 筆記 |【DevOps技能樹】">
-<meta property="og:url" content="https://leozzmc.github.io/posts/c7f5f41c.html">
-<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
-<meta property="og:description" content="(尚未完成)">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://leozzmc.github.io/img/me.jpg">
+<meta property="og:title" content="Kubernetes for DevOps Notes |【DevOps Skill Tree】">
+<meta property="og:url" content="https://leozzmc.github.io/en/posts/c7f5f41c.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s Blog || Technical || Travel">
+<meta property="og:description" content="(not yet finished)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://leozzmc.github.io/en/img/me.jpg">
 <meta property="article:published_time" content="2024-11-07T11:14:09.000Z">
-<meta property="article:modified_time" content="2026-10-24T16:33:34.652Z">
+<meta property="article:modified_time" content="2026-10-24T16:54:06.133Z">
 <meta property="article:author" content="Kevin Liu">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="DevOps">
 <meta property="article:tag" content="Kubernetes">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://leozzmc.github.io/img/me.jpg"><script type="application/ld+json">{
+<meta name="twitter:image" content="https://leozzmc.github.io/en/img/me.jpg"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Kubernetes for DevOps 筆記 |【DevOps技能樹】",
-  "url": "https://leozzmc.github.io/posts/c7f5f41c.html",
-  "image": "https://leozzmc.github.io/img/me.jpg",
+  "headline": "Kubernetes for DevOps Notes |【DevOps Skill Tree】",
+  "url": "https://leozzmc.github.io/en/posts/c7f5f41c.html",
+  "image": "https://leozzmc.github.io/en/img/me.jpg",
   "datePublished": "2024-11-07T11:14:09.000Z",
-  "dateModified": "2026-10-24T16:33:34.652Z",
+  "dateModified": "2026-10-24T16:54:06.133Z",
   "author": [
     {
       "@type": "Person",
       "name": "Kevin Liu",
-      "url": "https://leozzmc.github.io"
+      "url": "https://leozzmc.github.io/en"
     }
   ]
-}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/c7f5f41c.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+}</script><link rel="shortcut icon" href="/en/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/en/posts/c7f5f41c.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
     (() => {
       
     const saveToLocal = {
@@ -126,34 +126,34 @@ btf.addGlobalFn('pjaxComplete', () => {
   gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
 }, 'google_analytics')
 </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
+  root: '/en/',
   algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  localSearch: {"path":"/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
   translate: undefined,
   highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600,"highlightFullpage":false,"highlightMacStyle":true},
   copy: {
-    success: '複製成功',
-    error: '複製失敗',
-    noSupport: '瀏覽器不支援'
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
   },
   relativeDate: {
     homepage: false,
     post: false
   },
-  runtime: '',
+  runtime: 'days',
   dateSuffix: {
-    just: '剛剛',
-    min: '分鐘前',
-    hour: '小時前',
-    day: '天前',
-    month: '個月前'
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
   },
   copyright: undefined,
   lightbox: 'null',
   Snackbar: undefined,
   infinitegrid: {
     js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
-    buttonText: '載入更多'
+    buttonText: 'Load More'
   },
   isPhotoFigcaption: false,
   islazyloadPlugin: false,
@@ -164,7 +164,7 @@ btf.addGlobalFn('pjaxComplete', () => {
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'Kubernetes for DevOps 筆記 |【DevOps技能樹】',
+  title: 'Kubernetes for DevOps Notes |【DevOps Skill Tree】',
   isHighlightShrink: false,
   isToc: true,
   pageType: 'post'
@@ -212,84 +212,84 @@ btf.addGlobalFn('pjaxComplete', () => {
     white-space: nowrap;
   }
 </style>
-<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">Kubernetes for DevOps 筆記 |【DevOps技能樹】</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Kubernetes for DevOps 筆記 |【DevOps技能樹】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2024-11-07T11:14:09.000Z" title="發表於 2024-11-07 19:14:09">2024-11-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2026-10-24T16:33:34.652Z" title="更新於 2026-10-25 00:33:34">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/">學習筆記</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">3.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>11分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
-<p>🌐 English version: <a href="/en/posts/c7f5f41c.html">English</a></p>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">48</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">86</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's Blog || Technical || Travel</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Kubernetes for DevOps Notes |【DevOps Skill Tree】</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Kubernetes for DevOps Notes |【DevOps Skill Tree】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-07T11:14:09.000Z" title="Created 2024-11-07 19:14:09">2024-11-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-10-24T16:54:06.133Z" title="Updated 2026-10-25 00:54:06">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/Study-Notes/">Study Notes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>27mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>🌐 中文版：<a href="/posts/c7f5f41c.html">繁體中文</a></p>
 </blockquote>
-<h1 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h1><p><em><strong>解釋一下什麼是 Kubernetes</strong></em></p>
-<p>用於進行 <strong>容器編排和管理</strong>的平台，可用於容器的自動化部署和擴展</p>
-<p><em>Kubernetes 的主要功能有哪些?</em></p>
+<h1 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h1><p><em><strong>Explain what Kubernetes is</strong></em></p>
+<p>A platform for <strong>container orchestration and management</strong>, used for automated deployment and scaling of containers.</p>
+<p><em>What are Kubernetes’s main features?</em></p>
 <ul>
-<li>Self-Healing: 使用 Health check 來檢查運行中的容器，並且做出對應行為 Ex.重啟容器</li>
-<li>Load Balancing: 將請求分散給 cluster中不同的應用</li>
-<li>Operations: Kubernetes 打包的應用程式可以使用Cluster的 API 來更新其狀態並根據 Event 和應用程式狀態變更觸發操作</li>
-<li>Automated Rollout: 逐步對應用更新，並且在出現問題時可以Rollout</li>
-<li>Scaling: 基於自定義的條件進行水平擴展</li>
-<li>Secrets：可用一種以私有方式儲存使用者名稱、密碼和服務端點的機制，而且並非每個使用Cluster的使用者都可以查看</li>
+<li>Self-Healing: uses health checks to inspect running containers and takes corresponding action, e.g. restarting a container</li>
+<li>Load Balancing: distributes requests across different applications in the cluster</li>
+<li>Operations: applications packaged by Kubernetes can use the cluster’s API to update their state and trigger operations based on events and application state changes</li>
+<li>Automated Rollout: gradually updates applications, and can roll back when problems arise</li>
+<li>Scaling: horizontal scaling based on custom conditions</li>
+<li>Secrets: a mechanism to store usernames, passwords, and service endpoints privately, not viewable by every user of the cluster</li>
 </ul>
-<p><em><strong>可以用哪些方式來去跟 Kubernetes 的資源互動</strong></em></p>
-<p>可以用 kubectl 命令列工具去與 Kubernetes Cluster 進行互動。</p>
-<p><em><strong>在部署應用到 Kubernetes的時候，哪些 Kubernetes 物件最常使用到</strong></em></p>
+<p><em><strong>What ways can you interact with Kubernetes resources?</strong></em></p>
+<p>You can interact with a Kubernetes cluster using the kubectl command-line tool.</p>
+<p><em><strong>When deploying an app to Kubernetes, which Kubernetes objects are used most?</strong></em></p>
 <ul>
-<li>Deployment: 建立一群Pods 並監控</li>
-<li>Service: 在叢集內部將流量路由到 Pod 中</li>
-<li>Ingress: 將外部將流量路由到叢集</li>
+<li>Deployment: creates and monitors a group of Pods</li>
+<li>Service: routes traffic to Pods within the cluster</li>
+<li>Ingress: routes external traffic into the cluster</li>
 </ul>
-<p><em><strong>Kubernetes 有哪些常見的 Objects?</strong></em></p>
-<p>Pod, Service, ReplicationController, ReplicatSet, DaemonSet, Namespace, ConfigMap…etc</p>
+<p><em><strong>What are the common Kubernetes objects?</strong></em></p>
+<p>Pod, Service, ReplicationController, ReplicaSet, DaemonSet, Namespace, ConfigMap, etc.</p>
 <blockquote>
-<p>Container 並非 Kubernetes 物件，Kubernetes中最小的物件單元會是 Pod，而Pod中通常可以有一個或多個容器</p>
+<p>A container isn’t a Kubernetes object; the smallest object unit in Kubernetes is the Pod, which usually contains one or more containers.</p>
 </blockquote>
-<h1 id="Cluster-and-Architecture"><a href="#Cluster-and-Architecture" class="headerlink" title="Cluster and Architecture"></a>Cluster and Architecture</h1><p><img src="/img/devops/k8s/cluster.jpeg"></p>
-<p><em><strong>什麼是 Kubernetes Cluster?</strong></em></p>
-<p>為一群跑著容器化應用的節點(Nodes)集合，主要分成主節點(Master Node) 以及工作節點(Worker Node)</p>
-<p>Master Node 為 Kubernetes 的控制中心，包含多個關鍵元件：</p>
+<h1 id="Cluster-and-Architecture"><a href="#Cluster-and-Architecture" class="headerlink" title="Cluster and Architecture"></a>Cluster and Architecture</h1><p><img src="/en/img/devops/k8s/cluster.jpeg"></p>
+<p><em><strong>What is a Kubernetes cluster?</strong></em></p>
+<p>A collection of nodes running containerized applications, mainly divided into master nodes and worker nodes.</p>
+<p>The master node is Kubernetes’s control center, containing several key components:</p>
 <ul>
-<li><strong>API Server</strong>: Kubernetes的API入口，負責接收API請求，像是部署應用、擴展容器等。反正所有對資源的操作情球都會經過API Server</li>
-<li><strong>Scheduler</strong>: 負責將新的 Pod 調度到適合的工作節點，主要依據資源需求以及策略選擇</li>
-<li><strong>Controller Manager</strong>: 負責管理不同的 Controller，這些控制器會負責維護 cluster 的期望狀態 Ex. 確保指定數量的Pod一直都運行中</li>
-<li><strong>etcd</strong>： Kubernetes中的分散式資料庫，保存了整個 cluster 的狀態和設定</li>
+<li><strong>API Server</strong>: Kubernetes’s API entry point, responsible for receiving API requests like deploying apps and scaling containers. All resource operations go through the API Server.</li>
+<li><strong>Scheduler</strong>: responsible for scheduling new Pods onto suitable worker nodes, mainly based on resource needs and policy choices</li>
+<li><strong>Controller Manager</strong>: manages the various controllers that maintain the cluster’s desired state, e.g. ensuring a specified number of Pods keep running</li>
+<li><strong>etcd</strong>: the distributed database in Kubernetes, holding the whole cluster’s state and configuration</li>
 </ul>
-<p>Worker Node 會是在 kubernetes 中負責跑應用的節點，主要會負責跑下面這些元件：</p>
+<p>A worker node runs applications in Kubernetes, mainly running these components:</p>
 <ul>
-<li><strong>kubelet</strong>: 負責管理節點上的 Pod 和容器，並且會監控容器狀態。 會透過 API Server 與主節點互動</li>
-<li><strong>kube-proxy</strong>: 負責節點的網路設定，確保cluster內的每個Pod之間可以相互通訊，也負責 load balacing 功能。</li>
-<li><strong>container runtime</strong>: 容器運行時(Docker, containerd) 會負責拉取 image 並運行容器。</li>
+<li><strong>kubelet</strong>: manages the Pods and containers on a node and monitors container state. It interacts with the master node via the API Server.</li>
+<li><strong>kube-proxy</strong>: handles the node’s network configuration, ensuring every Pod in the cluster can communicate, and also handles load balancing</li>
+<li><strong>container runtime</strong>: the container runtime (Docker, containerd) pulls images and runs containers</li>
 </ul>
-<p><em><strong>我要如何確定當前的 Kubernetes 環境會是 Master Node 還是 Worker Node?</strong></em></p>
+<p><em><strong>How do I tell whether the current Kubernetes environment is a master node or a worker node?</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes -o wide</span><br></pre></td></tr></table></figure>
 
-<p>可能會輸出以下資訊</p>
+<p>It may output info like:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NAME        STATUS   ROLES           AGE   VERSION</span><br><span class="line">master-1    Ready    control-plane   20d   v1.20.0</span><br><span class="line">worker-1    Ready    &lt;none&gt;          20d   v1.20.0</span><br><span class="line">worker-2    Ready    &lt;none&gt;          20d   v1.20.0</span><br></pre></td></tr></table></figure>
 
-<p><em><strong>要如何管理多個 Kubernetes clusters? 要如何透過 kubectl 快速切換不同 clusters</strong></em></p>
+<p><em><strong>How do you manage multiple Kubernetes clusters? How do you quickly switch between clusters with kubectl?</strong></em></p>
 <p><code>kubectl config use-context [CONTEXT_NAME]</code></p>
-<p>每個 Cluster 中會有一個 Context，可以透過命令查看所有可用的 Context</p>
+<p>Each cluster has a context; you can view all available contexts with:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config get-contexts</span><br></pre></td></tr></table></figure>
 
-<p><em><strong>要如何避免高記憶體用量，導致 Kubernetes cluster 發生 memory leak 或者 OOM(Out Of Memory)?</strong></em></p>
-<p>方法一<br>可以為Pod 或容器設定 <strong>resource requests</strong> 和 <strong>resource limits</strong> 可以確保容器不會超出允許的資源使用範圍，讓應用在資源消耗過大的時候就停止，防止節點OOM。</p>
-<p>透過 resource requests 可以確保Pod 所需要的最小資源要求，這點就會讓 Scheduler 在<br>調度節點的時候找到適合的節點安排Pod。相反， resource limits 限制了 Pod 可以用的最大資源量</p>
+<p><em><strong>How do you avoid high memory usage causing a memory leak or OOM (Out Of Memory) in a Kubernetes cluster?</strong></em></p>
+<p>Method 1<br>Set <strong>resource requests</strong> and <strong>resource limits</strong> for Pods or containers to ensure containers don’t exceed their allowed resource usage, letting the app stop when it consumes too much and preventing node OOM.</p>
+<p>Resource requests ensure a Pod’s minimum resource requirement, which lets the Scheduler find a suitable node when scheduling the Pod. Conversely, resource limits cap the maximum resources a Pod can use.</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;256Mi&quot;</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;500m&quot;</span></span><br><span class="line">    <span class="attr">limits:</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;512Mi&quot;</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;1000m&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>方法二<br>透過其他監控工具，Ex. Promethus, Grafana 監控 Pod 的記憶體使用</p>
-<p>方法三<br>啟用 <strong>HPA(Horizontal Pod Autoscaler)</strong> ，可根據CPU 或Memory用量來自動增加或減少副本</p>
+<p>Method 2<br>Use other monitoring tools, e.g. Prometheus and Grafana, to monitor Pod memory usage.</p>
+<p>Method 3<br>Enable the <strong>HPA (Horizontal Pod Autoscaler)</strong>, which automatically adds or removes replicas based on CPU or memory usage.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl autoscale deployment [deployment_name] --cpu-percent=80 --min=2 --max=10</span><br></pre></td></tr></table></figure>
 
-<p><em><strong>如何列出所有 API 物件種類</strong></em></p>
+<p><em><strong>How do you list all API object types?</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl api-resources</span><br></pre></td></tr></table></figure>
 
-<h2 id="Kubelet"><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h2><p><em><strong>如果你將 worker node 上的 kubelet 停用，那正在運作的Pod 會發生什麼事？</strong></em></p>
-<p>由於 Kubelet 負責與 API Server 溝通，若停用就代表 Worker Node 會無法與 API Server 互動，這時 Worker Node的狀態會被標注成 <strong>Not Ready</strong>，而上面跑的Pod 狀態會變成 <strong>Unknown</strong>，一旦control plane 檢測到 worker node 處於 Not Ready 太久(達到閥值時間，通常會是5分鐘)，則會驅逐在 worker node 上的pod，並且會去將Pod 重新 schedule 到其他可用的節點上</p>
-<h1 id="Pods"><a href="#Pods" class="headerlink" title="Pods"></a>Pods</h1><p>Pods 會是 Kubernetes 中的最小物件單元，通常由一個或多個容器組成，在 Pod 中會共享網路資源, Storage 以及用於定義容器運行的 specification</p>
-<p><img src="/img/devops/k8s/pod.png"></p>
-<p><em><strong>如何部署一個使用 nginx:alpine 的image 並且叫做 my-pod  的 pod?</strong></em></p>
+<h2 id="Kubelet"><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h2><p><em><strong>If you disable the kubelet on a worker node, what happens to the running Pods?</strong></em></p>
+<p>Since the kubelet communicates with the API Server, disabling it means the worker node can’t interact with the API Server. The node’s status is marked <strong>Not Ready</strong>, and the Pods on it become <strong>Unknown</strong>. Once the control plane detects a worker node has been Not Ready for too long (reaching the threshold time, usually 5 minutes), it evicts the Pods on that node and reschedules them onto other available nodes.</p>
+<h1 id="Pods"><a href="#Pods" class="headerlink" title="Pods"></a>Pods</h1><p>A Pod is the smallest object unit in Kubernetes, usually composed of one or more containers. A Pod shares network resources, storage, and the specification defining how containers run.</p>
+<p><img src="/en/img/devops/k8s/pod.png"></p>
+<p><em><strong>How do you deploy a Pod named my-pod using the nginx:alpine image?</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run my-pod --image=nginx:alpine</span><br></pre></td></tr></table></figure>
 
-<p>這通常並不是常見用來運行 Pod 的方法，通常會透過 Deployment 去跑 Pod</p>
-<p><em><strong>通常 Pod 中會有多少個 Containers?</strong></em></p>
-<p>Pod 可以包含多個 Container，但大多情況下會是一個。另外也可以部署 sidecar container 到 pod 當中，通常是為了蒐集Log</p>
-<p><em><strong>Pod 可能會有哪些phase? 請簡要說明 Pod 的 LifeCycle</strong></em></p>
-<p>Pod 在的生命週期中可能會出現以下的階段</p>
+<p>This isn’t the common way to run a Pod; you usually run Pods via a Deployment.</p>
+<p><em><strong>How many containers are usually in a Pod?</strong></em></p>
+<p>A Pod can contain multiple containers, but in most cases there’s one. You can also deploy a sidecar container into a Pod, usually for collecting logs.</p>
+<p><em><strong>What phases can a Pod have? Briefly explain the Pod lifecycle</strong></em></p>
+<p>A Pod may go through these phases in its lifecycle:</p>
 <table>
 <thead>
 <tr>
@@ -299,78 +299,78 @@ btf.addGlobalFn('pjaxComplete', () => {
 </thead>
 <tbody><tr>
 <td>Pending</td>
-<td>Pod 已被 Cluster 接受，但是當中的 container 可能還沒運行，這個階段中可能會從等待被 schedule或者是等待下載 container image</td>
+<td>The Pod has been accepted by the cluster, but its containers may not be running yet; it may be waiting to be scheduled or waiting to download a container image</td>
 </tr>
 <tr>
 <td>Running</td>
-<td>所有容器都被建立，並且至少有一個容器運行中</td>
+<td>All containers have been created and at least one is running</td>
 </tr>
 <tr>
 <td>Succeeded</td>
-<td>所有Pod中容器都成功執行完畢，但並未重啟</td>
+<td>All containers in the Pod completed successfully and won’t restart</td>
 </tr>
 <tr>
 <td>Failed</td>
-<td>所有Pod中容器都被終止，並且至少有一個容器是由於失敗而被終止，並且沒有 restart</td>
+<td>All containers in the Pod were terminated, and at least one was terminated due to failure, with no restart</td>
 </tr>
 <tr>
-<td>Unkown</td>
-<td>由於某種原因無法獲取 Pod 的狀態，通常是由於與Pod 與節點之間的通訊錯誤所導致的</td>
+<td>Unknown</td>
+<td>The Pod’s state can’t be obtained for some reason, usually due to a communication error between the Pod and the node</td>
 </tr>
 </tbody></table>
-<p><em><strong>當你透過 Kubectl 運行 Pod 會發生什麼是？請講解一下流程</strong></em></p>
+<p><em><strong>What happens when you run a Pod via kubectl? Explain the flow</strong></em></p>
 <ol>
-<li>Kubectl 會將請求發送給 API Server 去建立Pod<ul>
-<li>API Server 會去驗證請求</li>
-<li>etcd 會被更新</li>
+<li>Kubectl sends a request to the API Server to create the Pod<ul>
+<li>The API Server validates the request</li>
+<li>etcd is updated</li>
 </ul>
 </li>
-<li>Control Plane 中的 Scheduler 會去透過監控API Server來去知道目前有個 unassigned Pod</li>
-<li>Scheduler 會去選擇一個node來去assign pod<ul>
-<li>etcd 會被更新這個資訊</li>
+<li>The Scheduler in the control plane learns there’s an unassigned Pod by watching the API Server</li>
+<li>The Scheduler chooses a node to assign the Pod to<ul>
+<li>etcd is updated with this info</li>
 </ul>
 </li>
-<li>Scheduler 會去告訴 API Server 他選的 Pod是哪個</li>
-<li>Kubelet 注意到有Pod被 assigned 到他的節點，但是Pod並未運行</li>
-<li>Kubelet 會去發送請求給 container engine (ex. Docker) 來去建立跟運行容器</li>
-<li>當 Pod running 後 kubelet 會去將狀態更新給 API Server</li>
+<li>The Scheduler tells the API Server which Pod it chose</li>
+<li>The kubelet notices a Pod was assigned to its node but isn’t running</li>
+<li>The kubelet sends a request to the container engine (e.g. Docker) to create and run the container</li>
+<li>Once the Pod is running, the kubelet updates the status to the API Server</li>
 </ol>
 <ul>
-<li>etcd 會再度被 API Server 通知，以更新資訊</li>
+<li>etcd is again notified by the API Server to update the info</li>
 </ul>
 <blockquote>
 <p>Ref: <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</a></p>
 </blockquote>
-<p><em><strong>要怎麼知道pod中容器是有在運行的？</strong></em></p>
-<p><code>kubectl describe pod &lt;POD_NAME&gt;</code> 去檢查 container 狀態是否是 <code>Running</code></p>
-<p>或者是可以用 <code>kubectl exec </code> 執行命令到容器內</p>
-<p><em><strong>當你發現 Pod 狀態是 CrashLoopBackOff，請問可能的錯誤會是什麼？ 要怎麼檢查錯誤？</strong></em></p>
-<p>這通常代表 Pod 反覆啟動然後崩潰，啟動、崩潰。而通常有很多種不同的錯誤原因，像是：</p>
+<p><em><strong>How do you know whether a container in a Pod is running?</strong></em></p>
+<p><code>kubectl describe pod &lt;POD_NAME&gt;</code> to check whether the container status is <code>Running</code>.</p>
+<p>Or use <code>kubectl exec</code> to run a command inside the container.</p>
+<p><em><strong>When you find a Pod in CrashLoopBackOff, what could the error be? How do you check it?</strong></em></p>
+<p>This usually means the Pod repeatedly starts then crashes, over and over. There are many possible causes, such as:</p>
 <ul>
-<li>應用程式錯誤，導致容器必須退出</li>
-<li>設定錯誤，像是錯誤的環境變數、遺失設定檔等等</li>
-<li>資源限制，容器並沒有足夠的記憶體或是 CPU 分配給容器</li>
-<li>Health Check 失敗，若應用沒有在預期時間內運行也會發生錯誤</li>
-<li>Container liveness probes&#x2F; startup probe 回傳錯誤</li>
+<li>An application error forcing the container to exit</li>
+<li>A configuration error, like wrong environment variables or a missing config file</li>
+<li>Resource limits: the container doesn’t have enough memory or CPU allocated</li>
+<li>A health check failure: if the app doesn’t come up within the expected time, this error occurs too</li>
+<li>A container liveness probe &#x2F; startup probe returning an error</li>
 </ul>
-<p>這種時候若要詳細的 Troubleshooting 則需要透過 <code>kubectl describe pod &lt;POD_NAME&gt;</code> 查看詳細原因 或者透過 <code>kubectl logs &lt;POD_NAME&gt;</code> 來去看 Pod 中容器內的日誌</p>
-<p><img src="/img/devops/k8s/container.png"></p>
-<p><em><strong>下方的 config 代表什麼?</strong></em></p>
+<p>For detailed troubleshooting, use <code>kubectl describe pod &lt;POD_NAME&gt;</code> to see the detailed cause, or <code>kubectl logs &lt;POD_NAME&gt;</code> to see the container’s logs.</p>
+<p><img src="/en/img/devops/k8s/container.png"></p>
+<p><em><strong>What does the config below mean?</strong></em></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">livenessProbe:</span></span><br><span class="line">  <span class="attr">exec:</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">cat</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/appStatus</span></span><br><span class="line">  <span class="attr">initialDelaySeconds:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">periodSeconds:</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
 
-<p>這裡要先提到什麼是 <strong>liveness Probe</strong> 他的用途是當容器並未達到想要的狀態時，會去重啟容器。</p>
-<p>在這行 YAML 中代表的是， <strong>如果 <code>cat /appStatus</code> 這個指令失敗，Kubernetes 會砍掉容器接著會採取重啟策略。</strong>  <code>initialDelaySeconds</code> 代表 Kubelet 會在初次執行 probe command （<code>cat /appStatus</code>）之前先等待 10秒，從此刻起，他每５秒就會重新執行一次 (定義在 <code>periodSeconds</code>中)</p>
-<p><em><strong>下方的 config 代表什麼?</strong></em></p>
+<p>First, what is a <strong>liveness probe</strong>: its purpose is to restart a container when it isn’t in the desired state.</p>
+<p>This YAML means: <strong>if the <code>cat /appStatus</code> command fails, Kubernetes kills the container and then applies the restart policy.</strong> <code>initialDelaySeconds</code> means the kubelet waits 10 seconds before first running the probe command (<code>cat /appStatus</code>), and from then on reruns it every 5 seconds (defined in <code>periodSeconds</code>).</p>
+<p><em><strong>What does the config below mean?</strong></em></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">readinessProbe:</span></span><br><span class="line">      <span class="attr">tcpSocket:</span></span><br><span class="line">        <span class="attr">port:</span> <span class="number">2017</span></span><br><span class="line">      <span class="attr">initialDelaySeconds:</span> <span class="number">15</span></span><br><span class="line">      <span class="attr">periodSeconds:</span> <span class="number">20</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>Readiness probe</strong> 通常決定了一個 container 是否 Ready 可以接受流量。所以這裡定義的是，若 Pod 尚未能夠連接到容器的port 2017前，都不會被標註 <code>Ready</code>，第一次的 Probe 會在容器運行後得 15後進行，並且每隔 20秒會持續進行檢查直到能夠連接到定義的port為止。</p>
-<p><em><strong>刪除 Pod 會發生什麼事情?</strong></em></p>
+<p>A <strong>readiness probe</strong> usually determines whether a container is ready to accept traffic. So this defines that until the Pod can connect to the container’s port 2017, it won’t be marked <code>Ready</code>. The first probe runs 15 seconds after the container starts, and it keeps checking every 20 seconds until it can connect to the defined port.</p>
+<p><em><strong>What happens when you delete a Pod?</strong></em></p>
 <ol>
-<li>Kubernetes 會向 Pod 中容器發送一個 SIGTERM 訊號，用來終止容器中的主要Process</li>
-<li>這時容器會有一段時間來完成當前任務並釋放資源 (這個時間可以被定義在 <code>terminationGracePeriodSeconds</code> 中)，若沒有在時間內關閉，則會發送 SIGKILL 訊號強制終止</li>
+<li>Kubernetes sends a SIGTERM signal to the container in the Pod to terminate the container’s main process</li>
+<li>The container then has some time to finish its current task and release resources (this time can be defined in <code>terminationGracePeriodSeconds</code>); if it doesn’t shut down in time, a SIGKILL signal is sent to force termination</li>
 </ol>
-<p><em><strong>為何通常一個 Pod 只會有一個容器？</strong></em></p>
-<p>如果每個 Pod 只有一個容器，Kubernetes 可以簡單地調整 Pod 的數量來增減服務的處理能力。而多容器的 Pod 在擴展上會更困難，因為必須同時複製多個容器</p>
+<p><em><strong>Why is there usually only one container per Pod?</strong></em></p>
+<p>If each Pod has one container, Kubernetes can simply adjust the number of Pods to scale the service’s capacity. Multi-container Pods are harder to scale, since multiple containers must be replicated together.</p>
 <h2 id="Static-Pods"><a href="#Static-Pods" class="headerlink" title="Static Pods"></a>Static Pods</h2><blockquote>
 <p>Ref</p>
 <ol>
@@ -378,46 +378,244 @@ btf.addGlobalFn('pjaxComplete', () => {
 <li><a target="_blank" rel="noopener" href="https://yuminlee2.medium.com/kubernetes-static-pods-734dc0684f31">https://yuminlee2.medium.com/kubernetes-static-pods-734dc0684f31</a></li>
 </ol>
 </blockquote>
-<p><em><strong>什麼是 Static Pods ?</strong></em></p>
-<p>由 Kubelet daemon 在節點上直接管理的一種Pod，而不是讓 Control Plane 管理。<strong>並且 Static Pod 通常直接定義在節點的指定目錄中。</strong> kubelet 會自動檢測該目錄中的配置文件並啟動相應的 Pod。</p>
-<p>由於 Static Pod 由 kubelet 直接控制， <strong>因此沒辦法直接由 ReplicaSet 或者是 Deployment 進行副本管理</strong> ，也因此 Static Pod 只能在定義文件所在的 Node 上運行，並且不會自動調度到其他 Node 上</p>
-<p><em><strong>可以講一下 Static Pod 的使用情境嗎？</strong></em></p>
-<p>如果要跑 Control Plane 的控制元件，就會使用 Static Pod， <strong>通常在 Control Plane 中的控制元件，像是 API Server, kube-scheduler, etcd , kube-controller-manager 都會作為 Static Pod 存在於 Master Node 中</strong></p>
-<p><em><strong>如何知道一個Pod是否是 Static Pod?</strong></em></p>
+<p><em><strong>What are static Pods?</strong></em></p>
+<p>A kind of Pod managed directly by the kubelet daemon on a node, rather than by the control plane. <strong>A static Pod is usually defined directly in a designated directory on the node.</strong> The kubelet automatically detects the config files in that directory and starts the corresponding Pods.</p>
+<p>Since a static Pod is controlled directly by the kubelet, <strong>it can’t be replica-managed directly by a ReplicaSet or Deployment</strong>, and therefore a static Pod can only run on the node where its definition file resides, and won’t be automatically scheduled onto other nodes.</p>
+<p><em><strong>Can you give a use case for static Pods?</strong></em></p>
+<p>Static Pods are used to run control-plane components. <strong>Usually the control-plane components like the API Server, kube-scheduler, etcd, and kube-controller-manager all exist as static Pods on the master node.</strong></p>
+<p><em><strong>How do you know whether a Pod is a static Pod?</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;POD_NAME&gt; -n &lt;NAMESPACE&gt;</span><br></pre></td></tr></table></figure>
-<p>檢查結果的 <code>annotations</code> 或者 <code>nodeName</code> 中有沒有有 “mirror pod” 註解。如果在 <code>metadata.annotations</code> 欄位中找到 <code>kubernetes.io/config.mirror</code>， <strong>這表示該 Pod 是一個由 Static Pod 所產生的 Mirror Pod。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NAMESPACE     NAME                               READY   STATUS    RESTARTS        AGE</span><br><span class="line">default       web                                1/1     Running   0               5h14m</span><br><span class="line">kube-system   coredns-6f6b679f8f-s8l6l           1/1     Running   0               5h18m</span><br><span class="line">kube-system   etcd-minikube                      1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-apiserver-minikube            1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-controller-manager-minikube   1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-proxy-9c8vm                   1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-scheduler-minikube            1/1     Running   0               5h18m</span><br><span class="line">kube-system   storage-provisioner                1/1     Running   1 (5h18m ago)   5h18m</span><br><span class="line">~                                                                                                                                                 ○ minikube 04:28:02 下午</span><br><span class="line">❯ kdp etcd-minikube  -n kube-system</span><br></pre></td></tr></table></figure>
+<p>Check whether the result’s <code>annotations</code> or <code>nodeName</code> has a “mirror pod” annotation. If you find <code>kubernetes.io/config.mirror</code> in the <code>metadata.annotations</code> field, <strong>it means this Pod is a mirror Pod generated by a static Pod.</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NAMESPACE     NAME                               READY   STATUS    RESTARTS        AGE</span><br><span class="line">default       web                                1/1     Running   0               5h14m</span><br><span class="line">kube-system   coredns-6f6b679f8f-s8l6l           1/1     Running   0               5h18m</span><br><span class="line">kube-system   etcd-minikube                      1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-apiserver-minikube            1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-controller-manager-minikube   1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-proxy-9c8vm                   1/1     Running   0               5h18m</span><br><span class="line">kube-system   kube-scheduler-minikube            1/1     Running   0               5h18m</span><br><span class="line">kube-system   storage-provisioner                1/1     Running   1 (5h18m ago)   5h18m</span><br><span class="line">~                                                                                                                                                 ○ minikube 04:28:02 PM</span><br><span class="line">❯ kdp etcd-minikube  -n kube-system</span><br></pre></td></tr></table></figure>
 
-<p>輸出結果：</p>
+<p>Output:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Name:</span>                 <span class="string">etcd-minikube</span></span><br><span class="line"><span class="attr">Namespace:</span>            <span class="string">kube-system</span></span><br><span class="line"><span class="attr">Priority:</span>             <span class="number">2000001000</span></span><br><span class="line"><span class="attr">Priority Class Name:</span>  <span class="string">system-node-critical</span></span><br><span class="line"><span class="attr">Node:</span>                 <span class="string">minikube/192.168.58.2</span></span><br><span class="line"><span class="attr">Start Time:</span>           <span class="string">Fri,</span> <span class="number">08</span> <span class="string">Nov</span> <span class="number">2024 11:09:17</span> <span class="string">+0800</span></span><br><span class="line"><span class="attr">Labels:</span>               <span class="string">component=etcd</span></span><br><span class="line">                      <span class="string">tier=control-plane</span></span><br><span class="line"><span class="attr">Annotations:          kubeadm.kubernetes.io/etcd.advertise-client-urls:</span> <span class="string">https://192.168.58.2:2379</span></span><br><span class="line">                      <span class="attr">kubernetes.io/config.hash:</span> <span class="string">0f576c7626af2d96b08f13e09b83eb08</span></span><br><span class="line">                      <span class="attr">kubernetes.io/config.mirror:</span> <span class="string">0f576c7626af2d96b08f13e09b83eb08</span></span><br><span class="line">                      <span class="attr">kubernetes.io/config.seen:</span> <span class="number">2024-11-08T03:09:16.930402512Z</span></span><br><span class="line">                      <span class="attr">kubernetes.io/config.source:</span> <span class="string">file</span></span><br><span class="line"><span class="attr">Status:</span>               <span class="string">Running</span></span><br><span class="line"><span class="attr">SeccompProfile:</span>       <span class="string">RuntimeDefault</span></span><br><span class="line"><span class="attr">IP:</span>                   <span class="number">192.168</span><span class="number">.58</span><span class="number">.2</span></span><br><span class="line"><span class="attr">IPs:</span></span><br><span class="line">  <span class="attr">IP:</span>           <span class="number">192.168</span><span class="number">.58</span><span class="number">.2</span></span><br><span class="line"><span class="attr">Controlled By:</span>  <span class="string">Node/minikube</span></span><br><span class="line"><span class="attr">Containers:</span></span><br><span class="line"><span class="string">.....</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>可以發現到確實有 mirror pod 的註解在</p>
-<p><em><strong>Static Pod 的 manifest檔案通常在哪？</strong></em></p>
-<p>通常會在 <code>/etc/kubernetes/manifests</code>，如果要刪除 static pod 也通常是直接刪除相關的 manifest 檔案</p>
+<p>You can see the mirror pod annotation is indeed there.</p>
+<p><em><strong>Where is a static Pod’s manifest file usually?</strong></em></p>
+<p>Usually in <code>/etc/kubernetes/manifests</code>; to delete a static Pod you usually just delete the related manifest file.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">❯ minikube ssh</span><br><span class="line">docker@minikube:~$ ls /etc/kubernetes/manifests/</span><br><span class="line">etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml</span><br><span class="line">docker@minikube:~$</span><br></pre></td></tr></table></figure>
 
-<h2 id="Pods-Commands"><a href="#Pods-Commands" class="headerlink" title="Pods Commands"></a>Pods Commands</h2><p><em><strong>要如何確認一個 Pod 是被調度到哪個 Worker Node 上面？</strong></em></p>
+<h2 id="Pods-Commands"><a href="#Pods-Commands" class="headerlink" title="Pods Commands"></a>Pods Commands</h2><p><em><strong>How do you confirm which worker node a Pod was scheduled onto?</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -o wide</span><br></pre></td></tr></table></figure>
 
-<p>刪除Pod</p>
+<p>Delete a Pod</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod &lt;POD_NAME&gt;</span><br></pre></td></tr></table></figure>
 
-<p>列出所有 namespace 底下的所有 pod</p>
+<p>List all Pods across all namespaces</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods --all-namespaces</span><br></pre></td></tr></table></figure>
 
-<h2 id="Pods-Troubleshooting-and-Debugging"><a href="#Pods-Troubleshooting-and-Debugging" class="headerlink" title="Pods Troubleshooting and Debugging"></a>Pods Troubleshooting and Debugging</h2><p><em><strong>當你運行一個 Pod，但他都處在 Pending 狀態，可能會是什麼原因?</strong></em></p>
-<p>有一種可能會是，負責調度 Pod 的 Scheduler 沒有在運行。可以透過 <code>kubectl get pod -A | grep scheduler</code> 來確認</p>
-<p>***指令 <code>kubectl describe pod</code> 可以幹嘛？ ***</p>
-<p>可以秀出Pod 的各種詳細資訊，有時候還會包含錯誤原因。</p>
-<p><em><strong>建立一個使用 python image 的 static pod，並且要執行命令 sleep 20</strong></em></p>
+<h2 id="Pods-Troubleshooting-and-Debugging"><a href="#Pods-Troubleshooting-and-Debugging" class="headerlink" title="Pods Troubleshooting and Debugging"></a>Pods Troubleshooting and Debugging</h2><p><em><strong>When you run a Pod but it stays Pending, what could the cause be?</strong></em></p>
+<p>One possibility is that the Scheduler responsible for scheduling Pods isn’t running. You can confirm with <code>kubectl get pod -A | grep scheduler</code>.</p>
+<p><em><strong>What can the <code>kubectl describe pod</code> command do?</strong></em></p>
+<p>It shows various detailed info about the Pod, sometimes including the error cause.</p>
+<p><em><strong>Create a static Pod using the python image, running the command sleep 20</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run some-pod --image=python --command sleep 20 --restart=Never --dry-run=client -o yaml &gt; statuc-pod.yaml</span><br></pre></td></tr></table></figure>
 
-<h1 id="Labels-and-Selectors"><a href="#Labels-and-Selectors" class="headerlink" title="Labels and Selectors"></a>Labels and Selectors</h1><p><em><strong>什麼是 Label?</strong></em></p>
-<h1 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h1><h1 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h1><h1 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h1><h1 id="ReplicaSets"><a href="#ReplicaSets" class="headerlink" title="ReplicaSets"></a>ReplicaSets</h1><h1 id="DaemonSets"><a href="#DaemonSets" class="headerlink" title="DaemonSets"></a>DaemonSets</h1><h1 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h1><h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><h1 id="Networking"><a href="#Networking" class="headerlink" title="Networking"></a>Networking</h1><blockquote>
+<h1 id="Labels-and-Selectors"><a href="#Labels-and-Selectors" class="headerlink" title="Labels and Selectors"></a>Labels and Selectors</h1><p><em><strong>What is a label?</strong></em></p>
+<p>A label is a key-value tag attached to a Kubernetes object to mark its characteristics (e.g. <code>app=nginx</code>, <code>env=prod</code>). A label itself doesn’t affect how an object runs, but it lets a <strong>selector</strong> filter objects by these tags.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -l app=nginx          <span class="comment"># list pods with app=nginx</span></span><br><span class="line">kubectl label pod my-pod tier=frontend <span class="comment"># add a label to a pod</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>What’s the difference between a label and an annotation?</strong></em></p>
+<p>Both are key-value, but their purposes differ:</p>
+<ul>
+<li><strong>Label</strong>: for filtering and grouping, queried by selectors, with length and character restrictions on values</li>
+<li><strong>Annotation</strong>: for storing non-identifying metadata (e.g. build info, hints), not used by selectors, able to hold longer, more complex data</li>
+</ul>
+<p><em><strong>What is a selector?</strong></em></p>
+<p>A selector selects a group of objects by label, commonly used when a Service finds which Pods to route to, or a Deployment decides which Pods to manage. Types:</p>
+<ul>
+<li><strong>Equality-based</strong>: <code>app=nginx</code>, <code>env!=prod</code></li>
+<li><strong>Set-based</strong>: <code>env in (prod, staging)</code>, <code>tier notin (frontend)</code></li>
+</ul>
+<h1 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h1><p><em><strong>What is a Deployment?</strong></em></p>
+<p>A Deployment declaratively manages a group of stateless Pods. You describe the “desired state” (how many replicas, which image), and the Deployment uses a ReplicaSet underneath to ensure the actual state matches, supporting rolling updates and rollback.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx --replicas=3</span><br><span class="line">kubectl scale deployment nginx --replicas=5</span><br><span class="line">kubectl <span class="built_in">set</span> image deployment/nginx nginx=nginx:1.25   <span class="comment"># rolling update</span></span><br><span class="line">kubectl rollout status deployment/nginx</span><br><span class="line">kubectl rollout undo deployment/nginx                 <span class="comment"># rollback</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>What’s the relationship between a Deployment, ReplicaSet, and Pod?</strong></em></p>
+<p>A Deployment manages a ReplicaSet, and a ReplicaSet manages Pods. Each time you update the image, the Deployment creates a new ReplicaSet and gradually replaces the old ReplicaSet’s Pods with new ones. That’s a rolling update.</p>
+<p><em><strong>How do you control how many Pods are replaced at once during a rolling update?</strong></em></p>
+<p>Via <code>strategy.rollingUpdate</code>‘s <code>maxSurge</code> (how many extra Pods beyond the desired count) and <code>maxUnavailable</code> (how many Pods can be unavailable).</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">strategy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">RollingUpdate</span></span><br><span class="line">  <span class="attr">rollingUpdate:</span></span><br><span class="line">    <span class="attr">maxSurge:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">maxUnavailable:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h1><p><em><strong>What is a Service? Why do you need it?</strong></em></p>
+<p>A Pod’s IP changes when it’s recreated. A Service provides a stable virtual IP (ClusterIP) and DNS name, and load-balances traffic to a group of Pods via a label selector.</p>
+<p><em><strong>What Service types are there?</strong></em></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ClusterIP</strong></td>
+<td>default, accessible only within the cluster</td>
+</tr>
+<tr>
+<td><strong>NodePort</strong></td>
+<td>opens a fixed port (30000-32767) on every node, accessible from outside via <code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code></td>
+</tr>
+<tr>
+<td><strong>LoadBalancer</strong></td>
+<td>requests an external load balancer from the cloud provider</td>
+</tr>
+<tr>
+<td><strong>ExternalName</strong></td>
+<td>maps the Service to an external DNS name (CNAME)</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment nginx --port=80 --target-port=80 --<span class="built_in">type</span>=ClusterIP</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>How does a Service know which Pods to send traffic to?</strong></em></p>
+<p>It matches Pods’ labels via a selector, and the matching Pods’ IPs are recorded in the corresponding <strong>Endpoints</strong> (or EndpointSlice) object, which kube-proxy then uses to set iptables&#x2F;IPVS rules for load balancing.</p>
+<h1 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h1><p><em><strong>A Service’s LoadBalancer already exposes things externally, so why do you need Ingress?</strong></em></p>
+<p>Opening a LoadBalancer per service is expensive and hard to manage. Ingress provides a “layer-7 (HTTP&#x2F;HTTPS) entry point” that routes traffic to different Services from a single entry by host or path, and can handle TLS termination centrally.</p>
+<p><em><strong>Does Ingress work on its own?</strong></em></p>
+<p>No. An Ingress object is just a “declaration of routing rules”; what actually executes them is an <strong>Ingress Controller</strong> (e.g. nginx-ingress, Traefik, AWS ALB Controller), which must be deployed first for the rules to take effect.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">web</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">example.com</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/api</span></span><br><span class="line">        <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">service:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">api-svc</span></span><br><span class="line">            <span class="attr">port:</span></span><br><span class="line">              <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="ReplicaSets"><a href="#ReplicaSets" class="headerlink" title="ReplicaSets"></a>ReplicaSets</h1><p><em><strong>What is a ReplicaSet?</strong></em></p>
+<p>A ReplicaSet ensures a specified number of Pod replicas are “always running.” If a Pod dies, it automatically creates a new one; if there are too many, it deletes the extras.</p>
+<p><em><strong>So should I use a ReplicaSet directly?</strong></em></p>
+<p>Usually not. A ReplicaSet is almost always created and managed by a Deployment, since a Deployment adds rolling-update and rollback capabilities. Operating a ReplicaSet directly is rare.</p>
+<h1 id="DaemonSets"><a href="#DaemonSets" class="headerlink" title="DaemonSets"></a>DaemonSets</h1><p><em><strong>What is a DaemonSet? When do you use it?</strong></em></p>
+<p>A DaemonSet ensures “exactly one Pod runs on every (or every matching) node.” It’s commonly used for node-level system services, such as:</p>
+<ul>
+<li>Log-collection agents (Fluent Bit, Filebeat)</li>
+<li>Monitoring agents (node-exporter)</li>
+<li>Network plugins (CNI), kube-proxy</li>
+</ul>
+<p>When a new node joins the cluster, the DaemonSet automatically creates the corresponding Pod on it.</p>
+<h1 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h1><p><em><strong>How is a StatefulSet different from a Deployment?</strong></em></p>
+<p>A Deployment suits “stateless” apps (Pods are interchangeable). A StatefulSet suits “stateful” apps, providing:</p>
+<ul>
+<li><strong>Stable, fixed network identity</strong>: Pod names are <code>&lt;name&gt;-0</code>, <code>&lt;name&gt;-1</code>, which don’t change</li>
+<li><strong>Stable persistent storage</strong>: each Pod binds its own dedicated PVC and remounts the same data after recreation</li>
+<li><strong>Ordered deployment and scaling</strong>: created in order (0→1→2), deleted in order</li>
+</ul>
+<p><em><strong>What scenarios use a StatefulSet?</strong></em></p>
+<p>Databases (MySQL, PostgreSQL) and distributed systems (Kafka, Zookeeper, Elasticsearch), where each node has a distinct identity and needs to keep its own data.</p>
+<h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><p><em><strong>What are PV and PVC?</strong></em></p>
+<ul>
+<li><strong>PersistentVolume (PV)</strong>: an actual storage resource in the cluster (NFS, cloud disk, Ceph, etc.), provided by an admin or a StorageClass</li>
+<li><strong>PersistentVolumeClaim (PVC)</strong>: a user’s “request” for storage, describing how much is needed and what access mode, which Kubernetes binds to a suitable PV</li>
+</ul>
+<p>This design decouples “storage provisioning” from “storage consumption.”</p>
+<p><em><strong>What is a StorageClass?</strong></em></p>
+<p>A StorageClass defines the method for “dynamic provisioning.” When a PVC specifies a StorageClass, Kubernetes automatically creates the corresponding PV (e.g. automatically provisioning an EBS disk), without an admin pre-creating it manually.</p>
+<p><em><strong>What access modes are there?</strong></em></p>
+<ul>
+<li><strong>ReadWriteOnce (RWO)</strong>: can be mounted read-write by a single node</li>
+<li><strong>ReadOnlyMany (ROX)</strong>: can be mounted read-only by multiple nodes</li>
+<li><strong>ReadWriteMany (RWX)</strong>: can be mounted read-write by multiple nodes (requires underlying storage support, like NFS)</li>
+</ul>
+<h1 id="Networking"><a href="#Networking" class="headerlink" title="Networking"></a>Networking</h1><p><em><strong>What are the basic principles of Kubernetes networking?</strong></em></p>
+<p>Kubernetes requires:</p>
+<ol>
+<li>Every Pod has its own IP</li>
+<li>All Pods can communicate directly without NAT</li>
+<li>An agent on a node (like the kubelet) can communicate with the Pods on that node</li>
+</ol>
+<p>These are implemented by <strong>CNI (Container Network Interface) plugins</strong> (Calico, Flannel, Cilium, etc.).</p>
+<p><em><strong>How does in-cluster DNS work?</strong></em></p>
+<p>CoreDNS provides in-cluster DNS. A Service has a DNS name <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code>, so Pods can access each other by name instead of IP.</p>
+<blockquote>
 <p><a target="_blank" rel="noopener" href="https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471">https://sean22492249.medium.com/networking-in-kubernetes-pod-%E8%88%87-pod-%E7%9A%84%E7%B6%B2%E8%B7%AF%E9%80%A3%E9%80%9A-216cfe6de471</a></p>
 </blockquote>
-<h1 id="Policies"><a href="#Policies" class="headerlink" title="Policies"></a>Policies</h1><h1 id="Etcd"><a href="#Etcd" class="headerlink" title="Etcd"></a>Etcd</h1><h1 id="Namespaces"><a href="#Namespaces" class="headerlink" title="Namespaces"></a>Namespaces</h1><h1 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h1><h1 id="Secrets"><a href="#Secrets" class="headerlink" title="Secrets"></a>Secrets</h1><h1 id="Volumes"><a href="#Volumes" class="headerlink" title="Volumes"></a>Volumes</h1><h1 id="Access-Control"><a href="#Access-Control" class="headerlink" title="Access Control"></a>Access Control</h1><h1 id="CronJob"><a href="#CronJob" class="headerlink" title="CronJob"></a>CronJob</h1><h1 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h1><h1 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h1><h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/c7f5f41c.html">https://leozzmc.github.io/posts/c7f5f41c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/DevOps/">DevOps</a><a class="post-meta__tags" href="/tags/Kubernetes/">Kubernetes</a></div><div class="post-share"><div class="social-share" data-image="/img/me.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/100cc6b6.html" title="AWS for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/AWS/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AWS for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  Regions &amp; AZsRegion: 一群橫跨多個不同地理位置的資料中心 Ex. us-east-1 Avaiable Zone(AZ): 每個 Region 下都有多個相互隔離的位置叫做AZ，一個AZ中可能會有一個或多個資料中心，具有獨立的網路系統以及供電。 us-east-1a, us-east-1b….etc Local Zone: 沒有實體的資料中心，通常會連接到某個AZ, Ex.台灣Local Zone 就是接到 ap-northeast-1，旨在提供服務給 edge location 以降低延遲。 AWS Outposts: 部署在客戶 On Premises 的實體伺服器，提供本地存取AWS服務 IAM在 AWS 環境中用於進行存取控制的服務。可以管理哪些使用者可以有權限存取哪些資源。 Security Best Practices: 不要用 Root User 來進行日常業務，請建立對應的 User 給與適當權限再進行業務   在 IAM 中下面是常見得術語和關係圖：IAM User, IAM...</div></div></div></a><a class="pagination-related" href="/posts/35e03d8a.html" title="兌換零錢 | Medium | LeetCode#322. Coin Change"><img class="cover" src="/img/LeetCode/322/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">兌換零錢 | Medium | LeetCode#322. Coin Change</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目敘述： 給定一個整數陣列 coins，分別代表不同硬幣的面額，另外給定目標金額 amount，題目要求回傳，達到目標金額 amount 所需的 最少硬幣數量，如果 coins 中的面額無法達到目標金額就回傳 -1  解法一開始的想法首先假設今天陣列是 [1,2,5] 那對於 amount 每次可以選擇減1減2或減5，扣除完畢後下一輪又可以選擇要減1減2還是減5，直到最後如果 amount 為 0 則代表達到目標金額，如果扣除太多 amount &lt; 0 就代表不能達到目標金額，這時候就需要回傳 -1。如果畫出這個想法的遞迴樹會像是下面這樣。 Step1 解法的遞迴樹   可以看到應該會有很多重複的計算，因此稍後也會有最佳化的空間在。 我的解答Step-112345678910111213141516int coinchangehelper(vector&lt;int&gt;&amp; coins, int amount)&#123;    if(amount==0) return 0;    if(amount &lt;0) retu...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/100cc6b6.html" title="AWS for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/AWS/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="info-item-2">AWS for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  Regions &amp; AZsRegion: 一群橫跨多個不同地理位置的資料中心 Ex. us-east-1 Avaiable Zone(AZ): 每個 Region 下都有多個相互隔離的位置叫做AZ，一個AZ中可能會有一個或多個資料中心，具有獨立的網路系統以及供電。 us-east-1a, us-east-1b….etc Local Zone: 沒有實體的資料中心，通常會連接到某個AZ, Ex.台灣Local Zone 就是接到 ap-northeast-1，旨在提供服務給 edge location 以降低延遲。 AWS Outposts: 部署在客戶 On Premises 的實體伺服器，提供本地存取AWS服務 IAM在 AWS 環境中用於進行存取控制的服務。可以管理哪些使用者可以有權限存取哪些資源。 Security Best Practices: 不要用 Root User 來進行日常業務，請建立對應的 User 給與適當權限再進行業務   在 IAM 中下面是常見得術語和關係圖：IAM User, IAM...</div></div></div></a><a class="pagination-related" href="/posts/70fcdd32.html" title="Python for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/python/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-06</div><div class="info-item-2">Python for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  Basic Data Typesdata type 可以透過 type() 來獲取物件或變數的 data type  123&gt;&gt;&gt; var = &quot;This is a string&quot;&gt;&gt;&gt; print(type(var))&lt;class &#x27;str&#x27;&gt;  Variables x valid x_y valid x-y invalid Python 變數並非 Case Sensitive VAR 不等於 var   當你在輸入 x=1 的時候會發生什麼事？ 其實就是創造一個整數物件其value為1 因此會在記憶體中分配一個固定大小的位址用來存放 1 而 x 這個名稱會指向用於該物件的 reference    123456&gt;&gt;&gt; x =123&gt;&gt;&gt; y =x&gt;&gt;&gt; print(id(x))4298889392&gt;&gt;&gt; print(id(y))4298889392  在 Py...</div></div></div></a><a class="pagination-related" href="/posts/6dbe323f.html" title="🐞透過 Amazon Lambda 實踐 Web Crawler"><img class="cover" src="/img/lambda.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-20</div><div class="info-item-2">🐞透過 Amazon Lambda 實踐 Web Crawler</div></div><div class="info-2"><div class="info-item-1">前言這篇文章是在重現客戶問題時候的的實踐，原先為了解決客戶的問題，我試著想要安裝 Selenium Chromedriver 以及 BeautifulSoup ，打包成 Lambda Layer 並建立基於該Layer的Lambda，但一直出現 Chromedriver 找不到檔案的錯誤，左踩坑又踩坑的troubleshooting 突然這篇救星 https://stackoverflow.com/questions/69047401/selenium-docker-container-runs-on-ec2-but-not-on-aws-lambda ，根據這篇文章以及相對應的 github https://github.com/rchauhan9/image-scraper-lambda-container/tree/master，上面主要是以 Container Image 的方式來建立 Lambda ，但要這麼做之前會先將需要的套件跟環境打包成 Image。 但由於公司的 Mac 不能安裝 Docker，因此我先開個 EC2 來進行大部分操作 本篇文章的範例以及建構所需知...</div></div></div></a><a class="pagination-related" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img class="cover" src="/img/devops/cover3.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2060-11-05</div><div class="info-item-2">DevOps技能樹知識整理 |【筆記目錄】</div></div><div class="info-2"><div class="info-item-1">前言這裡紀錄 DevOps 面試常見的知識點，主要是參考了這個 github repository: DevOps Exercises 和 ByteByteGo 的 GitHub Repo 所做的筆記整理  可能會花很久時間才能夠全部整理完成~  DevOps GeneralPython Basic Data Types OOP &#x2F; Class Raise Exceptions Regex Async File Manipulation OS lambda decorator Flask   文章： Python for DevOps |【DevOps技能樹】  Networking TCP&#x2F;UDP OSI Model CIDR Mac Addr. CSMA&#x2F;CD NAT DNS ICMP TLS&#x2F;SSL Handshake Route Table ARP DHCP VLAN  SDN  Configuration ..etc  Linux Basic Commands Filesystem Hierarchy Standard Permi...</div></div></div></a><a class="pagination-related" href="/posts/22911275.html" title="Git for DevOps 筆記 |【DevOps技能樹】"><img class="cover" src="/img/devops/git/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-11</div><div class="info-item-2">Git for DevOps 筆記 |【DevOps技能樹】</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  Basic Q:你要如何確認一個目錄是一個 git repository?  檢查是否有 .git 文件  Q:請解釋什麼是 git directory, working directory, staging area  Git目錄:適用於儲存項目歷史紀錄的地方。包含所有 commit history, branch, label 等資料，存放於專案目錄中的 .git 資料夾內。 Git 目錄其實就是負責管理版本的主要資料存放地，可以透過 git log 命令查看資訊 工作目錄目前正在操作的專案目錄。在工作目錄中，git 會去提取 Git 目錄中的某個特定版本(正常會是最新版本)，並將檔案提取出來，讓使用者可以直接編輯跟修改。 使用者對於工作目錄的變更並不會自動被 git 偵測，需要手動進行 add 以及 commit 進行更新。 Staging Area(暫存區)是一個臨時空間，可以讓你暫時將工作目錄的變更添加到暫存區，等待進一步提交，所以當你進行 git add 的時候，檔案就會從工作目錄轉移到暫存區。最終當使用 g...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><div class="bobame-aside-card">
-  <p class="bobame-aside-text">如果覺得我的文章有幫助，歡迎拯救Kevin免於吃土.</p>
+<h1 id="Policies"><a href="#Policies" class="headerlink" title="Policies"></a>Policies</h1><p><em><strong>What is a NetworkPolicy?</strong></em></p>
+<p>By default, all Pods can communicate with each other. A NetworkPolicy lets you use label selectors to define “which Pods can communicate with which Pods (or namespaces, IP ranges),” acting like a Pod-level firewall. Note: a NetworkPolicy requires CNI plugin support (e.g. Calico, Cilium) to take effect.</p>
+<p><em><strong>What are ResourceQuota and LimitRange?</strong></em></p>
+<ul>
+<li><strong>ResourceQuota</strong>: limits the total resources available in a namespace (e.g. total CPU, memory, Pod count)</li>
+<li><strong>LimitRange</strong>: sets default and min&#x2F;max resource values for individual Pods&#x2F;containers in a namespace</li>
+</ul>
+<h1 id="Etcd"><a href="#Etcd" class="headerlink" title="Etcd"></a>Etcd</h1><p><em><strong>What role does etcd play in Kubernetes?</strong></em></p>
+<p>etcd is a distributed key-value database, the “single source of truth” for the whole cluster. All object state (Pods, Services, ConfigMaps, Secrets…) lives in etcd, and the API Server is the only component that talks to etcd directly.</p>
+<p><em><strong>Why is backing up etcd important?</strong></em></p>
+<p>If etcd data is lost, the entire cluster’s state is gone, so production usually backs up etcd snapshots regularly.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ETCDCTL_API=3 etcdctl snapshot save snapshot.db \</span><br><span class="line">  --endpoints=https://127.0.0.1:2379 \</span><br><span class="line">  --cacert=... --cert=... --key=...</span><br></pre></td></tr></table></figure>
+
+<h1 id="Namespaces"><a href="#Namespaces" class="headerlink" title="Namespaces"></a>Namespaces</h1><p><em><strong>What is a Namespace?</strong></em></p>
+<p>A Namespace lets you carve multiple “virtual clusters” out of one physical cluster, to isolate the resources of different teams, environments, or projects. Combined with ResourceQuota and RBAC, it achieves resource and permission isolation.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace dev</span><br><span class="line">kubectl get pods -n dev</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>Which resources are cluster-scoped and don’t belong to any namespace?</strong></em></p>
+<p>Most resources (Pod, Service, Deployment) belong to a namespace, but some are cluster-level and don’t belong to any namespace, such as <strong>Node, PersistentVolume, Namespace itself, and ClusterRole</strong>.</p>
+<h1 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h1><p><em><strong>What is an Operator?</strong></em></p>
+<p>An Operator is a pattern for encoding “the operational expertise of running an application” as code. It extends the Kubernetes API with <strong>Custom Resource Definitions (CRDs)</strong>, paired with a <strong>Controller</strong> that continuously watches these custom resources and reconciles the actual state to the desired state.</p>
+<p><em><strong>Can you give an example?</strong></em></p>
+<p>For example, to run a PostgreSQL cluster on K8s, after installing a PostgreSQL Operator, you just create a <code>kind: PostgresCluster</code> custom resource, and the Operator automatically handles creation, backup, failover, version upgrades, and other operational work.</p>
+<h1 id="Secrets"><a href="#Secrets" class="headerlink" title="Secrets"></a>Secrets</h1><p><em><strong>What’s the difference between a Secret and a ConfigMap?</strong></em></p>
+<p>Both separate config from the image; the difference is:</p>
+<ul>
+<li><strong>ConfigMap</strong>: stores general, non-sensitive config (config files, environment variables)</li>
+<li><strong>Secret</strong>: stores sensitive data (passwords, tokens, certificates)</li>
+</ul>
+<p><em><strong>Is a Secret really secure?</strong></em></p>
+<p>Note: <strong>a default Secret is just base64-encoded, not encrypted</strong>, so anyone who can read the Secret can decode its contents. For real protection, you need to additionally enable <strong>etcd encryption at rest</strong> and strictly limit who can read Secrets via RBAC.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic db-cred \</span><br><span class="line">  --from-literal=username=admin --from-literal=password=p@ss</span><br></pre></td></tr></table></figure>
+
+<h1 id="Volumes"><a href="#Volumes" class="headerlink" title="Volumes"></a>Volumes</h1><p><em><strong>What’s the difference between a Volume and a PersistentVolume?</strong></em></p>
+<ul>
+<li>An ordinary <strong>Volume</strong>‘s lifecycle is tied to the Pod; once the Pod is deleted, data in a volume like <code>emptyDir</code> is gone</li>
+<li>A <strong>PersistentVolume</strong>‘s lifecycle is independent of the Pod, so the data survives Pod deletion</li>
+</ul>
+<p><em><strong>What are common Volume types?</strong></em></p>
+<ul>
+<li><code>emptyDir</code>: scratch space for the Pod’s lifetime, often used to share data between containers in the same Pod</li>
+<li><code>hostPath</code>: mounts a path on the node (be careful, it couples to the node)</li>
+<li><code>configMap</code> &#x2F; <code>secret</code>: mounts a ConfigMap&#x2F;Secret into the container as files</li>
+<li><code>persistentVolumeClaim</code>: mounts a PVC (real persistent storage)</li>
+</ul>
+<h1 id="Access-Control"><a href="#Access-Control" class="headerlink" title="Access Control"></a>Access Control</h1><p><em><strong>How does Kubernetes do permission control?</strong></em></p>
+<p>Mainly through <strong>RBAC (Role-Based Access Control)</strong>. The four core objects:</p>
+<ul>
+<li><strong>Role &#x2F; ClusterRole</strong>: define “what actions on which resources are allowed” (Role is namespace-scoped, ClusterRole is cluster-wide)</li>
+<li><strong>RoleBinding &#x2F; ClusterRoleBinding</strong>: bind a Role to a User, Group, or ServiceAccount</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl create role pod-reader --verb=get,list,watch --resource=pods</span><br><span class="line">kubectl create rolebinding read-pods --role=pod-reader --user=kevin</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>What is a ServiceAccount?</strong></em></p>
+<p>A ServiceAccount is an identity for “programs inside a Pod” (as opposed to a User for people). A Pod can use its ServiceAccount’s token to call the API Server, governed by RBAC.</p>
+<p><em><strong>What checks does a request to the API Server go through?</strong></em></p>
+<p>Authentication (who you are) → Authorization (RBAC, whether you can do it) → Admission Control (extra admission control, e.g. validating or mutating the request).</p>
+<h1 id="CronJob"><a href="#CronJob" class="headerlink" title="CronJob"></a>CronJob</h1><p><em><strong>What’s the difference between a Job and a CronJob?</strong></em></p>
+<ul>
+<li><strong>Job</strong>: runs a one-off task that “finishes” (e.g. data migration, batch computation), ensuring it completes successfully the specified number of times</li>
+<li><strong>CronJob</strong>: adds scheduling on top of a Job, creating Jobs on a schedule via cron syntax (e.g. a backup every night)</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">CronJob</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">backup</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">&quot;0 2 * * *&quot;</span>   <span class="comment"># daily at 02:00</span></span><br><span class="line">  <span class="attr">jobTemplate:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">template:</span></span><br><span class="line">        <span class="attr">spec:</span></span><br><span class="line">          <span class="attr">containers:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">backup</span></span><br><span class="line">            <span class="attr">image:</span> <span class="string">backup-tool:latest</span></span><br><span class="line">          <span class="attr">restartPolicy:</span> <span class="string">OnFailure</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h1><p><em><strong>What is Helm?</strong></em></p>
+<p>Helm is Kubernetes’s “package manager,” similar to apt&#x2F;yum. It packages a set of K8s manifests into a <strong>Chart</strong>, supporting parameterization via <code>values.yaml</code>, version management, and one-command install&#x2F;upgrade&#x2F;rollback.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">helm install my-release bitnami/nginx</span><br><span class="line">helm upgrade my-release bitnami/nginx --<span class="built_in">set</span> replicaCount=3</span><br><span class="line">helm rollback my-release 1</span><br><span class="line">helm uninstall my-release</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>Why use Helm instead of just kubectl apply?</strong></em></p>
+<p>When an application is made of many manifests and deployed to multiple environments (dev&#x2F;staging&#x2F;prod with different parameters), Helm’s templating and version management are far more convenient than hand-maintaining a pile of YAML.</p>
+<h1 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h1><p><em><strong>What are some common Kubernetes security practices?</strong></em></p>
+<ul>
+<li><strong>Principle of least privilege</strong>: strictly limit ServiceAccount and user permissions with RBAC</li>
+<li><strong>Don’t run containers as root</strong>: set <code>securityContext.runAsNonRoot: true</code></li>
+<li><strong>Encrypt Secrets</strong>: enable etcd encryption at rest and restrict Secret access</li>
+<li><strong>NetworkPolicy</strong>: default deny, open only necessary Pod-to-Pod communication</li>
+<li><strong>Image scanning</strong>: scan images for vulnerabilities, use only trusted sources</li>
+<li><strong>Pod Security Admission</strong>: use the built-in Pod Security Standards (privileged &#x2F; baseline &#x2F; restricted) to limit Pod privileges</li>
+</ul>
+<p><em><strong>What is a securityContext?</strong></em></p>
+<p>A securityContext sets security-related attributes for a Pod or container, such as which UID to run as, whether privileged mode is allowed, and whether the root filesystem is read-only.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">securityContext:</span></span><br><span class="line">  <span class="attr">runAsNonRoot:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">runAsUser:</span> <span class="number">1000</span></span><br><span class="line">  <span class="attr">readOnlyRootFilesystem:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">allowPrivilegeEscalation:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p><em><strong>What are some handy kubectl debugging commands?</strong></em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe &lt;resource&gt; &lt;name&gt;   <span class="comment"># see detailed status and events</span></span><br><span class="line">kubectl logs &lt;pod&gt; [-c container]    <span class="comment"># see container logs</span></span><br><span class="line">kubectl logs &lt;pod&gt; --previous        <span class="comment"># see the previous crashed container&#x27;s logs</span></span><br><span class="line">kubectl <span class="built_in">exec</span> -it &lt;pod&gt; -- sh         <span class="comment"># enter the container</span></span><br><span class="line">kubectl get events --sort-by=.lastTimestamp</span><br><span class="line">kubectl top pod / kubectl top node   <span class="comment"># see resource usage (needs metrics-server)</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>What’s the difference between kubectl’s imperative and declarative styles?</strong></em></p>
+<ul>
+<li><strong>Imperative</strong>: directly issue commands to change state, e.g. <code>kubectl create</code>, <code>kubectl run</code></li>
+<li><strong>Declarative</strong>: write the desired state as YAML and let Kubernetes reconcile it with <code>kubectl apply -f</code>. Production usually uses the declarative style with GitOps (version-controlling all manifests).</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en/posts/c7f5f41c.html">https://leozzmc.github.io/en/posts/c7f5f41c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/en/tags/Python/">Python</a><a class="post-meta__tags" href="/en/tags/DevOps/">DevOps</a><a class="post-meta__tags" href="/en/tags/Kubernetes/">Kubernetes</a></div><div class="post-share"><div class="social-share" data-image="/en/img/me.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/100cc6b6.html" title="AWS for DevOps Notes |【DevOps Skill Tree】"><img class="cover" src="/en/img/devops/AWS/cover.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">AWS for DevOps Notes |【DevOps Skill Tree】</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Regions &amp; AZsRegion: a group of data centers spanning multiple geographic locations, e.g. us-east-1 Availability Zone (AZ): each region has multiple mutually-isolated locations called AZs. An AZ may contain one or more data centers with independent networking and power. us-east-1a, us-east-1b, etc. Local Zone: no physical data center of its own, usually connected to an AZ. For example, Taiwan’s Local Zone connects to ap-northeast-1, aiming to serve edge locations to reduce l...</div></div></div></a><a class="pagination-related" href="/en/posts/22911275.html" title="Git for DevOps Notes |【DevOps Skill Tree】"><img class="cover" src="/en/img/devops/git/cover.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Git for DevOps Notes |【DevOps Skill Tree】</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Basic Q: How do you confirm a directory is a git repository?  Check whether there’s a .git directory.  Q: Explain git directory, working directory, and staging area  Git directory:Where the project history is stored. It contains all commit history, branches, labels, etc., stored in the .git folder in the project directory. The git directory is the main data store responsible for version management; you can view info with the git log command. Working directoryThe project director...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/100cc6b6.html" title="AWS for DevOps Notes |【DevOps Skill Tree】"><img class="cover" src="/en/img/devops/AWS/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="info-item-2">AWS for DevOps Notes |【DevOps Skill Tree】</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Regions &amp; AZsRegion: a group of data centers spanning multiple geographic locations, e.g. us-east-1 Availability Zone (AZ): each region has multiple mutually-isolated locations called AZs. An AZ may contain one or more data centers with independent networking and power. us-east-1a, us-east-1b, etc. Local Zone: no physical data center of its own, usually connected to an AZ. For example, Taiwan’s Local Zone connects to ap-northeast-1, aiming to serve edge locations to reduce l...</div></div></div></a><a class="pagination-related" href="/en/posts/70fcdd32.html" title="Python for DevOps Notes |【DevOps Skill Tree】"><img class="cover" src="/en/img/devops/python/cover.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-06</div><div class="info-item-2">Python for DevOps Notes |【DevOps Skill Tree】</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Basic Data Typesdata type You can get an object or variable’s data type with type()  123&gt;&gt;&gt; var = &quot;This is a string&quot;&gt;&gt;&gt; print(type(var))&lt;class &#x27;str&#x27;&gt;  Variables x valid x_y valid x-y invalid Python variables are case-sensitive VAR is not equal to var   What happens when you type x=1? It creates an integer object with value 1 So a fixed-size address is allocated in memory to store 1 And the name x points to the reference for that object...</div></div></div></a><a class="pagination-related" href="/en/posts/22911275.html" title="Git for DevOps Notes |【DevOps Skill Tree】"><img class="cover" src="/en/img/devops/git/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-11</div><div class="info-item-2">Git for DevOps Notes |【DevOps Skill Tree】</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Basic Q: How do you confirm a directory is a git repository?  Check whether there’s a .git directory.  Q: Explain git directory, working directory, and staging area  Git directory:Where the project history is stored. It contains all commit history, branches, labels, etc., stored in the .git folder in the project directory. The git directory is the main data store responsible for version management; you can view info with the git log command. Working directoryThe project director...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">48</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">86</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><div class="bobame-aside-card">
+  <p class="bobame-aside-text">If you find my articles helpful, please support Kevin!</p>
   <a class="bobame-button"
      style="background-color:#A0ADA6;color:#F8E0BE;border:none"
      href="https://kevinneck87.bobaboba.me?utm_source=blog&utm_medium=aside_button&utm_campaign=support"
@@ -429,7 +627,7 @@ btf.addGlobalFn('pjaxComplete', () => {
     <span>Use boba to safe Kevin!</span>
   </a>
 </div>
-</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Basic"><span class="toc-number">1.</span> <span class="toc-text">Basic</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cluster-and-Architecture"><span class="toc-number">2.</span> <span class="toc-text">Cluster and Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kubelet"><span class="toc-number">2.1.</span> <span class="toc-text">Kubelet</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pods"><span class="toc-number">3.</span> <span class="toc-text">Pods</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Static-Pods"><span class="toc-number">3.1.</span> <span class="toc-text">Static Pods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pods-Commands"><span class="toc-number">3.2.</span> <span class="toc-text">Pods Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pods-Troubleshooting-and-Debugging"><span class="toc-number">3.3.</span> <span class="toc-text">Pods Troubleshooting and Debugging</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Labels-and-Selectors"><span class="toc-number">4.</span> <span class="toc-text">Labels and Selectors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Deployment"><span class="toc-number">5.</span> <span class="toc-text">Deployment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Services"><span class="toc-number">6.</span> <span class="toc-text">Services</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ingress"><span class="toc-number">7.</span> <span class="toc-text">Ingress</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ReplicaSets"><span class="toc-number">8.</span> <span class="toc-text">ReplicaSets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DaemonSets"><span class="toc-number">9.</span> <span class="toc-text">DaemonSets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#StatefulSet"><span class="toc-number">10.</span> <span class="toc-text">StatefulSet</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Storage"><span class="toc-number">11.</span> <span class="toc-text">Storage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Networking"><span class="toc-number">12.</span> <span class="toc-text">Networking</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Policies"><span class="toc-number">13.</span> <span class="toc-text">Policies</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Etcd"><span class="toc-number">14.</span> <span class="toc-text">Etcd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Namespaces"><span class="toc-number">15.</span> <span class="toc-text">Namespaces</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Operators"><span class="toc-number">16.</span> <span class="toc-text">Operators</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Secrets"><span class="toc-number">17.</span> <span class="toc-text">Secrets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Volumes"><span class="toc-number">18.</span> <span class="toc-text">Volumes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Access-Control"><span class="toc-number">19.</span> <span class="toc-text">Access Control</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CronJob"><span class="toc-number">20.</span> <span class="toc-text">CronJob</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Helm"><span class="toc-number">21.</span> <span class="toc-text">Helm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Security"><span class="toc-number">22.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number">23.</span> <span class="toc-text">Misc</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026">跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="發表於 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026">被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="發表於 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026">深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="發表於 2026-10-24 20:50:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Basic"><span class="toc-number">1.</span> <span class="toc-text">Basic</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cluster-and-Architecture"><span class="toc-number">2.</span> <span class="toc-text">Cluster and Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kubelet"><span class="toc-number">2.1.</span> <span class="toc-text">Kubelet</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pods"><span class="toc-number">3.</span> <span class="toc-text">Pods</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Static-Pods"><span class="toc-number">3.1.</span> <span class="toc-text">Static Pods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pods-Commands"><span class="toc-number">3.2.</span> <span class="toc-text">Pods Commands</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pods-Troubleshooting-and-Debugging"><span class="toc-number">3.3.</span> <span class="toc-text">Pods Troubleshooting and Debugging</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Labels-and-Selectors"><span class="toc-number">4.</span> <span class="toc-text">Labels and Selectors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Deployment"><span class="toc-number">5.</span> <span class="toc-text">Deployment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Services"><span class="toc-number">6.</span> <span class="toc-text">Services</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ingress"><span class="toc-number">7.</span> <span class="toc-text">Ingress</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ReplicaSets"><span class="toc-number">8.</span> <span class="toc-text">ReplicaSets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DaemonSets"><span class="toc-number">9.</span> <span class="toc-text">DaemonSets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#StatefulSet"><span class="toc-number">10.</span> <span class="toc-text">StatefulSet</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Storage"><span class="toc-number">11.</span> <span class="toc-text">Storage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Networking"><span class="toc-number">12.</span> <span class="toc-text">Networking</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Policies"><span class="toc-number">13.</span> <span class="toc-text">Policies</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Etcd"><span class="toc-number">14.</span> <span class="toc-text">Etcd</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Namespaces"><span class="toc-number">15.</span> <span class="toc-text">Namespaces</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Operators"><span class="toc-number">16.</span> <span class="toc-text">Operators</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Secrets"><span class="toc-number">17.</span> <span class="toc-text">Secrets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Volumes"><span class="toc-number">18.</span> <span class="toc-text">Volumes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Access-Control"><span class="toc-number">19.</span> <span class="toc-text">Access Control</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CronJob"><span class="toc-number">20.</span> <span class="toc-text">CronJob</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Helm"><span class="toc-number">21.</span> <span class="toc-text">Helm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Security"><span class="toc-number">22.</span> <span class="toc-text">Security</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number">23.</span> <span class="toc-text">Misc</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026">Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="Created 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026">High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="Created 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026">A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="Created 2026-10-24 20:50:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026">Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:40:00.000Z" title="Created 2026-10-24 20:40:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026">The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:30:00.000Z" title="Created 2026-10-24 20:30:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.1"></script><script src="/en/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {
@@ -612,4 +810,4 @@ btf.addGlobalFn('pjaxComplete', () => {
 POWERMODE.shake = true;
 POWERMODE.mobile = false;
 document.body.addEventListener('input', POWERMODE);
-</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
