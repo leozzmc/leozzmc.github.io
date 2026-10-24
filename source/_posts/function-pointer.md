@@ -10,6 +10,9 @@ date: 2024-08-30 09:52:21
 cover: /img/c++/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/bf93d608.html)
+
+
 # 函式指標 (Function Pointer)
 
 > 當你透過 C/C++ 中宣告一個函式時，就會分配一段起始記憶體位址，而 Function Pointer 就可以用來指向以及儲存函式位址。 所以我們可以直接透過 Function Pointer **1.來呼叫一個函式**  **2.或者將它傳遞給其他函式**

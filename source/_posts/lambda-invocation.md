@@ -11,6 +11,9 @@ date: 2023-10-17 21:53:09
 cover: /img/PEPE2.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/a09fae.html)
+
+
 
 
 

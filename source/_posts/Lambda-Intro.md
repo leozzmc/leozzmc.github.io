@@ -11,6 +11,9 @@ abbrlink: c79cef2b
 date: 2023-10-16 21:59:49
 ---
 
+> 🌐 English version: [English](/en/posts/c79cef2b.html)
+
+
 ## 前言
 
 
