@@ -1,36 +1,36 @@
-<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>NASA HDTN 架構解析：太空 DTN 如何真正運作？ | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="DTN 不只是 Store-Carry-Forward 的概念。這篇文章將拆解 NASA High-rate Delay Tolerant Networking（HDTN）的模組化架構，說明 Ingress、Storage、Router、Scheduler、Egress 與 Convergence Layer 如何共同處理太空環境中的斷線、等待與重新轉送。">
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work? | Kevin Liu's Blog || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="DTN is more than the Store-Carry-Forward concept. This post breaks down the modular architecture of NASA&#39;s High-rate Delay Tolerant Networking (HDTN), explaining how Ingress, Storage, Router, Schedule">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NASA HDTN 架構解析：太空 DTN 如何真正運作？">
-<meta property="og:url" content="https://leozzmc.github.io/posts/25763fe7.html">
-<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
-<meta property="og:description" content="DTN 不只是 Store-Carry-Forward 的概念。這篇文章將拆解 NASA High-rate Delay Tolerant Networking（HDTN）的模組化架構，說明 Ingress、Storage、Router、Scheduler、Egress 與 Convergence Layer 如何共同處理太空環境中的斷線、等待與重新轉送。">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://leozzmc.github.io/img/DTN/cover-2.png">
+<meta property="og:title" content="Dissecting NASA&#39;s HDTN Architecture: How Does Space DTN Actually Work?">
+<meta property="og:url" content="https://leozzmc.github.io/en/posts/25763fe7.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s Blog || Technical || Travel">
+<meta property="og:description" content="DTN is more than the Store-Carry-Forward concept. This post breaks down the modular architecture of NASA&#39;s High-rate Delay Tolerant Networking (HDTN), explaining how Ingress, Storage, Router, Schedule">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://leozzmc.github.io/en/img/DTN/cover-2.png">
 <meta property="article:published_time" content="2026-06-07T12:51:10.000Z">
-<meta property="article:modified_time" content="2026-10-24T07:24:37.563Z">
+<meta property="article:modified_time" content="2026-10-24T07:24:25.377Z">
 <meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Space Networking">
 <meta property="article:tag" content="DTN">
 <meta property="article:tag" content="Bundle Protocol">
-<meta property="article:tag" content="Space Networking">
 <meta property="article:tag" content="NASA">
 <meta property="article:tag" content="Distributed Systems">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://leozzmc.github.io/img/DTN/cover-2.png"><script type="application/ld+json">{
+<meta name="twitter:image" content="https://leozzmc.github.io/en/img/DTN/cover-2.png"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "NASA HDTN 架構解析：太空 DTN 如何真正運作？",
-  "url": "https://leozzmc.github.io/posts/25763fe7.html",
-  "image": "https://leozzmc.github.io/img/DTN/cover-2.png",
+  "headline": "Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work?",
+  "url": "https://leozzmc.github.io/en/posts/25763fe7.html",
+  "image": "https://leozzmc.github.io/en/img/DTN/cover-2.png",
   "datePublished": "2026-06-07T12:51:10.000Z",
-  "dateModified": "2026-10-24T07:24:37.563Z",
+  "dateModified": "2026-10-24T07:24:25.377Z",
   "author": [
     {
       "@type": "Person",
       "name": "Kevin Liu",
-      "url": "https://leozzmc.github.io"
+      "url": "https://leozzmc.github.io/en"
     }
   ]
-}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/25763fe7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+}</script><link rel="shortcut icon" href="/en/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/en/posts/25763fe7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
     (() => {
       
     const saveToLocal = {
@@ -128,34 +128,34 @@ btf.addGlobalFn('pjaxComplete', () => {
   gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
 }, 'google_analytics')
 </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
+  root: '/en/',
   algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  localSearch: {"path":"/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
   translate: undefined,
   highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600,"highlightFullpage":false,"highlightMacStyle":true},
   copy: {
-    success: '複製成功',
-    error: '複製失敗',
-    noSupport: '瀏覽器不支援'
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
   },
   relativeDate: {
     homepage: false,
     post: false
   },
-  runtime: '',
+  runtime: 'days',
   dateSuffix: {
-    just: '剛剛',
-    min: '分鐘前',
-    hour: '小時前',
-    day: '天前',
-    month: '個月前'
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
   },
   copyright: undefined,
   lightbox: 'null',
   Snackbar: undefined,
   infinitegrid: {
     js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
-    buttonText: '載入更多'
+    buttonText: 'Load More'
   },
   isPhotoFigcaption: false,
   islazyloadPlugin: false,
@@ -166,7 +166,7 @@ btf.addGlobalFn('pjaxComplete', () => {
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'NASA HDTN 架構解析：太空 DTN 如何真正運作？',
+  title: 'Dissecting NASA\'s HDTN Architecture: How Does Space DTN Actually Work?',
   isHighlightShrink: false,
   isToc: true,
   pageType: 'post'
@@ -214,270 +214,270 @@ btf.addGlobalFn('pjaxComplete', () => {
     white-space: nowrap;
   }
 </style>
-<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/DTN/cover-2.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">NASA HDTN 架構解析：太空 DTN 如何真正運作？</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">NASA HDTN 架構解析：太空 DTN 如何真正運作？</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2026-06-07T12:51:10.000Z" title="發表於 2026-06-07 20:51:10">2026-06-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2026-10-24T07:24:37.563Z" title="更新於 2026-10-24 15:24:37">2026-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Space-Infrastructure/">Space Infrastructure</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">6.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>21分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
-<p>🌐 English version: <a href="/en/posts/25763fe7.html">English</a></p>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">78</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/DTN/cover-2.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's Blog || Technical || Travel</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work?</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work?</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-06-07T12:51:10.000Z" title="Created 2026-06-07 20:51:10">2026-06-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-10-24T07:24:25.377Z" title="Updated 2026-10-24 15:24:25">2026-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/Space-Infrastructure/">Space Infrastructure</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>27mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>🌐 中文版：<a href="/posts/25763fe7.html">繁體中文</a></p>
 </blockquote>
-<h1 id="前言：從-DTN-的概念，走向真正可以運作的太空網路"><a href="#前言：從-DTN-的概念，走向真正可以運作的太空網路" class="headerlink" title="前言：從 DTN 的概念，走向真正可以運作的太空網路"></a>前言：從 DTN 的概念，走向真正可以運作的太空網路</h1><p>在上一篇文章 <a href="https://leozzmc.github.io/posts/7d41a775.html">〈為什麼太空網路需要 DTN？從 TCP&#x2F;IP 的限制到深空網路〉</a> 中，我整理了太空網路和地面 Internet 之間最根本的差異。 在地球上，我們通常預期來源與目的地之間存在一條可以立即使用的完整路徑。即即便途中偶爾發生遺失封包，TCP 也能透過 ACK、Timeout 與 Retransmission 等一大堆機制處理問題～</p>
-<p>但如果場景在太空中，斷線不一定代表故障。舉例來說，狀況可能是：衛星可能飛出地面站的可視範圍，月球探測車可能進入隕石坑，航天器可能為了節省能源暫時關閉通訊模組。另外，不同節點之間的連線，也可能受到軌道位置、天體遮蔽、天線方向與通訊排程影響</p>
-<p>因此，太空網路不能只看 <strong>現在有沒有一條可以立刻抵達終點的路？</strong> 還必須進一步考慮： <strong>下一次可以轉送資料的機會是什麼時候？</strong>, <strong>在那之前，資料應該先存放在哪一個節點？</strong>, <strong>如果通訊窗口突然消失，又該如何恢復傳輸？</strong></p>
-<p>以上就是 <strong>Delay&#x2F;Disruption-Tolerant Networking（DTN）</strong> 試圖解決的問題</p>
-<p>而我的上一篇文章已經介紹過 DTN 最核心的運作方式：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Store → Carry → Forward</span><br><span class="line">儲存  → 攜帶  → 轉送</span><br></pre></td></tr></table></figure>
+<h1 id="Preface-from-the-concept-of-DTN-to-a-space-network-that-actually-works"><a href="#Preface-from-the-concept-of-DTN-to-a-space-network-that-actually-works" class="headerlink" title="Preface: from the concept of DTN to a space network that actually works"></a>Preface: from the concept of DTN to a space network that actually works</h1><p>In the previous post, <a href="/en/posts/7d41a775.html">Why Space Networking Needs DTN: From TCP&#x2F;IP’s Limits to Deep-Space Networks</a>, I laid out the most fundamental differences between space networks and the terrestrial Internet. On Earth, we usually expect a complete, immediately-usable path between source and destination. Even if a packet is occasionally lost along the way, TCP can handle it through a whole set of mechanisms like ACK, timeout, and retransmission.</p>
+<p>But in space, a disconnection doesn’t necessarily mean a fault. For example, the situation might be: a satellite flying out of a ground station’s visible range, a lunar rover entering a crater, or a spacecraft temporarily shutting off its comms module to save energy. Connections between nodes can also be affected by orbital position, celestial occlusion, antenna direction, and communication schedules.</p>
+<p>So a space network can’t only look at <strong>is there a path to the destination right now?</strong> It must further consider: <strong>when is the next opportunity to forward data?</strong>, <strong>until then, which node should hold the data?</strong>, and <strong>if the contact window suddenly vanishes, how is transmission resumed?</strong></p>
+<p>These are the problems <strong>Delay&#x2F;Disruption-Tolerant Networking (DTN)</strong> tries to solve.</p>
+<p>My previous post already introduced DTN’s most core operating model:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Store → Carry → Forward</span><br></pre></td></tr></table></figure>
 
-<p>但這仍然只是一個相對抽象的概念。因為如果我們真的要把 DTN 真的部署在國際太空站、衛星、月球中繼站，甚至未來的深空網路中，背後到底需要哪些軟體元件？並且還有一堆疑問：</p>
+<p>But that’s still a relatively abstract concept. Because if we really want to deploy DTN on the ISS, satellites, lunar relay stations, or even future deep-space networks, what software components are needed behind the scenes? And there are many questions:</p>
 <blockquote>
-<p>資料進入節點後，系統如何判斷應該立刻送出，還是暫時寫入硬碟？<br>通訊窗口出現後，誰負責通知系統重新釋放資料？<br>當路徑突然中斷，系統又如何重新計算下一跳？</p>
+<p>After data enters a node, how does the system decide whether to send immediately or temporarily write to disk?<br>When a contact window appears, who’s responsible for telling the system to release the data again?<br>When a path suddenly drops, how does the system recompute the next hop?</p>
 </blockquote>
-<p>而 <strong>NASA Glenn Research Center</strong>  開發的 <strong>High-rate Delay Tolerant Networking（HDTN）</strong>，正是一套將 DTN 從古老的抽象概念落實成工程系統的實作，來繼續看下去。[1][2]</p>
-<h1 id="HDTN-是什麼？"><a href="#HDTN-是什麼？" class="headerlink" title="HDTN 是什麼？"></a>HDTN 是什麼？</h1><p>HDTN 的全名是 <strong>High-rate Delay Tolerant Networking</strong>， 它並不是另一套與 DTN 無關的新協定，而是一套針對高頻寬需求設計的 DTN implementation。這裡可以回憶一下，DTN 解決的是太空網路中的可靠傳輸問題：</p>
+<p><strong>High-rate Delay Tolerant Networking (HDTN)</strong>, developed by <strong>NASA Glenn Research Center</strong>, is exactly an implementation that turns DTN from an old abstract concept into an engineering system. Let’s keep reading. [1][2]</p>
+<h1 id="What-is-HDTN"><a href="#What-is-HDTN" class="headerlink" title="What is HDTN?"></a>What is HDTN?</h1><p>HDTN stands for <strong>High-rate Delay Tolerant Networking</strong>. It isn’t a new protocol unrelated to DTN, but a DTN implementation designed for high-bandwidth needs. Recall that DTN solves the reliable-transport problem in space networks:</p>
 <ul>
-<li>節點之間不一定隨時保持連線</li>
-<li>通訊延遲可能非常長</li>
-<li>網路拓樸會隨時間改變</li>
-<li>資料可能必須在中繼節點停留一段時間</li>
-<li>通訊路徑可能在傳輸途中突然中斷</li>
+<li>Nodes aren’t always connected</li>
+<li>Communication delays can be very long</li>
+<li>The network topology changes over time</li>
+<li>Data may have to stay at a relay node for a while</li>
+<li>The communication path may suddenly drop mid-transfer</li>
 </ul>
-<p>但當雷射通訊、高解析影像、科學儀器資料與大型檔案傳輸逐漸增加後，系統還會面對另一個問題：</p>
+<p>But as laser comms, high-resolution imagery, scientific instrument data, and large file transfers increase, the system faces another problem:</p>
 <blockquote>
-<p>即使 DTN 可以容忍斷線，它能不能在通訊窗口出現時，快速傳送大量資料？</p>
+<p>Even if DTN can tolerate disconnection, can it transfer large amounts of data quickly when a contact window appears?</p>
 </blockquote>
-<p>早期的 DTN implementation 多半運作在資源有限的環境中，優先考量的是穩定性與任務需求，而不是極高的吞吐量。然而，<strong>未來的太空任務不只需要可以傳，還需要在有限的 Contact Window 內盡可能傳送更多資料。</strong> NASA 因此開發了 HDTN，就是希望透過現代化硬體、平行處理與模組化架構，提高 DTN 的處理效率。[1][2]</p>
-<h1 id="為什麼-NASA-需要-High-rate-DTN？"><a href="#為什麼-NASA-需要-High-rate-DTN？" class="headerlink" title="為什麼 NASA 需要 High-rate DTN？"></a>為什麼 NASA 需要 High-rate DTN？</h1><p>NASA Glenn Research Center 在 2022 年發布的 Technical Memorandum 中，以國際太空站(ISS)作為 HDTN 的測試與整合場景。ISS 裡面雖然也有電腦，但是不是只有電腦，而是一個包含大量子系統 (onboard computer通常有非常多子系統)、科學酬載、無線電設備與地面網路的複雜環境。[1]</p>
-<p>科學資料從 ISS 傳回研究團隊時，可能經過多個節點：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  ISS 上的科學儀器</span><br><span class="line">        ↓</span><br><span class="line">Joint Station LAN（JSL）</span><br><span class="line">        ↓</span><br><span class="line">     通訊設備</span><br><span class="line">        ↓</span><br><span class="line">Tracking and Data Relay Satellite（TDRS）</span><br><span class="line">        ↓</span><br><span class="line">    地面接收站</span><br><span class="line">        ↓</span><br><span class="line">     地面網路</span><br><span class="line">        ↓</span><br><span class="line">     研究團隊</span><br></pre></td></tr></table></figure>
+<p>Early DTN implementations mostly ran in resource-constrained environments, prioritizing stability and mission needs over extremely high throughput. However, <strong>future space missions need not just the ability to transmit, but to transmit as much data as possible within a limited contact window.</strong> So NASA developed HDTN to improve DTN’s processing efficiency through modern hardware, parallel processing, and a modular architecture. [1][2]</p>
+<h1 id="Why-does-NASA-need-High-rate-DTN"><a href="#Why-does-NASA-need-High-rate-DTN" class="headerlink" title="Why does NASA need High-rate DTN?"></a>Why does NASA need High-rate DTN?</h1><p>In a Technical Memorandum released in 2022, NASA Glenn Research Center used the International Space Station (ISS) as the test and integration scenario for HDTN. The ISS does have computers, but not just computers; it’s a complex environment with many subsystems (an onboard computer usually has a great many subsystems), science payloads, radio equipment, and ground networks. [1]</p>
+<p>When science data is sent from the ISS back to a research team, it may pass through multiple nodes:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  Science instrument on the ISS</span><br><span class="line">        ↓</span><br><span class="line">Joint Station LAN (JSL)</span><br><span class="line">        ↓</span><br><span class="line">     Comms equipment</span><br><span class="line">        ↓</span><br><span class="line">Tracking and Data Relay Satellite (TDRS)</span><br><span class="line">        ↓</span><br><span class="line">    Ground station</span><br><span class="line">        ↓</span><br><span class="line">     Ground network</span><br><span class="line">        ↓</span><br><span class="line">     Research team</span><br></pre></td></tr></table></figure>
 
-<p>上面這樣只是一種可能的傳遞方式而已。另外，不同資料的需求也不一樣。有些可能是軟體更新，有些是遙測資料，有些是大型科學檔案，也可能包含影像與串流內容。每種資料的大小、優先順序與頻寬需求都不同。而且，ISS 在軌道上持續移動，通訊鏈路也不會永久保持穩定。部分鏈路可能暫時可用，也可能突然中斷。</p>
-<p>這代表 ISS 的網路需要同時具備：</p>
+<p>The above is just one possible delivery path. Also, different data has different needs. Some may be software updates, some telemetry, some large science files, and some may include imagery and streaming content. Each kind of data differs in size, priority, and bandwidth need. And the ISS keeps moving in orbit, so the comms links won’t stay permanently stable. Some links may be temporarily available, and may suddenly drop.</p>
+<p>This means the ISS network needs to simultaneously have:</p>
 <ul>
-<li>高吞吐量</li>
-<li>本地儲存能力</li>
-<li>路由管理</li>
-<li>斷線恢復</li>
-<li>不同 DTN implementation 之間的互通性</li>
-<li>對不同底層傳輸方式的支援</li>
+<li>High throughput</li>
+<li>Local storage capability</li>
+<li>Routing management</li>
+<li>Disconnection recovery</li>
+<li>Interoperability between different DTN implementations</li>
+<li>Support for different underlying transports</li>
 </ul>
-<p>HDTN 的目標，就是在這類環境中建立一套可以 <strong>自動管理資料流動的高速 DTN 系統</strong>。[1][2]</p>
-<h1 id="從物流系統理解-HDTN"><a href="#從物流系統理解-HDTN" class="headerlink" title="從物流系統理解 HDTN"></a>從物流系統理解 HDTN</h1><p>這邊可以再回到上一篇文章中的物流比喻，這邊將 DTN 比喻成跨國物流系統 (像是 DHL那樣)</p>
-<p>傳統 Internet 比較像即時電話：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">撥號 → 建立連線 → 即時通話</span><br></pre></td></tr></table></figure>
+<p>HDTN’s goal is to build a high-speed DTN system that can <strong>automatically manage data flow</strong> in such environments. [1][2]</p>
+<h1 id="Understanding-HDTN-through-a-logistics-system"><a href="#Understanding-HDTN-through-a-logistics-system" class="headerlink" title="Understanding HDTN through a logistics system"></a>Understanding HDTN through a logistics system</h1><p>Let’s return to the logistics analogy from the previous post, which compared DTN to an international logistics system (like DHL).</p>
+<p>The traditional Internet is more like a real-time phone call:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dial → Establish connection → Real-time call</span><br></pre></td></tr></table></figure>
 
-<p>DTN 則比較像物流配送：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">寄件 → 集貨 → 暫存 → 運輸 → 中轉 → 最終送達</span><br></pre></td></tr></table></figure>
+<p>DTN is more like logistics delivery:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ship → Consolidate → Store → Transport → Transfer → Final delivery</span><br></pre></td></tr></table></figure>
 
-<p>寄送包裹時，寄件人與收件人不需要同時在線上。貨車、飛機、港口與配送中心，也不需要在同一秒鐘形成一條完整的運輸路線，包裹可以先留在物流中心，等待下一班貨車或飛機。 HDTN 則可以理解成這套物流系統背後的 <strong>自動化倉儲與派送平台：</strong></p>
+<p>When shipping a package, the sender and recipient don’t need to be online at the same time. The trucks, planes, ports, and distribution centers don’t need to form a complete transport line at the same second; the package can stay at a logistics center and wait for the next truck or plane. HDTN can be understood as the <strong>automated warehousing and dispatch platform</strong> behind this logistics system:</p>
 <table>
 <thead>
 <tr>
-<th>物流系統</th>
+<th>Logistics system</th>
 <th>HDTN</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>包裹</td>
+<td>Package</td>
 <td>Bundle</td>
 </tr>
 <tr>
-<td>集貨中心入口</td>
+<td>Consolidation center entrance</td>
 <td>Ingress</td>
 </tr>
 <tr>
-<td>倉庫</td>
+<td>Warehouse</td>
 <td>Storage</td>
 </tr>
 <tr>
-<td>航班與貨車班次表</td>
+<td>Flight and truck schedule</td>
 <td>Contact Plan</td>
 </tr>
 <tr>
-<td>派車與路線規劃</td>
+<td>Dispatch and route planning</td>
 <td>Scheduler &#x2F; Router</td>
 </tr>
 <tr>
-<td>出貨碼頭</td>
+<td>Shipping dock</td>
 <td>Egress</td>
 </tr>
 <tr>
-<td>下一個物流中心</td>
+<td>Next logistics center</td>
 <td>Next Hop</td>
 </tr>
 <tr>
-<td>實際使用的卡車、飛機或船舶</td>
+<td>The actual truck, plane, or ship used</td>
 <td>Convergence Layer</td>
 </tr>
 </tbody></table>
-<p>這個類比應該會蠻有感的，應該也可以發現 HDTN 不只是把資料送出去而已。它真正做的是 <strong>根據未來可以使用的通訊機會，決定資料現在應該立即轉送、暫時保存，還是改走其他路徑</strong></p>
-<h1 id="HDTN-的核心架構"><a href="#HDTN-的核心架構" class="headerlink" title="HDTN 的核心架構"></a>HDTN 的核心架構</h1><p>我自己覺得如果單看文字敘述，還是不如直接看原論文中的 Fig. 1 最清楚。下圖就是 HDTN modules interaction，也就是整個 HDTN 內部各模組如何互動的總覽。[1]</p>
-<p><img src="/img/DTN/HDTN.png" alt="HDTN modules interaction（Fig. 1 in [1]）"></p>
+<p>This analogy should resonate, and you can probably see that HDTN doesn’t just send data out. What it really does is <strong>decide, based on future usable communication opportunities, whether data should be forwarded immediately now, held temporarily, or rerouted another way.</strong></p>
+<h1 id="HDTN’s-core-architecture"><a href="#HDTN’s-core-architecture" class="headerlink" title="HDTN’s core architecture"></a>HDTN’s core architecture</h1><p>I personally feel that text descriptions alone aren’t as clear as looking directly at Fig. 1 in the original paper. The figure below is the HDTN modules interaction, an overview of how all the internal modules interact. [1]</p>
+<p><img src="/en/img/DTN/HDTN.png" alt="HDTN modules interaction (Fig. 1 in [1])"></p>
 <blockquote>
 <p>Fig. 1. HDTN modules interaction. Source: [1]</p>
 </blockquote>
-<p>從這張圖可以很直觀看到，HDTN 的核心元件大致包含 Ingress、Storage、Scheduler、Router、Egress，外部還有 BPGen、BPSink、Web Interface、Contact Plan 與 CGR Client 彼此配合。[1] 這種各司其職拆分方式和現代雲端系統中主流微服務或 event-driven architecture 還蠻雷同的，每個元件專注處理特定任務，並透過事件交換狀態。</p>
-<h2 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h2><p>在一般 IP 網路中，我們經常以 Packet 作為基本資料單位。 但在 DTN 中，主要資料單位是 <strong>Bundle</strong>。Bundle 可以理解成 DTN 世界中的標準貨櫃。它不只包含應用程式資料，也會攜帶來源、目的地、建立時間、生命週期與其他 metadata～</p>
+<p>From this figure you can intuitively see that HDTN’s core components roughly include Ingress, Storage, Scheduler, Router, and Egress, with BPGen, BPSink, a Web Interface, the Contact Plan, and a CGR Client coordinating externally. [1] This separation of responsibilities is quite similar to the mainstream microservices or event-driven architecture in modern cloud systems, where each component focuses on a specific task and exchanges state through events.</p>
+<h2 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h2><p>In an ordinary IP network, we often use the packet as the basic data unit. But in DTN, the main data unit is the <strong>bundle</strong>. A bundle can be understood as a standard shipping container in the DTN world. It contains not just application data, but also the source, destination, creation time, lifetime, and other metadata.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bundle</span><br><span class="line">├── Source Endpoint</span><br><span class="line">├── Destination Endpoint</span><br><span class="line">├── Creation Timestamp</span><br><span class="line">├── Lifetime</span><br><span class="line">├── Payload</span><br><span class="line">└── Additional Metadata</span><br></pre></td></tr></table></figure>
 
-<p>在傳統網路中 Packet 通常預期會被立即轉送，但 Bundle 則不同。它從一開始就被設計成可以在節點上暫存、等待、重新轉送，甚至跨越多個不連續的通訊窗口。 其中也特別指出，Bundle 的大小並不是固定的。 <strong>除了衡量每秒可以傳送多少 bits 之外，也必須考慮系統每秒可以處理多少 Bundles。</strong>[1] 換句話說，要實踐高速 DTN 的挑戰，不只是網卡速度，因為即使網路頻寬足夠，如果每一個 Bundle 都需要大量解析、記憶體配置與狀態管理，CPU 仍然可能成為bottleneck。</p>
-<h2 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h2><p><code>Ingress</code> 是 Bundle 進入 HDTN 節點後的第一站。它負責接收 Bundle，解析 Header，確認資料的來源與目的地，並根據目前的鏈路狀態決定下一步。最簡化的邏輯如下：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">收到 Bundle</span><br><span class="line">    │</span><br><span class="line">    ▼</span><br><span class="line">解析來源與目的地</span><br><span class="line">    │</span><br><span class="line">    ▼</span><br><span class="line">下一跳目前是否可以使用？</span><br><span class="line">    │</span><br><span class="line">    ├── Yes ──▶ 直接交給 Egress</span><br><span class="line">    │</span><br><span class="line">    └── No  ──▶ 送入 Storage 暫存</span><br></pre></td></tr></table></figure>
+<p>In a traditional network, a packet is usually expected to be forwarded immediately, but a bundle is different. From the start, it’s designed to be held at a node, wait, re-forward, and even cross multiple non-continuous contact windows. It’s also specifically noted that a bundle’s size isn’t fixed. <strong>Besides measuring how many bits can be transferred per second, you must also consider how many bundles the system can process per second.</strong> [1] In other words, the challenge of achieving high-speed DTN isn’t just network-card speed, because even with sufficient bandwidth, if every bundle requires heavy parsing, memory allocation, and state management, the CPU can still become the bottleneck.</p>
+<h2 id="Ingress"><a href="#Ingress" class="headerlink" title="Ingress"></a>Ingress</h2><p><code>Ingress</code> is the first stop after a bundle enters an HDTN node. It receives the bundle, parses the header, confirms the data’s source and destination, and decides the next step based on the current link state. The simplest logic is:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Receive Bundle</span><br><span class="line">    │</span><br><span class="line">    ▼</span><br><span class="line">Parse source and destination</span><br><span class="line">    │</span><br><span class="line">    ▼</span><br><span class="line">Is the next hop usable right now?</span><br><span class="line">    │</span><br><span class="line">    ├── Yes ──▶ Hand directly to Egress</span><br><span class="line">    │</span><br><span class="line">    └── No  ──▶ Send to Storage to hold</span><br></pre></td></tr></table></figure>
 
-<p>如果鏈路目前可用，Ingress 可以採用類似 <strong>cut-through forwarding</strong> 的方式，直接把 Bundle 交給 Egress，減少不必要的Disk I&#x2F;O 跟 I&#x2F;O Wait。 如果鏈路目前不可用，Bundle 就會先進入 Storage。這其實就是 <code>Store-Carry-Forward</code> 中的第一個關鍵判斷：</p>
+<p>If the link is currently usable, Ingress can use a <strong>cut-through forwarding</strong> style, handing the bundle directly to Egress, reducing unnecessary disk I&#x2F;O and I&#x2F;O wait. If the link is currently unusable, the bundle first enters Storage. This is the first key decision in <code>Store-Carry-Forward</code>:</p>
 <blockquote>
-<p>現在可以立刻 Forward，還是必須先 Store？</p>
+<p>Can I forward now, or must I store first?</p>
 </blockquote>
-<h2 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h2><p>在一般網路中，Router 通常不會長時間保存封包，封包抵達 Router 後，理想狀況是立刻轉送。如果 Queue 塞滿了，封包可能直接被丟棄，交給上層協定重新處理。</p>
-<p>但在 DTN 中，等待可能是正常狀態，假設某個月球探測器需要透過中繼衛星傳送資料，但下一個通訊窗口要兩個小時後才會出現，這個時候，系統不能單純把資料丟掉，也不能無限重試，<code>Storage</code> 的工作，就是讓 Bundle 可以安全停留在節點上，等待下一次可以傳輸的機會</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Bundle 抵達節點</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">目前沒有可用 Link</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">寫入 Storage</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">等待 LinkUp 事件</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">從 Storage 釋放 Bundle</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">送往 Egress</span><br></pre></td></tr></table></figure>
+<h2 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h2><p>In an ordinary network, a router usually doesn’t hold packets for long; ideally a packet is forwarded immediately after reaching the router. If the queue fills up, packets may simply be dropped and left for the upper-layer protocol to handle again.</p>
+<p>But in DTN, waiting may be a normal state. Suppose a lunar probe needs to send data via a relay satellite, but the next contact window won’t appear for two hours. In that case, the system can’t simply drop the data, nor retry infinitely. <code>Storage</code>‘s job is to let the bundle safely stay on the node, waiting for the next transmission opportunity.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Bundle arrives at node</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">No usable link right now</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Write to Storage</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Wait for LinkUp event</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Release Bundle from Storage</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Send to Egress</span><br></pre></td></tr></table></figure>
 
-<p>HDTN 的 Storage 採用 <strong>multi-threaded implementation</strong>，並可將資料分散在多個磁碟上。[1]這樣做的原因很直觀：當大量資料同時進入節點時，Disk I&#x2F;O 與資料管理本身也可能成為效能瓶頸，所以 Storage 模組本身蠻重要的，在不像我們在地面網路中是一直可以擴充的備用元件，而是太空 DTN 架構中的核心</p>
-<h2 id="Contact-Plan"><a href="#Contact-Plan" class="headerlink" title="Contact Plan"></a>Contact Plan</h2><p>在一般地面網路中，Router 通常根據目前的網路狀態選擇路徑 (SDN)，但太空網路多了一個非常特殊的維度：<strong>時間</strong>。衛星、太空站、月球中繼站與地面站的位置變化，很多時候是可以預測的。某一條 Link 可能現在不存在，但十分鐘後會出現，並在五分鐘後再次消失。因此，DTN 需要處理一份特殊的資料：<strong>Contact Plan</strong></p>
-<p>Contact Plan 可以理解成未來通訊窗口的時刻表</p>
+<p>HDTN’s Storage uses a <strong>multi-threaded implementation</strong> and can spread data across multiple disks. [1] The reason is intuitive: when large amounts of data enter a node at once, disk I&#x2F;O and data management itself can become a performance bottleneck, so the Storage module is quite important. Unlike a backup component on terrestrial networks that can always be scaled out, it’s a core part of the space DTN architecture.</p>
+<h2 id="Contact-Plan"><a href="#Contact-Plan" class="headerlink" title="Contact Plan"></a>Contact Plan</h2><p>On an ordinary terrestrial network, a router usually chooses a path based on the current network state (SDN), but a space network adds a very special dimension: <strong>time</strong>. The position changes of satellites, space stations, lunar relay stations, and ground stations are often predictable. A given link may not exist now, but appear ten minutes later, and disappear again five minutes after that. So DTN needs to handle a special piece of data: the <strong>Contact Plan</strong>.</p>
+<p>The Contact Plan can be understood as a timetable of future contact windows.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;source&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;destination&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;startTime&quot;</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;endTime&quot;</span><span class="punctuation">:</span> <span class="number">300</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;dataRate&quot;</span><span class="punctuation">:</span> <span class="number">1000000</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
 
-<p>這代表：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node 1 → Node 2</span><br><span class="line">可以在時間 100 到 300 之間傳輸資料</span><br><span class="line">可用速率為 1 Mbps</span><br></pre></td></tr></table></figure>
+<p>This means:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node 1 → Node 2</span><br><span class="line">can transfer data between times 100 and 300</span><br><span class="line">with a usable rate of 1 Mbps</span><br></pre></td></tr></table></figure>
 
-<p>在真實任務中，Contact Plan 可能包含更多節點、更多窗口，以及不同鏈路速率。這和地面網路最大的差別在於：<strong>太空路由不是只根據「空間上的拓樸」進行判斷，還必須同時考慮時間上的拓樸</strong></p>
-<h2 id="Scheduler-與-Router"><a href="#Scheduler-與-Router" class="headerlink" title="Scheduler 與 Router"></a>Scheduler 與 Router</h2><p>有了 Contact Plan 後，系統還需要元件根據排程管理資料流。在該份 HDTN 架構中，<code>Scheduler</code> 會讀取 Contact Plan，並根據鏈路狀態發送事件：[1]</p>
+<p>In a real mission, the Contact Plan may contain more nodes, more windows, and different link rates. The biggest difference from terrestrial networks is: <strong>space routing isn’t judged only by “spatial topology,” but must also consider temporal topology.</strong></p>
+<h2 id="Scheduler-and-Router"><a href="#Scheduler-and-Router" class="headerlink" title="Scheduler and Router"></a>Scheduler and Router</h2><p>With a Contact Plan, the system also needs components to manage data flow according to the schedule. In this HDTN architecture, the <code>Scheduler</code> reads the Contact Plan and emits events based on link state: [1]</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">linkUp</span><br><span class="line">linkDown</span><br></pre></td></tr></table></figure>
 
-<p>當 Ingress 收到 <code>linkUp</code> 事件時，它就知道某個目的地目前可以使用，可以把 Bundle 直接轉交給 Egress。當 Storage 收到 <code>linkUp</code> 事件時，它也可以開始釋放先前暫存的 Bundle，交給 Egress。</p>
-<p>相反地，如果鏈路中斷，系統就會停止傳送，並重新評估後續路徑。另一方面，<code>Router</code> 的任務是計算 Next Hop。Router 會根據 Contact Plan 與目的地，決定 Bundle 接下來應該送到哪一個節點，再通知 Egress 更新 Outduct</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Contact Plan</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">計算可行路徑</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">選擇 Next Hop</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">發送 RouteUpdate</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Egress 更新 Outduct</span><br></pre></td></tr></table></figure>
+<p>When Ingress receives a <code>linkUp</code> event, it knows a destination is currently usable and can hand the bundle directly to Egress. When Storage receives a <code>linkUp</code> event, it can also start releasing previously-held bundles to Egress.</p>
+<p>Conversely, if a link drops, the system stops transmitting and reevaluates subsequent paths. On the other hand, the <code>Router</code>‘s job is to compute the next hop. The Router decides which node a bundle should go to next based on the Contact Plan and destination, then notifies Egress to update the Outduct.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Contact Plan</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Compute feasible paths</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Choose Next Hop</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Emit RouteUpdate</span><br><span class="line">      │</span><br><span class="line">      ▼</span><br><span class="line">Egress updates Outduct</span><br></pre></td></tr></table></figure>
 
-<p>HDTN 的路由思維和一般最短路徑演算法不完全相同，像是一般 BFS, Dijsktra Algorithm 可能只問：</p>
+<p>HDTN’s routing mindset isn’t quite the same as ordinary shortest-path algorithms. An ordinary BFS or Dijkstra might only ask:</p>
 <blockquote>
-<p>哪一條路目前距離最短？</p>
+<p>Which path is shortest right now?</p>
 </blockquote>
-<p>但是太空 DTN 還必須問：</p>
+<p>But space DTN must also ask:</p>
 <blockquote>
-<p>哪一條路會在適當時間出現？<br>這個窗口可以維持多久？<br>可用頻寬是否足以容納這批 Bundle？<br>如果錯過這次窗口，下一次機會要等多久？</p>
+<p>Which path will appear at the right time?<br>How long can this window last?<br>Is the usable bandwidth enough for this batch of bundles?<br>If this window is missed, how long until the next opportunity?</p>
 </blockquote>
-<p>這也是 Contact Graph Routing（CGR）的核心概念，也可以參考<a href="https://leozzmc.github.io/posts/7d41a775.html">前一篇文章</a></p>
-<h2 id="版本差異：Scheduler-與-Router-的職責差異"><a href="#版本差異：Scheduler-與-Router-的職責差異" class="headerlink" title="版本差異：Scheduler 與 Router 的職責差異"></a>版本差異：Scheduler 與 Router 的職責差異</h2><p>這裡需要補充一個版本差異。Technical Memorandum 裡面有將 <code>Scheduler</code> 與 <code>Router</code> 分開描述：[1]</p>
+<p>This is also the core concept of Contact Graph Routing (CGR); see the <a href="/en/posts/7d41a775.html">previous post</a> too.</p>
+<h2 id="Version-differences-the-division-of-responsibilities-between-Scheduler-and-Router"><a href="#Version-differences-the-division-of-responsibilities-between-Scheduler-and-Router" class="headerlink" title="Version differences: the division of responsibilities between Scheduler and Router"></a>Version differences: the division of responsibilities between Scheduler and Router</h2><p>A version difference should be added here. The Technical Memorandum describes <code>Scheduler</code> and <code>Router</code> separately: [1]</p>
 <ul>
-<li>Scheduler 讀取 Contact Plan</li>
-<li>Scheduler 發送 <code>linkUp</code> 與 <code>linkDown</code></li>
-<li>Router 與 CGR Client 溝通</li>
-<li>Router 將 <code>RouteUpdate</code> 傳給 Egress</li>
+<li>The Scheduler reads the Contact Plan</li>
+<li>The Scheduler emits <code>linkUp</code> and <code>linkDown</code></li>
+<li>The Router communicates with the CGR Client</li>
+<li>The Router passes <code>RouteUpdate</code> to Egress</li>
 </ul>
-<p>但在目前 NASA 公開的 HDTN GitHub README 中，Router 的職責描述有所調整，目前 README 提到：[3]</p>
+<p>But in NASA’s currently-public HDTN GitHub README, the Router’s responsibilities have been adjusted. The README currently mentions: [3]</p>
 <ul>
-<li>Router 根據 Contact Plan 管理鏈路可用狀態</li>
-<li>Router 使用 Dijkstra’s algorithm 計算 Next Hop</li>
-<li>Router 在鏈路突然中斷或 Contact Plan 更新後重新計算路徑</li>
-<li>Router 將 <code>RouteUpdate</code> 傳給 Egress</li>
+<li>The Router manages link-availability state based on the Contact Plan</li>
+<li>The Router uses Dijkstra’s algorithm to compute the next hop</li>
+<li>The Router recomputes paths after a link suddenly drops or the Contact Plan updates</li>
+<li>The Router passes <code>RouteUpdate</code> to Egress</li>
 </ul>
-<p>因此，閱讀 HDTN 架構時，需要注意論文發布時間與程式碼版本，但不論模組邊界如何調整，整體設計精神並沒有改變：</p>
+<p>So when reading the HDTN architecture, note the paper’s publication time and the code version. But regardless of how the module boundaries shift, the overall design spirit hasn’t changed:</p>
 <blockquote>
-<p>根據 Contact Plan 管理鏈路狀態，並在網路事件發生時重新計算 Bundle 的 Next Hop</p>
+<p>Manage link state based on the Contact Plan, and recompute a bundle’s next hop when network events occur.</p>
 </blockquote>
-<h2 id="Egress"><a href="#Egress" class="headerlink" title="Egress"></a>Egress</h2><p><code>Egress</code> 會是 Bundle 離開 HDTN 節點前的最後一站。它會收到來自 Ingress 或 Storage 的 Bundle，再根據 Router 計算出的結果，將 Bundle 送往適當的 Outduct 與下一跳。</p>
+<h2 id="Egress"><a href="#Egress" class="headerlink" title="Egress"></a>Egress</h2><p><code>Egress</code> is a bundle’s last stop before leaving an HDTN node. It receives bundles from Ingress or Storage, and sends them to the appropriate Outduct and next hop based on the Router’s computed result.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Ingress ─────┐</span><br><span class="line">             │</span><br><span class="line">             ▼</span><br><span class="line">          Egress ─────▶ Outduct ─────▶ Next Hop</span><br><span class="line">             ▲</span><br><span class="line">             │</span><br><span class="line">Storage ─────┘</span><br></pre></td></tr></table></figure>
 
-<p>在 HDTN 中，可以用兩個詞理解資料進出的方向：</p>
+<p>In HDTN, two terms describe the direction of data in and out:</p>
 <table>
 <thead>
 <tr>
-<th>名稱</th>
-<th>用途</th>
+<th>Name</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>Induct</td>
-<td>接收外部資料的入口</td>
+<td>Entry point for receiving external data</td>
 </tr>
 <tr>
 <td>Outduct</td>
-<td>傳送資料至下一跳的出口</td>
+<td>Exit for sending data to the next hop</td>
 </tr>
 </tbody></table>
-<p>可以把 Induct 想像成物流中心的卸貨碼頭，把 Outduct 想像成出貨碼頭。同一個節點可能有多個 Outduct，分別通往不同的下一跳。Router 的工作，就是告訴 Egress 現在應該使用哪一個出口</p>
-<h1 id="Event-Driven-Architecture：鏈路突然中斷時怎麼辦？"><a href="#Event-Driven-Architecture：鏈路突然中斷時怎麼辦？" class="headerlink" title="Event-Driven Architecture：鏈路突然中斷時怎麼辦？"></a>Event-Driven Architecture：鏈路突然中斷時怎麼辦？</h1><p>太空網路並不會永遠按照理想排程運作，太多影響因素了。即使 Contact Plan 已經預測某條 Link 應該可以使用，真實環境中仍然可能出現：</p>
+<p>You can think of the Induct as a logistics center’s unloading dock and the Outduct as its shipping dock. The same node may have multiple Outducts, each leading to a different next hop. The Router’s job is to tell Egress which exit to use now.</p>
+<h1 id="Event-Driven-Architecture-what-to-do-when-a-link-suddenly-drops"><a href="#Event-Driven-Architecture-what-to-do-when-a-link-suddenly-drops" class="headerlink" title="Event-Driven Architecture: what to do when a link suddenly drops?"></a>Event-Driven Architecture: what to do when a link suddenly drops?</h1><p>Space networks don’t always run according to the ideal schedule; there are too many influencing factors. Even if the Contact Plan predicts a link should be usable, the real environment can still have:</p>
 <ul>
-<li>訊號品質突然惡化</li>
-<li>天線追蹤失敗</li>
-<li>通訊設備暫時異常</li>
-<li>Link 提前中斷</li>
-<li>Contact Plan 更新</li>
-<li>下一跳節點無法回應</li>
+<li>Sudden signal-quality degradation</li>
+<li>Antenna-tracking failure</li>
+<li>Temporary comms-equipment anomaly</li>
+<li>A link dropping early</li>
+<li>A Contact Plan update</li>
+<li>A next-hop node not responding</li>
 </ul>
-<p>因此，HDTN 不能只依賴靜態排程，它還需要一套 event-driven architecture，在狀態改變時通知其他模組。HDTN 使用 <strong>ZeroMQ pub-sub sockets</strong> 傳遞事件。[1]這是什麼呢？ 舉例，當 Egress 發現鏈路突然消失時，可以發送 <code>LinkStatus</code> 變化通知：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Egress 偵測到 Link 中斷</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">發送 LinkStatus Change</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Scheduler 更新鏈路狀態</span><br><span class="line">        │</span><br><span class="line">        ├──▶ 發送 linkDown 給 Ingress</span><br><span class="line">        │</span><br><span class="line">        ├──▶ 發送 linkDown 給 Storage</span><br><span class="line">        │</span><br><span class="line">        └──▶ 通知 Router 重新計算路徑</span><br></pre></td></tr></table></figure>
+<p>So HDTN can’t rely only on static scheduling; it also needs an event-driven architecture to notify other modules when state changes. HDTN uses <strong>ZeroMQ pub-sub sockets</strong> to pass events. [1] What’s that? For example, when Egress finds a link has suddenly vanished, it can emit a <code>LinkStatus</code> change notification:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Egress detects link drop</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Emit LinkStatus Change</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Scheduler updates link state</span><br><span class="line">        │</span><br><span class="line">        ├──▶ Send linkDown to Ingress</span><br><span class="line">        │</span><br><span class="line">        ├──▶ Send linkDown to Storage</span><br><span class="line">        │</span><br><span class="line">        └──▶ Notify Router to recompute path</span><br></pre></td></tr></table></figure>
 
-<p>Router 重新計算 Next Hop 後，再通知 Egress 更新 Outduct。</p>
-<p>發現了吧，這個流程很像現代分散式系統中的 Event-Driven Architecture：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">事件發生</span><br><span class="line">   ↓</span><br><span class="line">發布狀態變更</span><br><span class="line">   ↓</span><br><span class="line">訂閱者接收通知</span><br><span class="line">   ↓</span><br><span class="line">各模組更新自己的行為</span><br></pre></td></tr></table></figure>
+<p>After the Router recomputes the next hop, it notifies Egress to update the Outduct.</p>
+<p>Notice this flow is a lot like the event-driven architecture in modern distributed systems:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Event occurs</span><br><span class="line">   ↓</span><br><span class="line">Publish state change</span><br><span class="line">   ↓</span><br><span class="line">Subscribers receive notification</span><br><span class="line">   ↓</span><br><span class="line">Each module updates its behavior</span><br></pre></td></tr></table></figure>
 
-<p>這種設計讓 HDTN 不需要把所有邏輯塞進同一個大型程式中，也讓不同模組之間可以維持相對清楚的責任邊界</p>
-<h1 id="Convergence-Layer"><a href="#Convergence-Layer" class="headerlink" title="Convergence Layer"></a>Convergence Layer</h1><p>如同前一篇文說的，Bundle Protocol 並不是用來完全取代 TCP、UDP 或其他底層協定，它更像是一層 Overlay Network：負責處理跨節點、跨時間的資料轉送邏輯。</p>
-<p>但當 Bundle 真的要從一個節點移動到另一個節點時，仍然需要搭載在某種實際的傳輸方式上，這就是 <strong>Convergence Layer</strong> 的用途。</p>
+<p>This design means HDTN doesn’t have to cram all logic into one large program, and lets different modules keep relatively clear responsibility boundaries.</p>
+<h1 id="Convergence-Layer"><a href="#Convergence-Layer" class="headerlink" title="Convergence Layer"></a>Convergence Layer</h1><p>As the previous post said, the Bundle Protocol isn’t meant to completely replace TCP, UDP, or other underlying protocols; it’s more like an overlay network, handling cross-node, cross-time data-forwarding logic.</p>
+<p>But when a bundle actually has to move from one node to another, it still needs to ride on some actual transport. That’s the purpose of the <strong>Convergence Layer</strong>.</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Application Data</span><br><span class="line">        ↓</span><br><span class="line">Bundle Protocol</span><br><span class="line">        ↓</span><br><span class="line">Convergence Layer</span><br><span class="line">        ↓</span><br><span class="line">Underlying Transport / Link</span><br></pre></td></tr></table></figure>
 
-<p>可以再次使用物流系統來理解：</p>
+<p>Using the logistics system again:</p>
 <table>
 <thead>
 <tr>
-<th>網路概念</th>
-<th>物流類比</th>
+<th>Network concept</th>
+<th>Logistics analogy</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>Bundle</td>
-<td>標準貨櫃</td>
+<td>Standard shipping container</td>
 </tr>
 <tr>
 <td>Bundle Protocol</td>
-<td>跨國物流規則</td>
+<td>International logistics rules</td>
 </tr>
 <tr>
 <td>Convergence Layer</td>
-<td>實際使用的貨車、飛機或船舶</td>
+<td>The actual truck, plane, or ship used</td>
 </tr>
 <tr>
 <td>Physical Link</td>
-<td>公路、航線或海運路線</td>
+<td>Roads, air routes, or shipping routes</td>
 </tr>
 </tbody></table>
-<p>HDTN 支援多種 Convergence Layer，包括：[1][3]</p>
+<p>HDTN supports several Convergence Layers, including: [1][3]</p>
 <ul>
 <li>UDP Convergence Layer</li>
-<li>Simplified TCP（STCP）</li>
-<li>TCP Convergence Layer Version 3（TCPCLv3）</li>
-<li>TCP Convergence Layer Version 4（TCPCLv4）</li>
-<li>Licklider Transmission Protocol（LTP）</li>
+<li>Simplified TCP (STCP)</li>
+<li>TCP Convergence Layer Version 3 (TCPCLv3)</li>
+<li>TCP Convergence Layer Version 4 (TCPCLv4)</li>
+<li>Licklider Transmission Protocol (LTP)</li>
 </ul>
-<p>不同 Convergence Layer 各有適用情境：</p>
+<p>Each Convergence Layer suits different scenarios:</p>
 <table>
 <thead>
 <tr>
 <th>Convergence Layer</th>
-<th>特性</th>
+<th>Characteristic</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>UDP</td>
-<td>結構簡單，但本身不保證可靠傳輸</td>
+<td>Simple structure, but doesn’t guarantee reliable transport on its own</td>
 </tr>
 <tr>
 <td>STCP</td>
-<td>相對精簡，適合高效率資料傳送</td>
+<td>Relatively lean, suited to efficient data sending</td>
 </tr>
 <tr>
 <td>TCPCL</td>
-<td>在 TCP 之上傳送 Bundle，支援較完整的 DTN 節點連線管理</td>
+<td>Sends bundles over TCP, supporting fuller DTN node connection management</td>
 </tr>
 <tr>
 <td>LTP</td>
-<td>針對高延遲與間歇性鏈路設計，適合太空通訊</td>
+<td>Designed for high-delay and intermittent links, suited to space comms</td>
 </tr>
 </tbody></table>
-<h1 id="LTP"><a href="#LTP" class="headerlink" title="LTP"></a>LTP</h1><p>在 HDTN 支援的 Convergence Layer 中，LTP 特別值得注意。LTP 的全名是 <strong>Licklider Transmission Protocol</strong>，它是針對長延遲環境設計的傳輸協定，特別適合深空通訊等無法使用一般低延遲假設的場景。[6]</p>
-<p>假設某條鏈路的單程延遲是兩秒，Round-Trip Time（RTT）就可能達到四秒，在這種情況下，如果系統每傳一小段資料就停下來等待回應，整體吞吐量會非常差。因此，HDTN 的 LTP implementation 需要同時維持大量 Session，才能讓鏈路持續傳輸資料。</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Session 1  ─────▶ 等待 ACK</span><br><span class="line">Session 2      ─────▶ 等待 ACK</span><br><span class="line">Session 3          ─────▶ 等待 ACK</span><br><span class="line">Session 4              ─────▶ 等待 ACK</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="LTP"><a href="#LTP" class="headerlink" title="LTP"></a>LTP</h1><p>Among the Convergence Layers HDTN supports, LTP is particularly worth noting. LTP stands for <strong>Licklider Transmission Protocol</strong>, a transport protocol designed for long-delay environments, especially suited to scenarios like deep-space comms where ordinary low-delay assumptions don’t hold. [6]</p>
+<p>Suppose a link’s one-way delay is two seconds, so the round-trip time (RTT) can reach four seconds. In that case, if the system stops and waits for a response after every small chunk, overall throughput will be terrible. So HDTN’s LTP implementation needs to maintain many sessions simultaneously to keep the link continuously transmitting.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Session 1  ─────▶ Wait for ACK</span><br><span class="line">Session 2      ─────▶ Wait for ACK</span><br><span class="line">Session 3          ─────▶ Wait for ACK</span><br><span class="line">Session 4              ─────▶ Wait for ACK</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<p>當前面的 Session 還在等待回應時，後面的 Session 仍然可以繼續傳送資料。測試結果指出，當鏈路延遲超過一秒後，提高同時存在的 LTP Sessions 數量，是達到 gigabit 級資料率的重要因素。[1]</p>
-<p>這和一般高頻寬網路中的 Pipeline 概念很像，就是 <strong>不要讓整條鏈路因為等待單一回應而閒置</strong></p>
-<h1 id="HDTN-與一般-Message-Queue-有什麼不同？"><a href="#HDTN-與一般-Message-Queue-有什麼不同？" class="headerlink" title="HDTN 與一般 Message Queue 有什麼不同？"></a>HDTN 與一般 Message Queue 有什麼不同？</h1><p>如果平常有使用過 Amazon SQS、RabbitMQ、Kafka 或其他 Message Queue，可能會覺得 HDTN 的架構有些熟悉。</p>
-<p>它們確實有一些共同點：</p>
+<p>While an earlier session is still waiting for a response, later sessions can keep sending data. Test results indicate that once link delay exceeds one second, increasing the number of concurrent LTP sessions is an important factor in achieving gigabit-level data rates. [1]</p>
+<p>This is a lot like the pipeline concept in ordinary high-bandwidth networks: <strong>don’t let the whole link sit idle waiting for a single response.</strong></p>
+<h1 id="How-is-HDTN-different-from-an-ordinary-message-queue"><a href="#How-is-HDTN-different-from-an-ordinary-message-queue" class="headerlink" title="How is HDTN different from an ordinary message queue?"></a>How is HDTN different from an ordinary message queue?</h1><p>If you’ve used Amazon SQS, RabbitMQ, Kafka, or other message queues, HDTN’s architecture may feel somewhat familiar.</p>
+<p>They do share some things in common:</p>
 <table>
 <thead>
 <tr>
@@ -518,163 +518,163 @@ btf.addGlobalFn('pjaxComplete', () => {
 <td>Bundle Storage</td>
 </tr>
 </tbody></table>
-<p>但 HDTN 面對的問題更加特殊。一般 Message Queue 通常假設底層網路大致可用。即使短暫斷線，服務也預期能在相對短時間內恢復。</p>
-<p>HDTN 則必須接受：</p>
+<p>But the problems HDTN faces are more special. An ordinary message queue usually assumes the underlying network is roughly available. Even with a brief disconnection, the service is expected to recover in a relatively short time.</p>
+<p>HDTN, however, must accept:</p>
 <ul>
-<li>網路可能長時間不存在</li>
-<li>下一次連線可能要等待數分鐘或數小時</li>
-<li>節點持續移動</li>
-<li>通訊窗口可以預測，但十分有限</li>
-<li>頻寬、延遲與錯誤率高度不對稱</li>
-<li>中繼節點本身也可能暫時離線</li>
+<li>The network may not exist for a long time</li>
+<li>The next connection may be minutes or hours away</li>
+<li>Nodes keep moving</li>
+<li>Contact windows are predictable but very limited</li>
+<li>Bandwidth, delay, and error rate are highly asymmetric</li>
+<li>A relay node itself may also be temporarily offline</li>
 </ul>
-<p>因此，HDTN 並不是把 Message Queue 搬到太空而已，它是在極端網路環境中，重新設計資料保存、路由、排程與傳輸的方式</p>
-<h1 id="HDTN-的完整資料流"><a href="#HDTN-的完整資料流" class="headerlink" title="HDTN 的完整資料流"></a>HDTN 的完整資料流</h1><p>將前面的元件串起來後，一個 Bundle 在 HDTN 節點中的生命週期大致如下。</p>
-<h2 id="情境一：鏈路目前可用"><a href="#情境一：鏈路目前可用" class="headerlink" title="情境一：鏈路目前可用"></a>情境一：鏈路目前可用</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Bundle 抵達 Induct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Ingress 解析 Header</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">確認下一跳 Link 可用</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">直接交給 Egress</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress 選擇 Outduct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Bundle 傳送至 Next Hop</span><br></pre></td></tr></table></figure>
+<p>So HDTN isn’t just moving a message queue into space; it redesigns how data is stored, routed, scheduled, and transmitted in an extreme network environment.</p>
+<h1 id="HDTN’s-complete-data-flow"><a href="#HDTN’s-complete-data-flow" class="headerlink" title="HDTN’s complete data flow"></a>HDTN’s complete data flow</h1><p>Stringing the earlier components together, a bundle’s lifecycle in an HDTN node is roughly as follows.</p>
+<h2 id="Scenario-1-the-link-is-currently-usable"><a href="#Scenario-1-the-link-is-currently-usable" class="headerlink" title="Scenario 1: the link is currently usable"></a>Scenario 1: the link is currently usable</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Bundle arrives at Induct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Ingress parses header</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Confirm next-hop link usable</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Hand directly to Egress</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress chooses Outduct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Bundle sent to Next Hop</span><br></pre></td></tr></table></figure>
 
-<p>這種方式減少不必要的 Storage I&#x2F;O，適合可立即轉送的資料</p>
-<h2 id="情境二：鏈路目前不可用"><a href="#情境二：鏈路目前不可用" class="headerlink" title="情境二：鏈路目前不可用"></a>情境二：鏈路目前不可用</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Bundle 抵達 Induct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Ingress 解析 Header</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">確認下一跳 Link 不可用</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">寫入 Storage</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">等待 linkUp 事件</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Storage 釋放 Bundle</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress 傳送至 Next Hop</span><br></pre></td></tr></table></figure>
+<p>This reduces unnecessary Storage I&#x2F;O and suits data that can be forwarded immediately.</p>
+<h2 id="Scenario-2-the-link-is-currently-unusable"><a href="#Scenario-2-the-link-is-currently-unusable" class="headerlink" title="Scenario 2: the link is currently unusable"></a>Scenario 2: the link is currently unusable</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Bundle arrives at Induct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Ingress parses header</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Confirm next-hop link unusable</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Write to Storage</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Wait for linkUp event</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Storage releases Bundle</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress sends to Next Hop</span><br></pre></td></tr></table></figure>
 
-<p>這就是 DTN 中最典型的 Store-Carry-Forward 流程</p>
-<h2 id="情境三：傳輸途中突然中斷"><a href="#情境三：傳輸途中突然中斷" class="headerlink" title="情境三：傳輸途中突然中斷"></a>情境三：傳輸途中突然中斷</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Egress 偵測到 Link 中斷</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">發布 LinkStatus Change</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">更新 Link 狀態</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">停止釋放 Bundle</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Router 重新計算路徑</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress 更新 Outduct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">等待下一次可用的傳輸機會</span><br></pre></td></tr></table></figure>
+<p>This is the most typical Store-Carry-Forward flow in DTN.</p>
+<h2 id="Scenario-3-a-sudden-drop-mid-transfer"><a href="#Scenario-3-a-sudden-drop-mid-transfer" class="headerlink" title="Scenario 3: a sudden drop mid-transfer"></a>Scenario 3: a sudden drop mid-transfer</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Egress detects link drop</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Publish LinkStatus Change</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Update link state</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Stop releasing Bundle</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Router recomputes path</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Egress updates Outduct</span><br><span class="line">        │</span><br><span class="line">        ▼</span><br><span class="line">Wait for the next usable transmission opportunity</span><br></pre></td></tr></table></figure>
 
-<p>對 HDTN 而言，斷線不是系統崩潰，而是另一個需要處理的事件</p>
-<h1 id="用分散式系統的角度看待"><a href="#用分散式系統的角度看待" class="headerlink" title="用分散式系統的角度看待"></a>用分散式系統的角度看待</h1><p>從軟體工程角度來看，HDTN 最有趣的地方不只是太空通訊，而是它本質上也是一套 event-driven distributed system。它需要處理：</p>
+<p>For HDTN, a disconnection isn’t a system crash, but another event to handle.</p>
+<h1 id="Viewing-it-through-a-distributed-systems-lens"><a href="#Viewing-it-through-a-distributed-systems-lens" class="headerlink" title="Viewing it through a distributed-systems lens"></a>Viewing it through a distributed-systems lens</h1><p>From a software-engineering standpoint, the most interesting thing about HDTN isn’t just space comms, but that it’s essentially an event-driven distributed system. It needs to handle:</p>
 <ul>
-<li>非同步事件</li>
-<li>Durable Storage</li>
-<li>Pipeline</li>
-<li>Route Update</li>
+<li>Asynchronous events</li>
+<li>Durable storage</li>
+<li>Pipelining</li>
+<li>Route updates</li>
 <li>Backpressure</li>
 <li>Retry</li>
-<li>狀態同步</li>
-<li>故障恢復</li>
-<li>多種底層傳輸方式</li>
-<li>不同 DTN implementation 的互通性</li>
+<li>State synchronization</li>
+<li>Fault recovery</li>
+<li>Multiple underlying transports</li>
+<li>Interoperability between different DTN implementations</li>
 </ul>
-<p>這些問題在現有的雲端架構其實不少見，但太空網路將條件推向更加極端的方向。地面系統可能會把幾秒鐘的 Timeout 視為服務異常，太空系統卻可能必須將幾分鐘的等待納入正常流程。還有一個差別是，地面系統可能要求服務盡快恢復連線，但太空系統則必須接受 <strong>目前根本不存在任何可用路徑</strong>，最後一個觀察：地面網路中的時間通常只是效能指標，而太空 DTN 中的時間本身就是路由拓樸的一部分</p>
-<h1 id="ISS-測試：HDTN-不只是理論架構"><a href="#ISS-測試：HDTN-不只是理論架構" class="headerlink" title="ISS 測試：HDTN 不只是理論架構"></a>ISS 測試：HDTN 不只是理論架構</h1><p>該份 Technical Memorandum 也整理了 HDTN 與其他 DTN implementation 的互通性與效能測試，其中包含：[1]</p>
+<p>These problems aren’t rare in existing cloud architectures, but space networks push the conditions to a more extreme direction. A ground system might treat a few seconds of timeout as a service anomaly, while a space system may have to incorporate several minutes of waiting into its normal flow. Another difference is that a ground system may require a service to recover connectivity as fast as possible, but a space system must accept that <strong>no usable path exists at all right now</strong>. One last observation: time in terrestrial networks is usually just a performance metric, while in space DTN, time itself is part of the routing topology.</p>
+<h1 id="ISS-testing-HDTN-is-more-than-a-theoretical-architecture"><a href="#ISS-testing-HDTN-is-more-than-a-theoretical-architecture" class="headerlink" title="ISS testing: HDTN is more than a theoretical architecture"></a>ISS testing: HDTN is more than a theoretical architecture</h1><p>The Technical Memorandum also compiles interoperability and performance tests between HDTN and other DTN implementations, including: [1]</p>
 <ul>
-<li>HDTN 與 DTN Marshall Enterprise（DTNME）之間的互通性測試</li>
-<li>Bundle Protocol Version 6（BPv6）與 Version 7（BPv7）測試</li>
-<li>不同 Convergence Layer 的傳輸測試</li>
-<li>模擬延遲與封包遺失</li>
-<li>讓 HDTN 作為 Gateway Node</li>
-<li>以 ISS 網路拓樸進行模擬</li>
-<li>LTP 長延遲鏈路測試</li>
+<li>Interoperability tests between HDTN and DTN Marshall Enterprise (DTNME)</li>
+<li>Bundle Protocol Version 6 (BPv6) and Version 7 (BPv7) tests</li>
+<li>Transmission tests of different Convergence Layers</li>
+<li>Simulated delay and packet loss</li>
+<li>Using HDTN as a gateway node</li>
+<li>Simulations with the ISS network topology</li>
+<li>LTP long-delay link tests</li>
 </ul>
-<p>其中一個很值得提的點，是他們後來為了找出 SDIL 測試中資料率偏低的原因，又在 GRC 本地做了一系列「4-box」測試，去模擬 ISS payload、ISS onboard gateway、ground gateway 與 ground node 之間的資料流。[1] 這些測試不只比較協定，也比較了不同部署環境：包含 <strong>完全使用 KVM 的虛擬機</strong>、<strong>LXC container</strong>、<strong>native hardware（bare metal）</strong>，以及 <strong>實際接近 ISS onboard gateway 的 ZBook + KVM image</strong> 組合。[1]</p>
-<p>結果很有意思：雖然 <code>iperf3</code> 顯示這些環境理論上都有不錯的基礎頻寬，但真正跑 end-to-end DTN 測試時，<strong>KVM 虛擬機環境出現了明顯的效能損失</strong>；相對地，LXC 的表現更接近 native hardware，而 native hardware 則能做到接近 line rate 的表現。[1] 另外，當他們把 ISS 實際會用到的 ZBook + KVM gateway image 納入測試後，效能又再次明顯下降；即使後來嘗試調整 VM 的 core 與 memory 配置，改善也不明顯。[1]</p>
-<p>換句話說，這篇實驗一個很重要的收穫，不只是 <strong>HDTN 可以跑</strong> ，而是 <strong>虛擬化層本身就可能成為瓶頸</strong>。作者最後也明確提到，這些本地測試讓他們開始懷疑，先前 SDIL 測試中的低資料率，不一定只是 VPN 或 DTNME 版本問題，<strong>KVM 本身也可能比原先預期更顯著地影響效能</strong>。[1]</p>
-<p>另外一項值得注意的測試，是模擬約兩秒單程延遲、四秒 RTT 的鏈路環境。測試結果顯示，單純增加頻寬並不足以解決問題。系統還需要調整 LTP Sessions、Pipeline Limit、Buffer 與其他參數，才能在高延遲條件下維持較高吞吐量。[1]</p>
-<p>這也說明了一件事：</p>
+<p>One point worth mentioning is that, to find the cause of the low data rate in the SDIL tests, they later ran a series of “4-box” tests locally at GRC to simulate the data flow between ISS payload, ISS onboard gateway, ground gateway, and ground node. [1] These tests compared not only protocols but also different deployment environments: including <strong>a fully KVM-based virtual machine</strong>, an <strong>LXC container</strong>, <strong>native hardware (bare metal)</strong>, and a <strong>ZBook + KVM image combination</strong> close to the actual ISS onboard gateway. [1]</p>
+<p>The result is interesting: although <code>iperf3</code> showed these environments all theoretically had decent baseline bandwidth, when actually running end-to-end DTN tests, <strong>the KVM VM environment showed significant performance loss</strong>; in contrast, LXC performed closer to native hardware, and native hardware could reach near line rate. [1] Also, once they included the ZBook + KVM gateway image the ISS actually uses, performance dropped noticeably again; even after trying to adjust the VM’s core and memory configuration, the improvement was slight. [1]</p>
+<p>In other words, an important takeaway from this experiment isn’t just that <strong>HDTN can run</strong>, but that <strong>the virtualization layer itself can become a bottleneck</strong>. The authors explicitly note at the end that these local tests made them suspect the low data rate in the earlier SDIL tests might not have been solely a VPN or DTNME-version issue, and that <strong>KVM itself may also affect performance more significantly than originally expected</strong>. [1]</p>
+<p>Another notable test simulated a link with about two seconds of one-way delay and four seconds of RTT. The results show that simply increasing bandwidth isn’t enough. The system also needs to tune LTP sessions, pipeline limit, buffer, and other parameters to maintain higher throughput under high-delay conditions. [1]</p>
+<p>This illustrates one thing:</p>
 <blockquote>
-<p>太空網路效能不是單一網卡或單一協定的問題，而是整條資料處理 Pipeline 的系統工程問題</p>
+<p>Space network performance isn’t a single-NIC or single-protocol problem, but a systems-engineering problem for the whole data-processing pipeline.</p>
 </blockquote>
-<h1 id="HDTN-專案現況"><a href="#HDTN-專案現況" class="headerlink" title="HDTN 專案現況"></a>HDTN 專案現況</h1><p>NASA 已經將 HDTN 原始碼公開在 GitHub 上：[3]</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/nasa/HDTN">GitHub：nasa&#x2F;HDTN</a></p>
-<p>目前公開的專案以 C++ 撰寫，並使用 CMake 建置。看起來支援多個作業系統與硬體平台，包括 Linux、Windows、macOS、FreeBSD、OpenBSD、Raspbian 與 ARM64 環境。[3]</p>
-<p>主要相依套件包括：</p>
+<h1 id="HDTN-project-status"><a href="#HDTN-project-status" class="headerlink" title="HDTN project status"></a>HDTN project status</h1><p>NASA has made the HDTN source code public on GitHub: [3]</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/nasa/HDTN">GitHub: nasa&#x2F;HDTN</a></p>
+<p>The currently-public project is written in C++ and built with CMake. It appears to support multiple operating systems and hardware platforms, including Linux, Windows, macOS, FreeBSD, OpenBSD, Raspbian, and ARM64. [3]</p>
+<p>Main dependencies include:</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CMake</span><br><span class="line">Boost</span><br><span class="line">ZeroMQ</span><br><span class="line">OpenSSL</span><br><span class="line">C++ Compiler</span><br></pre></td></tr></table></figure>
 
-<p>目前程式碼中的主要模組包括：</p>
+<p>The main modules currently in the code include:</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ingress</span><br><span class="line">Storage</span><br><span class="line">Router</span><br><span class="line">Egress</span><br><span class="line">Telemetry Command Interface</span><br></pre></td></tr></table></figure>
 
-<p>也有提供測試方式，可以透過 <code>tcpdump</code> 與 Wireshark 觀察 HDTN 的資料流：</p>
+<p>A test method is also provided; you can observe HDTN’s data flow with <code>tcpdump</code> and Wireshark:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tcpdump -i lo -vv -s0 port 4558 -w hdtn-traffic.pcap</span><br></pre></td></tr></table></figure>
 
-<h1 id="Next-Hop：HDTN-一定要跑在大型伺服器上嗎？"><a href="#Next-Hop：HDTN-一定要跑在大型伺服器上嗎？" class="headerlink" title="Next Hop：HDTN 一定要跑在大型伺服器上嗎？"></a>Next Hop：HDTN 一定要跑在大型伺服器上嗎？</h1><p>這邊理解 HDTN 的基本架構後，接下來會出現一個很自然的問題：</p>
+<h1 id="Next-Hop-does-HDTN-have-to-run-on-a-large-server"><a href="#Next-Hop-does-HDTN-have-to-run-on-a-large-server" class="headerlink" title="Next Hop: does HDTN have to run on a large server?"></a>Next Hop: does HDTN have to run on a large server?</h1><p>Having understood HDTN’s basic architecture, a natural question arises:</p>
 <blockquote>
-<p>既然 HDTN 已經拆成 Ingress、Storage、Router 與 Egress 等模組，它一定要完整跑在高階 x86 Server 上嗎？</p>
+<p>Since HDTN is already split into Ingress, Storage, Router, and Egress modules, does it have to run fully on a high-end x86 server?</p>
 </blockquote>
-<p>有這個疑惑也蠻正常，畢竟深空探索直覺來想都是與高階Server搭配，但未來的太空任務不可能只依賴大型伺服器，以後的月球基地、衛星、探測器、地面站與邊緣節點可能擁有不同的：</p>
+<p>This doubt is reasonable; deep-space exploration intuitively seems to pair with high-end servers. But future space missions can’t rely only on large servers. Future lunar bases, satellites, probes, ground stations, and edge nodes may have different:</p>
 <ul>
-<li>CPU 架構</li>
-<li>記憶體容量</li>
-<li>儲存空間</li>
-<li>能源限制</li>
-<li>散熱條件</li>
-<li>頻寬需求</li>
-<li>任務角色</li>
+<li>CPU architectures</li>
+<li>Memory capacities</li>
+<li>Storage space</li>
+<li>Energy constraints</li>
+<li>Thermal conditions</li>
+<li>Bandwidth needs</li>
+<li>Mission roles</li>
 </ul>
-<p>因此論文中的 future work 有提到一些值得研究的方向：</p>
+<p>So the paper’s future work mentions some directions worth researching:</p>
 <ul>
-<li>HDTN 能否移植到 ARM 平台？</li>
-<li>能否在 Raspberry Pi 上執行？</li>
-<li>不同模組能否拆散到多台裝置？</li>
-<li>Edge Device 能否成為太空 DTN 節點？</li>
-<li>在有限硬體資源下，系統效能會下降多少？</li>
+<li>Can HDTN be ported to the ARM platform?</li>
+<li>Can it run on a Raspberry Pi?</li>
+<li>Can different modules be split across multiple devices?</li>
+<li>Can an edge device become a space DTN node?</li>
+<li>How much does performance drop under limited hardware resources?</li>
 </ul>
-<p>這之後 NASA 後續也有針對 Raspberry Pi 與 ARM 平台進行研究。[3]</p>
-<p>而這我們就留到下一篇文章來繼續研究：</p>
+<p>NASA has since also researched the Raspberry Pi and ARM platforms. [3]</p>
+<p>I’ll leave this for the next post to explore:</p>
 <blockquote>
-<p>如何將 NASA HDTN 跑在 Raspberry Pi 上？<br>從 ARM 移植、CMake 編譯修改到分散式部署</p>
+<p>How to run NASA HDTN on a Raspberry Pi?<br>From ARM porting and CMake build modifications to distributed deployment</p>
 </blockquote>
-<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>上一篇文章介紹了 DTN 為什麼適合太空環境。</p>
-<p>這一篇則進一步拆解 NASA HDTN 的軟體架構，說明 Store-Carry-Forward 並不是一句抽象術語，而是由多個元件共同完成的工程流</p>
-<p>HDTN 的核心元件包括：</p>
+<h1 id="Closing"><a href="#Closing" class="headerlink" title="Closing"></a>Closing</h1><p>The previous post introduced why DTN suits the space environment.</p>
+<p>This one further breaks down NASA HDTN’s software architecture, explaining that Store-Carry-Forward isn’t an abstract term but an engineering flow completed by multiple components together.</p>
+<p>HDTN’s core components include:</p>
 <table>
 <thead>
 <tr>
-<th>元件</th>
-<th>功能</th>
+<th>Component</th>
+<th>Function</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>Bundle</td>
-<td>可以跨越時間與節點傳遞的資料單位</td>
+<td>A data unit that can be passed across time and nodes</td>
 </tr>
 <tr>
 <td>Ingress</td>
-<td>接收 Bundle 並判斷是否立即轉送</td>
+<td>Receives bundles and decides whether to forward immediately</td>
 </tr>
 <tr>
 <td>Storage</td>
-<td>在鏈路中斷時暫存 Bundle</td>
+<td>Holds bundles when a link is down</td>
 </tr>
 <tr>
 <td>Contact Plan</td>
-<td>描述未來可用的通訊窗口</td>
+<td>Describes future usable contact windows</td>
 </tr>
 <tr>
 <td>Scheduler &#x2F; Router</td>
-<td>管理鏈路狀態並計算下一跳</td>
+<td>Manages link state and computes the next hop</td>
 </tr>
 <tr>
 <td>Egress</td>
-<td>將 Bundle 交給正確的 Outduct</td>
+<td>Hands bundles to the correct Outduct</td>
 </tr>
 <tr>
 <td>Convergence Layer</td>
-<td>讓 Bundle 搭載在實際傳輸協定上</td>
+<td>Lets bundles ride on actual transport protocols</td>
 </tr>
 <tr>
 <td>ZeroMQ Events</td>
-<td>在鏈路異常與排程改變時同步狀態</td>
+<td>Synchronizes state when a link fails or the schedule changes</td>
 </tr>
 </tbody></table>
-<p>如果用一句話總結 HDTN 的設計精神：</p>
+<p>To summarize HDTN’s design spirit in one sentence:</p>
 <blockquote>
-<p>HDTN 並不假設網路永遠存在，而是讓資料在網路不存在時仍然可以安全等待，並在下一個通訊機會出現時繼續前進，</p>
+<p>HDTN doesn’t assume the network always exists; it lets data wait safely when the network doesn’t exist, and keep moving forward when the next communication opportunity appears.</p>
 </blockquote>
-<p>這種架構不只適用於 ISS，也可能成為未來月球、火星與深空基礎設施的重要底層能力</p>
+<p>This architecture isn’t only applicable to the ISS; it may also become an important underlying capability for future lunar, Mars, and deep-space infrastructure.</p>
 <hr>
-<h1 id="參考資料（References）"><a href="#參考資料（References）" class="headerlink" title="參考資料（References）"></a>參考資料（References）</h1><ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li><p>Daniel Raible, Rachel Dudukovich, Brian Tomko, Nadia Kortas, Blake LaFuente, Dennis Iannicca, et al., <strong>Developing High Performance Space Networking Capabilities for the International Space Station and Beyond</strong>, NASA&#x2F;TM-20220011407, 2022.<br><a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20220011407/downloads/TM-20220011407.pdf">NASA Technical Reports Server</a></p>
 </li>
-<li><p>NASA Glenn Research Center, <strong>High-Rate Delay Tolerant Networking（HDTN）</strong>.<br><a target="_blank" rel="noopener" href="https://www.nasa.gov/glenn/glenn-expertise-space-exploration/scan/high-rate-delay-tolerant-networking/">NASA Official Website</a></p>
+<li><p>NASA Glenn Research Center, <strong>High-Rate Delay Tolerant Networking (HDTN)</strong>.<br><a target="_blank" rel="noopener" href="https://www.nasa.gov/glenn/glenn-expertise-space-exploration/scan/high-rate-delay-tolerant-networking/">NASA Official Website</a></p>
 </li>
-<li><p>NASA, <strong>High-rate Delay Tolerant Network（HDTN）Software</strong>.<br><a target="_blank" rel="noopener" href="https://github.com/nasa/HDTN">GitHub：nasa&#x2F;HDTN</a></p>
+<li><p>NASA, <strong>High-rate Delay Tolerant Network (HDTN) Software</strong>.<br><a target="_blank" rel="noopener" href="https://github.com/nasa/HDTN">GitHub: nasa&#x2F;HDTN</a></p>
 </li>
-<li><p>IETF, <strong>RFC 9171：Bundle Protocol Version 7</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc9171">RFC 9171</a></p>
+<li><p>IETF, <strong>RFC 9171: Bundle Protocol Version 7</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc9171">RFC 9171</a></p>
 </li>
-<li><p>IETF, <strong>RFC 9174：Delay-Tolerant Networking TCP Convergence-Layer Protocol Version 4</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc9174">RFC 9174</a></p>
+<li><p>IETF, <strong>RFC 9174: Delay-Tolerant Networking TCP Convergence-Layer Protocol Version 4</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc9174">RFC 9174</a></p>
 </li>
-<li><p>IETF, <strong>RFC 5326：Licklider Transmission Protocol — Specification</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5326">RFC 5326</a></p>
+<li><p>IETF, <strong>RFC 5326: Licklider Transmission Protocol, Specification</strong>.<br><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5326">RFC 5326</a></p>
 </li>
 </ol>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/25763fe7.html">https://leozzmc.github.io/posts/25763fe7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DTN/">DTN</a><a class="post-meta__tags" href="/tags/Bundle-Protocol/">Bundle Protocol</a><a class="post-meta__tags" href="/tags/Space-Networking/">Space Networking</a><a class="post-meta__tags" href="/tags/NASA/">NASA</a><a class="post-meta__tags" href="/tags/Distributed-Systems/">Distributed Systems</a></div><div class="post-share"><div class="social-share" data-image="/img/DTN/cover-2.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/5d37ec65.html" title="二元樹的垂直走訪 | Hard | LeetCode#987. Vertical Order Traversal of a Binary Tree"><img class="cover" src="/img/LeetCode/987/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">二元樹的垂直走訪 | Hard | LeetCode#987. Vertical Order Traversal of a Binary Tree</div></div><div class="info-2"><div class="info-item-1">題目敘述    題目難度： Hard 題目描述： 這題給定二元樹的 root, 要我們實踐垂直走訪二元樹  這邊題目解釋垂直走訪的定義，每個節點都有位置 (row, col)， 而 left children 的座標相對於 root 會是 (row+1, col-1) 反之 right children 的座標會是 (row+1, col+1) 。 垂直走訪的意思是由上而下，由左而右的方式開始走訪，起點會是最左側的節點，接著會是下一個 column 依序走訪，而在 column 當中最後回傳的走訪順序，同column 需按照節點值大小由小排到大。也會有多個節點存在於相同座標的情況，也一樣依照節點值排序。最終輸出走訪順序。  解法一開始的想法這題一開始想法有點歪掉，原本是想說如果把最左側當成新的root, 橫的進行BFS，然後依序把下一column 丟到queue，但這樣還會需要用複雜的邏輯紀錄每個節點的parents是誰，挺麻煩。 後來換了想法，其實題目給的座標很方便，要是我們有個結構同時存放節點值跟座標的關聯，那就只要迭代最終這個結構，按照 column 順序輸出即可。  所以...</div></div></div></a><a class="pagination-related" href="/posts/1860e9ce.html" title="施咒最大總傷害 | Medium |LeetCode#3186. Maximum Total Damage With Spell Casting"><img class="cover" src="/img/LeetCode/3186/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">施咒最大總傷害 | Medium |LeetCode#3186. Maximum Total Damage With Spell Casting</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述： 題目說明一個巫師會多種不同的咒語，給定一個 power 陣列，其中每個元素代表咒語的傷害值，多個咒語可以有相同的傷害值。已知巫師想要施展咒語時，可以選擇 power[i] 一旦選擇後，則不能選擇傷害值為 power[i]-2, power[i]-1, power[i]+1, power[i]+2 的咒語。 每個咒語只能使用一次，請回傳完巫師可以施展咒語的 最大可能攻擊量。  解法一開始的想法一開始最直觀就是暴力解，透過雙層迴圈來去迭代 power array 每個外層回圈結尾保存一個當前的最大攻擊值，而內層迴圈找可以施展咒語 (&gt; 外層傷害值+2 或者 &lt;外層傷害值-2 ) 但這樣做肯定最後會 TLE。 我的解法這邊顯然會是一個 DP 問題，因此會有兩種做法：Recursion 或 Iteration。 我自己認為 recursion 還是最直觀，但是並不是最優美的做法 Recursion + Memoization 123456789101112131415161718192021222324252627282930...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/7d41a775.html" title="為什麼太空網路需要 DTN？從 TCP&#x2F;IP 的限制到深空網路"><img class="cover" src="/img/DTN/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-05</div><div class="info-item-2">為什麼太空網路需要 DTN？從 TCP&#x2F;IP 的限制到深空網路</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  前言：在太空中，我們還能順暢地上網嗎？ 前陣子看了 NASA Artemis II 繞月行動的直播，看著火箭升空，算是見證了人類的另一個里程碑。近年不論是 NASA 、商業月球酬載服務（CLPS）、SpaceX Starship 的進展，以及各國對月球與深空任務的投入，都讓太空基礎設施 不再只是科幻概念，而是逐漸走向工程實作的問題。但身為一個工程師，我腦中浮現出一個很實際的問題：「如果我們要在太空發展科技，甚至建立基地，那我們地球上現有的網路架構，搬到太空中還能直接用嗎？」為了解答這個疑惑，我就爬了一些相關論文與技術文件中進行研究。這篇文章，就算是我的學習筆記跟總結～  直覺上，我們可能會認為：「只要把天線做大、訊號功率推高、多發射幾顆中繼衛星，不就能把地球上的 Internet 延伸到太空了嗎？」但實際上，太空網路面臨的挑戰，絕對不是單純的 頻寬不夠 或 訊號太弱 。 最根本的問題在於：整個網路環境的基本假設，在太空中完全變了。 因為地球上的網際網路，通常假設端到端（end-to-end）的路徑絕大多數時間都是暢通的，...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><div class="bobame-aside-card">
-  <p class="bobame-aside-text">如果覺得我的文章有幫助，歡迎拯救Kevin免於吃土.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en/posts/25763fe7.html">https://leozzmc.github.io/en/posts/25763fe7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/en/tags/Space-Networking/">Space Networking</a><a class="post-meta__tags" href="/en/tags/DTN/">DTN</a><a class="post-meta__tags" href="/en/tags/Bundle-Protocol/">Bundle Protocol</a><a class="post-meta__tags" href="/en/tags/NASA/">NASA</a><a class="post-meta__tags" href="/en/tags/Distributed-Systems/">Distributed Systems</a></div><div class="post-share"><div class="social-share" data-image="/en/img/DTN/cover-2.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/7d41a775.html" title="Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks"><img class="cover" src="/en/img/DTN/cover.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Preface: can we still get online smoothly in space? I recently watched the livestream of NASA’s Artemis II lunar flyby mission. Watching the rocket lift off, I felt I’d witnessed another milestone for humanity.In recent years, progress from NASA, the Commercial Lunar Payload Services (CLPS), SpaceX’s Starship, and various countries’ investment in lunar and deep-space missions has made space infrastructure no longer just a sci-fi concept but increasingly a matter of engineering p...</div></div></div></a><a class="pagination-related" href="/en/posts/66ec2728.html" title="A Stray Drone Writing in the Sky with Its Flight Path | Connect the Dots | STARPWN 2026"><img class="cover" src="/en/posts/66ec2728/all_tracks_overview.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">A Stray Drone Writing in the Sky with Its Flight Path | Connect the Dots | STARPWN 2026</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文 In the same Prismantir drone-swarm world, this is the challenge with the shortest story but the most memorable payoff. 150 million bytes of raw telemetry, and at the very end you open an image to find a drone writing letters in the sky with its own flight path.    What the challenge is about While known for their big eye in the sky, Prismantir huge drone fleet is also a behemoth to keep in control. Every night, each drone patrols its assigned block, following its route with clock...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/7d41a775.html" title="Why Space Networking Needs DTN: From TCP&#x2F;IP&#39;s Limits to Deep-Space Networks"><img class="cover" src="/en/img/DTN/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-05</div><div class="info-item-2">Why Space Networking Needs DTN: From TCP&#x2F;IP&#39;s Limits to Deep-Space Networks</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Preface: can we still get online smoothly in space? I recently watched the livestream of NASA’s Artemis II lunar flyby mission. Watching the rocket lift off, I felt I’d witnessed another milestone for humanity.In recent years, progress from NASA, the Commercial Lunar Payload Services (CLPS), SpaceX’s Starship, and various countries’ investment in lunar and deep-space missions has made space infrastructure no longer just a sci-fi concept but increasingly a matter of engineering p...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">78</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><div class="bobame-aside-card">
+  <p class="bobame-aside-text">If you find my articles helpful, please support Kevin!</p>
   <a class="bobame-button"
      style="background-color:#A0ADA6;color:#F8E0BE;border:none"
      href="https://kevinneck87.bobaboba.me?utm_source=blog&utm_medium=aside_button&utm_campaign=support"
@@ -686,7 +686,7 @@ btf.addGlobalFn('pjaxComplete', () => {
     <span>Use boba to safe Kevin!</span>
   </a>
 </div>
-</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E5%BE%9E-DTN-%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%8C%E8%B5%B0%E5%90%91%E7%9C%9F%E6%AD%A3%E5%8F%AF%E4%BB%A5%E9%81%8B%E4%BD%9C%E7%9A%84%E5%A4%AA%E7%A9%BA%E7%B6%B2%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">前言：從 DTN 的概念，走向真正可以運作的太空網路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">HDTN 是什麼？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC-NASA-%E9%9C%80%E8%A6%81-High-rate-DTN%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">為什麼 NASA 需要 High-rate DTN？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%9E%E7%89%A9%E6%B5%81%E7%B3%BB%E7%B5%B1%E7%90%86%E8%A7%A3-HDTN"><span class="toc-number">4.</span> <span class="toc-text">從物流系統理解 HDTN</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%A7%8B"><span class="toc-number">5.</span> <span class="toc-text">HDTN 的核心架構</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bundle"><span class="toc-number">5.1.</span> <span class="toc-text">Bundle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ingress"><span class="toc-number">5.2.</span> <span class="toc-text">Ingress</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Storage"><span class="toc-number">5.3.</span> <span class="toc-text">Storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Contact-Plan"><span class="toc-number">5.4.</span> <span class="toc-text">Contact Plan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scheduler-%E8%88%87-Router"><span class="toc-number">5.5.</span> <span class="toc-text">Scheduler 與 Router</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%B7%AE%E7%95%B0%EF%BC%9AScheduler-%E8%88%87-Router-%E7%9A%84%E8%81%B7%E8%B2%AC%E5%B7%AE%E7%95%B0"><span class="toc-number">5.6.</span> <span class="toc-text">版本差異：Scheduler 與 Router 的職責差異</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Egress"><span class="toc-number">5.7.</span> <span class="toc-text">Egress</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Event-Driven-Architecture%EF%BC%9A%E9%8F%88%E8%B7%AF%E7%AA%81%E7%84%B6%E4%B8%AD%E6%96%B7%E6%99%82%E6%80%8E%E9%BA%BC%E8%BE%A6%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">Event-Driven Architecture：鏈路突然中斷時怎麼辦？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Convergence-Layer"><span class="toc-number">7.</span> <span class="toc-text">Convergence Layer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LTP"><span class="toc-number">8.</span> <span class="toc-text">LTP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-%E8%88%87%E4%B8%80%E8%88%AC-Message-Queue-%E6%9C%89%E4%BB%80%E9%BA%BC%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">HDTN 與一般 Message Queue 有什麼不同？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-%E7%9A%84%E5%AE%8C%E6%95%B4%E8%B3%87%E6%96%99%E6%B5%81"><span class="toc-number">10.</span> <span class="toc-text">HDTN 的完整資料流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%83%85%E5%A2%83%E4%B8%80%EF%BC%9A%E9%8F%88%E8%B7%AF%E7%9B%AE%E5%89%8D%E5%8F%AF%E7%94%A8"><span class="toc-number">10.1.</span> <span class="toc-text">情境一：鏈路目前可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%83%85%E5%A2%83%E4%BA%8C%EF%BC%9A%E9%8F%88%E8%B7%AF%E7%9B%AE%E5%89%8D%E4%B8%8D%E5%8F%AF%E7%94%A8"><span class="toc-number">10.2.</span> <span class="toc-text">情境二：鏈路目前不可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%83%85%E5%A2%83%E4%B8%89%EF%BC%9A%E5%82%B3%E8%BC%B8%E9%80%94%E4%B8%AD%E7%AA%81%E7%84%B6%E4%B8%AD%E6%96%B7"><span class="toc-number">10.3.</span> <span class="toc-text">情境三：傳輸途中突然中斷</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E5%88%86%E6%95%A3%E5%BC%8F%E7%B3%BB%E7%B5%B1%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%BE%85"><span class="toc-number">11.</span> <span class="toc-text">用分散式系統的角度看待</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ISS-%E6%B8%AC%E8%A9%A6%EF%BC%9AHDTN-%E4%B8%8D%E5%8F%AA%E6%98%AF%E7%90%86%E8%AB%96%E6%9E%B6%E6%A7%8B"><span class="toc-number">12.</span> <span class="toc-text">ISS 測試：HDTN 不只是理論架構</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-%E5%B0%88%E6%A1%88%E7%8F%BE%E6%B3%81"><span class="toc-number">13.</span> <span class="toc-text">HDTN 專案現況</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Next-Hop%EF%BC%9AHDTN-%E4%B8%80%E5%AE%9A%E8%A6%81%E8%B7%91%E5%9C%A8%E5%A4%A7%E5%9E%8B%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%B8%8A%E5%97%8E%EF%BC%9F"><span class="toc-number">14.</span> <span class="toc-text">Next Hop：HDTN 一定要跑在大型伺服器上嗎？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-number">15.</span> <span class="toc-text">結語</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99%EF%BC%88References%EF%BC%89"><span class="toc-number">16.</span> <span class="toc-text">參考資料（References）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026">跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="發表於 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026">被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="發表於 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026">深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="發表於 2026-10-24 20:50:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface-from-the-concept-of-DTN-to-a-space-network-that-actually-works"><span class="toc-number">1.</span> <span class="toc-text">Preface: from the concept of DTN to a space network that actually works</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-HDTN"><span class="toc-number">2.</span> <span class="toc-text">What is HDTN?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-does-NASA-need-High-rate-DTN"><span class="toc-number">3.</span> <span class="toc-text">Why does NASA need High-rate DTN?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Understanding-HDTN-through-a-logistics-system"><span class="toc-number">4.</span> <span class="toc-text">Understanding HDTN through a logistics system</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN%E2%80%99s-core-architecture"><span class="toc-number">5.</span> <span class="toc-text">HDTN’s core architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bundle"><span class="toc-number">5.1.</span> <span class="toc-text">Bundle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ingress"><span class="toc-number">5.2.</span> <span class="toc-text">Ingress</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Storage"><span class="toc-number">5.3.</span> <span class="toc-text">Storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Contact-Plan"><span class="toc-number">5.4.</span> <span class="toc-text">Contact Plan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scheduler-and-Router"><span class="toc-number">5.5.</span> <span class="toc-text">Scheduler and Router</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Version-differences-the-division-of-responsibilities-between-Scheduler-and-Router"><span class="toc-number">5.6.</span> <span class="toc-text">Version differences: the division of responsibilities between Scheduler and Router</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Egress"><span class="toc-number">5.7.</span> <span class="toc-text">Egress</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Event-Driven-Architecture-what-to-do-when-a-link-suddenly-drops"><span class="toc-number">6.</span> <span class="toc-text">Event-Driven Architecture: what to do when a link suddenly drops?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Convergence-Layer"><span class="toc-number">7.</span> <span class="toc-text">Convergence Layer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LTP"><span class="toc-number">8.</span> <span class="toc-text">LTP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-is-HDTN-different-from-an-ordinary-message-queue"><span class="toc-number">9.</span> <span class="toc-text">How is HDTN different from an ordinary message queue?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN%E2%80%99s-complete-data-flow"><span class="toc-number">10.</span> <span class="toc-text">HDTN’s complete data flow</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scenario-1-the-link-is-currently-usable"><span class="toc-number">10.1.</span> <span class="toc-text">Scenario 1: the link is currently usable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scenario-2-the-link-is-currently-unusable"><span class="toc-number">10.2.</span> <span class="toc-text">Scenario 2: the link is currently unusable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scenario-3-a-sudden-drop-mid-transfer"><span class="toc-number">10.3.</span> <span class="toc-text">Scenario 3: a sudden drop mid-transfer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Viewing-it-through-a-distributed-systems-lens"><span class="toc-number">11.</span> <span class="toc-text">Viewing it through a distributed-systems lens</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ISS-testing-HDTN-is-more-than-a-theoretical-architecture"><span class="toc-number">12.</span> <span class="toc-text">ISS testing: HDTN is more than a theoretical architecture</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HDTN-project-status"><span class="toc-number">13.</span> <span class="toc-text">HDTN project status</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Next-Hop-does-HDTN-have-to-run-on-a-large-server"><span class="toc-number">14.</span> <span class="toc-text">Next Hop: does HDTN have to run on a large server?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Closing"><span class="toc-number">15.</span> <span class="toc-text">Closing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">16.</span> <span class="toc-text">References</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026">Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="Created 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026">High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="Created 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026">A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="Created 2026-10-24 20:50:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026">Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:40:00.000Z" title="Created 2026-10-24 20:40:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026">The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:30:00.000Z" title="Created 2026-10-24 20:30:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.1"></script><script src="/en/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {
@@ -869,4 +869,4 @@ btf.addGlobalFn('pjaxComplete', () => {
 POWERMODE.shake = true;
 POWERMODE.mobile = false;
 document.body.addEventListener('input', POWERMODE);
-</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>

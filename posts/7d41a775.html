@@ -1,36 +1,36 @@
-<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路 | Kevin Liu's 部落格 || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="本文介紹 Delay&#x2F;Disruption-Tolerant Networking 的核心概念，說明為什麼太空網路不能直接套用地面 Internet 的 TCP&#x2F;IP 假設，並從 NASA LunaNet、Bundle Protocol 與 Contact Graph Routing 的角度理解未來太空網路架構。">
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks | Kevin Liu's Blog || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="An introduction to the core concepts of Delay&#x2F;Disruption-Tolerant Networking, explaining why space networks can&#39;t directly apply the terrestrial Internet&#39;s TCP&#x2F;IP assumptions, and understanding future">
 <meta property="og:type" content="article">
-<meta property="og:title" content="為什麼太空網路需要 DTN？從 TCP&#x2F;IP 的限制到深空網路">
-<meta property="og:url" content="https://leozzmc.github.io/posts/7d41a775.html">
-<meta property="og:site_name" content="Kevin Liu&#39;s 部落格 || Technical || Travel">
-<meta property="og:description" content="本文介紹 Delay&#x2F;Disruption-Tolerant Networking 的核心概念，說明為什麼太空網路不能直接套用地面 Internet 的 TCP&#x2F;IP 假設，並從 NASA LunaNet、Bundle Protocol 與 Contact Graph Routing 的角度理解未來太空網路架構。">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://leozzmc.github.io/img/DTN/cover.png">
+<meta property="og:title" content="Why Space Networking Needs DTN: From TCP&#x2F;IP&#39;s Limits to Deep-Space Networks">
+<meta property="og:url" content="https://leozzmc.github.io/en/posts/7d41a775.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s Blog || Technical || Travel">
+<meta property="og:description" content="An introduction to the core concepts of Delay&#x2F;Disruption-Tolerant Networking, explaining why space networks can&#39;t directly apply the terrestrial Internet&#39;s TCP&#x2F;IP assumptions, and understanding future">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://leozzmc.github.io/en/img/DTN/cover.png">
 <meta property="article:published_time" content="2026-05-05T10:56:21.000Z">
-<meta property="article:modified_time" content="2026-10-24T07:24:37.562Z">
+<meta property="article:modified_time" content="2026-10-24T07:22:27.104Z">
 <meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="Space Networking">
 <meta property="article:tag" content="DTN">
 <meta property="article:tag" content="Bundle Protocol">
-<meta property="article:tag" content="Space Networking">
 <meta property="article:tag" content="NASA">
 <meta property="article:tag" content="Distributed Systems">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://leozzmc.github.io/img/DTN/cover.png"><script type="application/ld+json">{
+<meta name="twitter:image" content="https://leozzmc.github.io/en/img/DTN/cover.png"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路",
-  "url": "https://leozzmc.github.io/posts/7d41a775.html",
-  "image": "https://leozzmc.github.io/img/DTN/cover.png",
+  "headline": "Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks",
+  "url": "https://leozzmc.github.io/en/posts/7d41a775.html",
+  "image": "https://leozzmc.github.io/en/img/DTN/cover.png",
   "datePublished": "2026-05-05T10:56:21.000Z",
-  "dateModified": "2026-10-24T07:24:37.562Z",
+  "dateModified": "2026-10-24T07:22:27.104Z",
   "author": [
     {
       "@type": "Person",
       "name": "Kevin Liu",
-      "url": "https://leozzmc.github.io"
+      "url": "https://leozzmc.github.io/en"
     }
   ]
-}</script><link rel="shortcut icon" href="/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/posts/7d41a775.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+}</script><link rel="shortcut icon" href="/en/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/en/posts/7d41a775.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
     (() => {
       
     const saveToLocal = {
@@ -128,34 +128,34 @@ btf.addGlobalFn('pjaxComplete', () => {
   gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
 }, 'google_analytics')
 </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
+  root: '/en/',
   algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"找不到符合您查詢的內容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  localSearch: {"path":"/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
   translate: undefined,
   highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600,"highlightFullpage":false,"highlightMacStyle":true},
   copy: {
-    success: '複製成功',
-    error: '複製失敗',
-    noSupport: '瀏覽器不支援'
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
   },
   relativeDate: {
     homepage: false,
     post: false
   },
-  runtime: '',
+  runtime: 'days',
   dateSuffix: {
-    just: '剛剛',
-    min: '分鐘前',
-    hour: '小時前',
-    day: '天前',
-    month: '個月前'
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
   },
   copyright: undefined,
   lightbox: 'null',
   Snackbar: undefined,
   infinitegrid: {
     js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
-    buttonText: '載入更多'
+    buttonText: 'Load More'
   },
   isPhotoFigcaption: false,
   islazyloadPlugin: false,
@@ -166,7 +166,7 @@ btf.addGlobalFn('pjaxComplete', () => {
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路',
+  title: 'Why Space Networking Needs DTN: From TCP/IP\'s Limits to Deep-Space Networks',
   isHighlightShrink: false,
   isToc: true,
   pageType: 'post'
@@ -214,335 +214,333 @@ btf.addGlobalFn('pjaxComplete', () => {
     white-space: nowrap;
   }
 </style>
-<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/DTN/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's 部落格 || Technical || Travel</span></a><a class="nav-page-title" href="/"><span class="site-name">為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首頁</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜尋</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 找文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 歸檔</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分類</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 鏈結</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> 語言:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">為什麼太空網路需要 DTN？從 TCP/IP 的限制到深空網路</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2026-05-05T10:56:21.000Z" title="發表於 2026-05-05 18:56:21">2026-05-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2026-10-24T07:24:37.562Z" title="更新於 2026-10-24 15:24:37">2026-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Space-Infrastructure/">Space Infrastructure</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">總字數:</span><span class="word-count">5.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀時間:</span><span>18分鐘</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">瀏覽量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
-<p>🌐 English version: <a href="/en/posts/7d41a775.html">English</a></p>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">78</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/DTN/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's Blog || Technical || Travel</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Why Space Networking Needs DTN: From TCP/IP's Limits to Deep-Space Networks</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-05-05T10:56:21.000Z" title="Created 2026-05-05 18:56:21">2026-05-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-10-24T07:22:27.104Z" title="Updated 2026-10-24 15:22:27">2026-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/Space-Infrastructure/">Space Infrastructure</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>23mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>🌐 中文版：<a href="/posts/7d41a775.html">繁體中文</a></p>
 </blockquote>
-<h1 id="前言：在太空中，我們還能順暢地上網嗎？"><a href="#前言：在太空中，我們還能順暢地上網嗎？" class="headerlink" title="前言：在太空中，我們還能順暢地上網嗎？"></a>前言：在太空中，我們還能順暢地上網嗎？</h1><blockquote>
-<p>前陣子看了 <a target="_blank" rel="noopener" href="https://youtu.be/_eeZQw9PBc0">NASA Artemis II 繞月行動的直播</a>，看著火箭升空，算是見證了人類的另一個里程碑。<br>近年不論是 NASA 、商業月球酬載服務（CLPS）、SpaceX Starship 的進展，以及各國對月球與深空任務的投入，都讓<strong>太空基礎設施</strong> 不再只是科幻概念，而是逐漸走向工程實作的問題。但身為一個工程師，我腦中浮現出一個很實際的問題：「如果我們要在太空發展科技，甚至建立基地，那我們地球上現有的網路架構，搬到太空中還能直接用嗎？」為了解答這個疑惑，我就爬了一些相關論文與技術文件中進行研究。這篇文章，就算是我的學習筆記跟總結～</p>
+<h1 id="Preface-can-we-still-get-online-smoothly-in-space"><a href="#Preface-can-we-still-get-online-smoothly-in-space" class="headerlink" title="Preface: can we still get online smoothly in space?"></a>Preface: can we still get online smoothly in space?</h1><blockquote>
+<p>I recently watched the <a target="_blank" rel="noopener" href="https://youtu.be/_eeZQw9PBc0">livestream of NASA’s Artemis II lunar flyby mission</a>. Watching the rocket lift off, I felt I’d witnessed another milestone for humanity.<br>In recent years, progress from NASA, the Commercial Lunar Payload Services (CLPS), SpaceX’s Starship, and various countries’ investment in lunar and deep-space missions has made <strong>space infrastructure</strong> no longer just a sci-fi concept but increasingly a matter of engineering practice. But as an engineer, a very practical question came to mind: “If we want to develop technology in space, or even build bases, can we take our existing terrestrial network architecture and use it directly in space?” To answer this, I dug into some related papers and technical documents. This post is my study notes and summary.</p>
 </blockquote>
-<p>直覺上，我們可能會認為：「只要把天線做大、訊號功率推高、多發射幾顆中繼衛星，不就能把地球上的 Internet 延伸到太空了嗎？」但實際上，太空網路面臨的挑戰，絕對不是單純的 <strong>頻寬不夠</strong> 或 <strong>訊號太弱</strong> 。</p>
-<p><strong>最根本的問題在於：整個網路環境的基本假設，在太空中完全變了。</strong></p>
-<p>因為地球上的網際網路，通常假設端到端（end-to-end）的路徑絕大多數時間都是暢通的，封包可以在極短時間內抵達目的地。斷線通常視為「異常狀況」。但在太空網路中，超長延遲、間歇性連線與通訊中斷才是家常便飯。NASA 對 <strong>DTN (Delay&#x2F;Disruption-Tolerant Networking)</strong> 的介紹也指出，DTN 的目標是在太空通訊這類長延遲、易中斷的環境中，提供更可靠且標準化的資料傳輸方式 (<a target="_blank" rel="noopener" href="https://www.nasa.gov/communicating-with-missions/delay-disruption-tolerant-networking/">NASA</a>)。</p>
-<div class="note info flat"><p>DTN 的核心不是想辦法讓光速變快，而是坦然承認「延遲與中斷是不可避免的」，並將網路傳輸重新設計成一個可以儲存、等待、轉交與恢復的系統。</p>
+<p>Intuitively, we might think: “Just make the antennas bigger, push up the signal power, and launch a few more relay satellites, and we can extend the Earth’s Internet into space, right?” But in reality, the challenges space networks face are absolutely not simply <strong>insufficient bandwidth</strong> or <strong>weak signals</strong>.</p>
+<p><strong>The most fundamental problem is that the basic assumptions of the entire network environment completely change in space.</strong></p>
+<p>The Internet on Earth usually assumes that an end-to-end path is clear most of the time, and packets reach their destination in a very short time. A disconnection is usually treated as an “abnormal condition.” But in space networks, extremely long delays, intermittent connectivity, and communication interruptions are the norm. NASA’s introduction to <strong>DTN (Delay&#x2F;Disruption-Tolerant Networking)</strong> also notes that DTN aims to provide a more reliable, standardized way of transferring data in long-delay, interruption-prone environments like space communications (<a target="_blank" rel="noopener" href="https://www.nasa.gov/communicating-with-missions/delay-disruption-tolerant-networking/">NASA</a>).</p>
+<div class="note info flat"><p>DTN’s core isn’t to find a way to make the speed of light faster, but to frankly accept that “delay and interruption are unavoidable,” and redesign network transport as a system that can store, wait, hand off, and recover.</p>
 </div>
 
 <hr>
-<h1 id="地球上的-Internet，為何不適合太空環境？"><a href="#地球上的-Internet，為何不適合太空環境？" class="headerlink" title="地球上的 Internet，為何不適合太空環境？"></a>地球上的 Internet，為何不適合太空環境？</h1><p>我們每天滑手機、打 API、登入遠端伺服器，背後都默默依賴著一套我們習以為常的 TCP&#x2F;IP 假設：</p>
+<h1 id="Why-isn’t-the-Earth’s-Internet-suitable-for-the-space-environment"><a href="#Why-isn’t-the-Earth’s-Internet-suitable-for-the-space-environment" class="headerlink" title="Why isn’t the Earth’s Internet suitable for the space environment?"></a>Why isn’t the Earth’s Internet suitable for the space environment?</h1><p>Every day we scroll our phones, call APIs, and log into remote servers, all of which silently rely on a set of TCP&#x2F;IP assumptions we take for granted:</p>
 <ul>
-<li>來源與目的地之間，當下一定能找到一條連通的路徑</li>
-<li>往返延遲（RTT）極低，通常在毫秒到數百毫秒之間</li>
-<li>如果封包遺失，通常代表網路壅塞、設備故障或暫時性的干擾</li>
-<li>連線中斷是一種 Exception，而不是常態</li>
-<li>路由拓樸雖然會改變，但絕對不會以天體運行的尺度與速度在劇烈變化</li>
+<li>There’s definitely a connected path between source and destination at this moment</li>
+<li>Round-trip latency (RTT) is extremely low, usually milliseconds to a few hundred milliseconds</li>
+<li>If a packet is lost, it usually means congestion, equipment failure, or transient interference</li>
+<li>A disconnection is an exception, not the norm</li>
+<li>The routing topology changes, but never dramatically at the scale and speed of celestial motion</li>
 </ul>
-<p>在地球上，這些假設非常合理。即使跨洲連線，延遲也通常還在 TCP 可以忍受的範圍內；即使中間某顆 Router 壞了，底層的路由協定也能迅速找到替代路線～</p>
-<p><strong>但太空環境完全是另一回事。</strong></p>
-<p>在太空中，地球、月球、火星、衛星、探測器與地面接收站，全都在相對運動。通訊節點之間的 <strong>通訊窗口（Contact Window）</strong> 可能只在特定的時間點才會出現。另外，不同天線的角度、個別設備的能源限制、不同的軌道位置、甚至是星體的遮蔽，都會直接決定某一條 Link 當下到底通不通。</p>
-<p>而 NASA 在 <strong>ION-DTN</strong> 的教學材料中也提到：極遠的距離、極高的資料遺失率、軌道運動造成的拓樸變化，以及航天器為了省電而不連續的操作，都會造成太空通訊比地面網路複雜好幾個維度 (<a target="_blank" rel="noopener" href="https://ion-dtn.readthedocs.io/en/ion-open-source-4.1.4-b.1/ion-tutorials/Day%201%20morning%20-%20DTN%20overview.pdf">ion-dtn.readthedocs.io</a>)</p>
-<p>我們可以用一張表來快速對比兩者的差異：</p>
+<p>On Earth these assumptions are very reasonable. Even for intercontinental connections, latency usually stays within what TCP can tolerate; and even if some router in the middle fails, the underlying routing protocols quickly find an alternate route.</p>
+<p><strong>But the space environment is an entirely different story.</strong></p>
+<p>In space, the Earth, Moon, Mars, satellites, probes, and ground stations are all in relative motion. The <strong>contact window</strong> between communication nodes may only appear at specific times. On top of that, different antenna angles, individual equipment energy limits, different orbital positions, and even celestial occlusion all directly determine whether a given link is up at that moment.</p>
+<p>NASA’s <strong>ION-DTN</strong> teaching materials also note: extreme distances, extremely high data loss rates, topology changes from orbital motion, and spacecraft operating discontinuously to save power all make space communication several dimensions more complex than terrestrial networks (<a target="_blank" rel="noopener" href="https://ion-dtn.readthedocs.io/en/ion-open-source-4.1.4-b.1/ion-tutorials/Day%201%20morning%20-%20DTN%20overview.pdf">ion-dtn.readthedocs.io</a>).</p>
+<p>We can use a table to quickly contrast the two:</p>
 <table>
 <thead>
 <tr>
-<th align="left">情境維度</th>
-<th align="left">地面網路假設</th>
-<th align="left">太空網路現實</th>
+<th align="left">Dimension</th>
+<th align="left">Terrestrial network assumption</th>
+<th align="left">Space network reality</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><strong>路徑連通性</strong></td>
-<td align="left">端到端路徑通常存在</td>
-<td align="left">端到端路徑可能暫時不存在</td>
+<td align="left"><strong>Path connectivity</strong></td>
+<td align="left">An end-to-end path usually exists</td>
+<td align="left">An end-to-end path may temporarily not exist</td>
 </tr>
 <tr>
-<td align="left"><strong>網路延遲 (RTT)</strong></td>
-<td align="left">通常極短（毫秒級）</td>
-<td align="left">可能是秒、分鐘，甚至更久</td>
+<td align="left"><strong>Network latency (RTT)</strong></td>
+<td align="left">Usually extremely short (milliseconds)</td>
+<td align="left">Can be seconds, minutes, or even longer</td>
 </tr>
 <tr>
-<td align="left"><strong>斷線認知</strong></td>
-<td align="left">是一種異常或錯誤</td>
-<td align="left">是一種正常狀態</td>
+<td align="left"><strong>View of disconnection</strong></td>
+<td align="left">An anomaly or error</td>
+<td align="left">A normal state</td>
 </tr>
 <tr>
-<td align="left"><strong>拓樸穩定度</strong></td>
-<td align="left">相對穩定</td>
-<td align="left">隨軌道與通訊窗口不斷變化</td>
+<td align="left"><strong>Topology stability</strong></td>
+<td align="left">Relatively stable</td>
+<td align="left">Constantly changing with orbits and contact windows</td>
 </tr>
 <tr>
-<td align="left"><strong>重傳成本</strong></td>
-<td align="left">相對低廉</td>
-<td align="left">非常昂貴，甚至會因此錯過通訊窗口</td>
+<td align="left"><strong>Retransmission cost</strong></td>
+<td align="left">Relatively cheap</td>
+<td align="left">Very expensive, and can miss the contact window</td>
 </tr>
 <tr>
-<td align="left"><strong>節點狀態</strong></td>
-<td align="left">設備多半 24 小時在線</td>
-<td align="left">航天器常處於低功耗、離線或被遮蔽狀態</td>
+<td align="left"><strong>Node state</strong></td>
+<td align="left">Equipment mostly online 24&#x2F;7</td>
+<td align="left">Spacecraft often in low-power, offline, or occluded states</td>
 </tr>
 </tbody></table>
-<div class="note warning flat"><p>在地面網路中，斷線通常代表有東西壞了，但在太空網路中，斷線很可能只是網路拓樸的日常而已</p>
+<div class="note warning flat"><p>On terrestrial networks, a disconnection usually means something is broken, but in space networks, a disconnection is very likely just an everyday part of the network topology.</p>
 </div>
 
-
-<h1 id="TCP-x2F-IP-在太空環境中的三個致命傷"><a href="#TCP-x2F-IP-在太空環境中的三個致命傷" class="headerlink" title="TCP&#x2F;IP 在太空環境中的三個致命傷"></a>TCP&#x2F;IP 在太空環境中的三個致命傷</h1><h2 id="1-延遲的尺度：從毫秒變成「分鐘」"><a href="#1-延遲的尺度：從毫秒變成「分鐘」" class="headerlink" title="1. 延遲的尺度：從毫秒變成「分鐘」"></a>1. 延遲的尺度：從毫秒變成「分鐘」</h2><p>如果大學學過基本計算機概論應該也知道， TCP 的設計高度依賴 ACK 、Timeout、重傳機制與壅塞控制，而這些機制在地球上運作得超棒，因為 RTT 很短。但在太空中，距離會把延遲無情地放大：</p>
+<h1 id="Three-fatal-flaws-of-TCP-x2F-IP-in-the-space-environment"><a href="#Three-fatal-flaws-of-TCP-x2F-IP-in-the-space-environment" class="headerlink" title="Three fatal flaws of TCP&#x2F;IP in the space environment"></a>Three fatal flaws of TCP&#x2F;IP in the space environment</h1><h2 id="1-The-scale-of-delay-from-milliseconds-to-“minutes”"><a href="#1-The-scale-of-delay-from-milliseconds-to-“minutes”" class="headerlink" title="1. The scale of delay: from milliseconds to “minutes”"></a>1. The scale of delay: from milliseconds to “minutes”</h2><p>If you took intro to computer science in college, you know TCP’s design relies heavily on ACKs, timeouts, retransmission, and congestion control. These mechanisms work great on Earth because RTT is short. But in space, distance amplifies delay mercilessly:</p>
 <ul>
-<li>低軌道衛星與地面站之間，可能還勉強維持在毫秒到數十毫秒</li>
-<li>地球到月球的單程光速約 1.3 秒，RTT 就來到了 2.6 秒</li>
-<li>如果是地球到火星，延遲會隨兩者軌道位置變化，可能高達數分鐘到二十幾分鐘</li>
+<li>Between low-orbit satellites and ground stations, it might barely stay in the milliseconds-to-tens-of-milliseconds range</li>
+<li>Earth-to-Moon one-way light travel is about 1.3 seconds, so RTT reaches 2.6 seconds</li>
+<li>For Earth-to-Mars, delay varies with the two bodies’ orbital positions and can reach from several minutes to over twenty minutes</li>
 </ul>
-<p>這意味著，如果我們硬要在地球和火星之間建立傳統的 TCP Session，光是握手和等待一個 ACK，連線可能早就 Timeout 了，更慘的是，TCP 會把這種 <strong>物理上的長延遲或遮蔽斷線</strong> 誤判為 <strong>網路壅塞</strong>，進而觸發降速與重傳，徹底拖垮傳輸效率</p>
-<h2 id="2-間歇性連線：對方不是隨時都在"><a href="#2-間歇性連線：對方不是隨時都在" class="headerlink" title="2. 間歇性連線：對方不是隨時都在"></a>2. 間歇性連線：對方不是隨時都在</h2><p>太空節點之間並不是永遠互相可見的。想像一下這些情境：</p>
+<p>This means that if we insist on establishing a traditional TCP session between Earth and Mars, the connection might time out just during the handshake and waiting for a single ACK. Worse, TCP would misinterpret this <strong>physically long delay or occlusion-based disconnection</strong> as <strong>network congestion</strong>, triggering rate reduction and retransmission that utterly cripple throughput.</p>
+<h2 id="2-Intermittent-connectivity-the-other-side-isn’t-always-there"><a href="#2-Intermittent-connectivity-the-other-side-isn’t-always-there" class="headerlink" title="2. Intermittent connectivity: the other side isn’t always there"></a>2. Intermittent connectivity: the other side isn’t always there</h2><p>Space nodes aren’t always mutually visible. Imagine these scenarios:</p>
 <ul>
-<li>月球探勘車開進了隕石坑，不一定能直視地球</li>
-<li>月球背面的探測器，必須等像是中繼衛星飛過來才能對地球傳送資料</li>
-<li>衛星為了節省能源預算，可能暫時關閉通訊模組</li>
-<li>太陽、行星、衛星本身的自轉與公轉，隨時會造成訊號遮蔽</li>
+<li>A lunar rover drives into a crater and may not have line of sight to Earth</li>
+<li>A probe on the far side of the Moon must wait for a relay satellite to fly over before it can send data to Earth</li>
+<li>A satellite may temporarily shut off its comms module to save its energy budget</li>
+<li>The rotation and revolution of the Sun, planets, and satellites themselves constantly cause signal occlusion</li>
 </ul>
 <blockquote>
-<p>太空版本的網路的問題可能不是「現在有沒有一條完整的路可以走？」<br>而是：<strong>既然現在沒有路，那下一個可用的通訊機會是什麼時候？在那之前，這包資料應該先存在誰那裡？</strong></p>
+<p>The space version of the networking problem may not be “is there a complete path to take right now?”<br>but rather: <strong>since there’s no path right now, when is the next available communication opportunity? Until then, who should hold onto this piece of data?</strong></p>
 </blockquote>
-<h2 id="3-把中斷視為常態：Disruption-as-Topology"><a href="#3-把中斷視為常態：Disruption-as-Topology" class="headerlink" title="3. 把中斷視為常態：Disruption as Topology"></a>3. 把中斷視為常態：Disruption as Topology</h2><p>如前所述，地球上的斷線代表故障或異常，但太空中的中斷，卻往往只是因為 <strong>衛星剛好飛出可視範圍</strong> 或 <strong>天線正在轉向</strong> 。因此，太空網路需要的不是單純且激進的 Retry 機制，而是一種能把「中斷」本身納入正常運作模型的網路架構。 而這就是 DTN 誕生的契機～</p>
+<h2 id="3-Treating-interruption-as-the-norm-disruption-as-topology"><a href="#3-Treating-interruption-as-the-norm-disruption-as-topology" class="headerlink" title="3. Treating interruption as the norm: disruption as topology"></a>3. Treating interruption as the norm: disruption as topology</h2><p>As mentioned, a disconnection on Earth means a fault or anomaly, but an interruption in space is often just because <strong>a satellite flew out of visible range</strong> or <strong>an antenna is slewing</strong>. So space networks need not a simple, aggressive retry mechanism, but a network architecture that incorporates “interruption” itself into its normal operating model. And that’s exactly the impetus for DTN’s birth.</p>
 <hr>
-<h1 id="DTN：Store-Carry-Forward"><a href="#DTN：Store-Carry-Forward" class="headerlink" title="DTN：Store-Carry-Forward"></a>DTN：Store-Carry-Forward</h1><p>DTN 的全名是 <strong>Delay&#x2F;Disruption-Tolerant Networking</strong>。</p>
-<p>它是專門為了應對長延遲、間歇性連線、不穩定鏈路與高錯誤率而設計的網路架構。 <code>IETF RFC 9171</code> 中也明確指出，DTN 是一種適用於 <strong>highly stressed environments</strong> 的架構 (<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc9171/">IETF Datatracker</a>)</p>
-<p>傳統網路的運作邏輯很直接：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">送出 (Send) -&gt; 尋找路由 (Route) -&gt; 立即抵達 (Deliver)</span><br></pre></td></tr></table></figure>
+<h1 id="DTN-Store-Carry-Forward"><a href="#DTN-Store-Carry-Forward" class="headerlink" title="DTN: Store-Carry-Forward"></a>DTN: Store-Carry-Forward</h1><p>DTN stands for <strong>Delay&#x2F;Disruption-Tolerant Networking</strong>.</p>
+<p>It’s a network architecture designed specifically to handle long delays, intermittent connectivity, unstable links, and high error rates. <code>IETF RFC 9171</code> explicitly states that DTN is an architecture suited to <strong>highly stressed environments</strong> (<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc9171/">IETF Datatracker</a>).</p>
+<p>Traditional networking’s logic is straightforward:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Send -&gt; Route -&gt; Deliver immediately</span><br></pre></td></tr></table></figure>
 
-<p>而 DTN 的邏輯則是：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">儲存 (Store) -&gt; 斷線時隨身攜帶 (Carry) -&gt; 遇到連線機會時轉交 (Forward)</span><br></pre></td></tr></table></figure>
+<p>DTN’s logic is:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Store -&gt; Carry (while disconnected) -&gt; Forward (when a connection opportunity arises)</span><br></pre></td></tr></table></figure>
 
-<p>航太業界通常將這個模式稱為 <strong>Store-Carry-Forward</strong>。當一個 DTN 節點收到資料時，它不需要立刻轉送出去。如果下一跳（Next Hop）目前不在可視範圍內，它可以先把資料安全地「存」在本地的硬碟或記憶體中，等到下一個 Contact Window 出現時，再把資料「轉交」出去。</p>
-<div class="note success flat"><p>DTN 的思維模式不再是尋找一條當下貫通的路徑，而是規劃資料該如何穿越一系列「未來會出現」的通訊機會，最終接力抵達終點。</p>
+<p>The aerospace industry usually calls this pattern <strong>Store-Carry-Forward</strong>. When a DTN node receives data, it doesn’t need to forward it immediately. If the next hop isn’t currently in visible range, it can safely “store” the data on local disk or memory, and then “forward” it when the next contact window appears.</p>
+<div class="note success flat"><p>DTN’s mindset is no longer about finding a path that’s connected right now, but about planning how data should traverse a series of “future” communication opportunities to finally relay to its destination.</p>
 </div>
 
-
-<h1 id="DTN-現實世界舉例"><a href="#DTN-現實世界舉例" class="headerlink" title="DTN 現實世界舉例"></a>DTN 現實世界舉例</h1><p>這邊舉個例字，如果 TCP&#x2F;IP 像是一通即時的電話來電，那 DTN 應該就更像一套跨國物流系統。因為你在寄包裹時，寄件人和收件人不需要同時在線上，貨車、飛機、物流中心也不需要在同一秒鐘連成一條線。你的包裹會先抵達集貨站 <code>Store</code>，跟著飛機飛越太平洋<code>Carry</code>，等到達目的地國家的理貨中心後，再交給當地的司機送達 <code>Forward</code></p>
-<p>這也是 DTN 運作的原理：</p>
+<h1 id="A-real-world-analogy-for-DTN"><a href="#A-real-world-analogy-for-DTN" class="headerlink" title="A real-world analogy for DTN"></a>A real-world analogy for DTN</h1><p>Here’s an analogy: if TCP&#x2F;IP is like a real-time phone call, then DTN is more like an international logistics system. When you ship a package, the sender and recipient don’t need to be online at the same time, and the trucks, planes, and logistics centers don’t need to be connected into one line at the same second. Your package first reaches a consolidation center (<code>Store</code>), flies across the Pacific with a plane (<code>Carry</code>), and once it reaches the destination country’s sorting center, is handed to a local driver for delivery (<code>Forward</code>).</p>
+<p>That’s also how DTN works:</p>
 <table>
 <thead>
 <tr>
-<th align="left">屬性</th>
-<th align="left">傳統 Internet</th>
-<th align="left">太空 DTN</th>
+<th align="left">Property</th>
+<th align="left">Traditional Internet</th>
+<th align="left">Space DTN</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><strong>舉例</strong></td>
-<td align="left">即時電話</td>
-<td align="left">郵政 &#x2F; 物流系統</td>
+<td align="left"><strong>Analogy</strong></td>
+<td align="left">Real-time phone call</td>
+<td align="left">Postal &#x2F; logistics system</td>
 </tr>
 <tr>
-<td align="left"><strong>資料單位</strong></td>
-<td align="left">Packet（封包立刻轉送）</td>
-<td align="left">Bundle（包裹可以暫存）</td>
+<td align="left"><strong>Data unit</strong></td>
+<td align="left">Packet (forwarded immediately)</td>
+<td align="left">Bundle (can be held)</td>
 </tr>
 <tr>
-<td align="left"><strong>路徑依賴</strong></td>
-<td align="left">需要連續的端到端路徑</td>
-<td align="left">依賴一系列未來的通訊機會 (Contacts)</td>
+<td align="left"><strong>Path dependency</strong></td>
+<td align="left">Needs a continuous end-to-end path</td>
+<td align="left">Relies on a series of future communication opportunities (contacts)</td>
 </tr>
 <tr>
-<td align="left"><strong>時間容忍度</strong></td>
-<td align="left">對 Timeout 極度敏感</td>
-<td align="left">可以容忍長時間的等待</td>
+<td align="left"><strong>Time tolerance</strong></td>
+<td align="left">Extremely sensitive to timeouts</td>
+<td align="left">Can tolerate long waits</td>
 </tr>
 <tr>
-<td align="left"><strong>通訊模式</strong></td>
+<td align="left"><strong>Communication model</strong></td>
 <td align="left">Session-oriented</td>
-<td align="left">Message&#x2F;Object-oriented</td>
+<td align="left">Message&#x2F;object-oriented</td>
 </tr>
 <tr>
-<td align="left"><strong>斷線認知</strong></td>
-<td align="left">是一種 Failure</td>
-<td align="left">是一種正常狀態</td>
+<td align="left"><strong>View of disconnection</strong></td>
+<td align="left">A failure</td>
+<td align="left">A normal state</td>
 </tr>
 <tr>
-<td align="left"><strong>路由考量</strong></td>
-<td align="left">基於當下的拓樸狀態</td>
-<td align="left">基於加上「時間軸」的動態拓樸</td>
+<td align="left"><strong>Routing consideration</strong></td>
+<td align="left">Based on the current topology state</td>
+<td align="left">Based on a dynamic topology with a “time axis”</td>
 </tr>
 </tbody></table>
 <blockquote>
-<p>也就是說：<strong>在太空中，等待本身就是網路協定必須處理的一部分</strong></p>
+<p>In other words: <strong>in space, waiting itself is part of what the network protocol must handle.</strong></p>
 </blockquote>
-<h1 id="Bundle-Protocol"><a href="#Bundle-Protocol" class="headerlink" title="Bundle Protocol"></a>Bundle Protocol</h1><p>在 DTN 的世界裡，最核心的協定叫做 **Bundle Protocol (BP)**。</p>
-<p>如果說傳統 IP 網路的基本資料單位是 <strong>Packet</strong>，那麼 DTN 的基本資料單位就是 <strong>Bundle</strong>。<br>你可以把 Bundle 想像成 DTN 世界裡的 <strong>標準貨櫃</strong>：它不只是單純承載資料，也包含來源、目的地、建立時間、存活期限，以及後續路由、安全與狀態追蹤所需的 metadata。</p>
-<p>這也是 Bundle 和一般 packet 最大的差異。Packet 通常假設自己會被網路立即轉送；Bundle 則被設計成可以被節點暫存、延後發送、跨節點轉交，並在通訊中斷後繼續等待下一次傳輸機會。</p>
-<p>目前最現代化的 Bundle Protocol 版本是 IETF RFC 9171 定義的 <strong>BPv7</strong>。CCSDS（太空資料系統諮詢委員會）也在 2025 年發布了基於 BPv7 的太空通訊實驗規範。這代表 BPv7 已經不只是學術概念，而是逐漸被納入未來太空資料系統與任務互通性的標準化基礎 (<a target="_blank" rel="noopener" href="https://ccsds.org/wp-content/uploads/gravity_forms/5-448e85c647331d9cbaf66c096458bdd5/2025/06/734x20o1.pdf">ccsds.org</a>)。</p>
-<div class="note info flat"><p>Bundle Protocol 的重點不是把資料切得更小，而是讓資料變成可以被「保存、等待、轉交與追蹤」的任務級訊息單位。</p>
+<h1 id="Bundle-Protocol"><a href="#Bundle-Protocol" class="headerlink" title="Bundle Protocol"></a>Bundle Protocol</h1><p>In the DTN world, the most central protocol is the <strong>Bundle Protocol (BP)</strong>.</p>
+<p>If the basic data unit of a traditional IP network is the <strong>packet</strong>, then DTN’s basic data unit is the <strong>bundle</strong>.<br>You can think of a bundle as a <strong>standard shipping container</strong> in the DTN world: it doesn’t just carry data, but also includes the source, destination, creation time, lifetime, and the metadata needed for subsequent routing, security, and status tracking.</p>
+<p>This is also the biggest difference between a bundle and an ordinary packet. A packet usually assumes it will be forwarded immediately by the network; a bundle is designed to be held by a node, sent later, handed off across nodes, and continue waiting for the next transmission opportunity after an interruption.</p>
+<p>The most modern Bundle Protocol version is <strong>BPv7</strong>, defined in IETF RFC 9171. CCSDS (the Consultative Committee for Space Data Systems) also published a BPv7-based experimental space-communication specification in 2025. This means BPv7 is no longer just an academic concept, but is increasingly being incorporated into the standardization foundation for future space data systems and mission interoperability (<a target="_blank" rel="noopener" href="https://ccsds.org/wp-content/uploads/gravity_forms/5-448e85c647331d9cbaf66c096458bdd5/2025/06/734x20o1.pdf">ccsds.org</a>).</p>
+<div class="note info flat"><p>The point of the Bundle Protocol isn’t to slice data smaller, but to turn data into mission-level message units that can be “stored, waited on, handed off, and tracked.”</p>
 </div>
 
-<h2 id="Bundle-裡面到底裝了什麼？"><a href="#Bundle-裡面到底裝了什麼？" class="headerlink" title="Bundle 裡面到底裝了什麼？"></a>Bundle 裡面到底裝了什麼？</h2><p>為了幫助理解，可以把一個 Bundle 簡化成下面這種結構：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Bundle</span><br><span class="line">├── Primary Block (主區塊)</span><br><span class="line">│   ├── Source Endpoint (來源地)</span><br><span class="line">│   ├── Destination Endpoint (目的地)</span><br><span class="line">│   ├── Creation Timestamp (建立時間)</span><br><span class="line">│   └── Lifetime (存活期限)</span><br><span class="line">├── Extension Blocks (擴展區塊)</span><br><span class="line">│   ├── Routing Metadata</span><br><span class="line">│   ├── Security Metadata，例如 BPSec</span><br><span class="line">│   └── 其他任務或協定相關資訊</span><br><span class="line">└── Payload Block (酬載區塊)</span><br><span class="line">    └── 實際的任務資料，例如 science data 或 telemetry</span><br></pre></td></tr></table></figure>
+<h2 id="What’s-actually-inside-a-bundle"><a href="#What’s-actually-inside-a-bundle" class="headerlink" title="What’s actually inside a bundle?"></a>What’s actually inside a bundle?</h2><p>To aid understanding, we can simplify a bundle into this structure:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Bundle</span><br><span class="line">├── Primary Block</span><br><span class="line">│   ├── Source Endpoint</span><br><span class="line">│   ├── Destination Endpoint</span><br><span class="line">│   ├── Creation Timestamp</span><br><span class="line">│   └── Lifetime</span><br><span class="line">├── Extension Blocks</span><br><span class="line">│   ├── Routing Metadata</span><br><span class="line">│   ├── Security Metadata, e.g. BPSec</span><br><span class="line">│   └── Other mission- or protocol-related info</span><br><span class="line">└── Payload Block</span><br><span class="line">    └── The actual mission data, e.g. science data or telemetry</span><br></pre></td></tr></table></figure>
 
-<p>其中最重要的是 <code>Primary Block</code> 和 <code>Payload Block</code>。</p>
-<p>Primary Block 提供這個 bundle 在 DTN 網路中被辨識與處理所需的基本資訊，例如來源、目的地與存活期限。Payload Block 則承載真正要送出的任務資料。Extension Blocks 則提供額外能力，例如安全性、路由輔助資訊或其他 metadata。</p>
-<p>換句話說，Bundle 不只是資料本身，而是一個帶有上下文的資料容器。它知道自己從哪裡來、要去哪裡、可以活多久，也能攜帶額外資訊，讓中繼節點在沒有端到端連線的情況下仍然可以做出轉發決策</p>
-<h3 id="Bundle-Node-的內部結構"><a href="#Bundle-Node-的內部結構" class="headerlink" title="Bundle Node 的內部結構"></a>Bundle Node 的內部結構</h3><p>理解 Bundle 之後，下一個問題是： <strong>誰負責處理這些 Bundle？</strong></p>
-<p>在 BPv7 的架構中，負責送出、接收與處理 bundles 的概念性節點稱為 Bundle Node，它是一個由多個功能元件組成的 DTN 節點。<code>CCSDS BPv7 Experimental Specification</code> 中將 Bundle Node 描述為任何可以 send and&#x2F;or receive bundles 的 entity。從架構上看，它主要由三個概念性元件組成：</p>
+<p>The most important are the <code>Primary Block</code> and the <code>Payload Block</code>.</p>
+<p>The Primary Block provides the basic information needed for this bundle to be identified and processed in the DTN network, such as source, destination, and lifetime. The Payload Block carries the actual mission data to be sent. Extension Blocks provide extra capabilities such as security, routing-assist info, or other metadata.</p>
+<p>In other words, a bundle isn’t just the data itself, but a data container with context. It knows where it came from, where it’s going, and how long it can live, and it can carry extra information so relay nodes can still make forwarding decisions without an end-to-end connection.</p>
+<h3 id="The-internal-structure-of-a-Bundle-Node"><a href="#The-internal-structure-of-a-Bundle-Node" class="headerlink" title="The internal structure of a Bundle Node"></a>The internal structure of a Bundle Node</h3><p>Having understood bundles, the next question is: <strong>who’s responsible for handling these bundles?</strong></p>
+<p>In the BPv7 architecture, the conceptual node responsible for sending, receiving, and processing bundles is called a Bundle Node, a DTN node composed of several functional components. The <code>CCSDS BPv7 Experimental Specification</code> describes a Bundle Node as any entity that can send and&#x2F;or receive bundles. Architecturally, it mainly consists of three conceptual components:</p>
 <ul>
 <li>Application Agent (AA)</li>
 <li>Bundle Protocol Agent (BPA)</li>
 <li>Convergence Layer Adapter (CLA)</li>
 </ul>
-<p><img src="/img/DTN/bundle-node-ccsds.png" alt="Graphical Representation of a Bundle Node"></p>
+<p><img src="/en/img/DTN/bundle-node-ccsds.png" alt="Graphical Representation of a Bundle Node"></p>
 <blockquote>
 <p>Ref: Graphical Representation of a Bundle Node. Source: CCSDS 734.20-O-1, “Bundle Protocol Specification, Experimental Specification,” Figure 1-1 <a target="_blank" rel="noopener" href="https://ccsds.org/wp-content/uploads/gravity_forms/5-448e85c647331d9cbaf66c096458bdd5/2025/06/734x20o1.pdf">4</a></p>
 </blockquote>
-<p>這張圖可以這樣理解：</p>
+<p>This figure can be understood as follows:</p>
 <table>
 <thead>
 <tr>
-<th align="left">元件</th>
-<th align="left">功能</th>
+<th align="left">Component</th>
+<th align="left">Function</th>
 </tr>
 </thead>
 <tbody><tr>
 <td align="left"><strong>Application Agent (AA)</strong></td>
-<td align="left">負責與上層應用互動，包含處理 application data 與 administrative records</td>
+<td align="left">Interacts with upper-layer applications, including handling application data and administrative records</td>
 </tr>
 <tr>
 <td align="left"><strong>Administrative Element (AE)</strong></td>
-<td align="left">產生與處理 administrative records，例如 bundle status report</td>
+<td align="left">Generates and processes administrative records, e.g. bundle status reports</td>
 </tr>
 <tr>
 <td align="left"><strong>Application-Specific Element (ASE)</strong></td>
-<td align="left">處理真正的應用資料，例如 science data、telemetry 或 mission payload</td>
+<td align="left">Handles the actual application data, e.g. science data, telemetry, or mission payload</td>
 </tr>
 <tr>
 <td align="left"><strong>Bundle Protocol Agent (BPA)</strong></td>
-<td align="left">執行 Bundle Protocol 本身的程序，負責 bundle 的接收、處理、儲存與轉發</td>
+<td align="left">Executes the Bundle Protocol’s own procedures: receiving, processing, storing, and forwarding bundles</td>
 </tr>
 <tr>
 <td align="left"><strong>Convergence Layer Adapter (CLA)</strong></td>
-<td align="left">將 bundles 送到不同底層網路，例如 TCP、UDP、LTP 或 CCSDS link protocols</td>
+<td align="left">Sends bundles over different underlying networks, e.g. TCP, UDP, LTP, or CCSDS link protocols</td>
 </tr>
 </tbody></table>
 <blockquote>
-<p>簡單來說，AA 負責應用層資料，BPA 負責 Bundle Protocol 的核心邏輯，CLA 負責把 bundle 實際送過某一段底層網路</p>
+<p>In short, the AA handles application-layer data, the BPA handles the Bundle Protocol’s core logic, and the CLA handles actually sending the bundle over some underlying network segment.</p>
 </blockquote>
-<p>這樣的分層設計很適合太空網路，因為同一個 Bundle Node 可能同時面對多種不同鏈路。例如，它一邊透過 TCP&#x2F;UDP 與地面系統互動，另一邊透過 LTP 或 CCSDS space link 與航天器通訊。對上層應用來說，它只需要把資料交給 BP；至於這一段實際是走地面 IP 網路、月面區域網路，還是深空鏈路，則交給不同的 CLA 處理。</p>
-<h2 id="Convergence-Layer"><a href="#Convergence-Layer" class="headerlink" title="Convergence Layer"></a>Convergence Layer</h2><p>因此，BP 並不是要取代 TCP、UDP、RF、光通訊或 CCSDS link layer。更準確來說，BP 是一種 <strong>Overlay Layer（覆蓋層）</strong>，它負責 DTN 層級的資料交付語意，而不是每一段底層鏈路的實際傳輸細節。</p>
-<p>BP 透過所謂的 <strong>Convergence Layer (CLA)</strong> 來決定這個貨櫃在 <em>當下這段路</em> 要怎麼運送。在地球上可能走 TCP&#x2F;UDP，到了太空中就改走 <strong>LTP (Licklider Transmission Protocol</strong>) 或 <strong>CCSDS 的鏈路層</strong></p>
-<p>真正把 bundle 送過某一段 link 的，是 CLA，可以把它想成物流系統中的不同運輸方式：</p>
+<p>This layered design suits space networks well, because the same Bundle Node may face several different links at once. For example, it interacts with ground systems over TCP&#x2F;UDP on one side, and communicates with spacecraft over LTP or a CCSDS space link on the other. The upper-layer application only needs to hand data to BP; whether a given segment goes over the terrestrial IP network, a lunar-surface local network, or a deep-space link is handled by different CLAs.</p>
+<h2 id="Convergence-Layer"><a href="#Convergence-Layer" class="headerlink" title="Convergence Layer"></a>Convergence Layer</h2><p>So BP isn’t meant to replace TCP, UDP, RF, optical comms, or the CCSDS link layer. More precisely, BP is an <strong>overlay layer</strong> responsible for DTN-level data-delivery semantics, not the actual transport details of each underlying link segment.</p>
+<p>BP uses the so-called <strong>Convergence Layer (CLA)</strong> to decide how this container should be transported <em>over the current segment</em>. On Earth it might go over TCP&#x2F;UDP; in space it switches to <strong>LTP (Licklider Transmission Protocol)</strong> or the <strong>CCSDS link layer</strong>.</p>
+<p>What actually sends a bundle over a given link is the CLA, which you can think of as the different modes of transport in a logistics system:</p>
 <table>
 <thead>
 <tr>
-<th align="left">DTN 架構</th>
-<th align="left">物流比喻</th>
+<th align="left">DTN architecture</th>
+<th align="left">Logistics analogy</th>
 </tr>
 </thead>
 <tbody><tr>
 <td align="left">Bundle</td>
-<td align="left">標準貨櫃</td>
+<td align="left">Standard shipping container</td>
 </tr>
 <tr>
 <td align="left">BPA</td>
-<td align="left">物流調度中心</td>
+<td align="left">Logistics dispatch center</td>
 </tr>
 <tr>
 <td align="left">CLA</td>
-<td align="left">貨車、船、飛機或鐵路</td>
+<td align="left">Truck, ship, plane, or rail</td>
 </tr>
 <tr>
-<td align="left">底層網路</td>
-<td align="left">實際道路、航線或鐵路網</td>
+<td align="left">Underlying network</td>
+<td align="left">Actual roads, routes, or rail network</td>
 </tr>
 </tbody></table>
-<p>在ground segment，bundle 可能透過 TCP&#x2F;UDP Convergence Layer 傳輸，而到了長距離或容易中斷的太空鏈路，則可能改用 LTP或 CCSDS 相關鏈路協定</p>
-<div class="note info flat"><p>簡單來說：BP 負責統籌從出發到抵達的長期策略，而 Convergence Layer 只負責搞定從這一站到下一站的短程運輸</p>
+<p>In the ground segment, a bundle might be transported over a TCP&#x2F;UDP convergence layer, while over long-distance or interruption-prone space links it might switch to LTP or CCSDS-related link protocols.</p>
+<div class="note info flat"><p>In short: BP coordinates the long-term strategy from departure to arrival, while the Convergence Layer only handles the short haul from this stop to the next.</p>
 </div>
 
-<p>理解了 Bundle、Bundle Node 與 Convergence Layer 之後，就可以看出 DTN 的基本運作邏輯：資料會先被封裝成 bundle，由 Bundle Node 儲存與處理，再透過不同的 CLA 在各種底層網路之間一站一站轉交~</p>
-<p>但這裡會出現下一個問題：</p>
+<p>Having understood bundles, Bundle Nodes, and the Convergence Layer, DTN’s basic operating logic becomes clear: data is first encapsulated into a bundle, stored and processed by Bundle Nodes, and handed off stop by stop across various underlying networks via different CLAs.</p>
+<p>But the next question arises:</p>
 <blockquote>
-<p>如果太空中的節點不是隨時互相連線，那 Bundle Node 要怎麼知道什麼時候可以轉交資料？又該選擇哪一個下一個 hop？</p>
+<p>If nodes in space aren’t always connected to each other, how does a Bundle Node know when it can hand off data? And which next hop should it choose?</p>
 </blockquote>
-<p>這就需要進入 DTN routing 中非常關鍵的概念：<strong>Contact Plan</strong></p>
-<h1 id="Contact-Plan"><a href="#Contact-Plan" class="headerlink" title="Contact Plan"></a>Contact Plan</h1><p>理解 Bundle Protocol 之後，下一個問題就是： <strong>太空網路要怎麼做 Routing？</strong></p>
-<p>在地面網路中，路由器通常根據目前的網路拓樸決定封包 next hop。但在太空網路中，某條 link 現在不通，不代表它永遠不通，它可能只是要等到下一個軌道位置、下一次地面接收站Contact Window，或下一次衛星進入通訊範圍。因此，在 DTN 中，我們需要先認識一個很重要的概念： <strong>Contact</strong>，也就是 <strong>通訊機會</strong></p>
-<p>在 DTN 中，Contact 指的是： <strong>「兩個節點在某段具體時間內，可以互相傳送資料的機會」</strong> 。這不只是一條連線，它還帶有<code>時間</code> 與 <code>容量</code> 的屬性，例如：</p>
+<p>This brings us to a crucial concept in DTN routing: the <strong>Contact Plan</strong>.</p>
+<h1 id="Contact-Plan"><a href="#Contact-Plan" class="headerlink" title="Contact Plan"></a>Contact Plan</h1><p>Having understood the Bundle Protocol, the next question is: <strong>how does a space network do routing?</strong></p>
+<p>On terrestrial networks, routers usually decide a packet’s next hop based on the current network topology. But in a space network, a link being down now doesn’t mean it’s down forever; it may just be waiting for the next orbital position, the next ground-station contact window, or the next time a satellite enters comms range. So in DTN, we first need an important concept: the <strong>contact</strong>, a <strong>communication opportunity</strong>.</p>
+<p>In DTN, a contact means: <strong>“an opportunity for two nodes to send data to each other during a specific time window.”</strong> It’s not just a connection; it carries <code>time</code> and <code>capacity</code> attributes, for example:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">contact:</span></span><br><span class="line">  <span class="attr">from:</span> <span class="string">LunarRelay-1</span></span><br><span class="line">  <span class="attr">to:</span> <span class="string">EarthGroundStation-Madrid</span></span><br><span class="line">  <span class="attr">start:</span> <span class="number">2026-05-05T10:00:00Z</span></span><br><span class="line">  <span class="attr">end:</span> <span class="number">2026-05-05T10:12:00Z</span></span><br><span class="line">  <span class="attr">data_rate:</span> <span class="string">50Mbps</span></span><br><span class="line">  <span class="attr">latency:</span> <span class="number">1.</span><span class="string">3s</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>把所有已知未來的 Contacts 集合起來，就成了一份 <strong>Contact Plan</strong></p>
+<p>Collect all known future contacts and you get a <strong>Contact Plan</strong>.</p>
 </blockquote>
-<p>如果說地面網路的 Routing Table 是當下網路的一張平面地圖，那太空網路的 Contact Plan 就是一張帶有第四維度（時間）的一種立體時刻表，有點科幻，下面可以幫助理解：</p>
-<p><img src="/img/DTN/contact-plan.png"></p>
+<p>If a terrestrial network’s routing table is a flat map of the current network, then a space network’s Contact Plan is a three-dimensional timetable with a fourth dimension (time). It’s a bit sci-fi, and the following helps illustrate it:</p>
+<p><img src="/en/img/DTN/contact-plan.png"></p>
 <blockquote>
-<p>所以可以把 Contact Plan 理解成自帶時間軸的太空拓樸地圖</p>
+<p>So you can think of a Contact Plan as a space topology map with its own time axis.</p>
 </blockquote>
-<h1 id="Contact-Graph-Routing-CGR"><a href="#Contact-Graph-Routing-CGR" class="headerlink" title="Contact Graph Routing (CGR)"></a>Contact Graph Routing (CGR)</h1><p>有了時刻表，我們就需要一種演算法來幫我們規劃路線。傳統網路AS的 OSPF 或 BGP 只在乎現在哪裡有路，但在太空中，決策邏輯必須變成：</p>
+<h1 id="Contact-Graph-Routing-CGR"><a href="#Contact-Graph-Routing-CGR" class="headerlink" title="Contact Graph Routing (CGR)"></a>Contact Graph Routing (CGR)</h1><p>With a timetable, we need an algorithm to plan the route. Traditional network AS protocols like OSPF or BGP only care about where a path exists right now, but in space the decision logic must become:</p>
 <ul>
-<li>這條路什麼時候才通？</li>
-<li>Contact Window 有多長？夠不夠把資料傳完？</li>
-<li>下一個中繼節點硬碟滿了沒？</li>
-<li>會不會有更晚出發，但更早抵達的路線？</li>
+<li>When does this path become available?</li>
+<li>How long is the contact window? Is it enough to transfer all the data?</li>
+<li>Is the next relay node’s disk full yet?</li>
+<li>Is there a route that departs later but arrives earlier?</li>
 </ul>
-<p>為了解決這個問題，<strong>Contact Graph Routing (CGR)</strong> 應運而生。</p>
-<p>CGR 不是在一般的網路節點上找路，而是在一個由 <strong>未來的通訊機會 (Contacts)</strong> 所構成的 Graph 上， <strong>利用修改過的 Dijkstra 演算法尋找最佳解</strong>(<a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20230007392/downloads/Multigraph_CGR_for_ICCCN.pdf">NASA 技術報告</a>)</p>
-<p><img src="/img/DTN/cgr.png"></p>
+<p>To solve this, <strong>Contact Graph Routing (CGR)</strong> was born.</p>
+<p>CGR doesn’t find a path on ordinary network nodes, but on a graph built from <strong>future communication opportunities (contacts)</strong>, <strong>using a modified Dijkstra algorithm to find the optimal solution</strong> (<a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20230007392/downloads/Multigraph_CGR_for_ICCCN.pdf">NASA technical report</a>).</p>
+<p><img src="/en/img/DTN/cgr.png"></p>
 <blockquote>
-<p>所以相對於傳統的Graph Problem，在 CGR 的世界裡，<strong>空間的距離不是唯一考量，時間的契機才是決定資料能否抵達的關鍵</strong></p>
+<p>So compared to a traditional graph problem, in the CGR world, <strong>spatial distance isn’t the only consideration; the timing opportunity is the key that decides whether data can arrive.</strong></p>
 </blockquote>
-<h1 id="NASA-LunaNet"><a href="#NASA-LunaNet" class="headerlink" title="NASA LunaNet"></a>NASA LunaNet</h1><p>DTN 絕對不是只活在 Paper 或 Simulator 裡的概念，它已經是 NASA 佈局未來月球網路架構的核心。</p>
-<p>為了支援未來的登月計畫，NASA 提出了 <strong>LunaNet</strong>。它不是單一一顆衛星，而是一套標準化的網路框架。目標是讓各國家的探測器、不同廠商的中繼衛星，甚至是月面基地，都能互相連通，形成一個 <strong>Lunar Network of Networks</strong> (<a target="_blank" rel="noopener" href="https://www.nasa.gov/wp-content/uploads/2025/02/lunanet-interoperability-specification-v5-baseline.pdf">NASA</a>)</p>
-<p>在這個架構中，DTN 就是 LunaNet 實現可靠資料傳輸的基石。</p>
-<p><img src="/img/DTN/datastream.png"></p>
-<p>就算探測器跟地球永遠無法直接對話，只要有完善的 Contact Plan 與 DTN 協定，科學數據照樣能像接力賽一樣，一棒一棒穩穩送回地球。</p>
-<h1 id="極端的分散式系統"><a href="#極端的分散式系統" class="headerlink" title="極端的分散式系統 !?"></a>極端的分散式系統 !?</h1><p>如果你跟我一樣，背景是偏向Cloud Infra相關的工程師，其實可以把 DTN 當成一種 <strong>運作在極端環境下的分散式系統</strong></p>
-<p>因為太空網路不只是底層通訊協定而已，它其實涵蓋了大量且複雜的System Engineering Topics：</p>
+<h1 id="NASA-LunaNet"><a href="#NASA-LunaNet" class="headerlink" title="NASA LunaNet"></a>NASA LunaNet</h1><p>DTN is absolutely not a concept that only lives in papers or simulators; it’s already core to NASA’s plans for the future lunar network architecture.</p>
+<p>To support future lunar missions, NASA proposed <strong>LunaNet</strong>. It isn’t a single satellite, but a standardized network framework. The goal is to let different countries’ probes, different vendors’ relay satellites, and even lunar-surface bases all interconnect, forming a <strong>Lunar Network of Networks</strong> (<a target="_blank" rel="noopener" href="https://www.nasa.gov/wp-content/uploads/2025/02/lunanet-interoperability-specification-v5-baseline.pdf">NASA</a>).</p>
+<p>In this architecture, DTN is the cornerstone of LunaNet’s reliable data transport.</p>
+<p><img src="/en/img/DTN/datastream.png"></p>
+<p>Even if a probe can never talk directly to Earth, as long as there’s a solid Contact Plan and the DTN protocol, scientific data can still be sent back to Earth steadily, relay by relay, like a relay race.</p>
+<h1 id="An-extreme-distributed-system"><a href="#An-extreme-distributed-system" class="headerlink" title="An extreme distributed system!?"></a>An extreme distributed system!?</h1><p>If you’re like me, an engineer with more of a cloud-infra background, you can actually think of DTN as a <strong>distributed system operating in an extreme environment</strong>.</p>
+<p>Because space networking isn’t just an underlying comms protocol; it actually covers a large and complex set of systems-engineering topics:</p>
 <table>
 <thead>
 <tr>
-<th align="left">分散式系統概念</th>
-<th align="left">太空 DTN 的對應實作</th>
+<th align="left">Distributed systems concept</th>
+<th align="left">Space DTN’s corresponding implementation</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><strong>Queueing (佇列)</strong></td>
-<td align="left">Bundle Queue &#x2F; 優先級排程</td>
+<td align="left"><strong>Queueing</strong></td>
+<td align="left">Bundle queue &#x2F; priority scheduling</td>
 </tr>
 <tr>
-<td align="left"><strong>Scheduling (排程)</strong></td>
-<td align="left">Contact-aware Forwarding</td>
+<td align="left"><strong>Scheduling</strong></td>
+<td align="left">Contact-aware forwarding</td>
 </tr>
 <tr>
-<td align="left"><strong>Replication (副本)</strong></td>
-<td align="left">Custody Transfer (監護權移交與備份)</td>
+<td align="left"><strong>Replication</strong></td>
+<td align="left">Custody transfer (handing off custody and backup)</td>
 </tr>
 <tr>
-<td align="left"><strong>Fault Tolerance (容錯)</strong></td>
-<td align="left">Disruption-Tolerant Delivery (斷線容忍傳輸)</td>
+<td align="left"><strong>Fault Tolerance</strong></td>
+<td align="left">Disruption-tolerant delivery</td>
 </tr>
 <tr>
 <td align="left"><strong>Resource Allocation</strong></td>
-<td align="left">節點儲存空間 (Buffer) 與能源的分配</td>
+<td align="left">Allocating node storage (buffer) and energy</td>
 </tr>
 <tr>
-<td align="left"><strong>Observability (可觀測性)</strong></td>
-<td align="left">Bundle 狀態回報 &#x2F; 軌跡追蹤 (Tracing)</td>
+<td align="left"><strong>Observability</strong></td>
+<td align="left">Bundle status reports &#x2F; trajectory tracing</td>
 </tr>
 <tr>
-<td align="left"><strong>Security (資安)</strong></td>
-<td align="left">BPSec &#x2F; 節點身分驗證</td>
+<td align="left"><strong>Security</strong></td>
+<td align="left">BPSec &#x2F; node identity authentication</td>
 </tr>
 </tbody></table>
-<p>在地面系統中，我們大多追求快，追求那種毫秒級的即時一致性，但在太空網路裡，我們只能仰賴 <strong>最終交付 (Eventual Delivery)</strong> ， 因為在太空中，可靠的定義不是立刻送到，而是無論經歷多少次斷線與等待，資料最終絕對不會弄丟，況且。這些資料可能會是探勘設備或者造價昂貴的航天器的指標資料，亦或者是科學觀測資料，無論如何都有等待的價值。</p>
-<h1 id="進階議題與未來挑戰"><a href="#進階議題與未來挑戰" class="headerlink" title="進階議題與未來挑戰"></a>進階議題與未來挑戰</h1><p>雖然 DTN 標準已經漸趨成熟，但實務上還有非常多Hardcore 的坑等著各位去填：</p>
-<h2 id="1-Capacity-aware-Routing"><a href="#1-Capacity-aware-Routing" class="headerlink" title="1. Capacity-aware Routing"></a>1. Capacity-aware Routing</h2><p>CGR 找路很強，但如果某個中繼節點的 Buffer 快塞爆了怎麼辦？如果多個高優先級的科學任務都在搶同一段通訊窗口呢？如何把節點的儲存容量與鏈路頻寬完美融合進路由決策中，是目前一大熱門領域</p>
-<h2 id="2-ML-assisted-vs-Deterministic-Routing"><a href="#2-ML-assisted-vs-Deterministic-Routing" class="headerlink" title="2. ML-assisted vs Deterministic Routing"></a>2. ML-assisted vs Deterministic Routing</h2><p>有些人提議把機器學習引進 DTN 來預測最佳路由。但在造價昂貴的太空任務中，Explainability 與 Determinism 往往比黑盒子般的 AI 更受青睞。也就是說要如何讓路由演算法既能適應動態變化，又能讓地面控制中心精準追蹤與覆寫決策，這也是我認為未來太空網路其中一個深入研究的方向之一</p>
-<h2 id="3-Security-aware-Routing"><a href="#3-Security-aware-Routing" class="headerlink" title="3. Security-aware Routing"></a>3. Security-aware Routing</h2><p>當太空網路變成多國、多機構共用的網路時，安全性就成了重中之重。如何防止惡意節點發動攻擊，在那邊 Jamming 或是竄改 Contact Plan，甚至透過發送垃圾 Bundle 癱瘓其他節點的 Buffer？這都需要更嚴密的信任機制來把關，資安到哪個領域都是議題。</p>
-<h1 id="簡易-Space-DTN-Lab"><a href="#簡易-Space-DTN-Lab" class="headerlink" title="簡易 Space DTN Lab"></a>簡易 Space DTN Lab</h1><p>這聽起來像是 NASA 才有資格玩的技術，但其實我們完全可以用一般的電腦跟 Docker，架設一個最小規模的概念驗證 (PoC) 環境，因為本質上就是極端還性的分散式系統。</p>
-<p>我們只需要切出三個節點：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Node A (月球車) -&gt; Node B (軌道中繼衛星) -&gt; Node C (地球地面站)</span><br></pre></td></tr></table></figure>
+<p>In ground systems, we mostly pursue speed, that millisecond-level real-time consistency, but in space networks we can only rely on <strong>eventual delivery</strong>, because in space, reliability isn’t defined as delivering immediately, but as the data never being lost no matter how many disconnections and waits it goes through. These data may be key metrics from exploration equipment or expensive spacecraft, or scientific observation data; either way, they’re worth waiting for.</p>
+<h1 id="Advanced-topics-and-future-challenges"><a href="#Advanced-topics-and-future-challenges" class="headerlink" title="Advanced topics and future challenges"></a>Advanced topics and future challenges</h1><p>Although DTN standards are gradually maturing, in practice there are many hardcore pits left to fill:</p>
+<h2 id="1-Capacity-aware-Routing"><a href="#1-Capacity-aware-Routing" class="headerlink" title="1. Capacity-aware Routing"></a>1. Capacity-aware Routing</h2><p>CGR is great at finding paths, but what if a relay node’s buffer is about to overflow? What if multiple high-priority science missions are all competing for the same contact window? Perfectly integrating a node’s storage capacity and link bandwidth into routing decisions is a major hot area right now.</p>
+<h2 id="2-ML-assisted-vs-Deterministic-Routing"><a href="#2-ML-assisted-vs-Deterministic-Routing" class="headerlink" title="2. ML-assisted vs Deterministic Routing"></a>2. ML-assisted vs Deterministic Routing</h2><p>Some propose bringing machine learning into DTN to predict the best route. But in expensive space missions, explainability and determinism are often preferred over black-box AI. That is, how to make a routing algorithm both adapt to dynamic changes and let the ground control center precisely track and override decisions is, I think, one of the directions for deeper research into future space networks.</p>
+<h2 id="3-Security-aware-Routing"><a href="#3-Security-aware-Routing" class="headerlink" title="3. Security-aware Routing"></a>3. Security-aware Routing</h2><p>When a space network becomes a multi-national, multi-institution shared network, security becomes paramount. How do you prevent malicious nodes from attacking, jamming or tampering with the Contact Plan, or even paralyzing other nodes’ buffers by sending junk bundles? These all need tighter trust mechanisms to guard against, and security is an issue in every field.</p>
+<h1 id="A-simple-Space-DTN-lab"><a href="#A-simple-Space-DTN-lab" class="headerlink" title="A simple Space DTN lab"></a>A simple Space DTN lab</h1><p>This sounds like tech only NASA is qualified to play with, but we can actually set up a minimal proof-of-concept (PoC) environment with an ordinary computer and Docker, because it’s essentially a distributed system with extreme properties.</p>
+<p>We only need to carve out three nodes:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Node A (lunar rover) -&gt; Node B (orbital relay satellite) -&gt; Node C (Earth ground station)</span><br></pre></td></tr></table></figure>
 
-<p>你可以刻意設定 A 到 B 之間只有短短 60 秒的連線時間，觀察 Node B 是如何把資料暫存下來，並等待與 Node C 的連線窗口到來，最後再把資料轉發出去。</p>
-<p><img src="/img/DTN/experiment.png"></p>
-<p>你可以使用 <code>tc netem</code> 模擬幾十秒的超長延遲，或是透過開源的 <strong>ION-DTN</strong> 或 <strong>HDTN</strong> 來測試 BPv7 的實作，進階一點可以再接上 Prometheus 跟 Grafana 來觀察 DTN 在斷線、延遲與通訊窗口限制下的核心行為。不需要真的發射火箭，你自己就能在筆電上體驗深空通訊架構的設計邏輯。</p>
-<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>目前地球的網際網路之所以如此偉大，大概是因為它建立在一個穩定、低延遲、大家幾乎永遠在線的環境當中。固定不動的伺服器，機房，網通設備，以及海底電纜，共同交織出這一切。但在太空，距離本身帶來了無可避免的延遲，軌道運動帶來了無情的連線中斷。這一切顯然都不是靠著加大頻寬就能暴力解決的問題</p>
-<p>而 DTN 的迷人之處在於，它徹底打破了我們對即時連線的渴望，資料會在宇宙中搭著順風車，一步步大隊接力接力式的航向終點</p>
+<p>You can deliberately set the connection between A and B to only 60 seconds, and observe how Node B buffers the data, waits for the contact window with Node C to arrive, and finally forwards the data.</p>
+<p><img src="/en/img/DTN/experiment.png"></p>
+<p>You can use <code>tc netem</code> to simulate tens of seconds of extreme delay, or use the open-source <strong>ION-DTN</strong> or <strong>HDTN</strong> to test a BPv7 implementation. Going a bit further, you can hook up Prometheus and Grafana to observe DTN’s core behavior under disconnection, delay, and contact-window constraints. Without actually launching a rocket, you can experience the design logic of deep-space communication architecture right on your laptop.</p>
+<h1 id="Closing"><a href="#Closing" class="headerlink" title="Closing"></a>Closing</h1><p>The Earth’s Internet is so great probably because it’s built on a stable, low-latency environment where everyone is almost always online. Fixed servers, data centers, networking equipment, and undersea cables weave all of this together. But in space, distance itself brings unavoidable delay, and orbital motion brings relentless disconnection. None of this can obviously be brute-forced away by adding bandwidth.</p>
+<p>The fascinating thing about DTN is that it completely breaks our craving for real-time connectivity: data hitches rides through the universe, relaying step by step toward its destination.</p>
 <hr>
-<h1 id="參考資料-References"><a href="#參考資料-References" class="headerlink" title="參考資料 (References)"></a>參考資料 (References)</h1><ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li>NASA, <strong>Delay&#x2F;Disruption Tolerant Networking</strong>. (<a target="_blank" rel="noopener" href="https://www.nasa.gov/communicating-with-missions/delay-disruption-tolerant-networking/">Link</a>)</li>
 <li>ION-DTN Documentation, <strong>Introduction to Delay&#x2F;Disruption Tolerant Networking</strong>. (<a target="_blank" rel="noopener" href="https://ion-dtn.readthedocs.io/en/ion-open-source-4.1.4-b.1/ion-tutorials/Day%201%20morning%20-%20DTN%20overview.pdf">Link</a>)</li>
 <li>IETF, <strong>RFC 9171: Bundle Protocol Version 7</strong>. (<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc9171/">Link</a>)</li>
@@ -556,8 +554,8 @@ btf.addGlobalFn('pjaxComplete', () => {
 <li>NASA NTRS, <strong>Contact Multigraph Routing: Overview and Implementation</strong>, 2023. (<a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20230002637/downloads/AeroConf_2023___Contact_Multigraph_Routing-20230221.pdf">Link</a>)</li>
 <li>NASA NTRS, <strong>Dynamic Routing for Delay-Tolerant Networking in Space Flight Operations</strong>, 2008. (<a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/citations/20150014822">Link</a>)</li>
 </ol>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章連結: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/posts/7d41a775.html">https://leozzmc.github.io/posts/7d41a775.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版權聲明: </span><span class="post-copyright-info">本部落格所有文章除特別聲明外，均採用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 授權協議。轉載請註明來源 <a href="https://leozzmc.github.io" target="_blank">Kevin Liu's 部落格 || Technical || Travel</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DTN/">DTN</a><a class="post-meta__tags" href="/tags/Bundle-Protocol/">Bundle Protocol</a><a class="post-meta__tags" href="/tags/Space-Networking/">Space Networking</a><a class="post-meta__tags" href="/tags/NASA/">NASA</a><a class="post-meta__tags" href="/tags/Distributed-Systems/">Distributed Systems</a></div><div class="post-share"><div class="social-share" data-image="/img/DTN/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/34b4f737.html" title="K 組反轉節點 | Hard | LeetCode#25. Reverse Nodes in k-Group"><img class="cover" src="/img/LeetCode/25/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">K 組反轉節點 | Hard | LeetCode#25. Reverse Nodes in k-Group</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度: Hard 題目敘述: 題目給定一個 linked list 的 head，請每 k 個節點反轉一次，最後回傳整個 linked list 的 head  這邊的 k 會是正整數，如果 list 長度無法整除 k 則剩餘的節點不反轉然後題目有提醒，你只能變更整的節點，不能夠透過改節點值來完成這題，另外也希望在 O(1) 空間複雜度完成這題   這邊也可以觀察題目的 constraint， 1 &lt;= k &lt;= n &lt;= 5000 解法一開始的想法我的想法其實就是，先找有幾組，然後剩餘湊不滿一組的就不管它。然後每一組會做反轉，因為每 k 個節點會是一組，可能單獨一個用於反轉的函數來處理，然後丟那一組的 head, tail 跟 前一組的尾端。 所以應該會是，迴圈迭代去找每一組的頭跟尾，回圈內呼叫用於反轉list的函數，接著回傳回來的節點應該要是新的 head，這個 head 還要再去跟前一組尾端接起來。 最後回傳新的 list 的頭 我的解法1234567891011121314151617181920212223242526272829303...</div></div></div></a><a class="pagination-related" href="/posts/22b66efc.html" title="快照陣列 | Medium | LeetCode#1146. Snapshot Array"><img class="cover" src="/img/LeetCode/1146/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">快照陣列 | Medium | LeetCode#1146. Snapshot Array</div></div><div class="info-2"><div class="info-item-1">題目敘述  題目難度： Medium 題目描述： 這題要你實踐一個 class SnapshotArray 要支援以下功能： SnapshotArray(int length) : 根據給定長度參數 length 初始化陣列結構大小，最初每個元素值為0 void set(index, val): 將給定 index 對應值設定成 0 int snap(): 對陣列結構進行快照，並且回傳 snap_id 這邊的 snap_id 會是每次呼叫 snap method 次數扣掉 1 int get(index, snap_id): 回傳給定 snap_id 時間中 index 對應的儲存值    解法一開始的想法一開始先釐清主要目標：  實踐類似陣列的 DS 紀錄每次呼叫 snap 次數 保存特定 snap_id 時刻，陣列結構狀態  這種想法有點偏暴力，我一開始的想法是，透過一個 Hash Table 保存像是 &#123; snap_id: array&#125; 的結構，透過另一個暫存的 latest_array 來記錄當前最新的陣列是哪個， set 就直接更新 latest_a...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/25763fe7.html" title="NASA HDTN 架構解析：太空 DTN 如何真正運作？"><img class="cover" src="/img/DTN/cover-2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-07</div><div class="info-item-2">NASA HDTN 架構解析：太空 DTN 如何真正運作？</div></div><div class="info-2"><div class="info-item-1"> 🌐 English version: English  前言：從 DTN 的概念，走向真正可以運作的太空網路在上一篇文章 〈為什麼太空網路需要 DTN？從 TCP&#x2F;IP 的限制到深空網路〉 中，我整理了太空網路和地面 Internet 之間最根本的差異。 在地球上，我們通常預期來源與目的地之間存在一條可以立即使用的完整路徑。即即便途中偶爾發生遺失封包，TCP 也能透過 ACK、Timeout 與 Retransmission 等一大堆機制處理問題～ 但如果場景在太空中，斷線不一定代表故障。舉例來說，狀況可能是：衛星可能飛出地面站的可視範圍，月球探測車可能進入隕石坑，航天器可能為了節省能源暫時關閉通訊模組。另外，不同節點之間的連線，也可能受到軌道位置、天體遮蔽、天線方向與通訊排程影響 因此，太空網路不能只看 現在有沒有一條可以立刻抵達終點的路？ 還必須進一步考慮： 下一次可以轉送資料的機會是什麼時候？, 在那之前，資料應該先存放在哪一個節點？, 如果通訊窗口突然消失，又該如何恢復傳輸？ 以上就是 Delay&#x2F;Disruption-Tolerant Netwo...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/me.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">213</div></a><a href="/tags/"><div class="headline">標籤</div><div class="length-num">173</div></a><a href="/categories/"><div class="headline">分類</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><div class="bobame-aside-card">
-  <p class="bobame-aside-text">如果覺得我的文章有幫助，歡迎拯救Kevin免於吃土.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en/posts/7d41a775.html">https://leozzmc.github.io/en/posts/7d41a775.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/en/tags/Space-Networking/">Space Networking</a><a class="post-meta__tags" href="/en/tags/DTN/">DTN</a><a class="post-meta__tags" href="/en/tags/Bundle-Protocol/">Bundle Protocol</a><a class="post-meta__tags" href="/en/tags/NASA/">NASA</a><a class="post-meta__tags" href="/en/tags/Distributed-Systems/">Distributed Systems</a></div><div class="post-share"><div class="social-share" data-image="/en/img/DTN/cover.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/ad71f05.html" title="initrd vs initramfs | Linux Kernel"><img class="cover" src="/en/img/linux/boot/cover.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">initrd vs initramfs | Linux Kernel</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  IntroductionEarly in boot, a temporary filesystem is needed to perform initialization and configuration during the early boot stage. There are two mechanisms for using a temporary filesystem: initrd (Initial RAM Disk) and initramfs (Initial RAM Filesystem). initrd is the earlier approach, and most boot flows today use initramfs. initrd initrd (Initial RAM Disk) is a temporary root filesystem used in early Linux boot. It takes the form of a gzip-compressed block image, loaded at ...</div></div></div></a><a class="pagination-related" href="/en/posts/25763fe7.html" title="Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work?"><img class="cover" src="/en/img/DTN/cover-2.png" onerror="onerror=null;src='/en/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Dissecting NASA's HDTN Architecture: How Does Space DTN Actually Work?</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Preface: from the concept of DTN to a space network that actually worksIn the previous post, Why Space Networking Needs DTN: From TCP&#x2F;IP’s Limits to Deep-Space Networks, I laid out the most fundamental differences between space networks and the terrestrial Internet. On Earth, we usually expect a complete, immediately-usable path between source and destination. Even if a packet is occasionally lost along the way, TCP can handle it through a whole set of mechanisms like ACK, ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/25763fe7.html" title="Dissecting NASA&#39;s HDTN Architecture: How Does Space DTN Actually Work?"><img class="cover" src="/en/img/DTN/cover-2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-07</div><div class="info-item-2">Dissecting NASA&#39;s HDTN Architecture: How Does Space DTN Actually Work?</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Preface: from the concept of DTN to a space network that actually worksIn the previous post, Why Space Networking Needs DTN: From TCP&#x2F;IP’s Limits to Deep-Space Networks, I laid out the most fundamental differences between space networks and the terrestrial Internet. On Earth, we usually expect a complete, immediately-usable path between source and destination. Even if a packet is occasionally lost along the way, TCP can handle it through a whole set of mechanisms like ACK, ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">78</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><div class="bobame-aside-card">
+  <p class="bobame-aside-text">If you find my articles helpful, please support Kevin!</p>
   <a class="bobame-button"
      style="background-color:#A0ADA6;color:#F8E0BE;border:none"
      href="https://kevinneck87.bobaboba.me?utm_source=blog&utm_medium=aside_button&utm_campaign=support"
@@ -569,7 +567,7 @@ btf.addGlobalFn('pjaxComplete', () => {
     <span>Use boba to safe Kevin!</span>
   </a>
 </div>
-</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E5%9C%A8%E5%A4%AA%E7%A9%BA%E4%B8%AD%EF%BC%8C%E6%88%91%E5%80%91%E9%82%84%E8%83%BD%E9%A0%86%E6%9A%A2%E5%9C%B0%E4%B8%8A%E7%B6%B2%E5%97%8E%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">前言：在太空中，我們還能順暢地上網嗎？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%B0%E7%90%83%E4%B8%8A%E7%9A%84-Internet%EF%BC%8C%E7%82%BA%E4%BD%95%E4%B8%8D%E9%81%A9%E5%90%88%E5%A4%AA%E7%A9%BA%E7%92%B0%E5%A2%83%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">地球上的 Internet，為何不適合太空環境？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP-x2F-IP-%E5%9C%A8%E5%A4%AA%E7%A9%BA%E7%92%B0%E5%A2%83%E4%B8%AD%E7%9A%84%E4%B8%89%E5%80%8B%E8%87%B4%E5%91%BD%E5%82%B7"><span class="toc-number">3.</span> <span class="toc-text">TCP&#x2F;IP 在太空環境中的三個致命傷</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BB%B6%E9%81%B2%E7%9A%84%E5%B0%BA%E5%BA%A6%EF%BC%9A%E5%BE%9E%E6%AF%AB%E7%A7%92%E8%AE%8A%E6%88%90%E3%80%8C%E5%88%86%E9%90%98%E3%80%8D"><span class="toc-number">3.1.</span> <span class="toc-text">1. 延遲的尺度：從毫秒變成「分鐘」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%96%93%E6%AD%87%E6%80%A7%E9%80%A3%E7%B7%9A%EF%BC%9A%E5%B0%8D%E6%96%B9%E4%B8%8D%E6%98%AF%E9%9A%A8%E6%99%82%E9%83%BD%E5%9C%A8"><span class="toc-number">3.2.</span> <span class="toc-text">2. 間歇性連線：對方不是隨時都在</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%8A%E4%B8%AD%E6%96%B7%E8%A6%96%E7%82%BA%E5%B8%B8%E6%85%8B%EF%BC%9ADisruption-as-Topology"><span class="toc-number">3.3.</span> <span class="toc-text">3. 把中斷視為常態：Disruption as Topology</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DTN%EF%BC%9AStore-Carry-Forward"><span class="toc-number">4.</span> <span class="toc-text">DTN：Store-Carry-Forward</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DTN-%E7%8F%BE%E5%AF%A6%E4%B8%96%E7%95%8C%E8%88%89%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">DTN 現實世界舉例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bundle-Protocol"><span class="toc-number">6.</span> <span class="toc-text">Bundle Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Bundle-%E8%A3%A1%E9%9D%A2%E5%88%B0%E5%BA%95%E8%A3%9D%E4%BA%86%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">Bundle 裡面到底裝了什麼？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bundle-Node-%E7%9A%84%E5%85%A7%E9%83%A8%E7%B5%90%E6%A7%8B"><span class="toc-number">6.1.1.</span> <span class="toc-text">Bundle Node 的內部結構</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Convergence-Layer"><span class="toc-number">6.2.</span> <span class="toc-text">Convergence Layer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Contact-Plan"><span class="toc-number">7.</span> <span class="toc-text">Contact Plan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Contact-Graph-Routing-CGR"><span class="toc-number">8.</span> <span class="toc-text">Contact Graph Routing (CGR)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NASA-LunaNet"><span class="toc-number">9.</span> <span class="toc-text">NASA LunaNet</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A5%B5%E7%AB%AF%E7%9A%84%E5%88%86%E6%95%A3%E5%BC%8F%E7%B3%BB%E7%B5%B1"><span class="toc-number">10.</span> <span class="toc-text">極端的分散式系統 !?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%B2%E9%9A%8E%E8%AD%B0%E9%A1%8C%E8%88%87%E6%9C%AA%E4%BE%86%E6%8C%91%E6%88%B0"><span class="toc-number">11.</span> <span class="toc-text">進階議題與未來挑戰</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Capacity-aware-Routing"><span class="toc-number">11.1.</span> <span class="toc-text">1. Capacity-aware Routing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ML-assisted-vs-Deterministic-Routing"><span class="toc-number">11.2.</span> <span class="toc-text">2. ML-assisted vs Deterministic Routing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Security-aware-Routing"><span class="toc-number">11.3.</span> <span class="toc-text">3. Security-aware Routing</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B0%A1%E6%98%93-Space-DTN-Lab"><span class="toc-number">12.</span> <span class="toc-text">簡易 Space DTN Lab</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-number">13.</span> <span class="toc-text">結語</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99-References"><span class="toc-number">14.</span> <span class="toc-text">參考資料 (References)</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d0fc136d.html" title="LeetCode 刷題知識總整理">LeetCode 刷題知識總整理</a><time datetime="2100-11-29T01:08:02.000Z" title="發表於 2100-11-29 09:08:02">2100-11-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】"><img src="/img/devops/cover3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps技能樹知識整理 |【筆記目錄】"/></a><div class="content"><a class="title" href="/posts/dce71546.html" title="DevOps技能樹知識整理 |【筆記目錄】">DevOps技能樹知識整理 |【筆記目錄】</a><time datetime="2060-11-05T13:45:50.000Z" title="發表於 2060-11-05 21:45:50">2060-11-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/9633ca0c.html" title="跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026">跟著跳頻把符號拼回來 | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="發表於 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/7a436e8c.html" title="被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026">被漂移拖垮的高 SF | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="發表於 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"><img src="/img/LoRa.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/posts/ec3d267b.html" title="深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026">深夜被劫持的下行 | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="發表於 2026-10-24 20:50:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日夜模式切換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂端"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.1"></script><script src="/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface-can-we-still-get-online-smoothly-in-space"><span class="toc-number">1.</span> <span class="toc-text">Preface: can we still get online smoothly in space?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-isn%E2%80%99t-the-Earth%E2%80%99s-Internet-suitable-for-the-space-environment"><span class="toc-number">2.</span> <span class="toc-text">Why isn’t the Earth’s Internet suitable for the space environment?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Three-fatal-flaws-of-TCP-x2F-IP-in-the-space-environment"><span class="toc-number">3.</span> <span class="toc-text">Three fatal flaws of TCP&#x2F;IP in the space environment</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-The-scale-of-delay-from-milliseconds-to-%E2%80%9Cminutes%E2%80%9D"><span class="toc-number">3.1.</span> <span class="toc-text">1. The scale of delay: from milliseconds to “minutes”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Intermittent-connectivity-the-other-side-isn%E2%80%99t-always-there"><span class="toc-number">3.2.</span> <span class="toc-text">2. Intermittent connectivity: the other side isn’t always there</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Treating-interruption-as-the-norm-disruption-as-topology"><span class="toc-number">3.3.</span> <span class="toc-text">3. Treating interruption as the norm: disruption as topology</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DTN-Store-Carry-Forward"><span class="toc-number">4.</span> <span class="toc-text">DTN: Store-Carry-Forward</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-real-world-analogy-for-DTN"><span class="toc-number">5.</span> <span class="toc-text">A real-world analogy for DTN</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bundle-Protocol"><span class="toc-number">6.</span> <span class="toc-text">Bundle Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#What%E2%80%99s-actually-inside-a-bundle"><span class="toc-number">6.1.</span> <span class="toc-text">What’s actually inside a bundle?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-internal-structure-of-a-Bundle-Node"><span class="toc-number">6.1.1.</span> <span class="toc-text">The internal structure of a Bundle Node</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Convergence-Layer"><span class="toc-number">6.2.</span> <span class="toc-text">Convergence Layer</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Contact-Plan"><span class="toc-number">7.</span> <span class="toc-text">Contact Plan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Contact-Graph-Routing-CGR"><span class="toc-number">8.</span> <span class="toc-text">Contact Graph Routing (CGR)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NASA-LunaNet"><span class="toc-number">9.</span> <span class="toc-text">NASA LunaNet</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#An-extreme-distributed-system"><span class="toc-number">10.</span> <span class="toc-text">An extreme distributed system!?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Advanced-topics-and-future-challenges"><span class="toc-number">11.</span> <span class="toc-text">Advanced topics and future challenges</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Capacity-aware-Routing"><span class="toc-number">11.1.</span> <span class="toc-text">1. Capacity-aware Routing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ML-assisted-vs-Deterministic-Routing"><span class="toc-number">11.2.</span> <span class="toc-text">2. ML-assisted vs Deterministic Routing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Security-aware-Routing"><span class="toc-number">11.3.</span> <span class="toc-text">3. Security-aware Routing</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-simple-Space-DTN-lab"><span class="toc-number">12.</span> <span class="toc-text">A simple Space DTN lab</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Closing"><span class="toc-number">13.</span> <span class="toc-text">Closing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">14.</span> <span class="toc-text">References</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026">Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="Created 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026">High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="Created 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026">A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="Created 2026-10-24 20:50:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026">Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:40:00.000Z" title="Created 2026-10-24 20:40:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026">The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:30:00.000Z" title="Created 2026-10-24 20:30:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.1"></script><script src="/en/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {
@@ -752,4 +750,4 @@ btf.addGlobalFn('pjaxComplete', () => {
 POWERMODE.shake = true;
 POWERMODE.mobile = false;
 document.body.addEventListener('input', POWERMODE);
-</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜尋</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  資料載入中</span></div><div class="local-search-input"><input placeholder="搜尋文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
