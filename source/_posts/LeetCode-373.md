@@ -10,7 +10,7 @@ tags:
 categories: LeetCode筆記
 aside: true
 cover: /img/LeetCode/373/cover.png
-abbrlink: 551e0978
+abbrlink: "551e0978"
 date: 2025-09-13 14:28:35
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: 卡在高電位的那一個位元
+title: 卡在高電位的那一個位元 | Lunar Latch-Up | GaianSpace CTF 2026
 tags:
   - GaianSpace
   - CTF
@@ -31,6 +31,8 @@ GaianSpace CTF 2026「05-rad-hard-rampage」系列第二篇。
 <!-- more -->
 
 ## 題目在講什麼
+
+![題目畫面](challenge.jpg)
 
 > A single heavy ion hit the Foundation One power-management block and triggered a latch-up — a parasitic path that slams one bit high and holds it there, drawing current until someone cuts the rail. One bit in there is stuck high that should not be.
 

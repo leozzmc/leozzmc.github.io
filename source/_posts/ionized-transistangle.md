@@ -1,5 +1,5 @@
 ---
-title: 被輻射燒短路的邏輯閘
+title: 被輻射燒短路的邏輯閘 | Ionized Transistangle | GaianSpace CTF 2026
 tags:
   - GaianSpace
   - CTF
@@ -31,6 +31,8 @@ top_img:
 <!-- more -->
 
 ## 題目在講什麼
+
+![題目畫面](challenge.jpg)
 
 > Total ionizing dose does not flip a bit and move on — it leaves transistors shorted, stuck, permanently. The encoder now spits nonsense. We still have the original design, gate for gate, with the damaged nodes marked.
 

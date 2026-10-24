@@ -1,5 +1,5 @@
 ---
-title: 單粒子翻轉與 128 把候選金鑰
+title: 單粒子翻轉與 128 把候選金鑰 | Cosmic Bit Blunder | GaianSpace CTF 2026
 tags:
   - GaianSpace
   - CTF
@@ -33,6 +33,8 @@ top_img:
 <!-- more -->
 
 ## 題目在講什麼
+
+![題目畫面](challenge.jpg)
 
 > High in the Foundation One orbit, a single cosmic-ray proton punched through the flight computer and flipped exactly one bit in the key that protects the mission log. The log still decrypts to garbage. The reliability team wants the log back, and they are sure the rest of the key survived intact.
 

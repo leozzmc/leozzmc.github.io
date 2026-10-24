@@ -1,5 +1,5 @@
 ---
-title: 感測器漂移藏著一句話
+title: 感測器漂移藏著一句話 | Degradift | GaianSpace CTF 2026
 tags:
   - GaianSpace
   - CTF
@@ -30,6 +30,8 @@ GaianSpace CTF 2026「05-rad-hard-rampage」系列最後一篇
 <!-- more -->
 
 ## 題目在講什麼
+
+![題目畫面](challenge.jpg)
 
 > Displacement damage builds up: the lattice takes hit after hit, the readings creep, and by the end of the run the numbers have wandered far from the truth. We logged the whole decline. The characterization team worked out exactly how fast it drifts.
 
