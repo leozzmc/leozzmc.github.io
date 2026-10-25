@@ -12,6 +12,8 @@ date: 2024-09-15 18:54:56
 cover: /img/LeetCode/backtracking/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/48f553b3.html)
+
 # 遞迴
 
 在解 backtracking 題目的時候，通常可以使用遞迴回來實現，那最好還是要先了解遞迴的想法。遞迴的核心想法就是 **「大問題拆成多個小問題，小問題也能按照相同方式切成更小的問題」**、**「除了最小的問題之外，每層的解決方式都一樣」**

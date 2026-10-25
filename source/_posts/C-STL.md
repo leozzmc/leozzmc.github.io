@@ -13,6 +13,8 @@ date: 2024-06-18 22:56:42
 cover: /img/LeetCode/C++_STL/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/efa232a7.html)
+
 # 甚麼是 STL (Standard Template Library)?
 
 在 C++ 中，STL即為一群容器(Container)的集合，不同容器可以實現不同的資料結構，其實是大量使用了 C++中的 Template 來去實現的。
