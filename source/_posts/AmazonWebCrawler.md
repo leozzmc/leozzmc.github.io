@@ -14,6 +14,9 @@ categories: 實作紀錄
 cover: /img/lambda.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/6dbe323f.html)
+
+
 ## 前言
 這篇文章是在重現客戶問題時候的的實踐，原先為了解決客戶的問題，我試著想要安裝 **Selenium Chromedriver** 以及 **BeautifulSoup** ，打包成 Lambda Layer 並建立基於該Layer的Lambda，但一直出現 Chromedriver 找不到檔案的錯誤，左踩坑又踩坑的troubleshooting 突然這篇救星 https://stackoverflow.com/questions/69047401/selenium-docker-container-runs-on-ec2-but-not-on-aws-lambda ，根據這篇文章以及相對應的 github https://github.com/rchauhan9/image-scraper-lambda-container/tree/master，上面主要是以 Container Image 的方式來建立 Lambda ，但要這麼做之前會先將需要的套件跟環境打包成 Image。
 

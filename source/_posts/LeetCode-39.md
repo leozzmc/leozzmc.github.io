@@ -12,6 +12,9 @@ date: 2024-09-23 22:14:30
 cover: /img/LeetCode/39/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/e650f909.html)
+
+
 # 題目敘述
 
 ![](/img/LeetCode/39/question1.png)

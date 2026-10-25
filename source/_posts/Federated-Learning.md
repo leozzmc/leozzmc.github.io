@@ -11,6 +11,9 @@ date: 2024-07-30 16:01:57
 cover: /img/Fed/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/federation-learning.html)
+
+
 # 甚麼是並行計算?
 
 現在的深度神經網路模型具有大量的參數，模型大也意味著計算量變大

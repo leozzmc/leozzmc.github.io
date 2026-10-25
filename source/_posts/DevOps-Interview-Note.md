@@ -13,6 +13,9 @@ abbrlink: dce71546
 date: 2060-11-05 21:45:50
 ---
 
+> 🌐 English version: [English](/en/posts/dce71546.html)
+
+
 # 前言
 
 這裡紀錄 DevOps 面試常見的知識點，主要是參考了這個 [github repository: DevOps Exercises](https://github.com/bregman-arie/devops-exercises) 和 [ByteByteGo 的 GitHub Repo](https://github.com/ByteByteGoHq/system-design-101) 所做的筆記整理

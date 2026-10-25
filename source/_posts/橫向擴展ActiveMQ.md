@@ -14,6 +14,9 @@ date: 2023-12-19 04:04:20
 cover: /img/ActiveMQ/ActiveMQ_Cover.jpeg
 ---
 
+> 🌐 English version: [English](/en/posts/b509904.html)
+
+
 ## Amazon MQ
 
 Amzon MQ 上有託管 Active MQ 這個訊息佇列的服務，近期有碰到問題是問說，**要怎麼樣在 Amazon MQ 上做 Horizontal Scaling**，
