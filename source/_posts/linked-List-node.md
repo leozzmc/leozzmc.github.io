@@ -11,6 +11,8 @@ date: 2024-06-02 17:03:24
 cover: /img/LeetCode/Linked_List/linked_list_cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/c1fe4928.html)
+
 # 鏈結串列(Linked List)介紹
 
 ![](/img/LeetCode/Linked_List/linked_list.png)

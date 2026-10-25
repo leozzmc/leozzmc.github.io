@@ -13,6 +13,8 @@ date: 2024-07-27 21:24:07
 cover: /img/LeetCode/tree/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/tree_for_leetcode_2.html)
+
 # In-Order Traversal by Parent Field
 
 在[前一篇介紹 Tree 的文章](https://leozzmc.github.io/posts/tree_for_leetcode.html) 中應該有發現，我們在實作 Binary Tree Node 的時候有宣告一個 `TreeNode *parent` 指標，但卻沒有使用。
