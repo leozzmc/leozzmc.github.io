@@ -11,6 +11,8 @@ aside: true
 cover: /img/LeetCode/dp/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/dynamic_programming.html)
+
 
 # 前言
 

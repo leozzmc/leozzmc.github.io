@@ -13,6 +13,8 @@ abbrlink: 597eaffb
 date: 2025-02-20 11:32:23
 ---
 
+> 🌐 English version: [English](/en/posts/597eaffb.html)
+
 # 前言
 
 要能夠確保像是有先修微積分，才能修工程數學，這種 **有前後關係的圖論問題**，通常會用 **拓樸排序(Topological Sort)** 
