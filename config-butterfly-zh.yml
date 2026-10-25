@@ -388,7 +388,7 @@ rightside_bottom:
 
 # Conversion between Traditional and Simplified Chinese
 translate:
-  enable: false
+  enable: true
   # The text of a button
   default: EN
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
