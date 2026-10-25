@@ -1109,7 +1109,7 @@ inject:
       </style>
   bottom:
     - <script data-pjax src="/self/btf.js"></script> 
-    - <script data-pjax src="/self/tw_en.js"></script>
+    - <script data-pjax src="/self/tw_en.js?v=3"></script>
     - <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
     - <script data-pjax src="/self/calendar.js"></script>
     - <script data-pjax src="/self/languages.js"></script>
