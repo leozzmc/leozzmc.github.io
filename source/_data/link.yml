@@ -9,3 +9,51 @@
       link: https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg
       avatar: https://i.imgur.com/01hg2gE.jpg
       descr: 我的 Youtube 頻道
+
+- class_name: 太空資安
+  class_desc: 衛星與太空系統攻防
+  link_list:
+    - name: Aerospace Village
+      link: https://aerospacevillage.org
+      avatar: https://www.google.com/s2/favicons?domain=aerospacevillage.org&sz=128
+      descr: DEF CON 的航太／太空資安社群，Hack-A-Sat 主辦方
+    - name: Hack-A-Sat
+      link: https://hackasat.com
+      avatar: https://www.google.com/s2/favicons?domain=hackasat.com&sz=128
+      descr: 把真實衛星搬上軌道來打的 CTF，歷屆題目與 writeup
+    - name: SPARTA (Aerospace Corp)
+      link: https://sparta.aerospace.org
+      avatar: https://www.google.com/s2/favicons?domain=sparta.aerospace.org&sz=128
+      descr: 太空系統版的 ATT&CK 攻擊手法框架
+    - name: CYSAT
+      link: https://cysat.eu
+      avatar: https://www.google.com/s2/favicons?domain=cysat.eu&sz=128
+      descr: 歐洲衛星與太空資安大會
+
+- class_name: RF / SDR 與硬體
+  class_desc: 無線電、軟體定義無線電與硬體逆向
+  link_list:
+    - name: RTL-SDR Blog
+      link: https://www.rtl-sdr.com
+      avatar: https://www.google.com/s2/favicons?domain=rtl-sdr.com&sz=128
+      descr: SDR 圈最穩定的實作與 RF 攻擊來源
+    - name: Great Scott Gadgets
+      link: https://greatscottgadgets.com
+      avatar: https://www.google.com/s2/favicons?domain=greatscottgadgets.com&sz=128
+      descr: HackRF 團隊，GNU Radio 與 replay attack 教學
+    - name: Hackaday
+      link: https://hackaday.com
+      avatar: https://www.google.com/s2/favicons?domain=hackaday.com&sz=128
+      descr: RF、SDR、衛星與硬體專題的大本營
+
+- class_name: 綜合資安 / CTF
+  class_desc: 資安研究與 CTF
+  link_list:
+    - name: CTFtime
+      link: https://ctftime.org
+      avatar: https://www.google.com/s2/favicons?domain=ctftime.org&sz=128
+      descr: CTF 賽事行事曆與 writeup 聚合
+    - name: Trail of Bits Blog
+      link: https://blog.trailofbits.com
+      avatar: https://www.google.com/s2/favicons?domain=blog.trailofbits.com&sz=128
+      descr: 逆向、韌體、密碼學的深度研究
