@@ -13,6 +13,8 @@ date: 2024-07-26 12:35:56
 cover: /img/LeetCode/tree/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/tree_for_leetcode.html)
+
 
 <!-- Roadmap: (Tree 介紹) -> (Binary Tree介紹) -> (Binary Tree 與 Binary Search Tree 差異) -> (Tree的走訪) -> (建立Binary Tree)  -->
 

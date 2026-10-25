@@ -12,6 +12,8 @@ date: 2024-07-22 13:18:02
 cover: /img/LeetCode/queue/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/22a8b30b.html)
+
 # 甚麼是 Queue?
 
 Queue 也是一種資料結構，用於暫時儲存元素 ，它與 Stack 不同的是，它是屬於 **FIFO (First-In-First-Out)** 的特性，也就是先進入 Queue 的元素先出來，並且新元素會被加入到 Queue 的尾端。
