@@ -11,6 +11,8 @@ abbrlink: 34f1f1b8
 date: 2023-01-23 01:46:35
 ---
 
+> 🌐 English version: [English](/en/posts/34f1f1b8.html)
+
 ![](https://i.imgur.com/dcWHOfV.png)
 
 

@@ -12,6 +12,8 @@ abbrlink: e8acb5ee
 date: 2022-10-03 01:59:08
 ---
 
+> 🌐 English version: [English](/en/posts/e8acb5ee.html)
+
 ![](https://i.imgur.com/x1Sq6so.png)
 
 # CCP 準備

@@ -15,6 +15,8 @@ abbrlink: 5728fae1
 date: 2021-11-13 10:12:17
 ---
 
+> 🌐 English version: [English](/en/posts/5728fae1.html)
+
 ## Network Debug
 - 若你SSH不到Server，你會怎麼做?
 	- 先Ping Server看通不通

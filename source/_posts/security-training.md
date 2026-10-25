@@ -12,6 +12,8 @@ abbrlink: 8ec27a58
 date: 2022-01-10 03:07:06
 ---
 
+> 🌐 English version: [English](/en/posts/8ec27a58.html)
+
 課程內容:
 ```
 - Web基本知識
