@@ -1,11 +1,59 @@
-- class_name: 推薦鏈結
-  class_desc: 我推的鏈結
+- class_name: Recommended Links
+  class_desc: Links I recommend
   link_list:
     - name: Shannon's Blog
       link: https://shannonhung.github.io/
       avatar: https://i.imgur.com/wolwN6m.png
-      descr: Shannon 的部落格
-    - name: Youtube
+      descr: Shannon's blog
+    - name: YouTube
       link: https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg
       avatar: https://i.imgur.com/01hg2gE.jpg
-      descr: 我的 Youtube 頻道
+      descr: My YouTube channel
+
+- class_name: Space Security
+  class_desc: Satellite and space-system hacking
+  link_list:
+    - name: Aerospace Village
+      link: https://aerospacevillage.org
+      avatar: https://www.google.com/s2/favicons?domain=aerospacevillage.org&sz=128
+      descr: DEF CON's aerospace/space security community, home of Hack-A-Sat
+    - name: Hack-A-Sat
+      link: https://hackasat.com
+      avatar: https://www.google.com/s2/favicons?domain=hackasat.com&sz=128
+      descr: The satellite CTF that hacks real hardware in orbit; past challenges and writeups
+    - name: SPARTA (Aerospace Corp)
+      link: https://sparta.aerospace.org
+      avatar: https://www.google.com/s2/favicons?domain=sparta.aerospace.org&sz=128
+      descr: ATT&CK-style attack framework for space systems
+    - name: CYSAT
+      link: https://cysat.eu
+      avatar: https://www.google.com/s2/favicons?domain=cysat.eu&sz=128
+      descr: European conference on satellite and space cybersecurity
+
+- class_name: RF / SDR & Hardware
+  class_desc: Radio, software-defined radio, and hardware hacking
+  link_list:
+    - name: RTL-SDR Blog
+      link: https://www.rtl-sdr.com
+      avatar: https://www.google.com/s2/favicons?domain=rtl-sdr.com&sz=128
+      descr: The most consistent source of hands-on SDR projects and RF attacks
+    - name: Great Scott Gadgets
+      link: https://greatscottgadgets.com
+      avatar: https://www.google.com/s2/favicons?domain=greatscottgadgets.com&sz=128
+      descr: Makers of HackRF; GNU Radio and replay-attack tutorials
+    - name: Hackaday
+      link: https://hackaday.com
+      avatar: https://www.google.com/s2/favicons?domain=hackaday.com&sz=128
+      descr: Deep well of RF, SDR, satellite, and hardware projects
+
+- class_name: Infosec / CTF
+  class_desc: General security research and CTF
+  link_list:
+    - name: CTFtime
+      link: https://ctftime.org
+      avatar: https://www.google.com/s2/favicons?domain=ctftime.org&sz=128
+      descr: CTF event calendar and writeup aggregator
+    - name: Trail of Bits Blog
+      link: https://blog.trailofbits.com
+      avatar: https://www.google.com/s2/favicons?domain=blog.trailofbits.com&sz=128
+      descr: In-depth reversing, firmware, and cryptography research
