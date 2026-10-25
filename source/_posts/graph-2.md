@@ -11,6 +11,8 @@ abbrlink: 2e799f6d
 date: 2024-12-23 14:28:08
 ---
 
+> 🌐 English version: [English](/en/posts/2e799f6d.html)
+
 
 # 前言
 

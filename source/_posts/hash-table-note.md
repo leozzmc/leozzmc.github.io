@@ -12,6 +12,8 @@ date: 2024-05-30 22:51:40
 cover: /img/pepe.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/ef71152b.html)
+
 
 # 基本介紹 
 
