@@ -96,7 +96,7 @@ share: Share
 
 rightside:
   readmode_title: Reading Mode
-  translate_title: Toggle Between Traditional and Simplified Chinese
+  translate_title: Switch Chinese / English
   night_mode_title: Toggle Between Light and Dark Mode
   back_to_top: Back to Top
   toc: Table of Contents

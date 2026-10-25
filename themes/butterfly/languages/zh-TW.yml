@@ -96,7 +96,7 @@ share: 分享
 
 rightside:
   readmode_title: 閱讀模式
-  translate_title: 繁簡轉換
+  translate_title: 切換中／英
   night_mode_title: 日夜模式切換
   back_to_top: 回到頂端
   toc: 目錄
