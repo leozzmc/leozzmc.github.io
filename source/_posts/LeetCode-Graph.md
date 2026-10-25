@@ -11,6 +11,8 @@ date: 2024-12-17 19:44:16
 cover: /img/LeetCode/graph/cover.png
 ---
 
+> 🌐 English version: [English](/en/posts/2009beb7.html)
+
 
 # 前言
 

@@ -11,6 +11,8 @@ date: 2024-06-27 21:41:18
 cover: /img/LeetCode/stack/cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/a27c9492.html)
+
 # 甚麼是 Stack?
 
 Stack 是一種資料結構，具有 **後進先出(Last-In-First-Out, LIFO)** 的特性，
