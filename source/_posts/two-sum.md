@@ -13,6 +13,8 @@ date: 2024-05-31 23:04:03
 cover: /img/LeetCode/Two_Sum/two_sum_cover.jpg
 --- 
 
+> 🌐 English version: [English](/en/posts/cb46ac9d.html)
+
 # 題目敘述
 
 ![](/img/LeetCode/Two_Sum/two_sum_question.png)

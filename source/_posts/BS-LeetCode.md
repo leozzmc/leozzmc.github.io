@@ -13,6 +13,8 @@ date: 2024-05-28 19:10:28
 cover: /img/LeetCode/BS_cover.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/22bf447e.html)
+
 # 題目敘述
 
 ![](/img/LeetCode/BS_Question.jpeg)

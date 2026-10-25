@@ -12,6 +12,8 @@ date: 2024-07-03 12:26:11
 cover: /img/AWS/CSE/aws3.jpg
 ---
 
+> 🌐 English version: [English](/en/posts/c0ef3a5f.html)
+
 # 背景
 
 > 目前在台灣亞馬遜網路服務公司 (Amazon Web Services) 擔任 **雲端支援工程師 (Cloud Support Engineer)** ，但兩天後就要離職了，因此想說趁離職前紀錄並回顧一下這一年半以來的工作以及生活。
