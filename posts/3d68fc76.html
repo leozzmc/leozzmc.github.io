@@ -1,0 +1,511 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🧪Notes - 5G Network Function Interfaces and Protocol Stacks | Kevin Liu's Blog || Technical || Travel</title><meta name="author" content="Kevin Liu"><meta name="copyright" content="Kevin Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="An overview of the interfaces between network functions">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🧪Notes - 5G Network Function Interfaces and Protocol Stacks">
+<meta property="og:url" content="https://leozzmc.github.io/en/posts/3d68fc76.html">
+<meta property="og:site_name" content="Kevin Liu&#39;s Blog || Technical || Travel">
+<meta property="og:description" content="An overview of the interfaces between network functions">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://leozzmc.github.io/en/img/me.jpg">
+<meta property="article:published_time" content="2021-07-10T00:08:06.000Z">
+<meta property="article:modified_time" content="2026-10-25T03:32:34.408Z">
+<meta property="article:author" content="Kevin Liu">
+<meta property="article:tag" content="5G">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leozzmc.github.io/en/img/me.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "🧪Notes - 5G Network Function Interfaces and Protocol Stacks",
+  "url": "https://leozzmc.github.io/en/posts/3d68fc76.html",
+  "image": "https://leozzmc.github.io/en/img/me.jpg",
+  "datePublished": "2021-07-10T00:08:06.000Z",
+  "dateModified": "2026-10-25T03:32:34.408Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Kevin Liu",
+      "url": "https://leozzmc.github.io/en"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/en/img/kevin3.png"><link rel="canonical" href="https://leozzmc.github.io/en/posts/3d68fc76.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/en/css/index.css?v=5.5.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T4SFRRLLZ0"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-T4SFRRLLZ0')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-T4SFRRLLZ0', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/en/',
+  algolia: undefined,
+  localSearch: {"path":"/en/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🧪Notes - 5G Network Function Interfaces and Protocol Stacks',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/style.css"><style>
+  .bobame-aside-card {
+    text-align: center;
+  }
+
+  .bobame-aside-text {
+    margin: 0 0 0.8rem;
+    line-height: 1.7;
+    font-size: 0.92rem;
+  }
+
+  .bobame-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 210px;
+    height: 44px;
+    padding: 8px 18px;
+    margin: 0 auto;
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    color: #F8E0BE !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .bobame-button:hover {
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+
+  .bobame-button img {
+    height: 100%;
+    margin-right: 8px;
+  }
+
+  .bobame-button span {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+</style>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-color: #f5f1ed;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">63</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/en/img/cover7.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><img class="site-icon" src="https://i.imgur.com/P19VCm0.png" alt="Logo"><span class="site-name">Kevin Liu's Blog || Technical || Travel</span></a><a class="nav-page-title" href="/en/"><span class="site-name">🧪Notes - 5G Network Function Interfaces and Protocol Stacks</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> Find Posts</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/en/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/en/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/en/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-language"></i><span> Languages:</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-e"></i><span> English</span></a></li><li><a class="site-page child" href="https://leozzmc.github.io/"><i class="fa-fw fas fa-c"></i><span> 中文</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">🧪Notes - 5G Network Function Interfaces and Protocol Stacks</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-07-10T00:08:06.000Z" title="Created 2021-07-10 08:08:06">2021-07-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-10-25T03:32:34.408Z" title="Updated 2026-10-25 11:32:34">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/en/categories/Study-Notes/">Study Notes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">708</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>4mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>🌐 中文版：<a href="/posts/3d68fc76.html">繁體中文</a></p>
+</blockquote>
+<h2 id="The-N2-interface-control-interface-and-protocol-stack"><a href="#The-N2-interface-control-interface-and-protocol-stack" class="headerlink" title="The N2 interface (control interface and protocol stack)"></a>The N2 interface (control interface and protocol stack)</h2><p>$5G Access,Network \stackrel{N2}{\longleftrightarrow} 5GC(AMF)$</p>
+<ul>
+<li><strong>Management procedures:</strong> not related to a specific UE, like setting up or resetting the N2 interface</li>
+<li><strong>Procedures related to a single UE:</strong> NAS transport procedures, UE context management, PDU-session resource-related procedures, handover management, etc.</li>
+<li>Uses the <strong>NG-AP protocol</strong> (regardless of access network type: 3GPP RAN or N3IWF non-3GPP), which is an application-layer protocol</li>
+<li>The AMF has a unique N2 termination point for a UE</li>
+<li>Since the SMF and AMF are decoupled, NG-AP supports the AMF relaying <strong>N2 SM messages</strong> between the 5G RAN and 5GC</li>
+</ul>
+<p><img src="https://i.imgur.com/TP3cmJb.png"></p>
+<ul>
+<li>SCTP guarantees transport between the Access Network and 5GC</li>
+</ul>
+<h2 id="The-control-plane-interface-and-protocol-stack-between-the-UE-and-5GC"><a href="#The-control-plane-interface-and-protocol-stack-between-the-UE-and-5GC" class="headerlink" title="The control-plane interface and protocol stack between the UE and 5GC"></a>The control-plane interface and protocol stack between the UE and 5GC</h2><p>For each connection method a UE uses (3GPP, non-3GPP), the UE has an <strong>N1 NAS connection</strong>, with a unique N1 termination point located in the AMF.</p>
+<blockquote>
+<p><strong>Non-access stratum (NAS)</strong><br>A protocol layer that originally existed in 3G&#x2F;UMTS, a functional layer between the user equipment and the core network.<br>It has the following functions:</p>
+<blockquote>
+<p>mobility management<br>call control<br>session management<br>identity management<br><a target="_blank" rel="noopener" href="https://hackmd.io/M4SyLAOpRam7lZVLuujOHw">NAS reference</a></p>
+</blockquote>
+</blockquote>
+<p>N1 NAS can be used for:</p>
+<ul>
+<li><strong>UE registration management</strong></li>
+<li><strong>connection management</strong></li>
+<li><strong>session management</strong></li>
+</ul>
+<p>The NAS protocol within the N1 interface splits into: NAS-MM, NAS-SM</p>
+<h2 id="NAS-MM"><a href="#NAS-MM" class="headerlink" title="NAS-MM"></a>NAS-MM</h2><p>Used for the UE to interact with NFs other than the AMF</p>
+<ul>
+<li>session-management messages</li>
+<li>UE policy</li>
+<li>location services</li>
+</ul>
+<p><em>NAS transports session-management messages, SMS, UE policy, location services, and other protocol procedures</em><br><img src="https://i.imgur.com/iPUTyxa.gif"></p>
+<h3 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h3><p>Handles the NAS procedures between the UE and AMF, including:</p>
+<ul>
+<li>handling the UE’s registration management (RM) and connection management (CM): providing a secure message link and access control between the UE and AMF</li>
+<li>applicable to other types of NAS messages (NAS-SM, SMS, etc.), which can be transmitted simultaneously with RM&#x2F;CM NAS messages</li>
+<li>the same NAS protocol is used for different access methods (3GPP, non-3GPP)</li>
+<li>the UE has one N1 NAS connection for each access method</li>
+</ul>
+<p><img src="https://i.imgur.com/sdjzoKJ.gif"></p>
+<h2 id="NAS-SM"><a href="#NAS-SM" class="headerlink" title="NAS-SM"></a>NAS-SM</h2><p>Supports handling <strong>session management</strong> between the UE and SMF</p>
+<ul>
+<li>establishment, modification, and release of the PDU session’s user plane</li>
+<li>SM messages are established and processed within NAS-SM (the content isn’t parsed by the AMF)</li>
+<li>the NAS-MM layer handles sending&#x2F;receiving SM messages between the UE and AMF, and provides security protection (<strong>protecting message integrity</strong>)</li>
+</ul>
+<p><img src="https://i.imgur.com/qLGM1Hk.gif"></p>
+<h2 id="The-control-plane-interface-and-protocol-stack-between-5GC-NFs"><a href="#The-control-plane-interface-and-protocol-stack-between-5GC-NFs" class="headerlink" title="The control-plane interface and protocol stack between 5GC NFs"></a>The control-plane interface and protocol stack between 5GC NFs</h2><p>In the 5G core, an <strong>NF Service Producer</strong> provides services to an <strong>NF Service Consumer</strong> via a service-based interface.</p>
+<p>The 5G core defines the following control interfaces as service-based interfaces:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- Nsmf</span><br><span class="line">- Nudm</span><br><span class="line">- Nnrf</span><br><span class="line">- Nnssf</span><br><span class="line">- Nausf</span><br><span class="line">- Nnef</span><br><span class="line">- Nsmsf</span><br><span class="line">- Nudr</span><br><span class="line">- Npcf</span><br><span class="line">- N5g-eir</span><br><span class="line">- Nlmf</span><br></pre></td></tr></table></figure>
+<p>These service-based interfaces use <strong>HTTP 2.0</strong> and <strong>JSON</strong> as application-layer protocols; all 3GPP network functions must support <strong>TLS</strong>.<br>If the PLMN doesn’t provide another network-security solution, TLS must be used.<br>In the future, <strong><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/QUIC">QUIC&#x2F;UDP</a></strong> may be used as an optimized solution.</p>
+<p><img src="https://i.imgur.com/QWxhGJN.png"></p>
+<h2 id="The-N4-interface-and-protocol-stack"><a href="#The-N4-interface-and-protocol-stack" class="headerlink" title="The N4 interface and protocol stack"></a>The N4 interface and protocol stack</h2><p>$SMF\stackrel{N4}{\longleftrightarrow}UPF$</p>
+<p>N4 sits between the SMF and UPF, with control-plane and user-plane functions.<br>N4 defines the following procedures:</p>
+<p><em>Control-plane procedures</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- N4 session management:</span><br><span class="line">	for the SMF to establish, update, and delete N4 session context on the UPF</span><br><span class="line">- N4 reporting procedures:</span><br><span class="line">	for the UPF to report events (e.g. traffic usage) to the SMF</span><br><span class="line">- N4 node-level procedures:</span><br><span class="line">	establishment, update, association, and release of the N4 node between SMF and UPF; the UPF reports N4 node-level events to the SMF</span><br><span class="line">- SMF charging-suspend procedures:</span><br></pre></td></tr></table></figure>
+
+<p><em>User-plane procedures</em><br>Forwarding traffic between the SMF and UPF:<br>When the user is in the <strong>CM-IDLE</strong> state, the UPF can forward downlink data to the SMF, which then decides the paging policy.</p>
+<table>
+<thead>
+<tr>
+<th>PFCP</th>
+<th>$\longleftrightarrow$</th>
+<th>PFCP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UDF</td>
+<td>$\longleftrightarrow$</td>
+<td>UPF</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>$\longleftrightarrow$</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>$\longleftrightarrow$</td>
+<td>L2</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>$\longleftrightarrow$</td>
+<td>L1</td>
+</tr>
+<tr>
+<td>Control Plane $\longleftrightarrow$ User Plane</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="The-user-plane-interface-and-its-protocol-stack"><a href="#The-user-plane-interface-and-its-protocol-stack" class="headerlink" title="The user-plane interface and its protocol stack"></a>The user-plane interface and its protocol stack</h2><p>$Access,Network\stackrel{N3}{\longleftrightarrow}UPF$<br>$UPF \stackrel{N9}{\longleftrightarrow}UPF$<br>The N3 and N9 interfaces carry data between the 5G RAN and UPF, and between UPF and UPF, respectively.</p>
+<p><img src="https://i.imgur.com/p8GoGVl.gif"></p>
+<ul>
+<li><strong><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E8%AE%AE%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83">PDU (Protocol Data Unit) layer</a></strong>: responsible for carrying PDUs in the PDU session between the UE and the Data Network</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en">Kevin Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://leozzmc.github.io/en/posts/3d68fc76.html">https://leozzmc.github.io/en/posts/3d68fc76.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/en/tags/5G/">5G</a><a class="post-meta__tags" href="/en/tags/Network/">Network</a></div><div class="post-share"><div class="social-share" data-image="/en/img/me.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/en/posts/85fe9be3.html" title="VNF Deployment and Flow Scheduling in Geo-distributed Data Centers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">VNF Deployment and Flow Scheduling in Geo-distributed Data Centers</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  AbstractNFV can reduce the equipment procurement and maintenance costs of network operations. Through NFV, network functions can be decoupled from the physical infrastructure and run as virtual network functions (VNFs) on commodity hardware. NFV makes networks more flexible and controllable, but various technical challenges remain, such as how to effectively deploy VNFs across different geographic locations and how to schedule network traffic among geo-distributed data centers. ...</div></div></div></a><a class="pagination-related" href="/en/posts/a05f1769.html" title="🧪Notes - 5G Core Network: Mobility Management"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">🧪Notes - 5G Core Network: Mobility Management</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  User identifiers and location identifiersUser identifiers split into permanent and non-permanent:  Permanent identifiers  Once bound to a user they aren’t modified, offering a degree of privacy   1231. SUPI2. Generic Public Subscription Identifier (GPSI)3. Permanent Equipment Identifier (PEI) Non-permanent identifiers  Used to temporarily identify a user; 3GPP periodically changes the identifier   121. 5G Globally Unique Temporary Identifier (5G-GUTI)2. SUCI Location identifiers...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/en/posts/a05f1769.html" title="🧪Notes - 5G Core Network: Mobility Management"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-10</div><div class="info-item-2">🧪Notes - 5G Core Network: Mobility Management</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  User identifiers and location identifiersUser identifiers split into permanent and non-permanent:  Permanent identifiers  Once bound to a user they aren’t modified, offering a degree of privacy   1231. SUPI2. Generic Public Subscription Identifier (GPSI)3. Permanent Equipment Identifier (PEI) Non-permanent identifiers  Used to temporarily identify a user; 3GPP periodically changes the identifier   121. 5G Globally Unique Temporary Identifier (5G-GUTI)2. SUCI Location identifiers...</div></div></div></a><a class="pagination-related" href="/en/posts/dd26b396.html" title="🧪Notes - 5G Open-Source Resource Roundup"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-20</div><div class="info-item-2">🧪Notes - 5G Open-Source Resource Roundup</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  Architecture:  Open-source projects Open5GS - Open5GS contains a series of software components and network functions that implement the 4G&#x2F; 5G NSA and 5G SA core functions.https://github.com/open5gs/open5gs open5gs + oai config: https://github.com/s5uishida/open5gs_epc_oai_sample_configopen5gs implements both the 4G EPC and 5G 5GC, so in terms of networking options, option 3, option 7, and option 4 may all be feasible. dockerized Open5GShttps://github.com/herlesupreeth/dock...</div></div></div></a><a class="pagination-related" href="/en/posts/a1cfeb54.html" title="🗂️Paper Review: O-RAN and Virtualized 5G Networks"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-11</div><div class="info-item-2">🗂️Paper Review: O-RAN and Virtualized 5G Networks</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  This is a survey paper.Title: “Open, Programmable, and Virtualized 5G Networks: State-of-the-Art and the Road Ahead”College: Institute for the Wireless Internet of Things, Northeastern UniversityAuthors: Leonardo Bonati, Michele Polese, Salvatore D’Oro, Stefano Basagni, Tommaso MelodiaCitation: 24   Abstract5G brings many benefits, and software-defined cellular networks bring many changes. There are currently many open-source 5G projects, and this paper introduces many current o...</div></div></div></a><a class="pagination-related" href="/en/posts/de3933f9.html" title="Security policies definition and enforcement utilizing policy control function framework in 5G"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-01</div><div class="info-item-2">Security policies definition and enforcement utilizing policy control function framework in 5G</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文       :root{     --maincolor: #50fa7b;     }    .info{     padding: 15px;     margin-bottom: 20px;     color: #ffffff;     border: 1px solid transparent;     border-radius: 10px;     background-color: #343232;     border-color: #b8bdb4;    }    .special{         border-bottom: 3px solid var(--maincolor);         color: inherit;         text-decoration:none;    }    .newbold{         color: #ffffff;         font-weight: bold;         text-decoration:none;    }    a{     color: #33...</div></div></div></a><a class="pagination-related" href="/en/posts/85fe9be3.html" title="VNF Deployment and Flow Scheduling in Geo-distributed Data Centers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-25</div><div class="info-item-2">VNF Deployment and Flow Scheduling in Geo-distributed Data Centers</div></div><div class="info-2"><div class="info-item-1"> 🌐 中文版：繁體中文  AbstractNFV can reduce the equipment procurement and maintenance costs of network operations. Through NFV, network functions can be decoupled from the physical infrastructure and run as virtual network functions (VNFs) on commodity hardware. NFV makes networks more flexible and controllable, but various technical challenges remain, such as how to effectively deploy VNFs across different geographic locations and how to schedule network traffic among geo-distributed data centers. ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comments</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/en/img/me.jpg" onerror="this.onerror=null;this.src='/en/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Kevin Liu</div><div class="author-info-description">ex-AWS | cloud engineer</div><div class="site-data"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">63</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leozzmc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/leozzmc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zzmczzmczzmc870125@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #e0ad5a;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/kevin-liu087" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin" style="color: #0373fc;"></i></a><a class="social-icon" href="https://www.youtube.com/channel/UC2AU_vpxPu0oKcgZl3UJSNg" target="_blank" title="Youtube"><i class="fa-brands fa-youtube" style="color: #dc1e1e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><div class="bobame-aside-card">
+  <p class="bobame-aside-text">If you find my articles helpful, please support Kevin!</p>
+  <a class="bobame-button"
+     style="background-color:#A0ADA6;color:#F8E0BE;border:none"
+     href="https://kevinneck87.bobaboba.me?utm_source=blog&utm_medium=aside_button&utm_campaign=support"
+     target="_blank"
+     rel="noopener noreferrer nofollow">
+    <img height="100%"
+         src="https://s3.ap-southeast-1.amazonaws.com/media.anyonelab.com/images/boba/boba-embed-icon.png"
+         alt="boba-icon">
+    <span>Use boba to safe Kevin!</span>
+  </a>
+</div>
+</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-N2-interface-control-interface-and-protocol-stack"><span class="toc-number">1.</span> <span class="toc-text">The N2 interface (control interface and protocol stack)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-control-plane-interface-and-protocol-stack-between-the-UE-and-5GC"><span class="toc-number">2.</span> <span class="toc-text">The control-plane interface and protocol stack between the UE and 5GC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAS-MM"><span class="toc-number">3.</span> <span class="toc-text">NAS-MM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Features"><span class="toc-number">3.1.</span> <span class="toc-text">Features</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NAS-SM"><span class="toc-number">4.</span> <span class="toc-text">NAS-SM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-control-plane-interface-and-protocol-stack-between-5GC-NFs"><span class="toc-number">5.</span> <span class="toc-text">The control-plane interface and protocol stack between 5GC NFs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-N4-interface-and-protocol-stack"><span class="toc-number">6.</span> <span class="toc-text">The N4 interface and protocol stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-user-plane-interface-and-its-protocol-stack"><span class="toc-number">7.</span> <span class="toc-text">The user-plane interface and its protocol stack</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/9633ca0c.html" title="Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026">Follow the Hops and Reassemble the Symbols | Hopscotch | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:10:00.000Z" title="Created 2026-10-24 21:10:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/7a436e8c.html" title="High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026">High SF, Dragged Down by Drift | No Name on the Door | GaianSpace CTF 2026</a><time datetime="2026-10-24T13:00:00.000Z" title="Created 2026-10-24 21:00:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/ec3d267b.html" title="A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026">A Downlink Hijacked in the Dead of Night | Two Voices | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:50:00.000Z" title="Created 2026-10-24 20:50:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/1279e916.html" title="Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026">Rebuilding the Agriculture Office's Satellite Check | Subsidy Claim | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:40:00.000Z" title="Created 2026-10-24 20:40:00">2026-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"><img src="/en/img/LoRa.png" onerror="this.onerror=null;this.src='/en/img/404.jpg'" alt="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026"/></a><div class="content"><a class="title" href="/en/posts/907c1e5f.html" title="The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026">The Word Hidden Across Five Channels | Isodata Seven | GaianSpace CTF 2026</a><time datetime="2026-10-24T12:30:00.000Z" title="Created 2026-10-24 20:30:00">2026-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2019 - 2026 By Kevin Liu</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.1</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll to Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/en/js/utils.js?v=5.5.1"></script><script src="/en/js/main.js?v=5.5.1"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'dark'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'leozzmc/Blog_Reply',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script data-pjax src="/self/btf.js"></script><script data-pjax src="/self/tw_en.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script data-pjax src="/self/calendar.js"></script><script data-pjax src="/self/languages.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="👍,👾,💊,🧪,👁️" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="local-search-input"><input placeholder="Search for Posts" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/en/js/search/local-search.js?v=5.5.1"></script></div></div></body></html>
