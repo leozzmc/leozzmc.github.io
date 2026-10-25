@@ -13,6 +13,9 @@ abbrlink: 5b6eeeb3
 date: 2022-12-01 09:47:26
 ---
 
+> 🌐 English version: [English](/en/posts/5b6eeeb3.html)
+
+
 ## 蒐集本機資訊
 - 網路設定資訊
 ```

@@ -13,6 +13,9 @@ abbrlink: 4b76a41f
 date: 2019-07-05 14:50:33
 ---
 
+> 🌐 English version: [English](/en/posts/4b76a41f.html)
+
+
 ![](https://i.imgur.com/O3Xs5VC.jpg)
 
 ## 前言：
