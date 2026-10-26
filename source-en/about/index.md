@@ -24,7 +24,7 @@ I previously worked as a Cloud Support Engineer at AWS. I enjoy building things,
 # Contact
 
 - GitHub: [github.com/leozzmc](https://github.com/leozzmc)
-- Email: `[your contact email]`
+- Email: [zzmczzmczzmc870125@gmail.com](mailto:zzmczzmczzmc870125@gmail.com)
 
 # About the content
 

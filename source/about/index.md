@@ -24,7 +24,7 @@ comments: false
 # 聯絡方式
 
 - GitHub：[github.com/leozzmc](https://github.com/leozzmc)
-- Email：`[你的聯絡 Email]`
+- Email：[zzmczzmczzmc870125@gmail.com](mailto:zzmczzmczzmc870125@gmail.com)
 
 # 關於內容
 

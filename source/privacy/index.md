@@ -47,4 +47,4 @@ comments: false
 若你對本隱私權政策有任何疑問，歡迎透過以下方式聯絡：
 
 - GitHub：[github.com/leozzmc](https://github.com/leozzmc)
-- Email：`[你的聯絡 Email]`
+- Email：[zzmczzmczzmc870125@gmail.com](mailto:zzmczzmczzmc870125@gmail.com)

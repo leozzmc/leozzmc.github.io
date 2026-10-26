@@ -47,4 +47,4 @@ This policy may be updated from time to time. The updated version will be posted
 If you have any questions about this Privacy Policy, feel free to get in touch:
 
 - GitHub: [github.com/leozzmc](https://github.com/leozzmc)
-- Email: `[your contact email]`
+- Email: [zzmczzmczzmc870125@gmail.com](mailto:zzmczzmczzmc870125@gmail.com)
