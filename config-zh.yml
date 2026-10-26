@@ -122,3 +122,10 @@ abbrlink:
 # sitemap config
 sitemap:
   path: sitemap.xml
+
+# local search index (hexo-generator-searchdb)
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: striptags
