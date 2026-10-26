@@ -24,6 +24,8 @@ menu:
       標籤: /tags/ || fas fa-tags
       分類: /categories/ || fas fa-folder-open
   鏈結: /link/ || fas fa-link
+  關於: /about/ || fas fa-heart
+  隱私權: /privacy/ || fas fa-user-shield
   語言:||fas fa-language:
     English: /en/ || fas fa-e
     中文: https://leozzmc.github.io/ || fas fa-c
