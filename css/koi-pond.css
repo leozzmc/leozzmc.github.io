@@ -1,0 +1,46 @@
+/* ASCII Koi Pond — homepage cover backdrop. Scoped; does not touch article/page layout. */
+#koi-pond-canvas{
+  position:absolute; inset:0; width:100%; height:100%; display:block;
+  z-index:1; touch-action:pan-y;
+}
+/* keep Butterfly's cover content above the pond so nav/title/arrow stay visible & clickable */
+#page-header.koi-pond-header #nav,
+#page-header.koi-pond-header #site-info,
+#page-header.koi-pond-header #scroll-down,
+#page-header.koi-pond-header .post-info{
+  position:relative; z-index:2;
+}
+
+/* ---- GPT-style cover overlay (homepage only) ---- */
+.koi-pond-header{--koi-ink:#e8e8da;--koi-muted:#8a9385;--koi-accent:#db815b}
+/* replace Butterfly's centered title / subtitle / social row (keep the scroll-down arrow) */
+.koi-pond-header #site-info{display:none!important}
+/* no cover-photo flash before the pond paints: homepage header is dark from first paint */
+#page-header.full_page{background:#101411 !important;background-image:none !important}
+/* wordmark: kevin. */
+.koi-pond-header .nav-site-title .site-icon{display:none!important}
+.koi-pond-header .nav-site-title .site-name,
+.koi-pond-header .site-name{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:24px;letter-spacing:-1px;text-transform:none}
+.koi-dot{color:var(--koi-accent)}
+/* intro (left) */
+.koi-intro{position:absolute;left:8vw;top:50%;transform:translateY(-54%);max-width:380px;z-index:2;pointer-events:none}
+.koi-eyebrow{font:10px/1.5 ui-monospace,Menlo,monospace;letter-spacing:3px;color:var(--koi-muted);margin:0 0 22px}
+.koi-headline{font:normal clamp(42px,5vw,72px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:-2px;color:var(--koi-ink);margin:0 0 22px}
+.koi-headline em{font-style:italic;color:var(--koi-accent)}
+.koi-desc{font:normal clamp(18px,2.2vw,26px)/1.4 Georgia,"Times New Roman",serif;letter-spacing:-.3px;color:#b8bcaf;margin:18px 0 0}
+.koi-cta{pointer-events:auto;display:inline-flex;align-items:center;gap:22px;border-bottom:1px solid var(--koi-muted);padding:0 0 10px;margin-top:30px;color:var(--koi-ink);font:12px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;text-decoration:none;transition:color .2s,border-color .2s}
+.koi-cta span{font-size:17px;color:var(--koi-accent)}
+.koi-cta:hover{color:#fff;border-color:var(--koi-accent);text-decoration:none}
+/* footer */
+.koi-footer{position:absolute;left:4.5vw;right:4.5vw;bottom:30px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;z-index:2;pointer-events:none;color:var(--koi-muted);font:10px/1.8 ui-monospace,Menlo,monospace;letter-spacing:1px}
+.koi-status{display:flex;align-items:center;gap:9px;flex-wrap:wrap;max-width:60%}
+.koi-dotmark{width:5px;height:5px;border-radius:50%;background:#a6ba8c;display:inline-block}
+.koi-tagline{flex-basis:100%;margin-top:4px}
+.koi-caption{text-align:right;white-space:nowrap}
+@media(max-width:768px){
+  .koi-intro{left:24px;right:24px;top:auto;bottom:140px;transform:none;max-width:78vw}
+  .koi-headline{font-size:44px;letter-spacing:-1px}
+  .koi-eyebrow{margin-bottom:14px}
+  .koi-footer{left:24px;right:24px;bottom:20px;font-size:9px;letter-spacing:0}
+  .koi-caption{max-width:140px;white-space:normal}
+}
