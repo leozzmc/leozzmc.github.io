@@ -899,7 +899,7 @@ click_heart:
 
 # Mouse click effects: words
 clickShowText:
-  enable: true
+  enable: false
   text:
     - 👍
     - 👾
@@ -1064,6 +1064,7 @@ css_prefix: true
 inject:
   head:
     - <link rel="stylesheet" href="/css/style.css">
+    - <link rel="stylesheet" href="/en/css/koi-pond.css">
     - |
       <style>
         .bobame-aside-card {
@@ -1115,6 +1116,7 @@ inject:
     - <script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
     - <script data-pjax src="/self/calendar.js"></script>
     - <script data-pjax src="/self/languages.js"></script>
+    - <script defer src="/en/js/koi-pond.js"></script>
    
 
 # CDN Settings
